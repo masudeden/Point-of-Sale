@@ -77,6 +77,7 @@ $.widget( "ui.autocomplete", {
 
 		this._on( this.element, {
 			keydown: function( event ) {
+                         
 				/*jshint maxcomplexity:15*/
 				if ( this.element.prop( "readOnly" ) ) {
 					suppressKeyPress = true;
@@ -107,7 +108,14 @@ $.widget( "ui.autocomplete", {
 					this._keyEvent( "next", event );
 					break;
 				case keyCode.ENTER:
+                                if ( this.menu.active ) {
+					this.menu.select( event );
+                                               
+					}
+                                        
+					break;
 				case keyCode.NUMPAD_ENTER:
+                                
 					// when menu is open and has focus
 					if ( this.menu.active ) {
 						// #6055 - Opera still allows the keypress to occur
@@ -115,11 +123,15 @@ $.widget( "ui.autocomplete", {
 						suppressKeyPress = true;
 						event.preventDefault();
 						this.menu.select( event );
+                                               
 					}
+                                        
 					break;
 				case keyCode.TAB:
 					if ( this.menu.active ) {
+                                            
 						this.menu.select( event );
+                                                 
 					}
 					break;
 				case keyCode.ESCAPE:
@@ -138,16 +150,20 @@ $.widget( "ui.autocomplete", {
 					this._searchTimeout( event );
 					break;
 				}
+                                 disable_item_div();
 			},
 			keypress: function( event ) {
+                        disable_item_div();
 				if ( suppressKeyPress ) {
 					suppressKeyPress = false;
 					if ( !this.isMultiLine || this.menu.element.is( ":visible" ) ) {
+                            set_item_details(this.element);
 						event.preventDefault();
 					}
 					return;
 				}
 				if ( suppressKeyPressRepeat ) {
+                        set_item_details(this.element);
 					return;
 				}
 
@@ -155,6 +171,7 @@ $.widget( "ui.autocomplete", {
 				var keyCode = $.ui.keyCode;
 				switch( event.keyCode ) {
 				case keyCode.PAGE_UP:
+                                    
 					this._move( "previousPage", event );
 					break;
 				case keyCode.PAGE_DOWN:
@@ -205,6 +222,7 @@ $.widget( "ui.autocomplete", {
 
 		this._on( this.menu.element, {
 			mousedown: function( event ) {
+                            
 				// prevent moving focus out of the text field
 				event.preventDefault();
 
@@ -234,6 +252,7 @@ $.widget( "ui.autocomplete", {
 				}
 			},
 			menufocus: function( event, ui ) {
+                              
 				// support: Firefox
 				// Prevent accidental activation of menu items in Firefox (#7024 #9118)
 				if ( this.isNewMenu ) {
@@ -261,10 +280,17 @@ $.widget( "ui.autocomplete", {
 					// announce the item. Since the focus event was canceled, this doesn't
 					// happen, so we update the live region so that screen readers can
 					// still notice the change and announce it.
+                                   
+                                   set_item_details(this.element);
+                                            
+//document.getElementById('item_name').value=this.element.val(ui.item.desc);
+
 					this.liveRegion.text( item.value );
 				}
 			},
 			menuselect: function( event, ui ) {
+                       disable_item_div();
+                      
 				var item = ui.item.data( "ui-autocomplete-item" ),
 					previous = this.previous;
 
@@ -544,6 +570,7 @@ $.widget( "ui.autocomplete", {
 			this.menu.blur();
 			return;
 		}
+             
 		this.menu[ direction ]( event );
 	},
 
@@ -553,6 +580,7 @@ $.widget( "ui.autocomplete", {
 
 	_value: function() {
 		return this.valueMethod.apply( this.element, arguments );
+                
 	},
 
 	_keyEvent: function( keyEvent, event ) {

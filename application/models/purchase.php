@@ -57,19 +57,39 @@ class Purchase extends CI_Model{
         $id=array();
         $cost=array();
         $sell=array();
+        $mrf=array();
         foreach ($sql->result() as $row){
             $name[]=$row->code  ;
             $companany[]=$row->description   ;            
             $id[]=$row->id;    
             $cost[]=$row->cost_price ;
             $sell[]=$row->selling_price ;
+            $mrf[]=$row->mrf;
         }
         $sasi[0]=$name;
         $sasi[1]=$companany;        
         $sasi[2]=$id;    
         $sasi[3]=$cost;
         $sasi[4]=$sell;
+        $sasi[5]=$mrf;
         return $sasi;  
+    }
+    function get_selected_item_view($id,$bid){
+        $this->db->select()->from('items')->where('code',$id)->where('branch_id',$bid)->where('active_status',0);
+        $sql=$this->db->get();
+        $data=array();
+        if($sql->num_rows()>0){
+        foreach ($sql->result() as $row){
+            $data[0]=$row->name;
+            $data[1]=$row->description ;
+            $data[2]=$row->cost_price;
+            $data[3]=$row->selling_price ;
+            $data[4]=$row->mrf ;
+        }
+        return $data;
+        }else{
+            return FALSE;
+        }
     }
 }
 ?>

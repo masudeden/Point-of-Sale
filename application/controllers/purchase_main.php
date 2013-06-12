@@ -147,19 +147,40 @@ $sell=$value[4];
 	}
     }
     function get_item_details(){
-       $val=$search = addslashes($_REQUEST['term']);
-        	$data[0] = array(
-			'label' =>'sasi'  ,
-          'desc' =>$val  ,
-			'value' =>$val
-		);
-			$data[1] = array(
-			'label' =>'sasi'  ,
-          'desc' =>'jibi'  ,
-			'value' =>$val
-		);
-echo json_encode($data);
-
+       $q= addslashes($_REQUEST['term']);
+                $this->load->model('purchase');    
+                $value=  $this->purchase->get_selected_item($q,$_SESSION['Bid']);
+                $name=$value[0];
+                $dis=$value[1];
+                $id=$value[2];
+                $cost=$value[3];
+                $sell=$value[4];
+                $mrf=$value[5];
+                $j=0;
+                $data=array();
+                 for($i=0;$i<count($name);$i++)
+                            {                                
+                                $data[$j] = array(
+                                          'label' =>$name[$i]  ,
+                                          'desc' =>$dis[$i],
+                                          'cost' =>$cost[$i],
+                                          'sell'=>$sell[$i],
+                                          'mrp'=>$mrf[$i]  , 
+                                          'id'=>$id[$i]
+                                );			
+                                        $j++;                                
+                        }
+        echo json_encode($data);
     }
+    function get_item_details_for_view($iid){
+        if ($iid=="pos") return;
+            $this->load->model('purchase');     
+            $id=urldecode($iid);
+            if($this->purchase->get_selected_item_view($id,$_SESSION['Bid'])!=FALSE){
+            $value=$this->purchase->get_selected_item_view($id,$_SESSION['Bid']);
+            echo "  <table> <tr><td >Name</td><td >Description</td><td >Cost</td><td >Selling Price</td><td > MRF</td></tr><tr><td><input type=text value=$value[0] class=items_div disabled ></td><td ><input type=text value =$value[1] class=items_div disabled ></td><td ><input type=text value =$value[2] class=items_div disabled ></td><td ><input type=text value =$value[3] class=items_div disabled ></td><td ><input type=text value= $value[4] class=items_div  disabled ></td></tr></table>";
+             
+}
+}
 }
 ?>
