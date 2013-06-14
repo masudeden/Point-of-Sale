@@ -39,14 +39,20 @@ class Purchase extends CI_Model{
         $name=array();
         $companany=array();
         $id=array();
+        $phone=array();
+        $email=array();
         foreach ($sql->result() as $row){
             $name[]=$row->company_name  ;
             $companany[]=$row->first_name  ;            
-            $id[]=$row->id;            
+            $id[]=$row->id;       
+            $phone[]=$row->phone;
+            $email[]=$row->email;
         }
         $sasi[0]=$name;
-        $sasi[1]=$companany;        
-        $sasi[2]=$id;       
+        $sasi[1]=$companany;    
+        $sasi[2]=$phone;
+        $sasi[3]=$email;
+        $sasi[4]=$id;       
         return $sasi;        
     }
     function get_selected_item($data,$bid){

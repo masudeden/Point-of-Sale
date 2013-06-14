@@ -1,6 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
+
 
 <script type="text/javascript" src="<?php echo base_url(); ?>auto/js/jquery-1.9.1.js"></script>
 <script type='text/javascript' src='<?php echo base_url(); ?>auto/js/jquery.ui.core.js'></script>
@@ -39,6 +37,13 @@ $(function() {
             return false;
         },
         select: function( event, ui ) {
+    if(document.getElementById(ui.item.id)){
+        
+        alert('This item is alreay order');
+           document.getElementById("project").focus();
+           document.getElementById('project').value="";
+           return false;
+    }else{
             $( "#project" ).val( ui.item.label );
             $('#item_dis').val(ui.item.desc);   
             $('#item_cost').val(ui.item.cost);  
@@ -51,11 +56,33 @@ $(function() {
             $('#item').val(ui.item.id);
             return false;
         }
+        }
     })    
     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
         return $( "<li>" )
-            .append( "<a>" + item.label + 
-                "<span >" + item.desc + "</span></a>" )               
+            .append( "<a style=font-size:12px>" + item.label +"    "+ item.name+
+                "</a>" )               
+            .appendTo( ul );
+    };
+    $( "#supplier" ).autocomplete({
+        minLength: 0,
+        source:"<?php echo base_url() ?>index.php/purchase_main/get_selected_supplier/",
+        focus: function( event, ui ) {
+            $( "#supplier" ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+             $( "#supplier" ).val( ui.item.label);
+            $( "#name" ).val( ui.item.company );
+  
+            return false;
+        
+        }
+    })    
+    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+            .append( "<a style=font-size:12px>" + item.label +"    "+ item.company+
+                "</a>" )               
             .appendTo( ul );
     };
 });
@@ -85,7 +112,7 @@ function disable_item_div(){
 }
 function numbersonly(e){
         var unicode=e.charCode? e.charCode : e.keyCode
-        if (unicode!=8 && unicode!=46){ //if the key isn't the backspace key (which we should allow)
+        if (unicode!=8 && unicode!=46 && unicode!=37 && unicode!=38 && unicode!=39 && unicode!=40){ //if the key isn't the backspace key (which we should allow)
         if (unicode<48||unicode>57)
         return false 
 }
@@ -199,7 +226,7 @@ function add_new_q(e){
        else{
            if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
                      if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
-                     alert('down')   ;
+                    copy_items();
            }else{
                 alert('MRP should morethan price');
                document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
@@ -224,7 +251,7 @@ function add_new_q(e){
 function items_cost_click(){
     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
                      if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
-                     document.getElementById("item_sell").focus();      
+                     document.getElementById("item_cost").focus();      
            }else{
                alert('Cost should lessthan Price');
                document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
@@ -239,7 +266,7 @@ function items_cost_click(){
 function item_sell_click(){
      if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
                      if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
-                     document.getElementById("item_mrp").focus();      
+                     document.getElementById("item_sell").focus();      
            }else{
                 alert('Sell should morethan Cost');
                document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
@@ -253,128 +280,123 @@ function item_sell_click(){
         }
         
       
-function item_mrp_click(){
-      if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
-                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
-                     alert('down')   ;
-           }else{
-                alert('MRP should morethan price');
-               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
-               document.getElementById("item_mrp").focus();
-           }
-           }else{
-               alert('MRP should morethan cost');
-               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
-               document.getElementById("item_mrp").focus();
-           }    
-}
+
 function copy_items(){
+ 
+ if(document.getElementById('item_edit').value!='jibi'){
+     var od=document.getElementById('item_edit').value;
+     var id=document.getElementById('item').value;
+    document.getElementById(od+"c").value=document.getElementById('project').value;
+    document.getElementById(od+"d").value=document.getElementById('item_dis').value;
+    document.getElementById(od+"q").value=document.getElementById('item_quty').value;
+    document.getElementById(od+"co").value=document.getElementById('item_cost').value;
+    document.getElementById(od+"s").value=document.getElementById('item_sell').value;
+    document.getElementById(od+"p").value=document.getElementById('item_mrp').value;
+    document.getElementById(od+"n").value=document.getElementById('item_net').value;
+    document.getElementById(od).id=id;
+    document.getElementById(od+"c").id=id+"c";
+    document.getElementById(od+"d").id=id+"d";
+    document.getElementById(od+"q").id=id+"q";
+    document.getElementById(od+"co").id=id+"co";
+    document.getElementById(od+"s").id=id+"s";
+    document.getElementById(od+"p").id=id+"p";
+    document.getElementById(od+"n").id=id+"n";
+    document.getElementById('item').value="";
+    document.getElementById('project').value="";
+    document.getElementById('item_dis').value="";
+    document.getElementById('item_quty').value="";
+    document.getElementById('item_cost').value="";
+    document.getElementById('item_sell').value="";
+    document.getElementById('item_mrp').value="";
+    document.getElementById('item_net').value="";
+    document.getElementById("project").focus();
+    document.getElementById('item_edit').value='jibi';
+ }else{
     document.getElementById('item_copy').style.visibility="visible";
-    var itm=document.getElementById("item_copy");
-    var cln=itm.cloneNode(true);
-    document.getElementById("parent_item").appendChild(cln);
-    var item=document.getElementById('item_copy');
-    item.getElementsByTagNet
-}
-///
-
-//
-
-
-  function myFunction(id)
-{
-    var itm=document.getElementById("item_deatils1");
-    var cln=itm.cloneNode(true);
-    document.getElementById("item_deatils2").appendChild(cln);
-    document.getElementById(id).id=id+"w";
-    itemid=document.getElementById('id_list').value;
-    document.getElementById(itemid).value=document.getElementById('item_id2').value;
-    document.getElementById('item_id2').value="";
-    document.getElementById(itemid).className =document.getElementById('itemid').value;
-    document.getElementById(itemid).id=itemid+"1";
-    document.getElementById('id_list').value=itemid+"1";
-    
-     
-    
-    dis=document.getElementById('dis_list').value;
-    document.getElementById(dis).value=document.getElementById('descri').value;
-    document.getElementById(dis).className =document.getElementById('itemid').value+"2";
-    document.getElementById(dis).id=dis+"1";
-    document.getElementById('dis_list').value=dis+"1";
-    document.getElementById('descri').value="";
-    
-    
-    
-    quty=document.getElementById('quty_list').value;
-    document.getElementById(quty).value=document.getElementById('quty').value;
-    document.getElementById(quty).className =document.getElementById('itemid').value+"3";
-    document.getElementById(quty).id=quty+"1";
-    document.getElementById('quty_list').value=quty+"1";
-    document.getElementById('quty').value="";
+    //document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id=document.getElementById('item').value+'tr';
    
+     document.getElementById('item_copy').getElementsByTagName('input')[0].value=document.getElementById('project').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[1].value=document.getElementById('item_dis').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[2].value=document.getElementById('item_quty').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[3].value=document.getElementById('item_cost').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[4].value=document.getElementById('item_sell').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[5].value=document.getElementById('item_mrp').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[6].value=document.getElementById('item_net').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[8].id=document.getElementById('item').value;
+    var iid=document.getElementById('item').value;
     
-    cost=document.getElementById('cost_list').value;
-    document.getElementById(cost).value=document.getElementById('cost').value;
-    document.getElementById(cost).className =document.getElementById('itemid').value+"4";
-    document.getElementById(cost).id=cost+"1";
-    document.getElementById('cost_list').value=cost+"1";
-    document.getElementById('cost').value="";
-    
-   
-    
-    sell=document.getElementById('sell_list').value;
-    document.getElementById(sell).value=document.getElementById('sell').value;
-    document.getElementById(sell).className =document.getElementById('itemid').value+"5";
-    document.getElementById(sell).id=sell+"1";
-    document.getElementById('sell_list').value=sell+"1";
-    document.getElementById('sell').value="";
-    
-    uniq=document.getElementById('final_list').value;
-    document.getElementById(uniq).value=document.getElementById('final').value;
-    
-    document.getElementById(uniq).id=document.getElementById('final').value;
-    document.getElementById('final_list').value=document.getElementById('final').value;
-    
-   
-    remove=document.getElementById('remove_list').value;
-    document.getElementById(remove).value=document.getElementById('final').value;
-    
-    document.getElementById(remove).id=document.getElementById('final').value;
-    document.getElementById('remove_list').value=document.getElementById('final').value;
-    
-    
-    
-     idelete=document.getElementById('item_delete_list').value;
-    document.getElementById(idelete).value=document.getElementById('final').value;
-    
-    document.getElementById(idelete).id=document.getElementById('final').value;
-    document.getElementById('item_delete_list').value=document.getElementById('final').value;
-   // document.getElementById('').value="";
- // documen.getElementById('final') .chi  //= document.getElementById('final').value;
-}  
-        function numbersonly(e){
-var unicode=e.charCode? e.charCode : e.keyCode
-if (unicode!=8 && unicode!=46){ //if the key isn't the backspace key (which we should allow)
-if (unicode<48||unicode>57)
-
-return false 
+    document.getElementById('item_copy').getElementsByTagName('input')[0].id=iid+"c";
+    document.getElementById('item_copy').getElementsByTagName('input')[1].id=iid+"d";
+    document.getElementById('item_copy').getElementsByTagName('input')[2].id=iid+"q";
+    document.getElementById('item_copy').getElementsByTagName('input')[3].id=iid+"co";
+    document.getElementById('item_copy').getElementsByTagName('input')[4].id=iid+"s";
+    document.getElementById('item_copy').getElementsByTagName('input')[5].id=iid+"p";
+    document.getElementById('item_copy').getElementsByTagName('input')[6].id=iid+"n";
+    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[8].id=iid;
+        
+    document.getElementById('item').value="";
+    document.getElementById('project').value="";
+    document.getElementById('item_dis').value="";
+    document.getElementById('item_quty').value="";
+    document.getElementById('item_cost').value="";
+    document.getElementById('item_sell').value="";
+    document.getElementById('item_mrp').value="";
+    document.getElementById('item_net').value="";
+    document.getElementById("project").focus();
+    document.getElementById('item_copy').id=document.getElementById('item').value+'tr';
+    var trid=document.getElementById('item').value+'tr';
+        $('#'+trid)
+                .clone()                    
+                    .show()
+         
+                    .appendTo( $('#parent_item').parent() );
+         
+    document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id='item_copy';
+    document.getElementById('item_copy').getElementsByTagName('input')[0].id="c";
+    document.getElementById('item_copy').getElementsByTagName('input')[1].id="d";
+    document.getElementById('item_copy').getElementsByTagName('input')[2].id="q";
+    document.getElementById('item_copy').getElementsByTagName('input')[3].id="co";
+    document.getElementById('item_copy').getElementsByTagName('input')[4].id="s";
+    document.getElementById('item_copy').getElementsByTagName('input')[5].id="p";
+    document.getElementById('item_copy').getElementsByTagName('input')[6].id="n";
+    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[8].id=iid;
+   document.getElementById('item_copy_final').getElementsByTagName('tr')[0].style.visibility="hidden";
+ }  
 }
+function edit_items_details(od){
+    document.getElementById('item_edit').value=od;
+    document.getElementById('project').value=document.getElementById(od+'c').value;
+    document.getElementById('item_dis').value=document.getElementById(od+'d').value;
+    document.getElementById('item_quty').value=document.getElementById(od+'q').value;
+    document.getElementById('item_cost').value=document.getElementById(od+'co').value;
+    document.getElementById('item_sell').value=document.getElementById(od+'s').value;
+    document.getElementById('item_mrp').value=document.getElementById(od+'p').value;
+    document.getElementById('item_net').value=document.getElementById(od+'n').value;
+    
+  //  document.getElementById('item_dis1').value= document.getElementById('item_dis').value;
+    document.getElementById('item_quty1').value= document.getElementById('item_quty').value;
+    document.getElementById('item_cost1').value=document.getElementById('item_cost').value;
+    document.getElementById('item_sell1').value=document.getElementById('item_sell').value;
+    document.getElementById('item_mrp1').value=document.getElementById('item_mrp').value;
+    
+    document.getElementById('item').value=od;
+    //document.getElementById('item_save').style.visibility="visible";
+    console.log(document.getElementById('item_dis').value);
+    document.getElementById("project").focus();
+ 
 }
-function remove_item(but){
-           $("#"+but+"").remove();
+function remove_item(id){
+   document.getElementById(id).id="jibi";
 }
-
-    </script>
-  </head>
-  <body>
-     
-      
-      <div style="margin-left:100px;"><table>
-              <form action="supplier_vs_items/save_items" method="post" id="form">
+	</script>
+   <form action="supplier_vs_items/save_items" method="post" id="form">
 	  
-              <table>
+       <table style="margin-left: 150px">
             <tr><td><?php echo form_label($this->lang->line('supplier code'))?></td>
-                <td><input type="text" id="supplier"  name="estado" onKeyPress="return disableEnterKey(event)" autocomplete="off" style="width: 100px" /></td>
+                <td><input type="text" id="supplier"  name="estado"  autocomplete="off" style="width: 100px" /></td>
                 <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate" style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" name="podate" style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="date" style="width: 100px"></td>
@@ -388,60 +410,45 @@ function remove_item(but){
              <td><?php echo form_label($this->lang->line('Freight'))?></td><td><input type="text" name="date" style="width: 100px"></td>
             </tr>
               </table>
-               <input type="hidden" id="final_list" value="finald" > 
-              <input type="hidden" id="id_list" value="item_id">
-              <input type="hidden" id="dis_list" value="descri1">
-              <input type="hidden" id="quty_list" value="quty1">
-              <input type="hidden" id="cost_list" value="cost1">
-              <input type="hidden" id="sell_list" value="sell1">
-              <input type="hidden" id="itemid" value="">
-              <input type="hidden" id="remove_list" value="remove">
-              <input type="hidden" id="item_delete_list" value="item_delete">
-                            
-              <input type="hidden" id="final">
-	<div><div class="ui-widget item_details_css ">
-        
-        <input type="button" id="add_button" value="+">
-        <table id="parent_item"><tr> 
+<div><div class="ui-widget item_details_css ">
+     <div id="item_div" class="item_det_div" >
+        <table>
+         
+            <tr><td id="myDiv"></td><td><div id="item_image" class="details_size" ></div></td></tr>
+        </table>
+    </div>
+<table id="parent_item"><tr> 
         <td> <label>Item Code</label> </td>
         <td> description  </td><td><label>Quty</label> </td>
         <td><label>Cost</label></td><td><label>selling price</label></td>
         <td><label>M R P</label></td><td><label>Net Amount</label></td></tr>
-            
-         <tr><td><input type="hidden" id="finalid " class="iclass1"  >
-        <input type="text" name="code" id="project" class="iclass"  autocomplete="off" ></td>
-<td><input type="text" name="discri" id="descri" class="iclass2" style="width: 100px" ></td>
-<td><input type="text" id="quty" name="quty[]" class="iclass3" onKeyPress="return numbersonly(event)" style="width: 100px" ></td>
-<td><input type="text" name="cost[]" id="cost" class="iclass4" onKeyPress="return numbersonly(event)" style="width: 100px"></td>
-<td><input type="text" name="sell[[]" id="sell" class="iclass5" onKeyPress="return numbersonly(event)" style="width: 100px"></td>
-<td><input type="button" value="Add" id="item_id1" onclick="myFunction(this.id)" style="width: 100px"></td></tr>
-           
-            
-            
-        </table>
-         <tr><td><ul class="labeleded" id="item_deatils3"><table> 
-                         <tr><td><input type="hidden" id="finalid" class="iclass1"  > <input type="text" name="code" id="item_id2" class="iclass"  onkeypress="get_item_details(this.id) ; return disableEnterKey(event)"  style="width: 100px"    autocomplete="off" ></td><td><input type="text" name="discri" id="descri" class="iclass2" style="width: 100px" ></td><td><input type="text" id="quty" name="quty[]" class="iclass3" onKeyPress="return numbersonly(event)" style="width: 100px" ></td><td><input type="text" name="cost[]" id="cost" class="iclass4" onKeyPress="return numbersonly(event)" style="width: 100px"></td><td><input type="text" name="sell[[]" id="sell" class="iclass5" onKeyPress="return numbersonly(event)" style="width: 100px"></td><td><input type="button" value="Add" id="item_id1" onclick="myFunction(this.id)" style="width: 100px"></li></tr>
-           </table> </ul></td></tr>
-         <tr><td> <ul class="labeleded" ><table id="item_deatils2">
-                         
-                         
-                     </table>
-              
-          </ul></td></tr>
-       <tr><td style="visibility: hidden"><ul class="labeleded" id="item_deatils1"><table> 
-                       <tr id="item_delete"><td><input type="hidden" id="finald" class="sasi"  > <input type="text" name="code" id="item_id" class="one" style="width: 100px"  onkeypress="get_item_details(this.id) ; return disableEnterKey(event)"   autocomplete="off" ></td><td><input type="text" name="discri" id="descri1" class="one" style="width: 100px" ></td><td><input type="text" name="quty[]" id="quty1" class="one" onKeyPress="return numbersonly(event)" style="width: 100px" ></td><td><input type="text" name="cost[]" id="cost1" class="one"  onKeyPress="return numbersonly(event)" style="width: 100px"></td><td><input type="text" name="sell[[]" id="sell1" class="one" onKeyPress="return numbersonly(event)" style="width: 100px"></td><td><input type="button" value="X" onclick="remove_item(this.id)"  id="remove" style="width: 100px"></li></tr>
-           </table> </ul></td></tr>
-           
-                  </table>
-           
-               
-           <div id="yourTableId" border="1" class="myrow" >
-                
-          <tr><td> <?php echo form_submit('save',$this->lang->line('save')); ?> <?php echo form_submit('cancel',$this->lang->line('cancel')); ?></td></tr>
-             
- <?php echo form_close();?>
-      </div>
-      </div>
-  
-  </body>
+    <tr><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
+        <td><input type="hidden" id="item_pro"> 
+            <input id="project" name="project" type="text"  class="item_inputd" />
+            <input type="hidden" id="project-id" /></td>
+        <td><input type="text" id="item_dis" disabled class="item_input_d"/></td>
+        <td><input type="hidden" id="item_quty1"> <input type="text" id="item_quty" class="item_input"  onkeyup="net_amount()" onKeyPress="add_new_q(event);  return numbersonly(event)"  /></td>
+        <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onclick="items_cost_click();net_amount()"  onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
+        <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onclick="item_sell_click();net_amount()"  onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
+        <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
+        <td><input type="hidden" id="item_net1"> <input type="text" id="item_net" class="item_input" disabled   /></td></tr> 
+</table><table id="item_copy_final">
+<tr id="item_copy"  style="visibility: hidden" >
+    <td >
+        <input type="input" name="code[]" disabled   id="it_2" class="item_inputd"></td>
+       <td><input type="input" name="dis[]"  disabled  id="it_3" class="item_input_d"></td>
+       <td><input type="input" name="quty[]"  disabled  id="it_4" class="item_input"></td>
+       <td><input type="input" name="cost[]"  disabled  id="it_5" class="item_input"></td>
+       <td><input type="input" name="sell[]"  disabled  id="it_6"class="item_input"></td>
+       <td><input type="input" name="mrp[]"  disabled  id="it_7"class="item_input"></td>
+       <td><input type="input" name="net[]"  disabled  id="it_8"class="item_input"></td>
+       <td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="it_1">
+           <input type="button" name="code[]" onclick="remove_item(this.id); $(this).closest('tr').remove()" value="X" id="it_8"></td>
+   </tr>
+</table>
+     
+</div>
+    </div>
+
+</body>
 </html>

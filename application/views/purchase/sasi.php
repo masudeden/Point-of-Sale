@@ -66,6 +66,27 @@ $(function() {
                 "</a>" )               
             .appendTo( ul );
     };
+    $( "#supplier" ).autocomplete({
+        minLength: 0,
+        source:"<?php echo base_url() ?>index.php/purchase_main/get_selected_supplier/",
+        focus: function( event, ui ) {
+            $( "#supplier" ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+             $( "#supplier" ).val( ui.item.label);
+            $( "#name" ).val( ui.item.company );
+  
+            return false;
+        
+        }
+    })    
+    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+            .append( "<a style=font-size:12px>" + item.label +"    "+ item.company+
+                "</a>" )               
+            .appendTo( ul );
+    };
 });
 function set_item_details(value){
 document.getElementById('item_div').style.visibility="visible";
@@ -369,6 +390,9 @@ function edit_items_details(od){
     document.getElementById("project").focus();
  
 }
+function remove_item(id){
+   document.getElementById(id).id="jibi";
+}
 	</script>
    <form action="supplier_vs_items/save_items" method="post" id="form">
 	  
@@ -402,7 +426,8 @@ function edit_items_details(od){
         <td><label>M R P</label></td><td><label>Net Amount</label></td></tr>
     <tr><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
         <td><input type="hidden" id="item_pro"> 
-            <input id="project" name="project" type="text"  class="item_inputd" /><input type="hidden" id="project-id" /></td>
+            <input id="project" name="project" type="text"  class="item_inputd" />
+            <input type="hidden" id="project-id" /></td>
         <td><input type="text" id="item_dis" disabled class="item_input_d"/></td>
         <td><input type="hidden" id="item_quty1"> <input type="text" id="item_quty" class="item_input"  onkeyup="net_amount()" onKeyPress="add_new_q(event);  return numbersonly(event)"  /></td>
         <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onclick="items_cost_click();net_amount()"  onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
@@ -410,9 +435,9 @@ function edit_items_details(od){
         <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
         <td><input type="hidden" id="item_net1"> <input type="text" id="item_net" class="item_input" disabled   /></td></tr> 
 </table><table id="item_copy_final">
-<tr id="item_copy" style="visibility: hidden" >
+<tr id="item_copy"  style="visibility: hidden" >
     <td >
-        <input type="input" name="code[]" disabled   id="it_2" class="item_input"></td>
+        <input type="input" name="code[]" disabled   id="it_2" class="item_inputd"></td>
        <td><input type="input" name="dis[]"  disabled  id="it_3" class="item_input_d"></td>
        <td><input type="input" name="quty[]"  disabled  id="it_4" class="item_input"></td>
        <td><input type="input" name="cost[]"  disabled  id="it_5" class="item_input"></td>
@@ -420,7 +445,7 @@ function edit_items_details(od){
        <td><input type="input" name="mrp[]"  disabled  id="it_7"class="item_input"></td>
        <td><input type="input" name="net[]"  disabled  id="it_8"class="item_input"></td>
        <td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="it_1">
-           <input type="button" name="code[]" value="X" id="it_8"></td>
+           <input type="button" name="code[]" onclick="remove_item(this.id); $(this).closest('tr').remove()" value="X" id="it_8"></td>
    </tr>
 </table>
      

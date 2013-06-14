@@ -16,8 +16,8 @@ class Purchase_main extends CI_Controller{
           if(!isset($_SESSION['Uid'])){
                 redirect('home');
         }else{
-          //$this->get_suppliers();
-          $this->load->view('purchase/sasi');
+          $this->get_suppliers();
+         // $this->load->view('purchase/sasi');
         }
     }
     function get_suppliers(){
@@ -78,74 +78,33 @@ class Purchase_main extends CI_Controller{
     }
      function get_selected_supplier()
     {
-          if (!$_SERVER['HTTP_REFERER']){ redirect('home');}else{
-       $this->load->model('purchase');
-           $qo = mysql_real_escape_string( $_REQUEST['query'] );
-
-        $value=  $this->purchase->get_selected_supplier($qo,$_SESSION['Bid']);
-
-$data=$value[0];
-$dis=$value[1];
-$id=$value[2];
-	    echo '<ul>'."\n";
-	    for($i=0;$i<count($data);$i++)
-	    {
-		$p = $data[$i];
-		$p = preg_replace('/(' . $qo . ')/i', '<span style="font-weight:bold;">'.'</span>', $p);
-		echo "\t".'<li id="autocomplete_'.$data[$i].'" rel="'.$dis[$i].'_' . $dis[$i].'_' .$id[$i] .'_' . $id[$i]. '">'. utf8_encode( "$data[$i]" ) .'</li>'."\n";
-	    }
-	    echo '</ul>';
-          }
+       
+      $q= addslashes($_REQUEST['term']);
+                $this->load->model('purchase');    
+                $value=  $this->purchase->get_selected_supplier($q,$_SESSION['Bid']);
+                $name=$value[0];
+                $company=$value[1];
+                $phone=$value[2];
+                $email=$value[3];              
+                $id=$value[4];
+                $j=0;
+                $data=array();
+                 for($i=0;$i<count($name);$i++)
+                            {                                
+                                $data[$j] = array(
+                                          'label' =>$name[$i]  ,
+                                          'company' =>$company[$i],
+                                          'phone' =>$phone[$i],
+                                          'email'=>$email[$i], 
+                                          'id'=>$id[$i]
+                                         
+                                );			
+                                        $j++;                                
+                        }
+        echo json_encode($data);
 	
     }
-     function get_selected_item()
-    {
-          if (!$_SERVER['HTTP_REFERER']){ redirect('home');}else{
-       $this->load->model('purchase');
-           $qo = mysql_real_escape_string( $_REQUEST['query'] );
-
-        $value=  $this->purchase->get_selected_item($qo,$_SESSION['Bid']);
-
-$data=$value[0];
-$dis=$value[1];
-$id=$value[2];
-$cost=$value[3];
-$sell=$value[4];
-
-   
-	    echo '<ul>'."\n";
-	    for($i=0;$i<count($data);$i++)
-	    {
-		$p = $data[$i];
-		$p = preg_replace('/(' . $qo . ')/i', '<span style="font-weight:bold;">'.'</span>', $p);
-		echo "\t".'<li id="autocomplete_'.$data[$i].'" rel="'.$dis[$i].'_' . $dis[$i].'_' .$cost[$i] .'_' .$sell[$i] .'_' . $id[$i]. '">'. utf8_encode( "$data[$i]" ) .'</li>'."\n";
-	    }
-	    echo '</ul>';
-          }
-	
-    }
-    function get_new(){
-        $q = strtolower($_GET["q"]);
-if (!$q) return;
-
-  $this->load->model('purchase');          
-
-$value=  $this->purchase->get_selected_item($q,$_SESSION['Bid']);
-
-$data=$value[0];
-$dis=$value[1];
-$id=$value[2];
-$cost=$value[3];
-$sell=$value[4];
-
-   
-	    for($i=0;$i<count($data);$i++)
-	    {
-                                if (strpos(strtolower($data[$i]), $q) !== false) {
-		echo "$data[$i]|$dis[$i]|$cost[$i]|$sell[$i]|$id[$i]\n";
-                                }
-	}
-    }
+ 
     function get_item_details(){
        $q= addslashes($_REQUEST['term']);
                 $this->load->model('purchase');    
@@ -185,4 +144,5 @@ $sell=$value[4];
 }
 }
 }
+
 ?>
