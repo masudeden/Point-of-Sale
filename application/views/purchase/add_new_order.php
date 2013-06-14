@@ -1,248 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
 
-<style>
-    .myrow{
-        border-width: 1px;
-        
-    }
-    .myrow td{
-        border: none;
-    }
-    .data{
-        list-style: none;
-    }
-    .data li{
-        width: 12%;
-         float:left;
-       
-    }
-    .labeled{
-        list-style: none;
-    }
-    
-    .labeled li{
-        width: 12%;
-        float: left;
-    }
-     .labeleded{
-        list-style: none;
-    }
-    
-    .labeleded li{
-        width: 12%;
-        float: left;
-    }
-    .labeled input{
-        width: 80px;
-    }
-</style>
-<script>
-function addTextTag(txt)
-{
-document.getElementById("text_tag_input").value+=txt;
-}
-function removeTextTag(e,id)
-{
-	var unicode=e.charCode? e.charCode : e.keyCode
-if (unicode!=8 && unicode!=46){ //if the key isn't the backspace key (which we should allow)
-if (unicode<48||unicode>57)
-{
-var strng=document.getElementById(id).value;
-title=document.getElementById(id).title;
-document.getElementById(id).value=strng.replace(strng,title);
-}
-}
-}
-function removeElement(parentDiv, childDiv){
-     if (childDiv == parentDiv) {
-          alert("The parent div cannot be removed.");
-     }
-     else if (document.getElementById(childDiv)) {     
-          var child = document.getElementById(childDiv);
-          var parent = document.getElementById(parentDiv);
-          parent.removeChild(child);
-     }
-     else {
-          alert("Child div has already been removed or does not exist.");
-          return false;
-     }
-}
-function disableEnterKey(e){   
-var key;
-    if(window.event){
-    key = window.event.keyCode;
-    } else {
-    key = e.which;     
-    }
-    if(key == 13){
-    return false;
+<script type="text/javascript" src="<?php echo base_url(); ?>auto/js/jquery-1.9.1.js"></script>
+<script type='text/javascript' src='<?php echo base_url(); ?>auto/js/jquery.ui.core.js'></script>
+<script type='text/javascript' src='<?php echo base_url(); ?>auto/js/jquery.ui.widget.js'></script>
+<script type='text/javascript' src='<?php echo base_url(); ?>auto/js/jquery.ui.menu.js'></script>
+<script type='text/javascript' src='<?php echo base_url(); ?>auto/js/jquery.ui.autocomplete.js'></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/css/demos.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/css/jquery.ui.base.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/css/jquery.ui.theme.css" />
 
-    } else {
-      
-    return true;
-    }
-    
-} 
-
-
-</script>
-<script type="text/javascript" src="<?php echo base_url(); ?>auto/lib/jquery.js"></script>
-<script type='text/javascript' src='<?php echo base_url(); ?>auto/lib/jquery.bgiframe.min.js'></script>
-<script type='text/javascript' src='<?php echo base_url(); ?>auto/lib/jquery.ajaxQueue.js'></script>
-<script type='text/javascript' src='<?php echo base_url(); ?>auto/lib/thickbox-compressed.js'></script>
-<script type='text/javascript' src='<?php echo base_url(); ?>auto/jquery.autocomplete.js'></script>
-<script type='text/javascript' src='<?php echo base_url(); ?>auto/demo/localdata.js'></script>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/demo/main.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/jquery.autocomplete.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/lib/thickbox.css" />
-    <script type="text/javascript" src="<?php echo base_url();?>src/js/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>src/js/simpleAutoComplete.js"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>src/css/simpleAutoComplete.css" />
-    <script type="text/javascript">
-        function get_mag(but){             
-                        $("#"+but+"").remove();
- 
+    <script>      
+$(function() {   
+    function lightwell(request, response) {
+        function hasMatch(s) {
+            return s.toLowerCase().indexOf(request.term.toLowerCase())!==-1;
         }
-	$(document).ready(function()
-	{
-	    $('#supplier').simpleAutoComplete('http://localhost/PointOfSale/index.php/purchase_main/get_selected_supplier',{}, get_supplier);
-           
-        });
-	
-	function get_supplier( par )
-	{
-             
-	    $("#id_estado").val( par[0] );
-           name=par[1] ;
-           discri=par[0];          
-           item=par[2];
-        
-           if(document.getElementById(item)){          
-               alert('this item is already added in this supplier');
-              document.getElementById("supplier").value="";
-           }else{
-              
-           // $('#yourTableId').append("<div id="+item+"><ul   class=data  ><li><input type=hidden name=itemsid[] value="+item+" style=width: 80px> <input type=text value="+name+" disabled style=width: 80px > </li><li ><input type=text value="+discri+" disabled style=width: 80px > </li><li ><input type=text name=quty[] title=0 id="+item+"5 value=0 onkeyup=removeTextTag(event,"+item+"5) style=width: 80px > </li><li ><input type=text value="+cost+" title="+cost+" id="+item+"6 name=cost[] onkeyup=removeTextTag(event,"+item+"6)style=width: 80px  > </li><li ><input type=text value="+sell+"  name=price[] title="+sell+" id="+item+"7 onkeyup=removeTextTag(event,"+item+"7) style=width: 80px  > </li><li ><input type=text name=disco[] value=0 title=0 id="+item+"8  onkeyup=removeTextTag(event,"+item+"8) style=width: 80px ></li><li><input type=checkbox name="+item+" <?php echo set_checkbox("+iteme+", '1'); ?> style=width: 80px ></li><li ><input type=button value=X name=send  onclick=get_mag("+item+") ><input type=hidden name=items[] value="+item+" ></li></ul></div>");	         
-           document.getElementById('name').value=discri;
-           document.getElementById('supplierid').value=item;
-             //document.getElementById("supplier").value="";                        
-	    }
-	}
-        function  disable_arows(e){
-var key;
-    if(window.event){
-    key = window.event.keyCode;
-    } else {
-    key = e.which;     
-    }
-    if(key == 37){
-    return false;
+        var i, l, obj, matches = [];
 
-    } else {
-      
-    return true;
-    }
+        if (request.term==="") {
+		    response([]);
+            return;
+        }           
+        for  (i = 0, l = projects.length; i<l; i++) {
+            obj = projects[i];
+            if (hasMatch(obj.label) || hasMatch(obj.desc)) {
+                matches.push(obj);				
+            }
         }
-function get_item_details(item){
-	
-     var  jibi1=document.activeElement.id;
-   
-	function log(event, data, formatted) {
-		$("<li>").html( !data ? "No match!" : "Selected: " + formatted).appendTo("#result");
-	}
-	
-	function formatItem(row) {
-		return row[0] + " (<strong>id: " + row[1] + "</strong>)";
-               
-	}
-	function formatResult(row) {
-		return row[0].replace(/(<.+?>)/gi, '');
-	}
-	
-$().ready(function() {
-	
-        $("#suggest5").autocomplete('http://localhost/PointOfSale/index.php/purchase_main/get_new', {
-		width: 300,
-		multiple: true,
-		matchContains: true,
-		formatItem: formatItem,
-		formatResult: formatResult
-	});
-	
-
-	
-	
-	
-	
-	
-	$("#suggest5").result(function(event, data, formatted) {
-	document.getElementById('suggest5').value="";
-                 document.getElementById('item_ided1').value=data[4];
-	});
-  
-	$("#scrollChange").click(changeScrollHeight);
-	
-	
-	
-	$("#clear").click(function() {
-		$(":input").unautocomplete();
-	});
-
-//            function get_items( par )
-//            {
-//               if(document.getElementById(par[4])){
-//                             alert("This Item Is already added");
-//                         }else{
-//                 var dis=document.getElementById(item).className  ; 
-//                 var ddata
-//                            $(function() {
-//                   $('.'+dis+"2").each(function () {
-//                       ddata = this.id;
-//
-//                   });
-//               });
-//                var qdata
-//                            $(function() {
-//                   $('.'+dis+"3").each(function () {
-//                       qdata = this.id;
-//
-//                   });
-//               });
-//                var cdata
-//                            $(function() {
-//                   $('.'+dis+"4").each(function () {
-//                       cdata = this.id;
-//
-//                   });
-//               });
-//                var sdata
-//                            $(function() {
-//                   $('.'+dis+"5").each(function () {
-//                       sdata = this.id;
-//
-//                   });
-//               });
-//                var iddata
-//                            $(function() {
-//                   $('.'+dis+"2").each(function () {
-//                       iddata = this.id;
-//
-//                   });
-//               });
-//
-//                               document.getElementById('itemid').value=par[4];
-//
-//                         document.getElementById('final').value=par[4];
-//
-//                            document.getElementById(ddata).value=par[0];   
-//                            document.getElementById(cdata).value= par[2];  
-//                            document.getElementById(sdata).value= par[3];  
-//
-//
-//                }
-//                // document.getElementById('descri').class=par[1];
-//            }
+        response(matches);
+    }    
+    $( "#project" ).autocomplete({
+        minLength: 0,
+        source:"<?php echo base_url() ?>index.php/purchase_main/get_item_details/",
+        focus: function( event, ui ) {
+            $( "#project" ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            $( "#project" ).val( ui.item.label );
+            $('#item_dis').val(ui.item.desc);   
+            $('#item_cost').val(ui.item.cost);  
+            $('#item_sell').val(ui.item.sell);  
+            $('#item_mrp').val(ui.item.mrp);  
+            $( "#item_pro" ).val( ui.item.label ); 
+            $('#item_cost1').val(ui.item.cost);  
+            $('#item_sell1').val(ui.item.sell);  
+            $('#item_mrp1').val(ui.item.mrp);  
+            $('#item').val(ui.item.id);
+            return false;
+        }
+    })    
+    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+            .append( "<a>" + item.label + 
+                "<span >" + item.desc + "</span></a>" )               
+            .appendTo( ul );
+    };
 });
+function set_item_details(value){
+document.getElementById('item_div').style.visibility="visible";
+                       var item_name=value.val();  
+                       if(item_name=="") { item_name='pos'}
+document.getElementById('item_image').style.backgroundImage="url(<?php echo base_url() ?>item_images/"+item_name+")";
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_main/get_item_details_for_view/"+item_name,false);
+
+xmlhttp.send();
+document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+
+
+}
+function disable_item_div(){
+    document.getElementById('item_div').style.visibility="hidden";
+}
+function numbersonly(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
+        if (unicode!=8 && unicode!=46){ //if the key isn't the backspace key (which we should allow)
+        if (unicode<48||unicode>57)
+        return false 
+}
+}
+function net_amount(){
+    document.getElementById('item_net').value=document.getElementById('item_cost').value*document.getElementById('item_quty').value;
+}
+function add_new_item(e){
+    if(document.getElementById('item_quty').value!="" && document.getElementById('item_cost').value!="" && document.getElementById('item_sell').value!=""){
+        if(document.getElementById('item_cost').value < document.getElementById('item_sell').value){
+            if(document.getElementById('item_sell').value<document.getElementById('item_mrp').value){
+                  var unicode=e.charCode? e.charCode : e.keyCode
+        if (unicode!=13 && unicode!=9){
+           
+        }else{
+            alert('sasi');
         }
+            }else{
+                 alert('Seelling price should Less than MRP ');
+            }
+        }
+        else{
+            alert('Seelling price should More than Cost ');
+        }
+    }
+}
+function add_new_q(e){
+     var unicode=e.charCode? e.charCode : e.keyCode
+    if(document.getElementById('item_quty').value!=""){
+        
+                  if (unicode!=13 && unicode!=9){           
+        }
+       else{
+           document.getElementById("item_cost").focus();        
+             //document.getElementById("project").focus();
+        }
+         if (unicode!=27){           
+        }
+       else{
+           //document.getElementById("item_cost").focus();        
+             document.getElementById("project").focus();
+        }
+        }
+      
+    }
+    function add_new_cost(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
+         if(document.getElementById('item_quty').value!=""){        
+                  if (unicode!=13 && unicode!=9){           
+        }
+       else{
+           if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     document.getElementById("item_sell").focus();      
+           }else{
+               alert('Cost should lessthan Price');
+               document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
+               document.getElementById("item_cost").focus();
+           }
+           }else{
+                alert('Cost should lessthan MRP');
+                document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
+                document.getElementById("item_cost").focus();
+           }              
+        }
+         if (unicode!=27){           
+        }
+       else{
+           //document.getElementById("item_cost").focus();        
+             document.getElementById("item_quty").focus();
+        }
+        }else{
+             document.getElementById("item_quty").focus();    
+        }
+    }
+    function add_new_sell(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
+         if(document.getElementById('item_quty').value!=""){        
+                  if (unicode!=13 && unicode!=9){           
+        }
+       else{
+           if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
+                     document.getElementById("item_mrp").focus();      
+           }else{
+                alert('Sell should morethan Cost');
+               document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+               document.getElementById("item_sell").focus();
+           }
+           }else{
+               alert('price should lessthan MRP');
+                document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+                document.getElementById("item_sell").focus();
+           }              
+        }
+         if (unicode!=27){           
+        }
+       else{
+           //document.getElementById("item_cost").focus();        
+             document.getElementById("item_cost").focus();
+        }
+        }else{
+             document.getElementById("item_quty").focus();    
+        }
+    }
+    function add_new_mrp(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
+         if(document.getElementById('item_quty').value!=""){        
+                  if (unicode!=13 && unicode!=9){           
+        }
+       else{
+           if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     alert('down')   ;
+           }else{
+                alert('MRP should morethan price');
+               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
+               document.getElementById("item_mrp").focus();
+           }
+           }else{
+               alert('MRP should morethan cost');
+               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
+               document.getElementById("item_mrp").focus();
+           }              
+        }
+         if (unicode!=27){           
+        }
+       else{
+           //document.getElementById("item_cost").focus();        
+             document.getElementById("item_sell").focus();
+        }
+        }else{
+             document.getElementById("item_quty").focus();    
+        }
+    }
+function items_cost_click(){
+    if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     document.getElementById("item_sell").focus();      
+           }else{
+               alert('Cost should lessthan Price');
+               document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
+               document.getElementById("item_cost").focus();
+           }
+           }else{
+                alert('Cost should lessthan MRP');
+                document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
+                document.getElementById("item_cost").focus();
+           }  
+}
+function item_sell_click(){
+     if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
+                     document.getElementById("item_mrp").focus();      
+           }else{
+                alert('Sell should morethan Cost');
+               document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+               document.getElementById("item_sell").focus();
+           }
+           }else{
+               alert('price should lessthan MRP');
+                document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+                document.getElementById("item_sell").focus();
+           }              
+        }
+        
+      
+function item_mrp_click(){
+      if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     alert('down')   ;
+           }else{
+                alert('MRP should morethan price');
+               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
+               document.getElementById("item_mrp").focus();
+           }
+           }else{
+               alert('MRP should morethan cost');
+               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
+               document.getElementById("item_mrp").focus();
+           }    
+}
+function copy_items(){
+    document.getElementById('item_copy').style.visibility="visible";
+    var itm=document.getElementById("item_copy");
+    var cln=itm.cloneNode(true);
+    document.getElementById("parent_item").appendChild(cln);
+    var item=document.getElementById('item_copy');
+    item.getElementsByTagNet
+}
+///
+
+//
+
+
   function myFunction(id)
 {
     var itm=document.getElementById("item_deatils1");
@@ -361,11 +399,26 @@ function remove_item(but){
               <input type="hidden" id="item_delete_list" value="item_delete">
                             
               <input type="hidden" id="final">
-	<ul class="labeled">
-            <li> <label>Item Code</label> </li><li> description  </li><li><label>Quty</label> </li><li><label>Cost</label></li><li><label>selling price</label></li><li><label>Remove</label></li></ul>
-                  </br></br>
-                  <table>
-          
+	<div><div class="ui-widget item_details_css ">
+        
+        <input type="button" id="add_button" value="+">
+        <table id="parent_item"><tr> 
+        <td> <label>Item Code</label> </td>
+        <td> description  </td><td><label>Quty</label> </td>
+        <td><label>Cost</label></td><td><label>selling price</label></td>
+        <td><label>M R P</label></td><td><label>Net Amount</label></td></tr>
+            
+         <tr><td><input type="hidden" id="finalid " class="iclass1"  >
+        <input type="text" name="code" id="project" class="iclass"  autocomplete="off" ></td>
+<td><input type="text" name="discri" id="descri" class="iclass2" style="width: 100px" ></td>
+<td><input type="text" id="quty" name="quty[]" class="iclass3" onKeyPress="return numbersonly(event)" style="width: 100px" ></td>
+<td><input type="text" name="cost[]" id="cost" class="iclass4" onKeyPress="return numbersonly(event)" style="width: 100px"></td>
+<td><input type="text" name="sell[[]" id="sell" class="iclass5" onKeyPress="return numbersonly(event)" style="width: 100px"></td>
+<td><input type="button" value="Add" id="item_id1" onclick="myFunction(this.id)" style="width: 100px"></td></tr>
+           
+            
+            
+        </table>
          <tr><td><ul class="labeleded" id="item_deatils3"><table> 
                          <tr><td><input type="hidden" id="finalid" class="iclass1"  > <input type="text" name="code" id="item_id2" class="iclass"  onkeypress="get_item_details(this.id) ; return disableEnterKey(event)"  style="width: 100px"    autocomplete="off" ></td><td><input type="text" name="discri" id="descri" class="iclass2" style="width: 100px" ></td><td><input type="text" id="quty" name="quty[]" class="iclass3" onKeyPress="return numbersonly(event)" style="width: 100px" ></td><td><input type="text" name="cost[]" id="cost" class="iclass4" onKeyPress="return numbersonly(event)" style="width: 100px"></td><td><input type="text" name="sell[[]" id="sell" class="iclass5" onKeyPress="return numbersonly(event)" style="width: 100px"></td><td><input type="button" value="Add" id="item_id1" onclick="myFunction(this.id)" style="width: 100px"></li></tr>
            </table> </ul></td></tr>
@@ -389,15 +442,6 @@ function remove_item(but){
  <?php echo form_close();?>
       </div>
       </div>
-    <form >
-		
-		<p>
-			
-                    <input type="text" id='suggest5' onkeypress=" return  disable_arows(event)" onkeyup=" get_item_details(this.id) " >
-                        
-		</p>
-                <input type="text" id="item_ided" >
-                <input type="text" id="item_ided1" >
-	</form>
+  
   </body>
 </html>

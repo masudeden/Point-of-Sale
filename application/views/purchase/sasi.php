@@ -39,6 +39,13 @@ $(function() {
             return false;
         },
         select: function( event, ui ) {
+    if(document.getElementById(ui.item.id)){
+        
+        alert('This item is alreay order');
+           document.getElementById("project").focus();
+           document.getElementById('project').value="";
+           return false;
+    }else{
             $( "#project" ).val( ui.item.label );
             $('#item_dis').val(ui.item.desc);   
             $('#item_cost').val(ui.item.cost);  
@@ -51,11 +58,12 @@ $(function() {
             $('#item').val(ui.item.id);
             return false;
         }
+        }
     })    
     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
         return $( "<li>" )
-            .append( "<a>" + item.label + 
-                "<span >" + item.desc + "</span></a>" )               
+            .append( "<a style=font-size:12px>" + item.label +"    "+ item.name+
+                "</a>" )               
             .appendTo( ul );
     };
 });
@@ -85,7 +93,7 @@ function disable_item_div(){
 }
 function numbersonly(e){
         var unicode=e.charCode? e.charCode : e.keyCode
-        if (unicode!=8 && unicode!=46){ //if the key isn't the backspace key (which we should allow)
+        if (unicode!=8 && unicode!=46 && unicode!=37 && unicode!=38 && unicode!=39 && unicode!=40){ //if the key isn't the backspace key (which we should allow)
         if (unicode<48||unicode>57)
         return false 
 }
@@ -133,17 +141,13 @@ function add_new_q(e){
     }
     function add_new_cost(e){
         var unicode=e.charCode? e.charCode : e.keyCode
-    if(document.getElementById('item_quty').value!=""){
-        
+         if(document.getElementById('item_quty').value!=""){        
                   if (unicode!=13 && unicode!=9){           
         }
        else{
            if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
-               
-           if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
-               
-               
-               document.getElementById("item_sell").focus();      
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     document.getElementById("item_sell").focus();      
            }else{
                alert('Cost should lessthan Price');
                document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
@@ -153,9 +157,7 @@ function add_new_q(e){
                 alert('Cost should lessthan MRP');
                 document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
                 document.getElementById("item_cost").focus();
-           }
-             
-             //document.getElementById("project").focus();
+           }              
         }
          if (unicode!=27){           
         }
@@ -167,33 +169,263 @@ function add_new_q(e){
              document.getElementById("item_quty").focus();    
         }
     }
-
-
-	</script>
-<div><div class="ui-widget item_details_css ">
+    function add_new_sell(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
+         if(document.getElementById('item_quty').value!=""){        
+                  if (unicode!=13 && unicode!=9){           
+        }
+       else{
+           if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
+                     document.getElementById("item_mrp").focus();      
+           }else{
+                alert('Sell should morethan Cost');
+               document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+               document.getElementById("item_sell").focus();
+           }
+           }else{
+               alert('price should lessthan MRP');
+                document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+                document.getElementById("item_sell").focus();
+           }              
+        }
+         if (unicode!=27){           
+        }
+       else{
+           //document.getElementById("item_cost").focus();        
+             document.getElementById("item_cost").focus();
+        }
+        }else{
+             document.getElementById("item_quty").focus();    
+        }
+    }
+    function add_new_mrp(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
+         if(document.getElementById('item_quty').value!=""){        
+                  if (unicode!=13 && unicode!=9){           
+        }
+       else{
+           if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
+                    copy_items();
+           }else{
+                alert('MRP should morethan price');
+               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
+               document.getElementById("item_mrp").focus();
+           }
+           }else{
+               alert('MRP should morethan cost');
+               document.getElementById("item_mrp").value=parseFloat(document.getElementById('item_mrp1').value);
+               document.getElementById("item_mrp").focus();
+           }              
+        }
+         if (unicode!=27){           
+        }
+       else{
+           //document.getElementById("item_cost").focus();        
+             document.getElementById("item_sell").focus();
+        }
+        }else{
+             document.getElementById("item_quty").focus();    
+        }
+    }
+function items_cost_click(){
+    if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     document.getElementById("item_cost").focus();      
+           }else{
+               alert('Cost should lessthan Price');
+               document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
+               document.getElementById("item_cost").focus();
+           }
+           }else{
+                alert('Cost should lessthan MRP');
+                document.getElementById("item_cost").value=parseFloat(document.getElementById('item_cost1').value);
+                document.getElementById("item_cost").focus();
+           }  
+}
+function item_sell_click(){
+     if(parseFloat(document.getElementById('item_sell').value) < parseFloat(document.getElementById('item_mrp').value)){
+                     if(parseFloat(document.getElementById('item_cost').value) < parseFloat(document.getElementById('item_sell').value)){
+                     document.getElementById("item_sell").focus();      
+           }else{
+                alert('Sell should morethan Cost');
+               document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+               document.getElementById("item_sell").focus();
+           }
+           }else{
+               alert('price should lessthan MRP');
+                document.getElementById("item_sell").value=parseFloat(document.getElementById('item_sell1').value);
+                document.getElementById("item_sell").focus();
+           }              
+        }
         
-        <input type="button" id="add_button" value="+">
-<table><tr> 
-        <td> <label>Item Code</label> </td>
-        <td> description  </td><td><label>Quty</label> </td>
-        <td><label>Cost</label></td><td><label>selling price</label></td>
-        <td><label>M R P</label></td><td><label>Net Amount</label></td></tr>
-    <tr><input type="hidden" id="item">
-        <td><input type="hidden" id="item_pro"> <input id="project" name="project" type="text"   /><input type="hidden" id="project-id" /></td>
-        <td><input type="text" id="item_dis" disabled /></td>
-        <td><input type="hidden" id="item_quty1"> <input type="text" id="item_quty"  onkeyup="net_amount()" onKeyPress="add_new_q(event);  return numbersonly(event)"  /></td>
-        <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost" onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
-        <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell"  onKeyPress=" return numbersonly(event)" /></td>
-        <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" onKeyPress=" return numbersonly(event)"  /></td>
-        <td><input type="hidden" id="item_net1"> <input type="text" id="item_net" disabled   /></td></tr> 
-</table>
-</div>
-    </div>
-    <div id="item_div" class="item_det_div">
+      
+
+function copy_items(){
+ 
+ if(document.getElementById('item_edit').value!='jibi'){
+     var od=document.getElementById('item_edit').value;
+     var id=document.getElementById('item').value;
+    document.getElementById(od+"c").value=document.getElementById('project').value;
+    document.getElementById(od+"d").value=document.getElementById('item_dis').value;
+    document.getElementById(od+"q").value=document.getElementById('item_quty').value;
+    document.getElementById(od+"co").value=document.getElementById('item_cost').value;
+    document.getElementById(od+"s").value=document.getElementById('item_sell').value;
+    document.getElementById(od+"p").value=document.getElementById('item_mrp').value;
+    document.getElementById(od+"n").value=document.getElementById('item_net').value;
+    document.getElementById(od).id=id;
+    document.getElementById(od+"c").id=id+"c";
+    document.getElementById(od+"d").id=id+"d";
+    document.getElementById(od+"q").id=id+"q";
+    document.getElementById(od+"co").id=id+"co";
+    document.getElementById(od+"s").id=id+"s";
+    document.getElementById(od+"p").id=id+"p";
+    document.getElementById(od+"n").id=id+"n";
+    document.getElementById('item').value="";
+    document.getElementById('project').value="";
+    document.getElementById('item_dis').value="";
+    document.getElementById('item_quty').value="";
+    document.getElementById('item_cost').value="";
+    document.getElementById('item_sell').value="";
+    document.getElementById('item_mrp').value="";
+    document.getElementById('item_net').value="";
+    document.getElementById("project").focus();
+    document.getElementById('item_edit').value='jibi';
+ }else{
+    document.getElementById('item_copy').style.visibility="visible";
+    //document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id=document.getElementById('item').value+'tr';
+   
+     document.getElementById('item_copy').getElementsByTagName('input')[0].value=document.getElementById('project').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[1].value=document.getElementById('item_dis').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[2].value=document.getElementById('item_quty').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[3].value=document.getElementById('item_cost').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[4].value=document.getElementById('item_sell').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[5].value=document.getElementById('item_mrp').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[6].value=document.getElementById('item_net').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[8].id=document.getElementById('item').value;
+    var iid=document.getElementById('item').value;
+    
+    document.getElementById('item_copy').getElementsByTagName('input')[0].id=iid+"c";
+    document.getElementById('item_copy').getElementsByTagName('input')[1].id=iid+"d";
+    document.getElementById('item_copy').getElementsByTagName('input')[2].id=iid+"q";
+    document.getElementById('item_copy').getElementsByTagName('input')[3].id=iid+"co";
+    document.getElementById('item_copy').getElementsByTagName('input')[4].id=iid+"s";
+    document.getElementById('item_copy').getElementsByTagName('input')[5].id=iid+"p";
+    document.getElementById('item_copy').getElementsByTagName('input')[6].id=iid+"n";
+    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[8].id=iid;
+        
+    document.getElementById('item').value="";
+    document.getElementById('project').value="";
+    document.getElementById('item_dis').value="";
+    document.getElementById('item_quty').value="";
+    document.getElementById('item_cost').value="";
+    document.getElementById('item_sell').value="";
+    document.getElementById('item_mrp').value="";
+    document.getElementById('item_net').value="";
+    document.getElementById("project").focus();
+    document.getElementById('item_copy').id=document.getElementById('item').value+'tr';
+    var trid=document.getElementById('item').value+'tr';
+        $('#'+trid)
+                .clone()                    
+                    .show()
+         
+                    .appendTo( $('#parent_item').parent() );
+         
+    document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id='item_copy';
+    document.getElementById('item_copy').getElementsByTagName('input')[0].id="c";
+    document.getElementById('item_copy').getElementsByTagName('input')[1].id="d";
+    document.getElementById('item_copy').getElementsByTagName('input')[2].id="q";
+    document.getElementById('item_copy').getElementsByTagName('input')[3].id="co";
+    document.getElementById('item_copy').getElementsByTagName('input')[4].id="s";
+    document.getElementById('item_copy').getElementsByTagName('input')[5].id="p";
+    document.getElementById('item_copy').getElementsByTagName('input')[6].id="n";
+    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
+    document.getElementById('item_copy').getElementsByTagName('input')[8].id=iid;
+   document.getElementById('item_copy_final').getElementsByTagName('tr')[0].style.visibility="hidden";
+ }  
+}
+function edit_items_details(od){
+    document.getElementById('item_edit').value=od;
+    document.getElementById('project').value=document.getElementById(od+'c').value;
+    document.getElementById('item_dis').value=document.getElementById(od+'d').value;
+    document.getElementById('item_quty').value=document.getElementById(od+'q').value;
+    document.getElementById('item_cost').value=document.getElementById(od+'co').value;
+    document.getElementById('item_sell').value=document.getElementById(od+'s').value;
+    document.getElementById('item_mrp').value=document.getElementById(od+'p').value;
+    document.getElementById('item_net').value=document.getElementById(od+'n').value;
+    
+  //  document.getElementById('item_dis1').value= document.getElementById('item_dis').value;
+    document.getElementById('item_quty1').value= document.getElementById('item_quty').value;
+    document.getElementById('item_cost1').value=document.getElementById('item_cost').value;
+    document.getElementById('item_sell1').value=document.getElementById('item_sell').value;
+    document.getElementById('item_mrp1').value=document.getElementById('item_mrp').value;
+    
+    document.getElementById('item').value=od;
+    //document.getElementById('item_save').style.visibility="visible";
+    console.log(document.getElementById('item_dis').value);
+    document.getElementById("project").focus();
+ 
+}
+	</script>
+   <form action="supplier_vs_items/save_items" method="post" id="form">
+	  
+       <table style="margin-left: 150px">
+            <tr><td><?php echo form_label($this->lang->line('supplier code'))?></td>
+                <td><input type="text" id="supplier"  name="estado"  autocomplete="off" style="width: 100px" /></td>
+                <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate" style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" name="podate" style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="date" style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('Round off Amount'))?></td><td><input type="text" name="date" style="width: 100px"></td>
+            </tr>
+            <tr><td><?php echo form_label($this->lang->line('supplier name'))?></td><td>
+                    <input type="text" id="name" name="estado" autocomplete="off" disabled style="width: 100px"/>
+                    <input type="hidden"   name="supplier"> </td>
+             <td><?php echo form_label($this->lang->line('pono'))?></td><td><input type="text" name="pono" style="width: 100px"></td>
+             <td><?php echo form_label($this->lang->line('discount'))?></td><td><input type="text" name="date" style="width: 100px"></td>
+             <td><?php echo form_label($this->lang->line('Freight'))?></td><td><input type="text" name="date" style="width: 100px"></td>
+            </tr>
+              </table>
+<div><div class="ui-widget item_details_css ">
+     <div id="item_div" class="item_det_div" >
         <table>
          
             <tr><td id="myDiv"></td><td><div id="item_image" class="details_size" ></div></td></tr>
         </table>
     </div>
+<table id="parent_item"><tr> 
+        <td> <label>Item Code</label> </td>
+        <td> description  </td><td><label>Quty</label> </td>
+        <td><label>Cost</label></td><td><label>selling price</label></td>
+        <td><label>M R P</label></td><td><label>Net Amount</label></td></tr>
+    <tr><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
+        <td><input type="hidden" id="item_pro"> 
+            <input id="project" name="project" type="text"  class="item_inputd" /><input type="hidden" id="project-id" /></td>
+        <td><input type="text" id="item_dis" disabled class="item_input_d"/></td>
+        <td><input type="hidden" id="item_quty1"> <input type="text" id="item_quty" class="item_input"  onkeyup="net_amount()" onKeyPress="add_new_q(event);  return numbersonly(event)"  /></td>
+        <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onclick="items_cost_click();net_amount()"  onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
+        <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onclick="item_sell_click();net_amount()"  onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
+        <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
+        <td><input type="hidden" id="item_net1"> <input type="text" id="item_net" class="item_input" disabled   /></td></tr> 
+</table><table id="item_copy_final">
+<tr id="item_copy" style="visibility: hidden" >
+    <td >
+        <input type="input" name="code[]" disabled   id="it_2" class="item_input"></td>
+       <td><input type="input" name="dis[]"  disabled  id="it_3" class="item_input_d"></td>
+       <td><input type="input" name="quty[]"  disabled  id="it_4" class="item_input"></td>
+       <td><input type="input" name="cost[]"  disabled  id="it_5" class="item_input"></td>
+       <td><input type="input" name="sell[]"  disabled  id="it_6"class="item_input"></td>
+       <td><input type="input" name="mrp[]"  disabled  id="it_7"class="item_input"></td>
+       <td><input type="input" name="net[]"  disabled  id="it_8"class="item_input"></td>
+       <td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="it_1">
+           <input type="button" name="code[]" value="X" id="it_8"></td>
+   </tr>
+</table>
+     
+</div>
+    </div>
+
 </body>
 </html>

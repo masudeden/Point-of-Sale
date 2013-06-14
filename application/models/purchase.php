@@ -58,6 +58,7 @@ class Purchase extends CI_Model{
         $cost=array();
         $sell=array();
         $mrf=array();
+        $iname=array();
         foreach ($sql->result() as $row){
             $name[]=$row->code  ;
             $companany[]=$row->description   ;            
@@ -65,6 +66,7 @@ class Purchase extends CI_Model{
             $cost[]=$row->cost_price ;
             $sell[]=$row->selling_price ;
             $mrf[]=$row->mrf;
+            $iname[]=$row->name;
         }
         $sasi[0]=$name;
         $sasi[1]=$companany;        
@@ -72,6 +74,7 @@ class Purchase extends CI_Model{
         $sasi[3]=$cost;
         $sasi[4]=$sell;
         $sasi[5]=$mrf;
+        $sasi[6]=$iname;
         return $sasi;  
     }
     function get_selected_item_view($id,$bid){
@@ -80,7 +83,7 @@ class Purchase extends CI_Model{
         $data=array();
         if($sql->num_rows()>0){
         foreach ($sql->result() as $row){
-            $data[0]=$row->name;
+            $data[0]=$row->code ;
             $data[1]=$row->description ;
             $data[2]=$row->cost_price;
             $data[3]=$row->selling_price ;

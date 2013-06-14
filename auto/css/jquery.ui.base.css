@@ -12,9 +12,15 @@
     width: 50px;
     
 }
+.item_input{
+    width: 100px;
+}
+.item_inputd{
+    width: 120px;
+}
 .item_det_div{
-  z-index: 100;
- margin-left: 300px;
+z-index:-1;
+margin-top:50px;
 }
 .details_size{
     width: 50px;
@@ -22,14 +28,16 @@
     z-index: 100;
 }
 .item_details_css {
-    margin-left: 23%;
+    margin-left: 10%;
 }
 .ui-autocomplete {
 	position: absolute;
-	top: 0;
+	top:90;
 	left: 0;
+        width: 50px;
 	cursor: default;
 }
+
 .ui-helper-hidden {
 	display: none;
 }

@@ -16,7 +16,7 @@ class Purchase_main extends CI_Controller{
           if(!isset($_SESSION['Uid'])){
                 redirect('home');
         }else{
-          // $this->get_suppliers();
+          //$this->get_suppliers();
           $this->load->view('purchase/sasi');
         }
     }
@@ -156,6 +156,7 @@ $sell=$value[4];
                 $cost=$value[3];
                 $sell=$value[4];
                 $mrf=$value[5];
+                $iname=$value[6];
                 $j=0;
                 $data=array();
                  for($i=0;$i<count($name);$i++)
@@ -166,7 +167,8 @@ $sell=$value[4];
                                           'cost' =>$cost[$i],
                                           'sell'=>$sell[$i],
                                           'mrp'=>$mrf[$i]  , 
-                                          'id'=>$id[$i]
+                                          'id'=>$id[$i],
+                                          'name'=>$iname[$j]
                                 );			
                                         $j++;                                
                         }
