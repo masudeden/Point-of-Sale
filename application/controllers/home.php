@@ -31,7 +31,10 @@ class Home extends CI_Controller
         if($_SESSION['Setting']['Branch']==1){
         $this->load->view('template/branch',$data);
           }
-        $this->load->view('home');   
+        $this->load->model('modules_model')  ;
+        $modules['row']=  $this->modules_model->get_modules($_SESSION['Bid']);
+        $modules['mode']=$this->modules_model->get_modules_basced_on_branch();
+        $this->load->view('home',$modules);   
         $this->load->view('template/footer');   
        
     }
@@ -39,6 +42,17 @@ class Home extends CI_Controller
        // $_SESSION['user_branch']=$branch;        
     }    
       function home_main(){
+          
+          $this->load->model('modules_model');
+          $data=  $this->modules_model->get_modulenames($_SESSION["Bid"]);
+          for($i=0;$i<count($data);$i++){
+            if($this->input->post($data[$i])){
+                redirect($data[$i]);
+                
+            }  
+          }
+          
+          
        if($this->input->post('pos_users')){           
            if($_SESSION['user_per']['read']==1){
                redirect('pos_users');

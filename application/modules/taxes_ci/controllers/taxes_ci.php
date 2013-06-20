@@ -157,6 +157,7 @@ class Taxes_ci extends CI_Controller{
     }
     function add_new_tax_type(){
          if(!$_SERVER['HTTP_REFERER']){ redirect('taxes'); }else{
+             if($this->input->post('save')){
           $this->load->library('form_validation');
                 $this->form_validation->set_rules("name",$this->lang->line('tax_type'),'required'); 
                
@@ -178,7 +179,13 @@ class Taxes_ci extends CI_Controller{
                      $this->load->view('template/footer');  
                       
                   }   
+    }else{
+          redirect('taxes_ci/get_tax_types');
+    }
          }
+                  
+        
+    
     }
     function delete_tax_type($id){
           if(!$_SERVER['HTTP_REFERER']){ redirect('taxes'); }else{             

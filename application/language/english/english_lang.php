@@ -4,7 +4,7 @@ $lang['user_name']='USER ID';;
 $lang['password']='PASSWORD';
 $lang['login']='LOGIN';
 $lang['logout']='LOGOUT';
-$lang['pos_users']='User';
+$lang['users']='User';
 $lang['item']='Item';
 $lang['delete']='Delete';
 $lang['user']='Users';
@@ -109,6 +109,7 @@ $lang['company']='Comapany';
  $lang['end_date']='Ending Date';
  $lang['tax1']='Tax1';
  $lang['tax2']='Tax2';
+ $lang['tax']='Tax';
  $lang['quantity']='Quantity';
  $lang['location'] 	='Location';
  $lang['selling_price']='Selling Price';
@@ -117,13 +118,15 @@ $lang['company']='Comapany';
  $lang['current_stock']='Available Stocks';
  $lang['purchase_order']='Purchase Order';
  
- 
+ $lang['supplier_vs_items']='Supplier Vs Items';
  
  $lang['tax']='Tax';
  $lang['commodity']=' Tax Commodity';
  $lang['tax_area']='Tax Area';
  $lang['tax_type']='Tax Type';
- $lang['tax_area']='Tax Area';
+ $lang['tax_commodity']='Tax Commodity';
+ $lang['items_category']='Items category';
+ $lang['item_code']='Item Code';
  $lang['tCode']='Tax Code';
  $lang['tdescription']='Tax Description';
  $lang['tschedule']='Tax Schedule';
@@ -160,6 +163,7 @@ $lang['company']='Comapany';
  $lang['tax_no']='Tax Reg No';
  $lang['supplier_items']='Supplier Vs Items';
  $lang['add_item']='Items';
+ $lang['items']='Items';
  $lang['addnewporder']='Add Purchse Order';
  $lang['supplier code']='Company Name';
  $lang['supplier name']='Supplier Name';
@@ -170,6 +174,12 @@ $lang['company']='Comapany';
  $lang['disamount']='Discount Amount';
  $lang['Freight']='Freight';
  $lang['Round off Amount']='Round off Amount';
+ $lang['items_setting']='Item Setting';
+ $lang['suppliers']='Suppliers';
+ $lang['customer_category']='Customer Category';
+ $lang['user_groupsCI']='User Groups';
+ $lang['branchCI']='Branchs';
+ $lang['purchase_main']='Purchase Order';
 
  
 

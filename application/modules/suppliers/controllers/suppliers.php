@@ -243,7 +243,7 @@ class Suppliers extends CI_Controller{
                                     $company=$this->input->post('company');
                                    $id=  $this->input->post('id');
                                    if(!$this->supplier_model->check_supplier_already_for_update($id,$phone,$_SESSION['Bid'])){
-                                    $this->supplier_model->update_supplier($id,$first_name,$last_name,$email,$phone,$city,$state,$country,$zip,$comments,$website,$account_no,$address1,$address2,$company);
+                                    $this->supplier_model->update_supplier($id,$first_name,$last_name,$email,$phone,$city,$state,$country,$zip,$comments,$website,$account_no,$address1,$address2,$company,$_SESSION['Bid']);
                                     $this->get_suppliers();
                                     
                                    }else{

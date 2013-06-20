@@ -1,9 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); if($_SESSION['Setting']['Branch']==1){
 ?>
+<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.min.js"></script>
 <script>
     function change_branch(){
         var jibi = document.getElementById("branch").value;
-        alert('Branch Is Changed')
+        
     
      var xmlhttp;
         if (window.XMLHttpRequest)
@@ -17,6 +18,13 @@
        
         xmlhttp.open("GET","<?php echo base_url() ?>index.php/posmain/change_user_branch/"+jibi,false);
         xmlhttp.send();
+        alert('Branch Is Changed')
+         setTimeout("location.reload(true);");
+
+        $.get('branch.php', function(ret){
+            $('body').php(ret);
+        });
+        document.getElementById("branch").value=jibi;
         }
 </script>
 <select id="branch">
