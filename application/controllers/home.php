@@ -83,7 +83,7 @@ class Home extends CI_Controller
            }
        }
        if($this->input->post('customers')){
-           if($_SESSION['Customer_per']['read']==1){
+           if($_SESSION['customers_per']['read']==1){
                redirect('customers');
            }else{
                echo "you Have no permission to read Customer Deatils";

@@ -179,7 +179,7 @@ $lang['company']='Comapany';
  $lang['customer_category']='Customer Category';
  $lang['user_groupsCI']='User Groups';
  $lang['branchCI']='Branchs';
- $lang['purchase_main']='Purchase Order';
+ $lang['purchase_oder']='Purchase Order';
 
  
 

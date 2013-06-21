@@ -112,7 +112,7 @@ class Aclpermissionmodel extends CI_Model
             return $value;
         }
     }
-    function customer_permission($did,$bid)
+    function customers_permission($did,$bid)
     {
         $this->db->select('permission')->from('customers_x_page_x_permissions')->where('depart_id',$did)->where('branch_id', $bid);
         $query = $this->db->get();

@@ -233,7 +233,7 @@ class User_groupsCI extends CI_Controller{
                 $this->permissions->set_depart_permission($depa,$depart_id,$branchid);
                 $this->permissions->set_branchCI_permission($branch,$depart_id,$branchid);
                 $this->permissions->set_suppliers_permission($supplier,$depart_id,$branchid);
-                $this->permissions->set_customer_permission($customer,$depart_id,$branchid);
+                $this->permissions->set_customers_permission($customer,$depart_id,$branchid);
                 $this->permissions->set_item_kites_permission($itemkites,$depart_id,$branchid);
                 $this->permissions->set_sales_permission($sales,$depart_id,$branchid);
             
@@ -314,7 +314,7 @@ class User_groupsCI extends CI_Controller{
                  $data['depart']=$this->permissions->get_depart_permission($id,$_SESSION['Bid'],$id);
                  $data['branch']=$this->permissions->get_branchCI_permission($id,$_SESSION['Bid'],$id);
                  $data['supplier']=$this->permissions->get_suppliers_permissions($id,$_SESSION['Bid'],$id);
-                 $data['customer']=$this->permissions->get_customer_permission($id,$_SESSION['Bid'],$id);
+                 $data['customer']=$this->permissions->get_customers_permission($id,$_SESSION['Bid'],$id);
                  $data['item_kites']=$this->permissions->get_item_kites_permission($id,$_SESSION['Bid'],$id);
                  $data['sales']=$this->permissions->get_sales_permission($id,$_SESSION['Bid'],$id);
                  
@@ -391,7 +391,7 @@ class User_groupsCI extends CI_Controller{
                 $this->permissions->update_depart_permission($depa,$depart_id,$branchid);
                 $this->permissions->update_branchCI_permission($branch,$depart_id,$branchid);
                 $this->permissions->update_suppliers_permission($supplier,$depart_id,$branchid);
-                $this->permissions->update_customer_permission($customer,$depart_id,$branchid);
+                $this->permissions->update_customers_permission($customer,$depart_id,$branchid);
                 $this->permissions->update_item_kites_permission($itemkites,$depart_id,$branchid);
                 $this->permissions->update_sales_permission($sales,$depart_id,$branchid);
         }

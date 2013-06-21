@@ -40,7 +40,7 @@ class Permissions extends CI_Model{
         $this->db->insert('suppliers_x_page_permissions',$data);
         
     }
-    function set_customer_permission($item,$depart_id,$branch_id){
+    function set_customers_permission($item,$depart_id,$branch_id){
         $data=array('permission'=>$item,
                     'depart_id'=>$depart_id,
                     'branch_id'=>$branch_id);
@@ -92,7 +92,7 @@ class Permissions extends CI_Model{
         $this->db->update('suppliers_x_page_permissions',$data);
         
     }
-    function update_customer_permission($item,$depart_id,$branch_id){
+    function update_customers_permission($item,$depart_id,$branch_id){
         $data=array('permission'=>$item);
         $this->db->where('depart_id ',$depart_id)->where('branch_id',$branch_id); 
         $this->db->update('customers_x_page_x_permissions',$data);
@@ -151,7 +151,7 @@ class Permissions extends CI_Model{
             } 
                 return $data; 
     }
-    function get_customer_permission($id,$bid){
+    function get_customers_permission($id,$bid){
          $this->db->select()->from('customers_x_page_x_permissions')->where('depart_id ',$id)->where('branch_id',$bid); 	 
                 $sql=  $this->db->get();              
                 foreach ($sql->result() as $row) {            

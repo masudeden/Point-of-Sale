@@ -1,5 +1,5 @@
 <?php
- if($_SESSION['Customer_per']['edit']==1){
+ if($_SESSION['customers_per']['edit']==1){
      echo form_open('customers/update_customer');
      echo "<table>";
      foreach ($irow as $c_row){ echo form_hidden('id',$c_row->id);

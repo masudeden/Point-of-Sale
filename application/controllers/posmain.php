@@ -45,11 +45,15 @@ class Posmain extends CI_Controller{
     }
    function acl_session_for_user($b_id){
        $_SESSION['Bid']=$b_id;
+        $this->load->model('modules_model')  ;
         $this->load->library('acluser'); 
         if($_SESSION['admin']==2){
-            $this->acluser->set_admin_permission();
+            $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
+            for($i=0;$i<count($modules);$i++){
+                $this->acluser->admin_module_permissions($modules[$i]);
+            }
         }else{
-        $this->load->model('modules_model')  ;
+       
         $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
             for($i=0;$i<count($modules);$i++){
                 $this->acluser->module_permissions($modules[$i],$b_id ,$_SESSION['Uid']);

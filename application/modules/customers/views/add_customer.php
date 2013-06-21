@@ -11,7 +11,7 @@ $( "#date_end_picker" ).datepicker();
 
 </script>
 <?php 
- if($_SESSION['Customer_per']['add']==1){
+ if($_SESSION['customers_per']['add']==1){
      echo form_open('customers/add_new_customer');
      echo "<table>";
      echo "<tr><td>"; echo form_label($this->lang->line('title_of_customer'));echo "</td><td>";?>

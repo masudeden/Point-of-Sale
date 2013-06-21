@@ -70,7 +70,7 @@ class Customers extends CI_Controller{
                 redirect('home');
             }
             if($this->input->post('Add_customer')){
-                if($_SESSION['Customer_per']['add']==1){
+                if($_SESSION['customers_per']['add']==1){
                     $this->load->model('customer_model');
                     $data['row']=$this->customer_model->get_customer_category($_SESSION['Bid']);
                     $data['pay']=$this->customer_model->get_payment($_SESSION['Bid']);
@@ -83,7 +83,7 @@ class Customers extends CI_Controller{
                 }
             }
             if($this->input->post('delete_all')){
-                 if($_SESSION['Customer_per']['delete']==1){
+                 if($_SESSION['customers_per']['delete']==1){
                      $data = $this->input->post('mycheck'); 
                             if(!$data==''){              
                             $this->load->model('pos_users_model');
@@ -155,7 +155,7 @@ class Customers extends CI_Controller{
                 $this->get_customers();
             }
             if($this->input->post('save')){
-                if($_SESSION['Customer_per']['add']==1){
+                if($_SESSION['customers_per']['add']==1){
                     $this->load->library('form_validation');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
                             $this->form_validation->set_rules("cate_id",$this->lang->line('customer_cate'),"required"); 
@@ -233,7 +233,7 @@ class Customers extends CI_Controller{
     }
     function edit_customer_details($id){
          if(!$_SERVER['HTTP_REFERER']){ redirect('customers'); }else{
-             if($_SESSION['Customer_per']['edit']==1){
+             if($_SESSION['customers_per']['edit']==1){
                  $this->load->model('customer_model');
                  
                  $data['row']=$this->customer_model->get_customer_category($_SESSION['Bid']);
@@ -255,7 +255,7 @@ class Customers extends CI_Controller{
                 $this->get_customers();
             }
             if($this->input->post('save')){
-                if($_SESSION['Customer_per']['edit']==1){
+                if($_SESSION['customers_per']['edit']==1){
                     $this->load->library('form_validation');
                     $id=  $this->input->post('id');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
@@ -324,7 +324,7 @@ class Customers extends CI_Controller{
     }
     function delete_customer($id){
         if(!$_SERVER['HTTP_REFERER']){ redirect('customers'); }else{
-             if($_SESSION['Customer_per']['delete']==1){
+             if($_SESSION['customers_per']['delete']==1){
                  $this->load->model('customer_model');
                  $this->customer_model->delete_customer_for_user($id,$_SESSION['Bid'],$_SESSION['Uid']);
                  redirect('customers');
