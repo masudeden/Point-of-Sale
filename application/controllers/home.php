@@ -36,6 +36,7 @@ class Home extends CI_Controller
         $modules['mode']=$this->modules_model->get_modules_basced_on_branch();
         $this->load->view('home',$modules);   
         $this->load->view('template/footer');   
+        
        
     }
     function set_branchs($branch){

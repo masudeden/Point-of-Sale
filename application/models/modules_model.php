@@ -31,5 +31,14 @@ class Modules_model extends CI_Model{
         }
         return $data;
     }
+    function get_module_permission($bid){
+        $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
+        $sql=$this->db->get();
+        $data=array();
+        foreach ($sql->result() as $row){
+            $data[]=$row->module_name;
+        }
+        return $data;
+    }
 }
 ?>

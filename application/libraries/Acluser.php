@@ -4,7 +4,37 @@ class Acluser{
     function __construct() {
        
     }
-    function user_item_permissions($bid,$id){
+    function module_permissions($mod,$bid,$id){
+           $CI=  get_instance();
+         $CI->load->library('session');
+         $CI->load->model('aclpermissionmodel');
+         $deaprt=$CI->aclpermissionmodel->get_user_groups($id,$bid);
+          
+         $num=0000;
+         for($i=0;$i<count($deaprt);$i++){
+         $num=$num+$CI->aclpermissionmodel->get_user_modules_permissions($deaprt[$i],$bid,$mod); 
+         
+         }
+         
+        if($num%10==0){  $read=0; }else{  $read=1; }
+        if($num/10%10==0){  $add=0; }else{  $add=1; }
+        if($num/100%10==0){ $edit=0; }else{  $edit=1; }
+        if($num/1000%10==0){ $delete= 0; }else{  $delete= 1; }
+         
+        $item = array(
+                   'item'=>$read."".$add."".$edit."".$delete,
+                   'read'=>$read,
+                   'add'=> $add,
+                   'edit' =>$edit,
+                   'delete'=>$delete
+               );
+
+        $_SESSION[$mod.'_per']=$item;
+        
+        
+        
+    }
+            function user_item_permissions($bid,$id){
        
          $CI=  get_instance();
          $CI->load->library('session');

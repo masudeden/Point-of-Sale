@@ -14,7 +14,21 @@ class Aclpermissionmodel extends CI_Model
             return FALSE;
         }
     }
-    function get_user_groups($id,$bid){
+    function get_user_modules_permissions($did,$bid,$mod){
+        $this->db->select('permission')->from($mod.'_x_page_permissions')->where('depart_id',$did)->where('branch_id', $bid);
+        $query = $this->db->get();
+        $value=0000;
+        if($query->num_rows()>0){
+        foreach ($query->result() as $row) {           
+                 $value =$row->permission;           
+        }       
+        return $value;        
+        }else{
+            return $value;
+        }
+      
+    }
+            function get_user_groups($id,$bid){
         $this->db->select()->from('users_x_user_groups')->where('emp_id',$id)->where('branch_id',$bid)->where('active_status',0);
         $query = $this->db->get();
         $value=array();

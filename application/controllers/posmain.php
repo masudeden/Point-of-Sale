@@ -49,6 +49,11 @@ class Posmain extends CI_Controller{
         if($_SESSION['admin']==2){
             $this->acluser->set_admin_permission();
         }else{
+        $this->load->model('modules_model')  ;
+        $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
+            for($i=0;$i<count($modules);$i++){
+                $this->acluser->module_permissions($modules[$i],$b_id ,$_SESSION['Uid']);
+            }
         $this->acluser->user_item_permissions($b_id,$_SESSION['Uid']);
         $this->acluser->user_pos_users_permissions($b_id,$_SESSION['Uid']);
         $this->acluser->user_groups_permissions($b_id,$_SESSION['Uid']);

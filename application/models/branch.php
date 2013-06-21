@@ -7,7 +7,8 @@ class Branch extends CI_Model{
     function get_branch(){
             $this->db->select()->from('branchs');
             $sql=  $this->db->get();
-            return $sql->result();                
+            return $sql->result();  
+            
     }
     function set_branch($id,$branch_id){
         echo $branch_id;
