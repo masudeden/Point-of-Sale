@@ -115,17 +115,17 @@ function get_user_groups_count($branch){
        $this->db->update('user_groups_x_branchs',$data);
              
    }
-   function delete_item_permission($id){
+   function delete_items_permission($id){
         $this->db->where('depart_id',$id);
         $this->db->delete('item_x_page_permissions');
    }
-   function delete_user_permission($id){
+   function delete_users_permission($id){
         $this->db->where('depart_id',$id);        
         $this->db->delete('user_x_page_x_permissions');
    }
-   function delete_branch_permission($id){
+   function delete_branchCI_permission($id){
         $this->db->where('depart_id',$id);        
-        $this->db->delete('branch_per');
+        $this->db->delete('branchCI_per');
    }
     function delete_depart_permission($id){
         $this->db->where('depart_id',$id);        

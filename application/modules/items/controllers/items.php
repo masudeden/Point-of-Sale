@@ -73,7 +73,7 @@ class Items extends CI_Controller{
                 redirect('home');
             }
             if($this->input->post('Add_item')){
-                if($_SESSION['Item_per']['add']==1){
+                if($_SESSION['items_per']['add']==1){
                     $this->add_new_item_in_branch();
                 }else{
                     echo "You have no permission to add item";
@@ -81,7 +81,7 @@ class Items extends CI_Controller{
                 }
             }
             if($this->input->post('delete_all')){
-                 if($_SESSION['Item_per']['delete']==1){
+                 if($_SESSION['items_per']['delete']==1){
                      $data = $this->input->post('mycheck'); 
                             if(!$data==''){   
                              $this->load->model('item_model');
@@ -151,7 +151,7 @@ class Items extends CI_Controller{
     }
     function add_new_item_in_branch(){
         if(!$_SERVER['HTTP_REFERER']){ redirect('items'); }else{
-        if($_SESSION['Item_per']['add']==1){
+        if($_SESSION['items_per']['add']==1){
         $this->load->model('item_model');
                     $data['brands']=  $this->item_model->get_brands_user($_SESSION['Bid']);
                     $data['taxes']=  $this->item_model->get_tax_for_user($_SESSION['Bid']);
@@ -211,7 +211,7 @@ class Items extends CI_Controller{
              if($this->input->post('cancel')){
                  redirect('items');
              }
-             if($_SESSION['Item_per']['add']==1 or $_SESSION['Item_per']['edit']==1){
+             if($_SESSION['items_per']['add']==1 or $_SESSION['items_per']['edit']==1){
                   $this->load->library('form_validation');
                             $this->form_validation->set_rules("name",$this->lang->line('name'),"required"); 
                                                         	  
@@ -239,7 +239,7 @@ class Items extends CI_Controller{
     }
     function add_new_category(){
         if(!$_SERVER['HTTP_REFERER']){ redirect('home'); }else{
-        if($_SESSION['Item_per']['add']==1 or $_SESSION['Item_per']['edit']==1){
+        if($_SESSION['items_per']['add']==1 or $_SESSION['items_per']['edit']==1){
                      $this->load->view('template/header');
                      $this->load->view('add_item_category');
                      $this->load->view('template/footer');
@@ -254,7 +254,7 @@ class Items extends CI_Controller{
             redirect('items');
         }
         if($this->input->post('save')){
-             if($_SESSION['Item_per']['add']==1){
+             if($_SESSION['items_per']['add']==1){
                   $this->form_validation->set_rules("code",$this->lang->line('code'),"required");
                             $this->form_validation->set_rules("item_name",$this->lang->line('item_name'),"required");
                             $this->form_validation->set_rules("cost_price",$this->lang->line('cost_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');                           
@@ -309,7 +309,7 @@ class Items extends CI_Controller{
   
     function edit_item_details($id){
         if(!$_SERVER['HTTP_REFERER']){ redirect('items'); }else{
-        if($_SESSION['Item_per']['edit']==1){
+        if($_SESSION['items_per']['edit']==1){
            $this->load->model('item_model');
                     $data['brands']=  $this->item_model->get_brands_user($_SESSION['Bid']);
                     $data['taxes']=  $this->item_model->get_tax_for_user($_SESSION['Bid']);
@@ -329,7 +329,7 @@ class Items extends CI_Controller{
             if($this->input->post('cancel')){
                 redirect('items');
             }
-        if($_SESSION['Item_per']['edit']==1){
+        if($_SESSION['items_per']['edit']==1){
                            $this->form_validation->set_rules("item_name",$this->lang->line('item_name'),"required");
                             $this->form_validation->set_rules("cost_price",$this->lang->line('cost_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');                           
                             $this->form_validation->set_rules('discount_amount', $this->lang->line('discount_amount'),'max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
@@ -380,7 +380,7 @@ class Items extends CI_Controller{
     function delete_item($id){
         if(!$_SERVER['HTTP_REFERER']){ redirect('items'); }else{
            
-        if($_SESSION['Item_per']['delete']==1){
+        if($_SESSION['items_per']['delete']==1){
              $this->load->model('item_model');
              $this->item_model->deactivate_items_by_user($id,$_SESSION['Uid']);
              redirect('items');

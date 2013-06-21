@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-if($_SESSION['Item_per']['add']==1 or $_SESSION['Item_per']['edit']==1){
+if($_SESSION['items_per']['add']==1 or $_SESSION['items_per']['edit']==1){
     echo "<table>";
     echo form_open('items_category/add_category');
     echo "<tr><td>";echo form_label($this->lang->line('cate_name'));echo "</td><td>";echo form_input('name',set_value('name'),'id=name');echo "</td></tr>";

@@ -32,11 +32,15 @@ class Modules_model extends CI_Model{
         return $data;
     }
     function get_module_permission($bid){
-        $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
+         $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
         $sql=$this->db->get();
         $data=array();
         foreach ($sql->result() as $row){
-            $data[]=$row->module_name;
+            $this->db->select()->from('modules')->where('id',$row->module_id);
+            $val=$this->db->get();
+            foreach ($val->result() as $mod){
+                $data[]=$mod->module_name;
+            }
         }
         return $data;
     }

@@ -1,5 +1,5 @@
 <?php
- if($_SESSION['Supplier_per']['edit']==1){
+ if($_SESSION['suppliers_per']['edit']==1){
      echo form_open('suppliers/update_supplier');
      echo "<table>";
      foreach ($row as $c_row){ echo form_hidden('id',$c_row->id);

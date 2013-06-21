@@ -56,7 +56,7 @@ class Users extends CI_Controller{
                 $this->load->view('pos_users_list',$data);
                 $this->load->view('template/footer');
          }else{
-        if($_SESSION['user_per']['read']==1){ 
+        if($_SESSION['users_per']['read']==1){ 
                 $this->load->helper("url");
                 $this->load->model('pos_users_model');
                 $this->load->model('branch');                   
@@ -81,7 +81,7 @@ class Users extends CI_Controller{
         }}
     }
     function edit_pos_users_details($id){
-        if($_SESSION['user_per']['edit']==1){ 
+        if($_SESSION['users_per']['edit']==1){ 
                 $this->load->model('pos_users_model');
                 $this->load->model('branch');
                 $this->load->model('user_groups');
@@ -181,7 +181,7 @@ $r=0;
         $this->get_pos_users_details();
     }
     function upadate_pos_users_details(){
-       if($_SESSION['user_per']['edit']==1){ 
+       if($_SESSION['users_per']['edit']==1){ 
        $this->load->library('form_validation');
                 $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
                 $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');
@@ -345,7 +345,7 @@ function do_upload($id)
                 redirect('home');
             }
            if($this->input->post('delete_all')){
-               if($_SESSION['user_per']['delete']==1){ 
+               if($_SESSION['users_per']['delete']==1){ 
               $data1 = $this->input->post('mycheck'); 
               if(!$data1==''){
               $deleted_by=$_SESSION['Uid'];
@@ -376,7 +376,7 @@ function do_upload($id)
               }
            }
             if($this->input->post('Add_pos_users')){
-                 if($_SESSION['user_per']['add']==1){  
+                 if($_SESSION['users_per']['add']==1){  
                     $this->load->model('user_groups');
                     $this->load->model('branch');
                      if($_SESSION['admin']==2){ 
@@ -418,7 +418,7 @@ function do_upload($id)
         }}
         function add_pos_users_details(){
             
-           if($_SESSION['user_per']['add']==1){             
+           if($_SESSION['users_per']['add']==1){             
       if ($this->input->post('Cancel')) {
              $this->get_pos_users_details(); 
             }

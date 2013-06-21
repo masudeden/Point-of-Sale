@@ -45,7 +45,7 @@ class BranchCI extends CI_Controller{
                 $this->load->view('branch',$data);
                 $this->load->view('template/footer');
         }else{
-         if($_SESSION['Branch_per']['read']==1){
+         if($_SESSION['branchCI_per']['read']==1){
                 $this->load->library("pagination"); 
                 $this->load->model('branch');
 	        $config["base_url"] = base_url()."index.php/branchCI/get_branch";
@@ -70,7 +70,7 @@ class BranchCI extends CI_Controller{
     }}
     function edit_branch_details($id){
        if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-       if($_SESSION['Branch_per']['edit']==1){
+       if($_SESSION['branchCI_per']['edit']==1){
            $this->load->model('branch');
            $data['row']=  $this->branch->get_branch_details_for_edit($id);
            $this->load->view('template/header');
@@ -122,7 +122,7 @@ class BranchCI extends CI_Controller{
               redirect('branchCI');
         }
         if($this->input->post('delete_all')){
-            if($_SESSION['Branch_per']['delete']==1){
+            if($_SESSION['branchCI_per']['delete']==1){
               $deleted_by=$_SESSION['Uid'];                  
               $data = $this->input->post('mycheck'); 
               if(!$data==''){
@@ -135,7 +135,7 @@ class BranchCI extends CI_Controller{
             redirect('branchCI');
         }
         if($this->input->post('Add_branch')){
-           if($_SESSION['Branch_per']['add']==1){
+           if($_SESSION['branchCI_per']['add']==1){
               $this->load->view('template/header');
               $this->load->view('add_branch');
               $this->load->view('template/footer');
@@ -147,7 +147,7 @@ class BranchCI extends CI_Controller{
     }
     function update_branch_details(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-        if($_SESSION['Branch_per']['edit']==1){
+        if($_SESSION['branchCI_per']['edit']==1){
         if($this->input->post('cancel')){
             redirect('branchCI');
         }
@@ -189,7 +189,7 @@ class BranchCI extends CI_Controller{
     }}
     function delete_branch($id){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-           if($_SESSION['Branch_per']['delete']==1){
+           if($_SESSION['branchCI_per']['delete']==1){
                $this->load->model('branch');
                $this->branch->delete_branch($id,$_SESSION['Uid']);
                redirect('branchCI');
@@ -234,7 +234,7 @@ class BranchCI extends CI_Controller{
     function add_new_branch(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
             if($this->input->post('save')){
-            if($_SESSION['Branch_per']['add']==1){
+            if($_SESSION['branchCI_per']['add']==1){
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules("name",$this->lang->line('branch_name'),"required"); 
                 $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');
@@ -271,11 +271,11 @@ class BranchCI extends CI_Controller{
                          $this->branch->set_user_groups_branchs($dep_id,$id,$user_group,$_SESSION['Uid']); 
                          $this->branch->user_groups_x_branchs($id,$dep_id);
                             $this->load->model('permissions');
-                            $this->permissions->set_item_permission(1111,$dep_id,$id);
-                            $this->permissions->set_user_permission(1111,$dep_id,$id);
+                            $this->permissions->set_items_permission(1111,$dep_id,$id);
+                            $this->permissions->set_users_permission(1111,$dep_id,$id);
                             $this->permissions->set_depart_permission(1111,$dep_id,$id);
-                            $this->permissions->set_branch_permission(1111,$dep_id,$id);
-                            $this->permissions->set_supplier_permission(1111,$dep_id,$id);
+                            $this->permissions->set_branchCI_permission(1111,$dep_id,$id);
+                            $this->permissions->set_suppliers_permission(1111,$dep_id,$id);
                          } $this->get_branch();
                          
                 }else{

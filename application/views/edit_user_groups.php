@@ -1,4 +1,4 @@
-<?php if($_SESSION['Depa_per']['edit']==1){ 
+<?php if($_SESSION['user_groupsCI_per']['edit']==1){ 
     echo form_open('user_groupsCI/update_user_groups');
      foreach ($row as $drow){
          echo form_label($this->lang->line('user_groups')). form_input('user_groups',$drow->dep_name);

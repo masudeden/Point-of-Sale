@@ -1,5 +1,5 @@
 <?php
- if($_SESSION['Supplier_per']['add']==1){
+ if($_SESSION['suppliers_per']['add']==1){
      echo form_open('suppliers/add_new_supplier');
      echo "<table>";
      echo "<tr><td>"; echo form_label($this->lang->line('first_name'));echo "</td><td>";echo form_input('first_name',set_value('first_name'),'id="first_name" autofocus');echo "</td></tr>";

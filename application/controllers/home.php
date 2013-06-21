@@ -55,7 +55,7 @@ class Home extends CI_Controller
           
           
        if($this->input->post('pos_users')){           
-           if($_SESSION['user_per']['read']==1){
+           if($_SESSION['users_per']['read']==1){
                redirect('pos_users');
            }else{
                echo "U have No Permission to View  users Details";
@@ -63,7 +63,7 @@ class Home extends CI_Controller
            }
        }
        if($this->input->post('user_groups')){          
-           if($_SESSION['Depa_per']['read']==1){
+           if($_SESSION['user_groupsCI_per']['read']==1){
                 redirect('user_groupsCI');
            }else{
                echo "U have No Permission to View user_groups Details";
@@ -75,7 +75,7 @@ class Home extends CI_Controller
            redirect('userlogin');
        }
        if($this->input->post('branch')){
-           if($_SESSION['Branch_per']['read']==1){
+           if($_SESSION['branchCI_per']['read']==1){
                redirect('branchCI');
            }else{
                echo "U have No Permission to View Branch Details";
@@ -91,7 +91,7 @@ class Home extends CI_Controller
            }
        }
        if($this->input->post('suppliers')){
-           if($_SESSION['Supplier_per']['read']==1){
+           if($_SESSION['suppliers_per']['read']==1){
                redirect('suppliers');
            }else{
                echo "you Have no permission to read supplierDeatils";
@@ -99,7 +99,7 @@ class Home extends CI_Controller
            }
        }
        if($this->input->post('Items')){
-            if($_SESSION['Item_per']['read']==1){
+            if($_SESSION['items_per']['read']==1){
                redirect('items');
            }else{
                echo "you Have no permission to read supplierDeatils";

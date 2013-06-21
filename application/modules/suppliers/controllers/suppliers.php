@@ -70,7 +70,7 @@ class Suppliers extends CI_Controller{
                 redirect('home');
             }
             if($this->input->post('Add_supplier')){
-                if($_SESSION['Supplier_per']['add']==1){
+                if($_SESSION['suppliers_per']['add']==1){
                     $this->load->view('template/header');
                     $this->load->view('add_supplier');
                     $this->load->view('template/footer');
@@ -80,7 +80,7 @@ class Suppliers extends CI_Controller{
                 }
             }
             if($this->input->post('delete_all')){
-                 if($_SESSION['Supplier_per']['delete']==1){
+                 if($_SESSION['suppliers_per']['delete']==1){
                      $data = $this->input->post('mycheck'); 
                             if(!$data==''){              
                             $this->load->model('pos_users_model');
@@ -152,7 +152,7 @@ class Suppliers extends CI_Controller{
                 $this->get_suppliers();
             }
             if($this->input->post('save')){
-                if($_SESSION['Supplier_per']['add']==1){
+                if($_SESSION['suppliers_per']['add']==1){
                     $this->load->library('form_validation');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required");
                             $this->form_validation->set_rules("company",$this->lang->line('company'),"required");
@@ -201,7 +201,7 @@ class Suppliers extends CI_Controller{
     }
     function edit_supplier_details($id){
          if(!$_SERVER['HTTP_REFERER']){ redirect('suppliers'); }else{
-             if($_SESSION['Supplier_per']['edit']==1){
+             if($_SESSION['suppliers_per']['edit']==1){
                  $this->load->model('supplier_model');
                  $data['row']= $this->supplier_model->get_supplier_details_for_edit($id);
                   $this->load->view('template/header');
@@ -219,7 +219,7 @@ class Suppliers extends CI_Controller{
                 $this->get_suppliers();
             }
             if($this->input->post('save')){
-                if($_SESSION['Supplier_per']['edit']==1){
+                if($_SESSION['suppliers_per']['edit']==1){
                     $this->load->library('form_validation');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
                             $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
@@ -263,7 +263,7 @@ class Suppliers extends CI_Controller{
     }
     function delete_supplier($id){
         if(!$_SERVER['HTTP_REFERER']){ redirect('suppliers'); }else{
-             if($_SESSION['Supplier_per']['delete']==1){
+             if($_SESSION['suppliers_per']['delete']==1){
                  $this->load->model('supplier_model');
                  $this->supplier_model->delete_supplier_for_user($id,$_SESSION['Bid'],$_SESSION['Uid']);
                  redirect('suppliers');

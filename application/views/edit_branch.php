@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');  if($_SESSION['Setting']['Branch']==1){if($_SESSION['Branch_per']['edit']==1){
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');  if($_SESSION['Setting']['Branch']==1){if($_SESSION['branchCI_per']['edit']==1){
 
 foreach($row as $brow){?>
 <table><?php echo form_open('branchCI/update_branch_details'); echo form_hidden('id',$brow->id)?>

@@ -54,15 +54,7 @@ class Posmain extends CI_Controller{
             for($i=0;$i<count($modules);$i++){
                 $this->acluser->module_permissions($modules[$i],$b_id ,$_SESSION['Uid']);
             }
-        $this->acluser->user_item_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_pos_users_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_groups_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_branch_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_supplier_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_customer_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_item_kits_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_sales_permissions($b_id,$_SESSION['Uid']);
-        $this->acluser->user_full_permissions();
+        
         }
     }
     function pos_setting(){

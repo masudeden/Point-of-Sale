@@ -15,7 +15,7 @@ class Aclpermissionmodel extends CI_Model
         }
     }
     function get_user_modules_permissions($did,$bid,$mod){
-        $this->db->select('permission')->from($mod.'_x_page_permissions')->where('depart_id',$did)->where('branch_id', $bid);
+        $this->db->select('permission')->from($mod.'_x_page_x_permissions')->where('depart_id',$did)->where('branch_id', $bid);
         $query = $this->db->get();
         $value=0000;
         if($query->num_rows()>0){
@@ -40,7 +40,7 @@ class Aclpermissionmodel extends CI_Model
         }
         return $value;
     }
-    function item_permission($did,$bid)
+    function items_permission($did,$bid)
     {
         $this->db->select('permission')->from('item_x_page_permissions')->where('depart_id',$did)->where('branch_id', $bid);
         $query = $this->db->get();
@@ -84,7 +84,7 @@ class Aclpermissionmodel extends CI_Model
         }
     }
     
-    function branch_permission($did,$bid)
+    function branchCI_permission($did,$bid)
     {
         $this->db->select('permission')->from('branch_x_page_x_permissions')->where('depart_id',$did)->where('branch_id', $bid);
         $query = $this->db->get();
@@ -98,7 +98,7 @@ class Aclpermissionmodel extends CI_Model
             return $value;
         }
     }
-    function user_supplier_permission($did,$bid)
+    function user_suppliers_permission($did,$bid)
     {
         $this->db->select('permission')->from('suppliers_x_page_permissions')->where('depart_id',$did)->where('branch_id', $bid);
         $query = $this->db->get();
