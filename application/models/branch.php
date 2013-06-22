@@ -11,8 +11,8 @@ class Branch extends CI_Model{
             
     }
     function set_branch($id,$branch_id){
-        echo $branch_id;
-            $this->db->select()->from('branchs')->where('id',$branch_id);
+       
+            $this->db->select()->from('branchs')->where('guid',$branch_id);
             $sql=$this->db->get();
             foreach ($sql->result() as $row) {
                 $name= $row->store_name ;

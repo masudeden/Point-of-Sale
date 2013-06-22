@@ -128,6 +128,11 @@ class Pos_users_model extends CI_Model{
                              );
        $this->db->insert('users',$data);
        $id=$this->db->insert_id();
+       $orderid=md5($id.'user');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('users',$value);
        return $id;                        
        }
        function get(){

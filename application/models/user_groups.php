@@ -10,7 +10,7 @@ class User_groups extends CI_Model{
         return $sql->result(); 
     }
     function set_user_groups($id,$depa_id,$branch_id){
-        $this->db->select()->from('user_groups')->where('id',$depa_id);
+        $this->db->select()->from('user_groups')->where('guid',$depa_id);
             $sql=$this->db->get();
             foreach ($sql->result() as $row) {
                 $name= $row->dep_name ;
@@ -19,7 +19,14 @@ class User_groups extends CI_Model{
                     'depart_name'=>$name,
                     'depart_id'=>$depa_id,
                     'branch_id'=>$branch_id);
-                $this->db->insert('users_x_user_groups',$data);
+       $this->db->insert('users_x_user_groups',$data);
+       $id=$this->db->insert_id();
+       $orderid=md5($id.'usergroup');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('users_x_user_groups',$value);
+       return $guid;
     }
     function get_user_depart($id){
         $this->db->select()->from('users_x_user_groups')->where('emp_id',$id);

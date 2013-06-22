@@ -482,9 +482,15 @@ function do_upload($id)
             }else{
                     $this->load->model('user_groups');
                     $this->load->model('branch');
+                     if($_SESSION['admin']==2){ 
+                     $data['branch']=$this->branch->get_user_for_branch_admin();
+                     }
+                     else{
                     $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
-                    $data['depa']= $this->user_groups->get_user_groups(); 
-                    $this->load->view('template/header');
+                     }
+                    $data['depa']= $this->user_groups->get_user_groups();  
+                   
+                   // $this->load->view('template/header');
                     $this->load->view('add_new_pos_users',$data);
                     $this->load->view('template/footer');
               }    
@@ -507,10 +513,10 @@ function do_upload($id)
            }
         }
          function add_user_branchs($id,$depapartment){
-            $this->load->model('branch');
-            $new_depa=array();
+           $this->load->model('branch');
+           $new_depa=array();
            $branch=array();
-         $this->load->model('user_groups');
+           $this->load->model('user_groups');
            $bid=array();
            $bid = explode(' ',$depapartment);
            $l=0;
