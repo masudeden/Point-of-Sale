@@ -5,62 +5,19 @@ class Permissions extends CI_Model{
     function __construct() {
         parent::__construct();
     }
-    function set_items_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
+    function set_modules_permission($mode,$data,$depart_id,$branch_id){
+         $data=array('permission'=>$data,
                     'depart_id'=>$depart_id,
                     'branch_id'=>$branch_id);
-        $this->db->insert('item_x_page_permissions',$data);
-        
+       $this->db->insert($mode,$data);
+       $id=$this->db->insert_id();
+       $guid=md5($id.trim(com_create_guid(), '{}'));
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update($mode,$value);
+      
     }
-    function set_users_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
-                    'depart_id'=>$depart_id,
-                    'branch_id'=>$branch_id);
-        $this->db->insert('user_x_page_x_permissions',$data);
-        
-    }
-    function set_depart_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
-                    'depart_id'=>$depart_id,
-                    'branch_id'=>$branch_id);
-        $this->db->insert('user_groups_x_page_x_permissions',$data);
-        
-    }
-     function set_branchCI_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
-                    'depart_id'=>$depart_id,
-                    'branch_id'=>$branch_id);
-        $this->db->insert('branch_x_page_x_permissions',$data);
-        
-    }
-    function set_suppliers_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
-                    'depart_id'=>$depart_id,
-                    'branch_id'=>$branch_id);
-        $this->db->insert('suppliers_x_page_permissions',$data);
-        
-    }
-    function set_customers_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
-                    'depart_id'=>$depart_id,
-                    'branch_id'=>$branch_id);
-        $this->db->insert('customers_x_page_x_permissions',$data);
-        
-    }
-    function set_item_kites_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
-                    'depart_id'=>$depart_id,
-                    'branch_id'=>$branch_id);
-        $this->db->insert('items_kits_x_page_x_permissions',$data);
-        
-    }
-    function set_sales_permission($item,$depart_id,$branch_id){
-        $data=array('permission'=>$item,
-                    'depart_id'=>$depart_id,
-                    'branch_id'=>$branch_id);
-        $this->db->insert('sales_x_page_x_permission',$data);
-        
-    }
+  
     
     function update_items_permission($item,$depart_id,$branch_id){
         $data=array('permission'=>$item);

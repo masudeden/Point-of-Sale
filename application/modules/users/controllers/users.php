@@ -41,7 +41,7 @@ class Users extends CI_Controller{
                 $this->load->model('branch');                  
                 $this->load->library("pagination"); 
 	        $config["base_url"] = base_url()."index.php/users/get_pos_users_details";
-	        $config["total_rows"] = $this->pos_users_model->users_count_for_admin($_SESSION['Bid']);
+	        $config["total_rows"] = $this->pos_users_model->pos_users_count_for_admin($_SESSION['Bid']);
 	        $config["per_page"] = 8;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 

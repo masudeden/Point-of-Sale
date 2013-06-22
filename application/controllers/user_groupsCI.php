@@ -69,10 +69,11 @@ class User_groupsCI extends CI_Controller{
                 redirect('home');
         }
         if($this->input->post('add')){
-             if($_SESSION['user_groupsCI_per']['add']==1){ 
-                $this->load->model('branch');               
+             if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){ 
+                $this->load->model('user_groups');      
+                $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
                 $this->load->view('template/header');               
-                $this->load->view('add_user_groups');
+                $this->load->view('add_user_groups',$data);
                 $this->load->view('template/footer');
         }
         else{
@@ -141,7 +142,7 @@ class User_groupsCI extends CI_Controller{
          }
     }    
     function add_user_groups(){
-        if($_SESSION['user_groupsCI_per']['add']==1){ 
+        if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){ 
                 $this->load->model('user_groups');            
                 $this->form_validation->set_rules("user_groups_name",$this->lang->line('user_groups_name'),"required"); 
                // $this->form_validation->set_rules('branchs',$this->lang->line('branch'),"required");
@@ -152,51 +153,17 @@ class User_groupsCI extends CI_Controller{
              if($this->branch->check_deaprtment_is_already($depart,$_SESSION['Bid'])!=TRUE){
                  
                 $id=$this->user_groups->add_user_groups($depart,$_SESSION['Bid']);
-                $this->add_user_groups_branch($id,$_SESSION['Bid']);               
-                $item_add=  $this->input->post('item_read');
-                $item_read=$this->input->post('item_add');
-                $item_edit=$this->input->post('item_edit');
-                $item_delete=$this->input->post('item_delete');
-                $item=$item_add+$item_delete+$item_edit+$item_read;               
-                $user_read=$this->input->post('user_read');
-                $user_add=$this->input->post('user_add');
-                $user_edit=$this->input->post('user_edit');
-                $user_delete=$this->input->post('user_delete');
-                $user=$user_add+$user_delete+$user_edit+$user_read;               
-                $depa_read=$this->input->post('depa_read');
-                $depa_add=$this->input->post('depa_add');
-                $depa_edit=$this->input->post('depa_edit');
-                $depa_delete=$this->input->post('depa_delete');
-                $depa=$depa_add+$depa_delete+$depa_edit+$depa_read;                 
-                $branch_read=$this->input->post('branch_read');
-                $branch_add=$this->input->post('branch_add');
-                $branch_edit=$this->input->post('branch_edit');
-                $branch_delete=$this->input->post('branch_delete');
-                $branch=$branch_add+$branch_delete+$branch_edit+$branch_read;                  
-                $sup_read=$this->input->post('sup_read');
-                $sup_add=$this->input->post('sup_add');
-                $sup_edit=$this->input->post('sup_edit');
-                $sup_delete=$this->input->post('sup_delete');
-                $supplier=$sup_add+$sup_delete+$sup_edit+$sup_read;
-                 $cust_read=$this->input->post('cust_read');
-                $cust_add=$this->input->post('cust_add');
-                $cust_edit=$this->input->post('cust_edit');
-                $cust_delete=$this->input->post('cust_delete');
-                $customer=$cust_add+$cust_delete+$cust_edit+$cust_read;
-                
-                $sales_read=$this->input->post('do_sales');
-                $sales_add=$this->input->post('retun_sales');
-                $sales_edit=$this->input->post('sales_edit');
-                $sales_delete=$this->input->post('sales_delete');
-                $sales=$sales_add+$sales_read+$sales_delete+$sales_edit;
-                
-                $itemk_read=$this->input->post('itemkit_read');
-                $itemk_add=$this->input->post('itemkit_add');
-                $itemk_edit=$this->input->post('itemkit_edit');
-                $itemk_delete=$this->input->post('itemkit_delete');
-                $itemkites=$itemk_add+$itemk_delete+$itemk_edit+$itemk_read;
-                
-                $this->add_permission($item,$depa,$user,$branch,$supplier,$customer,$itemkites,$sales,$id,$_SESSION['Bid']);
+                $this->add_user_groups_branch($id,$_SESSION['Bid']); 
+                $this->load->model('user_groups');      
+                $data=$this->user_groups->get_modules_permission($_SESSION['Bid']);
+                for($i=0;$i<count($data);$i++){
+               $item_add=  $this->input->post($data[$i]."_read");
+                $item_read=$this->input->post($data[$i]."_add");
+                $item_edit=$this->input->post($data[$i]."_edit");
+                $item_delete=$this->input->post($data[$i]."_delete");
+                $item=$item_add+$item_delete+$item_edit+$item_read;             
+              $this->add_permission($data[$i],$item,$id,$_SESSION['Bid']);
+                }
                redirect('posmain/user_groups');
                
                }else{
@@ -225,24 +192,18 @@ class User_groupsCI extends CI_Controller{
            }    
     }
    
-    function add_permission($item,$depa,$user,$branch,$supplier,$customer,$itemkites,$sales,$depart_id,$branchid){
-         if($_SESSION['user_groupsCI_per']['add']==1){ 
+    function add_permission($mode,$data,$depart_id,$branchid){
+         if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){ 
                 $this->load->model('permissions');
-                $this->permissions->set_items_permission($item,$depart_id,$branchid);
-                $this->permissions->set_users_permission($user,$depart_id,$branchid);
-                $this->permissions->set_depart_permission($depa,$depart_id,$branchid);
-                $this->permissions->set_branchCI_permission($branch,$depart_id,$branchid);
-                $this->permissions->set_suppliers_permission($supplier,$depart_id,$branchid);
-                $this->permissions->set_customers_permission($customer,$depart_id,$branchid);
-                $this->permissions->set_item_kites_permission($itemkites,$depart_id,$branchid);
-                $this->permissions->set_sales_permission($sales,$depart_id,$branchid);
+                $this->permissions->set_modules_permission($mode.'_x_page_x_permissions',$data,$depart_id,$branchid);
+              
             
          }else{
              $this->get_user_groups();
          }
     }
      function add_user_groups_branch($id,$branch){
-         if($_SESSION['user_groupsCI_per']['add']==1){                 
+         if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){                 
                 $this->load->model('user_groups');                
                 $this->user_groups->set_branch_user_groups($id,$branch);                
                 }else{

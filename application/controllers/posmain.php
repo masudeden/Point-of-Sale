@@ -28,7 +28,8 @@ class Posmain extends CI_Controller{
         $data=$this->branch->get_user_default_branch($_SESSION['Uid']);
         $this->pos_setting();       
         if($_SESSION['admin']==2){
-            $admin=  $this->branch->branch_for_admin();
+           $admin=  $this->branch->branch_for_admin();
+         
              $this->acl_session_for_user($admin);        
              redirect('home');
         }else{
@@ -60,6 +61,7 @@ class Posmain extends CI_Controller{
             }
         
         }
+        $_SESSION['Bid']=$b_id;
     }
     function pos_setting(){
         $this->load->model('setting');

@@ -98,7 +98,12 @@ function get_user_groups_count($branch){
            );
        $this->db->insert('user_groups',$data);
         $id=$this->db->insert_id();
-       return $id;
+       $guid=md5($id.trim(com_create_guid(), '{}'));
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('user_groups',$value);
+       return $guid;
+       
    }
    function set_branch_user_groups($id,$branch_id){
        $data=array('branch_id'=>$branch_id,
@@ -214,6 +219,19 @@ function get_user_groups_count($branch){
        $this->db->update('users_x_user_groups',$data);
        $this->db->where('user_group_id ',$id);             
        $this->db->update('user_groups_x_branchs',$data);
+   }
+   function get_modules_permission($bid){
+         $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
+        $sql=$this->db->get();
+        $data=array();
+        foreach ($sql->result() as $row){
+            $this->db->select()->from('modules')->where('guid',$row->module_id);
+            $val=$this->db->get();
+            foreach ($val->result() as $mod){
+                $data[]=$mod->module_name;
+            }
+        }
+        return $data;
    }
 }
 ?>
