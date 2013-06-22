@@ -20,16 +20,16 @@
             ?><td>
 <table>
 <tr><td><label><?php echo $this->lang->line($mode)."". 'Read'; ?> </label> </td>
-    <td><div class="switch demo3" ><input type="checkbox" name="$mode_read" value="0001"><label><i></i></label></div></td>
+    <td><div class="switch demo3" ><input type="checkbox" name="<?php echo $mode.'_read' ?>" value="0001"><label><i></i></label></div></td>
 </tr>
 <tr><td><label><?php echo $this->lang->line($mode)."". 'Add'; ?></label> </td>
-    <td><div class="switch demo3" ><input type="checkbox" name="$mode_add" value="0010" ><label><i></i></label></td>
+    <td><div class="switch demo3" ><input type="checkbox" name="<?php echo $mode.'_add' ?>" value="0010" ><label><i></i></label></td>
 </tr>
 <tr><td><label><?php echo $this->lang->line($mode)."". 'Edit';;?></label> </td>
-    <td><div class="switch demo3" ><input type="checkbox" name="$mode_edit" value="0100"><label><i></i></label></td>
+    <td><div class="switch demo3" ><input type="checkbox" name="<?php echo $mode.'_edit' ?>" value="0100"><label><i></i></label></td>
 </tr>
 <tr><td><label><?php echo $this->lang->line($mode)."". 'Delete';  ?></label> </td>
-    <td><div class="switch demo3" ><input type="checkbox" name="$mode_delete" value="1000"><label><i></i></label></td>
+    <td><div class="switch demo3" ><input type="checkbox" name="<?php echo $mode.'_delete' ?>" value="1000"><label><i></i></label></td>
 </tr>
             </table>   </td><?php echo "<td></td><td></td>";
             } ?>

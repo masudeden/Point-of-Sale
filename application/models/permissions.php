@@ -10,11 +10,7 @@ class Permissions extends CI_Model{
                     'depart_id'=>$depart_id,
                     'branch_id'=>$branch_id);
        $this->db->insert($mode,$data);
-       $id=$this->db->insert_id();
-       $guid=md5($id.trim(com_create_guid(), '{}'));
-       $value=array('guid'=>$guid);
-       $this->db->where('id',$id);
-       $this->db->update($mode,$value);
+       
       
     }
   

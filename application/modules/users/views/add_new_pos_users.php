@@ -114,6 +114,7 @@ for(ii = 0; ii < arrTo.length; ii++)
                 xmlhttp.open("GET","<?php echo base_url() ?>index.php/user_groupsselecting/get_user_groups_branch/"+arrLU[arrTo[ii]],false);
                 xmlhttp.send();
               no.text = xmlhttp.responseText;
+              
  tbTo[ii] = no; 
 }
 }
@@ -206,7 +207,7 @@ var arrLU="";
     <?php if($_SESSION['admin']==2){ 
         foreach ($branch as $brow) {
         
- ?> <option name="<?php echo $brow->id ?>" value="<?php echo $brow->id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
+ ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
         }}else{ foreach ($branch as $brow) {
           
         ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->branch_name ?></option>

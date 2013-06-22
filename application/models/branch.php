@@ -85,7 +85,7 @@ class Branch extends CI_Model{
        
    }
    function get_user_seleted_branch($data){
-          $this->db->select()->from('branchs')->where('id',$data);
+          $this->db->select()->from('branchs')->where('guid',$data);
                 $sql=  $this->db->get();              
                 foreach ($sql->result() as $row) {            
                 $data = $row->store_name   ;            

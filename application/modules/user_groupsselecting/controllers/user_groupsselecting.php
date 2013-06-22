@@ -120,7 +120,7 @@ $r=0;
    function save(){
        echo urldecode($this->input->post('depa'));
    }
-   function check_user_groups_branchidden($jibi,$id){
+   function check_user_groups_branch($jibi,$id){
        $idArray=array();
         $idArray = explode('.',$id );
         $b_id=$idArray[0];

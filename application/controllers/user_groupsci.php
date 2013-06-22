@@ -157,12 +157,12 @@ class user_groupsci extends CI_Controller{
                 $this->load->model('user_groups');      
                 $data=$this->user_groups->get_modules_permission($_SESSION['Bid']);
                 for($i=0;$i<count($data);$i++){
-               $item_add=  $this->input->post($data[$i]."_read");
+                $item_add=  $this->input->post($data[$i]."_read");
                 $item_read=$this->input->post($data[$i]."_add");
                 $item_edit=$this->input->post($data[$i]."_edit");
                 $item_delete=$this->input->post($data[$i]."_delete");
                 $item=$item_add+$item_delete+$item_edit+$item_read;             
-              $this->add_permission($data[$i],$item,$id,$_SESSION['Bid']);
+                $this->add_permission($data[$i],$item,$id,$_SESSION['Bid']);
                 }
                redirect('posmain/user_groups');
                

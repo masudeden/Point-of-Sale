@@ -97,8 +97,10 @@ function get_user_groups_count($branch){
                    'branch_id'=>$bid
            );
        $this->db->insert('user_groups',$data);
-        $id=$this->db->insert_id();
-       $guid=md5($id.trim(com_create_guid(), '{}'));
+       $id=$this->db->insert_id();
+       $orderid=md5($id.$mode);
+       $guid=str_replace(".", "", "$orderid");
+       
        $value=array('guid'=>$guid);
        $this->db->where('id',$id);
        $this->db->update('user_groups',$value);
@@ -145,7 +147,7 @@ function get_user_groups_count($branch){
         $sql=  $this->db->get();
         $j=0;
         foreach ($sql->result() as $row) {
-                $this->db->select()->from('user_groups')->where('id',$row->user_group_id);
+                $this->db->select()->from('user_groups')->where('guid',$row->user_group_id);
                 $sql=  $this->db->get();
               
                 foreach ($sql->result() as $row) {            
@@ -161,11 +163,11 @@ function get_user_groups_count($branch){
         $sql=  $this->db->get();
         $j=0;
         foreach ($sql->result() as $row) {
-                $this->db->select()->from('user_groups')->where('id',$row->user_group_id);
+                $this->db->select()->from('user_groups')->where('guid',$row->user_group_id);
                 $sql=  $this->db->get();
               
                 foreach ($sql->result() as $row) {            
-             $data[$j] = $row->id  ;
+             $data[$j] = $row->guid  ;
             
             } $j++;
         }
@@ -173,7 +175,7 @@ function get_user_groups_count($branch){
        
    }
    function get_user_seleted_depa($d_id){
-       $this->db->select()->from('user_groups')->where('id',$d_id);
+       $this->db->select()->from('user_groups')->where('guid',$d_id);
                 $sql=  $this->db->get();              
                 foreach ($sql->result() as $row) {            
              $data = $row->dep_name  ;            
@@ -181,13 +183,13 @@ function get_user_groups_count($branch){
             return $data;
    }
    function get_seleted_user_groups_details($id){
-       $this->db->select()->from('user_groups')->where('id',$id);
+       $this->db->select()->from('user_groups')->where('guid',$id);
        $sql=$this->db->get();
        return $sql->result();
    }
     function update_user_groups($id,$depart){
        $data=array('dep_name'=>$depart);
-       $this->db->where('id',$id);
+       $this->db->where('guid',$id);
        $this->db->update('user_groups',$data);       
        $value=array('depart_name'=>$depart);
        $this->db->where('depart_id',$id);
