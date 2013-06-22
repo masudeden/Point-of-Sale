@@ -61,6 +61,12 @@
      function add_brands($name,$bid,$uid){
          $data=array('name'=>$name,'branch_id'=>$bid,'added_by'=>$uid);
          $this->db->insert('brands',$data);
+         $id=$this->db->insert_id();
+       $orderid=md5($id.'brands');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('brands',$value);
      }
      function inactive_brands($id){
          $data=array('active_status'=>1);

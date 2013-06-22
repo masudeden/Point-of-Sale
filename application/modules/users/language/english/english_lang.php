@@ -36,6 +36,8 @@ $lang['delete_customer']='Delete Customer';
 $lang['user_groups']='User Groups';
 $lang['user_name']='USER ID';;
 $lang['password']='PASSWORD';
+$lang['activate']='Activate';
+$lang['deactivate']="Deactivate";
 
 
 ?>﻿

@@ -64,7 +64,12 @@ class item_cate_model extends CI_Model{
                     'branch_id'=>$bid,
                     'added_by'=>$uid);
                 $this->db->insert('item_category',$data);
-                return $this->db->insert_id();                
+                $id=$this->db->insert_id();
+       $orderid=md5($id.'item_category');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('item_category',$value);               
     }
    
     function inactive_item($id){

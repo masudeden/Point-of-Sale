@@ -70,6 +70,12 @@ class Taxes extends CI_Model{
         }
         $data=array('value'=>$rate,'branch_id'=>$bid,'type'=>$typename,'added_by'=>$uid);
         $this->db->insert('taxes',$data);
+          $id=$this->db->insert_id();
+       $orderid=md5($id.'taxes');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('taxes',$value);
     }
     function check_taxype_is_unique($rate,$type,$bid){
          $this->db->select()->from('tax_types')->where('id',$type);
@@ -194,6 +200,12 @@ class Taxes extends CI_Model{
     function save_new_tax_area($area,$id,$bid){
         $data=array('name'=>$area,'branch_id'=>$bid,'added_by'=>$id);
         $this->db->insert('taxes_area',$data);
+         $id=$this->db->insert_id();
+       $orderid=md5($id.'taxes_area');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('taxes_area',$value);
     }
     
    
@@ -278,6 +290,12 @@ class Taxes extends CI_Model{
             'added_by'=>$uid,
             'tax'=>$tax);
         $this->db->insert('taxes_commodity',$data);
+          $id=$this->db->insert_id();
+       $orderid=md5($id.'taxes_commodity');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('taxes_commodity',$value);
     }
     function get_tax_comodity_for_edit($id){
         $this->db->select()->from('taxes_commodity')->where('id',$id);
@@ -390,8 +408,14 @@ function check_unique_tax_types_for_add($name,$bid){
       }      
 }
 function add_new_tax_type($name,$bid){
-    $data=array('branch_id'=>$bid,'type'=>$name);
-    $this->db->insert('tax_types',$data);
+       $data=array('branch_id'=>$bid,'type'=>$name);
+       $this->db->insert('tax_types',$data);
+       $id=$this->db->insert_id();
+       $orderid=md5($id.'tax_types');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update('tax_types',$value);
 }
 function delete_tax_type_for_user($id,$uid){
     $data=array('active_status'=>1,'deleted_by'=>$uid);

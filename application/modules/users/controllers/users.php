@@ -574,17 +574,17 @@ $r=0;
         function to_deactivate_user($id){  
                 $this->load->model('pos_users_model');
                 $this->pos_users_model->deactivate_user($id,$_SESSION['Bid']);   
-                redirect('pos_users');
+                redirect('users');
         }
         function to_activate_user($id){
                 $this->load->model('pos_users_model');
                 $this->pos_users_model->activate_user($id,$_SESSION['Bid']);   
-                redirect('pos_users');
+                redirect('users');
         }
         function delete_pos_users_details_in_admin($id){
                 $this->load->model('pos_users_model');
                 $this->pos_users_model->delete_user_for_admin($id,$_SESSION['Bid']);   
-                redirect('pos_users');
+                redirect('users');
         }
         
        
