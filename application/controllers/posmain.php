@@ -72,7 +72,7 @@ class Posmain extends CI_Controller{
     }
   
     function user_groups(){
-        redirect('user_groupsCI');
+        redirect('user_groupsci');
     }
     function change_user_branch($brnch){
         $this->load->model('aclpermissionmodel');

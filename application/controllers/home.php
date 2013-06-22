@@ -63,8 +63,8 @@ class Home extends CI_Controller
            }
        }
        if($this->input->post('user_groups')){          
-           if($_SESSION['user_groupsCI_per']['read']==1){
-                redirect('user_groupsCI');
+           if($_SESSION['user_groupsci_per']['read']==1){
+                redirect('user_groupsci');
            }else{
                echo "U have No Permission to View user_groups Details";
                $this->pos_home();
@@ -149,7 +149,7 @@ class Home extends CI_Controller
                
     }
      function user_groups(){
-        redirect('user_groupsCI');
+        redirect('user_groupsci');
     }
     
 }

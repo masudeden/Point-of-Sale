@@ -22,7 +22,7 @@ class Acluser{
         if($num/1000%10==0){ $delete= 0; }else{  $delete= 1; }
          
         $item = array(
-                   "$mode"=>$read."".$add."".$edit."".$delete,
+                   "$mod"=>$read."".$add."".$edit."".$delete,
                    'read'=>$read,
                    'add'=> $add,
                    'edit' =>$edit,
@@ -34,19 +34,20 @@ class Acluser{
         
         
     }  
-    function admin_module_permissions($bid){
+    function admin_module_permissions($mode){
+        $sasi=$mode;
              $item = array(
-                   "$mode"=>1111,
+                   $mode=>1111,
                    'read'=>1,
                    'add'=>1,
                    'edit' =>1,
                    'delete'=>1
                );
 
-        $_SESSION[$mod.'_per']=$item;  
+        $_SESSION[$sasi."_per"]=$item;  
     }
     function user_full_permissions(){
-        $user=$_SESSION['user_groupsCI_per']['depa']+ $_SESSION['branchCI_per']['branch']+$_SESSION['users_per']['user']+$_SESSION['items_per']['item'];
+        $user=$_SESSION['user_groupsci_per']['depa']+ $_SESSION['branchCI_per']['branch']+$_SESSION['users_per']['user']+$_SESSION['items_per']['item'];
         $_SESSION['full_per']=$user;
     }
     

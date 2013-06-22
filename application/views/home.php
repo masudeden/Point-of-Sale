@@ -6,7 +6,7 @@ echo form_open('home/home_main');
 ?><h1>POS HOME</h1><td><?php echo form_submit('logout',$this->lang->line('logout'));?></td>
 <table>
     <tr>
-       <?php $i=0;
+       <?php $i=0; echo $_SESSION['user_groupsci_per']['add'];
        if($row>0){
        foreach ($row as $mid){
      foreach ($mode as $mo_id){

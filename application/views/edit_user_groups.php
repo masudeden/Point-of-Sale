@@ -1,5 +1,5 @@
-<?php if($_SESSION['user_groupsCI_per']['edit']==1){ 
-    echo form_open('user_groupsCI/update_user_groups');
+<?php if($_SESSION['user_groupsci_per']['edit']==1){ 
+    echo form_open('user_groupsci/update_user_groups');
      foreach ($row as $drow){
          echo form_label($this->lang->line('user_groups')). form_input('user_groups',$drow->dep_name);
          echo form_submit('update',$this->lang->line('update'));
@@ -8,6 +8,6 @@
      }
     
 }else{
-    redirect('user_groupsCI');
+    redirect('user_groupsci');
 }
 ?>

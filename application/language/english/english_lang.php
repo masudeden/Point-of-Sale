@@ -177,7 +177,7 @@ $lang['company']='Comapany';
  $lang['items_setting']='Item Setting';
  $lang['suppliers']='Suppliers';
  $lang['customer_category']='Customer Category';
- $lang['user_groupsCI']='User Groups';
+ $lang['user_groupsci']='User Groups';
  $lang['branchCI']='Branchs';
  $lang['purchase_oder']='Purchase Order';
 

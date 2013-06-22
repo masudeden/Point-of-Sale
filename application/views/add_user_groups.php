@@ -4,7 +4,7 @@
   <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>css/style.css" />
 
 
-<?php echo form_open('user_groupsCI/add_user_groups') ;?>
+<?php echo form_open('user_groupsci/add_user_groups') ;?>
 <table><tr><td>
             
     <?php echo form_label($this->lang->line('user_groups_name'));?></td><td><?php echo form_input('user_groups_name',set_value('user_groups_name'), 'id="user_groups_name" autofocus')?></td>

@@ -1,5 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class User_groupsCI extends CI_Controller{
+class user_groupsci extends CI_Controller{
     function __construct() {
                 parent::__construct();
                 $this->load->helper('form');
@@ -26,7 +26,7 @@ class User_groupsCI extends CI_Controller{
             $this->load->model('user_groups');            
             $this->load->model('branch');
                 $this->load->library("pagination");                
-	        $config["base_url"] = base_url()."index.php/user_groupsCI/get_user_groups";
+	        $config["base_url"] = base_url()."index.php/user_groupsci/get_user_groups";
 	        $config["total_rows"] = $this->user_groups->get_user_groups_admin_count($_SESSION['Bid']);
 	        $config["per_page"] = 5;
 	        $config["uri_segment"] = 3;
@@ -40,11 +40,11 @@ class User_groupsCI extends CI_Controller{
                 $this->load->view('user_groups',$data);
                 $this->load->view('template/footer');
         }else{
-         if($_SESSION['user_groupsCI_per']['read']==1){ 
+         if($_SESSION['user_groupsci_per']['read']==1){ 
                 $this->load->model('user_groups');            
                 $this->load->library("pagination"); 
                 $this->load->model('branch');
-	        $config["base_url"] = base_url()."index.php/user_groupsCI/get_user_groups";
+	        $config["base_url"] = base_url()."index.php/user_groupsci/get_user_groups";
 	        $config["total_rows"] = $this->user_groups->get_user_groups_count($_SESSION['Bid']);
 	        $config["per_page"] = 5;
 	        $config["uri_segment"] = 3;
@@ -69,7 +69,7 @@ class User_groupsCI extends CI_Controller{
                 redirect('home');
         }
         if($this->input->post('add')){
-             if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){ 
+             if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
                 $this->load->model('user_groups');      
                 $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
                 $this->load->view('template/header');               
@@ -81,7 +81,7 @@ class User_groupsCI extends CI_Controller{
                 $this->get_user_groups();
         }}
         if($this->input->post('delete')){
-            if($_SESSION['user_groupsCI_per']['delete']==1){ 
+            if($_SESSION['user_groupsci_per']['delete']==1){ 
                 $this->delete_selected_user_groups();
              redirect('posmain/user_groups');
         }else{
@@ -90,7 +90,7 @@ class User_groupsCI extends CI_Controller{
         }    
         }
         if($this->input->post('activate')){
-             if($_SESSION['user_groupsCI_per']['delete']==1){ 
+             if($_SESSION['user_groupsci_per']['delete']==1){ 
                    $data1 = $this->input->post('mycheck'); 
                     if(!$data1==''){              
                     $this->load->model('user_groups');             
@@ -102,7 +102,7 @@ class User_groupsCI extends CI_Controller{
              $this->get_user_groups();
         }        
          if($this->input->post('deactivate')){
-             if($_SESSION['user_groupsCI_per']['delete']==1){ 
+             if($_SESSION['user_groupsci_per']['delete']==1){ 
                    $data1 = $this->input->post('mycheck'); 
                     if(!$data1==''){              
                     $this->load->model('user_groups');             
@@ -114,7 +114,7 @@ class User_groupsCI extends CI_Controller{
              $this->get_user_groups();
         }
        if($this->input->post('delete_admin')){
-            if($_SESSION['user_groupsCI_per']['delete']==1){ 
+            if($_SESSION['user_groupsci_per']['delete']==1){ 
                    $data1 = $this->input->post('mycheck'); 
                     if(!$data1==''){              
                     $this->load->model('user_groups');             
@@ -128,7 +128,7 @@ class User_groupsCI extends CI_Controller{
        
     }
     function delete_selected_user_groups(){
-         if($_SESSION['user_groupsCI_per']['delete']==1){ 
+         if($_SESSION['user_groupsci_per']['delete']==1){ 
                $data1 = $this->input->post('mycheck'); 
               if(!$data1==''){              
               $this->load->model('user_groups');             
@@ -142,7 +142,7 @@ class User_groupsCI extends CI_Controller{
          }
     }    
     function add_user_groups(){
-        if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){ 
+        if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
                 $this->load->model('user_groups');            
                 $this->form_validation->set_rules("user_groups_name",$this->lang->line('user_groups_name'),"required"); 
                // $this->form_validation->set_rules('branchs',$this->lang->line('branch'),"required");
@@ -193,7 +193,7 @@ class User_groupsCI extends CI_Controller{
     }
    
     function add_permission($mode,$data,$depart_id,$branchid){
-         if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){ 
+         if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
                 $this->load->model('permissions');
                 $this->permissions->set_modules_permission($mode.'_x_page_x_permissions',$data,$depart_id,$branchid);
               
@@ -203,7 +203,7 @@ class User_groupsCI extends CI_Controller{
          }
     }
      function add_user_groups_branch($id,$branch){
-         if($_SESSION['user_groupsCI_per']['add']==1 or $_SESSION['admin']==2){                 
+         if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){                 
                 $this->load->model('user_groups');                
                 $this->user_groups->set_branch_user_groups($id,$branch);                
                 }else{
@@ -211,7 +211,7 @@ class User_groupsCI extends CI_Controller{
                 }
         }
         function user_groups_delete($id){
-            if($_SESSION['user_groupsCI_per']['delete']==1){ 
+            if($_SESSION['user_groupsci_per']['delete']==1){ 
                 $this->load->model('user_groups');
                 $this->user_groups->delete_user_groups($id);
                 //$this->user_groups->delete_items_permission($id);
@@ -219,18 +219,18 @@ class User_groupsCI extends CI_Controller{
                 //$this->user_groups->delete_branchCI_permission($id);
                 //$this->user_groups->delete_depart_permission($id);
                 //$this->user_groups->delete_depart_branch($id);                 
-                redirect('user_groupsCI/get_user_groups');
+                redirect('user_groupsci/get_user_groups');
             }else{
-                redirect('user_groupsCI/get_user_groups');
+                redirect('user_groupsci/get_user_groups');
             }            
         }
         function delete_user_groups_for_admin($id){
                 $this->load->model('user_groups');
                 $this->user_groups->delete_user_groups_for_admin($id);
-                redirect('user_groupsCI');
+                redirect('user_groupsci');
         }
         function edit_user_groups($id){
-            if($_SESSION['user_groupsCI_per']['edit']==1){ 
+            if($_SESSION['user_groupsci_per']['edit']==1){ 
                  $this->load->model('user_groups');
                  $data['row']=$this->user_groups->get_seleted_user_groups_details($id);
                  $this->load->view('template/header');
@@ -238,11 +238,11 @@ class User_groupsCI extends CI_Controller{
                  $this->load->view('template/footer');
             }else{
                 echo "you have No permission To Edit user_groups";                
-                redirect('user_groupsCI');
+                redirect('user_groupsci');
             }
         }
         function update_user_groups(){
-          if($_SESSION['user_groupsCI_per']['edit']==1){ 
+          if($_SESSION['user_groupsci_per']['edit']==1){ 
                  $this->load->model('user_groups');            
                  $this->form_validation->set_rules("user_groups",$this->lang->line('user_groups_name'),"required");                              
            if ($this->form_validation->run()) {
@@ -261,7 +261,7 @@ class User_groupsCI extends CI_Controller{
               echo "You ahve no permission to edit user_groups";
           }
           if($this->input->post('cancel')){
-              redirect('user_groupsCI');
+              redirect('user_groupsci');
           }
         }
         function edit_user_groups_permission($id){
@@ -286,7 +286,7 @@ class User_groupsCI extends CI_Controller{
             }else{
                 echo "You have no permission to edit User permissions";
                
-                redirect('user_groupsCI');
+                redirect('user_groupsci');
             }
         }
         function update_user_groups_permission(){
@@ -359,12 +359,12 @@ class User_groupsCI extends CI_Controller{
         function to_activate_user_groups($id){
                 $this->load->model('user_groups');
                 $this->user_groups->activate_user_groups($id);   
-                redirect('user_groupsCI');
+                redirect('user_groupsci');
         }
         function  to_deactivate_user_groups($id){
                 $this->load->model('user_groups');
                 $this->user_groups->deactivate_user_groups($id);
-                redirect('user_groupsCI');
+                redirect('user_groupsci');
         }
 }
 ?>
