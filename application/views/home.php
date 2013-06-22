@@ -10,7 +10,7 @@ echo form_open('home/home_main');
        if($row>0){
        foreach ($row as $mid){
      foreach ($mode as $mo_id){
-         if($mid->module_id ==$mo_id->id){
+         if($mid->module_id ==$mo_id->guid){
             
              if($i%9==0){ echo "</tr><tr>"; }
              

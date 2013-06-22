@@ -23,7 +23,7 @@ class Modules_model extends CI_Model{
         $sql=$this->db->get();
         $data=array();
         foreach ($sql->result() as $row){
-            $this->db->select()->from('modules')->where('id',$row->module_id);
+            $this->db->select()->from('modules')->where('guid',$row->module_id);
             $val=$this->db->get();
             foreach ($val->result() as $mod){
                 $data[]=$mod->module_name;

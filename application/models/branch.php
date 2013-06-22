@@ -252,7 +252,7 @@ class Branch extends CI_Model{
              $data[]=$brow->branch_id  ;
         }
         for($i=0;$i<count($data);$i++){
-           $this->db->select()->from('branchs')->where('id',$data[$i])->where('active_status',0);
+           $this->db->select()->from('branchs')->where('guid',$data[$i])->where('active_status',0);
            $sql=  $this->db->get();
           foreach ($sql->result() as $row){
                 $value[$j]=$row->id;     
