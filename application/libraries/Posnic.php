@@ -1,5 +1,5 @@
 <?php
-class Posnic_module{
+class Posnic{
     function __construct() {
           $CI=  get_instance();
           
@@ -7,11 +7,14 @@ class Posnic_module{
                 $CI->load->helper('url');
                 $CI->load->library('unit_test');
                 $CI->load->library('session');      
-                $CI->load->library('session');
+                session_start();
                 $CI->load->helper(array('form', 'url'));
                 $CI->load->library('poslanguage'); 
                 $CI->load->library('form_validation');
                 $CI->poslanguage->set_language();
+    }
+    function get_array($module,$value){
+        
     }
 }
        
