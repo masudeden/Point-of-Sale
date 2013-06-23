@@ -21,9 +21,11 @@ class Home extends CI_Controller
         $this->load->model('branch');        
         $data['branch_settings']=$this->setting->get_branch_setting();
         if($_SESSION['admin']==2){
+            $_SESSION['Posnic_User']='admin';
          $data['row']=  $this->branch->get_branch();
         
         }else{
+        $_SESSION['Posnic_User']='user';
         $data['row']=  $this->branch->get_user_branchs($_SESSION['Uid']);
         $data['a_row']=$this->branch->get_active_user_branchs($_SESSION['Uid']);
         }

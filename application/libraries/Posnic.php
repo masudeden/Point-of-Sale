@@ -12,12 +12,12 @@ class Posnic{
                 $CI->load->library('poslanguage'); 
                 $CI->load->library('form_validation');
                 $CI->poslanguage->set_language();
+                $CI->load->model('posnic_model');
     }
-    function get_array($module,$value){
+    function posnic_result_array_for_admin($module,$value){
         if($_SESSION[$module.'_per']['read']==1){
-            echo 'you have no permission to';
-             //$CI->load->model('aclpermissionmodel');
-             //$deaprt=$CI->aclpermissionmodel->get_user_groups($id,$bid);
+           echo  $_SESSION['Posnic_User'];
+            //return $CI->posnic_model->get_user_groups($id,$bid);
         }else{
             echo 'You have no permission';
         }

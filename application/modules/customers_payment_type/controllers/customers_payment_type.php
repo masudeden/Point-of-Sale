@@ -8,7 +8,12 @@ class Customers_payment_type extends CI_Controller{
                     $this->get_customers_payment_type(); 
     }
     function get_customers_payment_type(){
-        $this->posnic->get_array('users',21);
+        $value=array('ctive_status'=>0);
+        if( $_SESSION['Posnic_User']=='admin'){
+        $data['row']=$this->posnic->posnic_result_array_for_admin('users',$value);
+        }else{
+            
+        }
     }
    
     
