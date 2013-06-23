@@ -14,6 +14,13 @@ class Posnic{
                 $CI->poslanguage->set_language();
     }
     function get_array($module,$value){
+        if($_SESSION[$module.'_per']['read']==1){
+            echo 'you have no permission to';
+             //$CI->load->model('aclpermissionmodel');
+             //$deaprt=$CI->aclpermissionmodel->get_user_groups($id,$bid);
+        }else{
+            echo 'You have no permission';
+        }
         
     }
 }
