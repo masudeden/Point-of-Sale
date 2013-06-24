@@ -83,6 +83,11 @@ class Posnic{
             echo 'You have no permission';
         }
     }
+    function check_unique($data){
+        $module=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+          return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
+    }
 }
        
 ?>

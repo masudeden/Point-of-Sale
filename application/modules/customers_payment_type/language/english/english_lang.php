@@ -10,6 +10,8 @@ $lang['back_to_home']='Back To Home';
 $lang['active']='Active';
 $lang['deactive']='Deactive';
 $lang['restore']='Restore';
+$lang['paymenent_type']='Payment Type';
+
 
 
 

@@ -3,6 +3,9 @@
 class posnic_model extends CI_model{
     function __construct() {
         parent::__construct();
+         if(!$_SERVER['HTTP_REFERER']){ redirect('home'); }else{
+             
+         }
     }
    
     function get_data_as_result_array_admin($table,$where,$bid){
@@ -68,6 +71,15 @@ class posnic_model extends CI_model{
                 $this->db->where('branch_id',$bid); 
                 $query = $this->db->get($table);
                 return $query->result_array();
+    }
+    function check_unique_data($data,$module,$bid){
+        $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',0);
+        $sql=  $this->db->get();
+        if($sql->num_rows()>0){
+            return FALSE;
+        }else{
+            return TRUE;
+        }
     }
 }
 ?>
