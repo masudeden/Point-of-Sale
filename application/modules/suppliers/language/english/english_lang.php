@@ -30,6 +30,7 @@ $lang['comments']='Comments';
 $lang['account_no']='Account Number';
 $lang['active']='Active';
 $lang['deactive']='Deactive';
+$lang['restore']='Restore';
 
 
 
