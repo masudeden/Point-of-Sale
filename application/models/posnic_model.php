@@ -72,6 +72,15 @@ class posnic_model extends CI_model{
                 $query = $this->db->get($table);
                 return $query->result_array();
     }
+    function get_two_values($value1,$value2,$table,$where,$bid){
+        $this->db->select($value1,$value2)->from($table);
+        if(count($where)>0){
+         $this->db->where($where);   
+        }
+        $this->db->where('branch_id',$bid);
+        $sql=$this->db->get();
+        return $sql->result();
+    }
     function check_unique_data($data,$module,$bid){
         $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',0);
         $sql=  $this->db->get();

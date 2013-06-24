@@ -28,6 +28,8 @@ $lang['company']='Comapany';
 $lang['website']='Website';
 $lang['comments']='Comments';
 $lang['account_no']='Account Number';
+$lang['active']='Active';
+$lang['deactive']='Deactive';
 
 
 

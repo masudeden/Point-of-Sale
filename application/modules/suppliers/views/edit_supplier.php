@@ -2,7 +2,7 @@
  if($_SESSION['suppliers_per']['edit']==1){
      echo form_open('suppliers/update_supplier');
      echo "<table>";
-     foreach ($row as $c_row){ echo form_hidden('id',$c_row->id);
+     foreach ($row as $c_row){ echo form_hidden('id',$c_row->guid);
      echo "<tr><td>"; echo form_label($this->lang->line('first_name'));echo "</td><td>";echo form_input('first_name',$c_row->first_name,'id="first_name" autofocus');echo "</td></tr>";
      echo "<tr><td>"; echo form_label($this->lang->line('last_name'));echo "</td><td>";echo form_input('last_name',$c_row->last_name,'id="last_name" autofocus');echo "</td></tr>";
      echo "<tr><td>"; echo form_label($this->lang->line('address1'));echo "</td><td>";echo form_input('address1',$c_row->address1,'id="address1" autofocus');echo "</td></tr>";

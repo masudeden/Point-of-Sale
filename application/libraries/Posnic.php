@@ -2,6 +2,7 @@
 class Posnic{
   
     function __construct() {
+       
           $CI=  get_instance();
           
                 $CI->load->helper('form');
@@ -16,7 +17,9 @@ class Posnic{
                 $CI->load->library("pagination");
                 $CI->load->model('posnic_model');
                 
-         
+          if(!isset($_SESSION['Uid'])){
+             redirect('home');
+        }
     }
    
             function posnic_result_array($value){
@@ -86,7 +89,11 @@ class Posnic{
             echo 'You have no permission';
         }
     }
-    function check_unique($data){
+    function posnic_two($value1,$value2,$table,$where){
+         $CI=  get_instance();
+          return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
+    }
+            function check_unique($data){
         $module=$_SESSION['posnic_module'];
           $CI=  get_instance();
           return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
