@@ -50,6 +50,12 @@ class Home extends CI_Controller
           $data=  $this->modules_model->get_modulenames($_SESSION["Bid"]);
           for($i=0;$i<count($data);$i++){
             if($this->input->post($data[$i])){
+                $_SESSION['posnic_module']=$data[$i];
+                $_SESSION[$data[$i].'_per']['read']==1?$_SESSION['Posnic_Read']="Read":$_SESSION['Posnic_Read']="null";
+                $_SESSION[$data[$i].'_per']['add']==1?$_SESSION['Posnic_Add']="Add":$_SESSION['Posnic_Add']="null";
+                $_SESSION[$data[$i].'_per']['edit']==1?$_SESSION['Posnic_Edit']="Edit":$_SESSION['Posnic_Edit']="null";              
+                $_SESSION[$data[$i].'_per']['delete']==1?$_SESSION['Posnic_Delete']="Delete":$_SESSION['Posnic_Delete']="null";
+                
                 redirect($data[$i]);
                 
             }  

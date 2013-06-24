@@ -8,13 +8,29 @@ class Customers_payment_type extends CI_Controller{
                     $this->get_customers_payment_type(); 
     }
     function get_customers_payment_type(){
-        $value=array('ctive_status'=>0);
-        if( $_SESSION['Posnic_User']=='admin'){
-        $data['row']=$this->posnic->posnic_result_array_for_admin('users',$value);
-        }else{
-            
+      
+                $config["base_url"] = base_url()."index.php/customers_payment_type/get_customers_payment_type";
+	        $config["total_rows"] =$this->posnic->posnic_count(); 
+	        $config["per_page"] = 8;
+	        $config["uri_segment"] = 3;
+	        $this->pagination->initialize($config);	 
+	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
+               $data['count']=$this->posnic->posnic_count();                 
+	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
+	        $data["links"] = $this->pagination->create_links();  
+                $this->load->view('payment_type',$data);
+           
         }
-    }
+        function edit_payment($guid){
+            $where=array('guid'=>$guid);
+            if($_SESSION['Posnic_Edit']==="Edit"){
+                  $data['row']=$this->posnic->posnic_result($where);
+            }else{
+                echo "you have no permission to edit data";
+                $this->get_customers_payment_type();
+            }
+          
+        }
    
     
 }
