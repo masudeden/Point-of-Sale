@@ -37,6 +37,7 @@ class Customers_payment_type extends CI_Controller{
             if($_SESSION['Posnic_Edit']==="Edit"){
                 $id=  $this->input->post('id');
                 $this->form_validation->set_rules("type",$this->lang->line('paymenent_type'),'required'); 
+                if ( $this->form_validation->run() !== false ) {
                 $type=  $this->input->post('type');
                 
                 $data=array('guid !='=>$id,'type'=>$type);
@@ -49,6 +50,9 @@ class Customers_payment_type extends CI_Controller{
                 echo "this payment type is already added in this branch";
                 $this->edit_payment($id);
             }
+                }else{
+                     $this->get_customers_payment_type();
+                }
             }else{
                 echo "you have no permission to edit data";
                 $this->get_customers_payment_type();
@@ -62,6 +66,7 @@ class Customers_payment_type extends CI_Controller{
             if($_SESSION['Posnic_Add']==="Add"){
                
                 $this->form_validation->set_rules("type",$this->lang->line('paymenent_type'),'required'); 
+                if ( $this->form_validation->run() !== false ) {
                 $type=  $this->input->post('type');
                 
                 $data=array('type'=>$type);
@@ -72,7 +77,10 @@ class Customers_payment_type extends CI_Controller{
             }else{
                 echo "this payment type is already added in this branch";
                 $this->edit_payment($id);
-            }
+                }}
+                else{
+                    $this->get_customers_payment_type();
+                }
             }else{
                 echo "you have no permission to edit data";
                 $this->get_customers_payment_type();

@@ -31,7 +31,7 @@ class posnic_model extends CI_model{
   function get_data_count_for_admin($bid,$table){
             $this->db->where('delete_status',0);        
             $this->db->where('branch_id',$bid);         
-            $this->db->from('customers_payment_type');
+            $this->db->from($table);
             return $this->db->count_all_results();
       
   }
@@ -114,14 +114,14 @@ class posnic_model extends CI_model{
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
-    function admin_delete($guid,$module,$branch){
-        $data=array('active_status'=>1,'delete_status'=>1);
+    function admin_delete($guid,$module,$branch,$uid){
+        $data=array('active_status'=>1,'delete_status'=>1,'deleted_by'=>$uid);
         $this->db->where('guid',$guid);
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
     function user_delete($guid,$module,$branch,$uid){
-        $data=array('active_status'=>1,'deleted_by',$uid);
+        $data=array('active_status'=>1,'deleted_by'=>$uid);
         $this->db->where('guid',$guid);
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);

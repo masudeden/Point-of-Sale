@@ -4,174 +4,188 @@ class Brands extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-        $this->load->helper('form');
-        session_start();
-        $this->load->library('session');
-        $this->load->library('poslanguage');                                       
-        $this->poslanguage->set_language();               
+          $this->load->library('posnic');              
     }
     function index(){
         $this->get_brands(); 
     }
      function get_brands(){
-         if(!$_SERVER['HTTP_REFERER']){ redirect('item_brands'); }else{
-            if($_SESSION['admin']==2){// check user is admin or not
-                $this->load->library("pagination"); 
-                $this->load->model('item_brands');                
-	        $config["base_url"] = base_url()."index.php/brands/get_brands";
-	        $config["total_rows"] = $this->item_brands->brands_count_for_admin($_SESSION['Bid']);// get supplier count
+        $config["base_url"] = base_url()."index.php/brands/get_brands";
+	        $config["total_rows"] =$this->posnic->posnic_count(); 
 	        $config["per_page"] = 8;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->item_brands->brands_count_for_admin($_SESSION['Bid']);                 
-	        $data["row"] = $this->item_brands->get_brands_for_admin($config["per_page"], $page,$_SESSION['Bid']);           
-	        $data["links"] = $this->pagination->create_links();               
-                $this->load->view('template/header');
-                $this->load->view('brands/brands_list',$data);
-                $this->load->view('template/footer');
-            }else{
-                $this->load->library("pagination");                 
-                $this->load->model('item_brands');
-	        $config["base_url"] = base_url()."index.php/brands/get_brands";
-                $config["total_rows"] = $this->item_brands->get_brands_count_for_user($_SESSION['Bid']);
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;                
-                $data['count']=$this->item_brands->get_brands_count_for_user($_SESSION['Bid']);             
-	        $data["row"] = $this->item_brands->get_brands_details_for_user($config["per_page"], $page,$_SESSION['Bid']);               
-	        $data["links"] = $this->pagination->create_links(); 
-                $this->load->view('template/header');
-                $this->load->view('brands/brands_list',$data);
-                $this->load->view('template/footer');
-            }                      
-       }
+                $data['count']=$this->posnic->posnic_count();                 
+	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
+	        $data["links"] = $this->pagination->create_links();  
+                $this->load->view('brands_list',$data);
     }
-    function edit_brands($id){
-         if(!$_SERVER['HTTP_REFERER']){ redirect('item_brands'); }else{
-            $this->load->model('item_brands');
-            $data['row']=  $this->item_brands->get_brands($id);
-                $this->load->view('template/header');
-                $this->load->view('brands/edit_brands',$data);
-                $this->load->view('template/footer');     
-          }
+    function edit_brands($guid){
+         $where=array('guid'=>$guid);
+            if($_SESSION['Posnic_Edit']==="Edit"){
+                  $data['row']=$this->posnic->posnic_result($where);
+                   $this->load->view('edit_brands',$data);
+            }else{
+                echo "you have no permission to edit data";
+                $this->get_customers_payment_type();
+            }
+        
     }
     function update_brands(){
-         if(!$_SERVER['HTTP_REFERER']){ redirect('brands'); }else{
+         
            if($this->input->post('save')){
-               $this->load->library('form_validation');
-                $this->form_validation->set_rules("name",$this->lang->line('tax_type'),'required'); 
-                $id=  $this->input->post('id');
-                  if ( $this->form_validation->run() !== false ) {
-			  $this->load->model('item_brands');                          
-                          $name=$this->input->post('name');
-                          if($this->item_brands->check_brands($name,$_SESSION['Bid'],$id)){
-                              $this->item_brands->update_brands($id,$name);
-                              redirect('brands/get_brands');                          
-                          }else{
-                              echo "this is tax type is already added in this branch";
-                              $this->edit_brands($id);
-                          }                          
-                  }else{
-                      $this->edit_brands($id);
-                      
-                  }
-           }
+                    if($_SESSION['Posnic_Edit']==="Edit"){
+                    $this->form_validation->set_rules("name",$this->lang->line('tax_type'),'required'); 
+                    $id=  $this->input->post('id');
+                    $name=$this->input->post('name');                
+                    $data=array('guid !='=>$id,'name'=>$name);
+                if($this->posnic->check_unique($data)){
+                    $value=array('name'=>$name);
+                    $where=array('guid'=>$id);
+                    $this->posnic->posnic_update($value,$where);
+                    $this->get_brands();
+            }else{
+                    echo "this payment type is already added in this branch";
+                    $this->edit_brands($id);
+            }
+            }else{
+                    echo "you have no permission to edit data";
+                    $this->get_brands();  
+            }      
+           }	             
            if($this->input->post('cancel')){
                redirect('brands/get_brands');
            }
-         }
     }
-    function inactive_brands($id){
-        if(!$_SERVER['HTTP_REFERER']){ redirect('brands'); }else{
-          $this->load->model('item_brands');
-          $this->item_brands->inactive_brands($id);  
-          redirect('brands/get_brands');
-        }
+    function inactive_brands($guid){
+        if($_SESSION['Posnic_User']=='admin'){
+              $this->posnic->posnic_deactive($guid);
+              redirect('brands');
+          }else{
+              redirect('brands');
+          }
     }
-    function active_brands($id){
-        if(!$_SERVER['HTTP_REFERER']){ redirect('brands'); }else{
-          $this->load->model('item_brands');
-          $this->item_brands->active_brands($id);  
-          redirect('brands/get_brands');
-        }
+    function active_brands($guid){
+          if($_SESSION['Posnic_User']=='admin'){
+              $this->posnic->posnic_active($guid);
+              redirect('brands');
+          }else{
+               redirect('brands');
+          }
     }
-    function delete_brands_ad($id){
-        if(!$_SERVER['HTTP_REFERER']){ redirect('brands'); }else{
-          $this->load->model('item_brands');
-          $this->item_brands->delete_brands_for_admin($id,$_SESSION['Uid']);  
-          redirect('brands/get_brands');
-        }
+    function delete_brands_ad($guid){
+      if($_SESSION['Posnic_User']=='admin'){
+              $this->posnic->posnic_delete($guid);
+             redirect('brands');
+          }else{
+            redirect('brands');
+          }
     }
-
-
+    function restore($guid){
+          if($_SESSION['Posnic_User']=='admin'){
+              $this->posnic->posnic_restore($guid);
+              redirect('brands');
+          }else{
+              redirect('brands');
+          }
+    }        
     function brands_manage(){
-        if(!$_SERVER['HTTP_REFERER']){ redirect('brands'); }else{
          if($this->input->post('cancel'))   {
              redirect('home');
          }
          if($this->input->post('add_tax')){
-                $this->load->view('template/header');
+                if($_SESSION['Posnic_Add']==="Add"){
                 $this->load->view('brands/add_brand');
-                $this->load->view('template/footer');   
+                }else{
+                    echo "you have no permision to add brands";
+                    $this->get_brands();
+                }
+               
          }
          if($this->input->post('delete_ad')){
-             $data1 = $this->input->post('mycheck'); 
-             $this->load->model('item_brands');
+              if($_SESSION['Posnic_Delete']==="Delete"){
+                $data1 = $this->input->post('mycheck'); 
                  if(!$data1==''){         
-                 foreach( $data1 as $key => $value){                        
-                     $this->item_brands->delete_brands_for_admin($value,$_SESSION['Uid']);
+                 foreach( $data1 as $key => $guid){                        
+                     $this->posnic->posnic_delete($guid);
                  }
                  }redirect('brands/get_brands');
+              }else{
+                  echo "you have no permision to delete brands";
+                    $this->get_brands();
+              }
          }
          if($this->input->post('delete')){
-             $data1 = $this->input->post('mycheck'); 
-             $this->load->model('item_brands');
+              if($_SESSION['Posnic_Delete']==="Delete"){
+                $data1 = $this->input->post('mycheck'); 
+                $this->load->model('item_brands');
+                    if(!$data1==''){         
+                     foreach( $data1 as $key => $guid){                        
+                        $this->posnic->posnic_delete($guid);
+                    }
+                    }redirect('brands/get_brands');
+              }else{
+                  echo "you have no permision to delete brands";
+                    $this->get_brands();
+              }
+         }
+         if($this->input->post('activate')){
+              $data1 = $this->input->post('mycheck'); 
                  if(!$data1==''){         
-                 foreach( $data1 as $key => $value){                        
-                     $this->item_brands->delete_brands_for_user($value,$_SESSION['Uid']);
+                 foreach( $data1 as $key => $guid){                        
+                      $this->posnic->posnic_active($guid);
                  }
                  }redirect('brands/get_brands');
          }
-        }
+         if($this->input->post('deactivate')){
+              $data1 = $this->input->post('mycheck'); 
+                 if(!$data1==''){         
+                 foreach( $data1 as $key => $guid){                        
+                    $this->posnic->posnic_deactive($guid);
+                 }
+                 }redirect('brands/get_brands');
+         }
+        
     }
     function add_brands(){
-          if(!$_SERVER['HTTP_REFERER']){ redirect('brands'); }else{
+          
            if($this->input->post('save')){
-               $this->load->library('form_validation');
-                $this->form_validation->set_rules("name",$this->lang->line('tax_type'),'required'); 
-                $id=  $this->input->post('id');
-                  if ( $this->form_validation->run() !== false ) {
-			  $this->load->model('item_brands');                          
-                          $name=$this->input->post('name');
-                          if($this->item_brands->check_brands_for_add($name,$_SESSION['Bid'])){
-                              $this->item_brands->add_brands($name,$_SESSION['Bid'],$_SESSION['Uid']);
-                              redirect('brands/get_brands');                          
+                if($_SESSION['Posnic_Add']==="Add"){
+                $this->form_validation->set_rules("name",$this->lang->line('tax_type'),'required');                
+                  if ( $this->form_validation->run() !== false ) {			                          
+                           $name=$this->input->post('name');
+                           $data=array('name'=>$name);
+                            if($this->posnic->check_unique($data)){
+                                    $value=array('name'=>$name);
+                                    $this->posnic->posnic_add($value);
+                                    redirect('brands/get_brands');  
+                            }else{
+                                echo "this brand is already added";
+                                $this->load->view('add_brand');
+                                }                    
                           }else{
-                              echo "this is tax type is already added in this branch";
-                                $this->load->view('template/header');
-                                $this->load->view('brands/add_brand');
-                                $this->load->view('template/footer'); 
+                                $this->load->view('add_brand');
                           }                          
                   }else{
-                        $this->load->view('template/header');
-                        $this->load->view('brands/add_brand');
-                        $this->load->view('template/footer'); 
-                      
+                       echo "You have no permmission to add new brands";
+                       $this->get_brands();
                   }
            }
            if($this->input->post('cancel')){
-               redirect('brands/get_brands');
+                redirect('brands/get_brands');  
            }
-         }
+         
     }
-    function delete_brands($id){
-          if(!$_SERVER['HTTP_REFERER']){ redirect('brands'); }else{
-          $this->load->model('item_brands');
-          $this->item_brands->delete_brands_for_user($id,$_SESSION['Uid']);  
-          redirect('brands/get_brands');
-        }
+    function delete_brands($guid){
+           if($_SESSION['Posnic_Delete']==="Delete"){
+              $this->posnic->posnic_delete($guid);
+               }
+            else{
+                echo "you have no Permissions to add  new record";
+                $this->get_customers_payment_type();
+            } 
+        
     }
    
 }

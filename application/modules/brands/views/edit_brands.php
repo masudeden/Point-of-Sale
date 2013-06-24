@@ -2,7 +2,7 @@
 echo form_open('brands/update_brands');
 echo "<table>";
 foreach ($row as $tax1){
-echo form_hidden('id',$tax1->id);
+echo form_hidden('id',$tax1->guid);
 echo "<tr><td>";echo form_label($this->lang->line('brands_name'));echo "</td><td>"; echo form_input('name',$tax1->name,'id=name autofocus');echo "</td></tr>";
 
 }

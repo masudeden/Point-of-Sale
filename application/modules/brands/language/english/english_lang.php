@@ -8,6 +8,9 @@ $lang['cancel']='Cancel';
 $lang['update']='Update';
 $lang['add']='Add';
 $lang['delete']='Delete';
+$lang['deactivate']='Deactivate';
+$lang['activate']='Activate';
+$lang['restore']='Restore';
 
 
 ?>﻿

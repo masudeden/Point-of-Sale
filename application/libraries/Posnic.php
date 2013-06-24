@@ -135,7 +135,7 @@ class Posnic{
         $module=$_SESSION['posnic_module'];
         $branch=$_SESSION['Bid'];  
         if($_SESSION['admin']==2){
-        $CI->posnic_model->admin_delete($guid,$module,$branch);
+        $CI->posnic_model->admin_delete($guid,$module,$branch,$_SESSION[Uid]);
         }else{
              $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION[Uid]);
         }
