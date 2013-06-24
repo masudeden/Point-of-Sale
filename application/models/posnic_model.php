@@ -81,5 +81,50 @@ class posnic_model extends CI_model{
             return TRUE;
         }
     }
+    function update($module,$value,$where){
+        $this->db->where($where);
+        $this->db->update($module,$value);
+    }
+    function add($module,$value,$branch){
+       $this->db->insert($module,$value);
+       $id=$this->db->insert_id();
+       $this->db->where('id',$id);
+       $this->db->update($module,$branch);
+       $orderid=md5($id.$module);
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update($module,$value);
+    }
+    function deactive($guid,$module,$branch){
+        $data=array('active'=>1);
+        $this->db->where('guid',$guid);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
+    function active($guid,$module,$branch){
+        $data=array('active'=>0);
+        $this->db->where('guid',$guid);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
+    function restore($guid,$module,$branch){
+        $data=array('active_status'=>0);
+        $this->db->where('guid',$guid);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
+    function admin_delete($guid,$module,$branch){
+        $data=array('active_status'=>1,'delete_status'=>1);
+        $this->db->where('guid',$guid);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
+    function user_delete($guid,$module,$branch,$uid){
+        $data=array('active_status'=>1,'deleted_by',$uid);
+        $this->db->where('guid',$guid);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
 }
 ?>

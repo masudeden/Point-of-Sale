@@ -1,5 +1,6 @@
 <?php
 class Posnic{
+  
     function __construct() {
           $CI=  get_instance();
           
@@ -14,9 +15,11 @@ class Posnic{
                 $CI->poslanguage->set_language();
                 $CI->load->library("pagination");
                 $CI->load->model('posnic_model');
-                $module=$_SESSION['posnic_module'];
+                
+         
     }
-    function posnic_result_array($value){
+   
+            function posnic_result_array($value){
          $CI=  get_instance();
          $module=$_SESSION['posnic_module'];
         if($_SESSION[$module.'_per']['read']==1){
@@ -87,6 +90,55 @@ class Posnic{
         $module=$_SESSION['posnic_module'];
           $CI=  get_instance();
           return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
+    }
+    function posnic_update($value,$where){
+          $module=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+           if($_SESSION[$module.'_per']['edit']==1){
+               $CI->posnic_model->update($module,$value,$where);
+           }else{
+               echo redirect($module);
+           }
+    }
+    function posnic_add($value){
+          $module=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+          $branch=array('branch_id'=>$_SESSION['Bid']);
+           if($_SESSION[$module.'_per']['edit']==1){
+               $CI->posnic_model->add($module,$value,$branch);
+           }else{
+               echo redirect($module);
+           }
+    }
+    function posnic_deactive($guid){
+        $CI=  get_instance();        
+        $module=$_SESSION['posnic_module'];
+        $branch=$_SESSION['Bid'];
+        
+        $CI->posnic_model->deactive($guid,$module,$branch);
+    }
+    function posnic_active($guid){
+        $CI=  get_instance();        
+        $module=$_SESSION['posnic_module'];
+        $branch=$_SESSION['Bid'];
+        
+        $CI->posnic_model->active($guid,$module,$branch);
+    }
+    function posnic_restore($guid){
+        $CI=  get_instance();        
+        $module=$_SESSION['posnic_module'];
+        $branch=$_SESSION['Bid'];        
+        $CI->posnic_model->restore($guid,$module,$branch);
+    }
+    function posnic_delete($guid){
+        $CI=  get_instance();        
+        $module=$_SESSION['posnic_module'];
+        $branch=$_SESSION['Bid'];  
+        if($_SESSION['admin']==2){
+        $CI->posnic_model->admin_delete($guid,$module,$branch);
+        }else{
+             $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION[Uid]);
+        }
     }
 }
        
