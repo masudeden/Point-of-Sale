@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2013 at 05:39 PM
+-- Generation Time: Jun 25, 2013 at 06:57 AM
 -- Server version: 5.5.24-log
 -- PHP Version: 5.4.3
 
@@ -105,19 +105,22 @@ CREATE TABLE IF NOT EXISTS `brands` (
   `guid` varchar(100) NOT NULL,
   `name` varchar(50) NOT NULL,
   `branch_id` varchar(100) NOT NULL,
+  `active` int(11) NOT NULL,
   `active_status` int(11) NOT NULL,
   `delete_status` int(11) NOT NULL,
   `added_by` int(100) NOT NULL,
   `deleted_by` int(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `brands`
 --
 
-INSERT INTO `brands` (`id`, `guid`, `name`, `branch_id`, `active_status`, `delete_status`, `added_by`, `deleted_by`) VALUES
-(1, 'cfd8b485f99e561408192c594f8c2e92', 'LG', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 0, 0, 61, 0);
+INSERT INTO `brands` (`id`, `guid`, `name`, `branch_id`, `active`, `active_status`, `delete_status`, `added_by`, `deleted_by`) VALUES
+(1, 'cfd8b485f99e561408192c594f8c2e92', 'LG', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 0, 1, 0, 61, 61),
+(2, '1642d900f6768119e3dd75bbf8ed0fc2', 'Nokia', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 1, 1, 0, 0, 61),
+(3, '11d08dc2db3920364304c6ed1192b5ba', 'THOSHIBA', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -211,7 +214,32 @@ CREATE TABLE IF NOT EXISTS `customers_payment_type` (
   `id` int(100) unsigned NOT NULL AUTO_INCREMENT,
   `guid` varchar(100) NOT NULL,
   `type` varchar(50) NOT NULL,
+  `branch_id` varchar(100) NOT NULL,
+  `active` int(11) NOT NULL,
   `active_status` int(11) NOT NULL,
+  `delete_status` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `customers_payment_type`
+--
+
+INSERT INTO `customers_payment_type` (`id`, `guid`, `type`, `branch_id`, `active`, `active_status`, `delete_status`) VALUES
+(1, 'C56A2A7E-E8DE-43FD-BF05-1970CE5EC269', 'credit', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 0, 1, 0),
+(2, '2639721dea1f5cd1c5557f41b4e65d46', 'Credit Only', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 1, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `customers_payment_type_x_page_x_permissions`
+--
+
+CREATE TABLE IF NOT EXISTS `customers_payment_type_x_page_x_permissions` (
+  `id` int(100) unsigned NOT NULL AUTO_INCREMENT,
+  `permission` int(100) NOT NULL,
+  `depart_id` varchar(100) NOT NULL,
+  `branch_id` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -264,25 +292,6 @@ INSERT INTO `customers_x_page_x_permissions` (`id`, `guid`, `permission`, `depar
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customers_x_payment_types_details`
---
-
-CREATE TABLE IF NOT EXISTS `customers_x_payment_types_details` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `guid` varchar(100) NOT NULL,
-  `branch_id` varchar(100) NOT NULL,
-  `customer_id` varchar(100) NOT NULL,
-  `payment_type_id` varchar(100) NOT NULL,
-  `limit` varchar(100) NOT NULL,
-  `balance` varchar(100) NOT NULL,
-  `credit_days` int(11) NOT NULL,
-  `monthly_limit` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `customer_category_x_page_x_permissions`
 --
 
@@ -313,6 +322,7 @@ INSERT INTO `customer_category_x_page_x_permissions` (`id`, `permission`, `depar
 
 CREATE TABLE IF NOT EXISTS `items` (
   `id` int(200) unsigned NOT NULL AUTO_INCREMENT,
+  `guid` varchar(100) NOT NULL,
   `code` varchar(100) NOT NULL,
   `barcode` varchar(100) NOT NULL,
   `category_id` varchar(100) NOT NULL,
@@ -333,12 +343,21 @@ CREATE TABLE IF NOT EXISTS `items` (
   `tax_area_id` varchar(100) NOT NULL,
   `location` varchar(100) NOT NULL,
   `deleted_by` varchar(100) NOT NULL,
+  `active` int(11) NOT NULL,
   `active_status` int(11) NOT NULL,
   `delete_status` int(11) NOT NULL,
   `added_by` varchar(100) NOT NULL,
   `code_status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`id`, `guid`, `code`, `barcode`, `category_id`, `branch_id`, `supplier_id`, `name`, `description`, `cost_price`, `mrf`, `landing_cost`, `brand_id`, `item_type_id`, `selling_price`, `discount_amount`, `start_date`, `end_date`, `tax_id`, `tax_area_id`, `location`, `deleted_by`, `active`, `active_status`, `delete_status`, `added_by`, `code_status`) VALUES
+(1, 'ytyutuytoi', 'fd nhdfndf', '', 'yiuiy', 'utuytu', 'uytuyt', '', '', '', '', '', 'jhgj', '', '', '', '', '', '', '', '', '', 0, 0, 0, '', 0),
+(2, 'ytyutuytoi', 'fd nhdfndf', 'dstre', 'reyer', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 'erbyre', '', '', '', '', '', 'yutuytu', 'jhgjhg', '', '', '', '', '', '', '', '', 0, 0, 0, '', 0);
 
 -- --------------------------------------------------------
 
@@ -549,7 +568,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `active_status` int(11) NOT NULL,
   `delete_status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `modules`
@@ -572,7 +591,8 @@ INSERT INTO `modules` (`id`, `guid`, `module_name`, `added_date`, `deleted_date`
 (14, '23B67A1A-0675-4DE9-98E3-7ACFA6637F25', 'customer_category', 102, 0, '0', '0', 0, 0),
 (15, 'DA79AE6E-7D46-4BB4-AD47-CD37F5BBB615', 'user_groupsci', 102, 0, '0', '0', 0, 0),
 (16, '3AAFF903-73E6-4987-BFE1-8F24E268BDC9', 'branchCI', 102, 0, '0', '0', 0, 0),
-(17, '6D825F4C-44E0-4CF4-8FD2-A5FEA57E8FC1', 'purchase_oder', 102, 0, '0', '0', 0, 0);
+(17, '6D825F4C-44E0-4CF4-8FD2-A5FEA57E8FC1', 'purchase_oder', 102, 0, '0', '0', 0, 0),
+(18, 'B299A7BB-7709-4B0B-966E-023F1CA77058', 'customers_payment_type', 102, 0, '0', '0', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -590,7 +610,7 @@ CREATE TABLE IF NOT EXISTS `modules_x_branchs` (
   `added_by` varchar(100) NOT NULL,
   `deleted_by` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 --
 -- Dumping data for table `modules_x_branchs`
@@ -614,7 +634,8 @@ INSERT INTO `modules_x_branchs` (`id`, `guid`, `branch_id`, `module_id`, `active
 (15, '23B67A1A-0675-4DE9-98E3-7ACFA6637F25', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', '23B67A1A-0675-4DE9-98E3-7ACFA6637F25', 0, 0, '0', '0'),
 (16, 'DA79AE6E-7D46-4BB4-AD47-CD37F5BBB615', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 'DA79AE6E-7D46-4BB4-AD47-CD37F5BBB615', 0, 0, '0', '0'),
 (17, '3AAFF903-73E6-4987-BFE1-8F24E268BDC9', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', '3AAFF903-73E6-4987-BFE1-8F24E268BDC9', 0, 0, '0', '0'),
-(18, '6D825F4C-44E0-4CF4-8FD2-A5FEA57E8FC1', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', '6D825F4C-44E0-4CF4-8FD2-A5FEA57E8FC1', 0, 0, '0', '0');
+(18, '6D825F4C-44E0-4CF4-8FD2-A5FEA57E8FC1', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', '6D825F4C-44E0-4CF4-8FD2-A5FEA57E8FC1', 0, 0, '0', '0'),
+(19, 'B299A7BB-7709-4B0B-966E-023F1CA77058', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 'B299A7BB-7709-4B0B-966E-023F1CA77058', 0, 0, '0', '0');
 
 -- --------------------------------------------------------
 
@@ -681,7 +702,7 @@ CREATE TABLE IF NOT EXISTS `sales_x_page_x_permission` (
   `depart_id` varchar(100) NOT NULL,
   `branch_id` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -810,13 +831,25 @@ CREATE TABLE IF NOT EXISTS `suppliers` (
   `country` varchar(50) NOT NULL,
   `comments` varchar(255) NOT NULL,
   `account_number` varchar(50) NOT NULL,
+  `active` int(11) NOT NULL,
   `active_status` int(11) NOT NULL,
   `delete_status` int(11) NOT NULL,
+  `deleted_by` varchar(100) NOT NULL,
   `website` varchar(100) NOT NULL,
   `branch_id` varchar(100) NOT NULL,
-  `created_by` varchar(100) NOT NULL,
+  `added_by` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `suppliers`
+--
+
+INSERT INTO `suppliers` (`id`, `guid`, `company_name`, `first_name`, `last_name`, `email`, `phone`, `address1`, `address2`, `city`, `state`, `zip`, `country`, `comments`, `account_number`, `active`, `active_status`, `delete_status`, `deleted_by`, `website`, `branch_id`, `added_by`) VALUES
+(1, 'ceab8c7d14f12aaeec1dc19b3d81212a', 'JK', 'Jayesh1', 'gopi', 'julibeth34@yahoo.in', '7795390584', 'ewrter', 'wertwe', 'ewrtwe', 'reter', 'rterter', 'rtertre', 'sdfsdfsd', 'ew43643', 0, 0, 0, '61F8FC7E-CB3F-4CC5-9EF2-4ED38DC992B4', 'sfgedtrere', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', '61F8FC7E-CB3F-4CC5-9EF2-4ED38DC992B4'),
+(2, '7988d76f85fb01646eb9d9b01530c460', 'iouoi', 'Manu', 'km', 'jibi@pluskb.com', '7795398584', 'hjhk', 'uyiuyi', 'iuyiuyi', 'iyiuyi', 'iyiuy', 'iiuyiuy', 'uouu', 'uoiuo', 0, 0, 0, '61F8FC7E-CB3F-4CC5-9EF2-4ED38DC992B4', 'oiuoiu', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', ''),
+(3, 'c76d55c21f9d4f577b26fba515a8066f', 'uytuy', 'Nijan', 'xjhk', 'jhkjhj@kjhkj.com', '7878797989', 'yiuy', 'iyiuy', 'iuyiuy', 'iuyiuy', 'iyiuy', 'iuyi', 'tutuyt', 'uytuy', 0, 0, 0, '', 'tuytuy', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', ''),
+(4, '6148f274388f64b43123c3598c3fcf81', 'yutu', 'Kiran', 'yutuy', 'ytghgu@jkjkl.com', '878687687', 'tuyt', 'uytuyt', 'uytuytuy', 'tuytu', 'yuytuytu', 'uytuyt', 'uytuy', 'uytuyt', 0, 0, 0, '', 'uytu', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', '');
 
 -- --------------------------------------------------------
 
@@ -934,7 +967,15 @@ CREATE TABLE IF NOT EXISTS `taxes` (
   `added_by` varchar(100) NOT NULL,
   `deleted_by` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `taxes`
+--
+
+INSERT INTO `taxes` (`id`, `guid`, `value`, `branch_id`, `type`, `active_status`, `delete_status`, `added_by`, `deleted_by`) VALUES
+(1, '2ba78d7500ac92e84953cbe019741703', '5', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 'Vat', 0, 0, '61F8FC7E-CB3F-4CC5-9EF2-4ED38DC992B4', ''),
+(2, '81757ff8617e8582c3647d14a4291233', '10', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 'Normal', 0, 0, '61F8FC7E-CB3F-4CC5-9EF2-4ED38DC992B4', '');
 
 -- --------------------------------------------------------
 
@@ -975,9 +1016,10 @@ INSERT INTO `taxes_area` (`id`, `guid`, `name`, `branch_id`, `active_status`, `d
 
 CREATE TABLE IF NOT EXISTS `taxes_commodity` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `guid` varchar(100) NOT NULL,
   `branch_id` varchar(100) NOT NULL,
   `schedule` varchar(100) NOT NULL,
-  `tax_area` int(11) NOT NULL,
+  `tax_area` varchar(100) NOT NULL,
   `description` varchar(200) NOT NULL,
   `part` varchar(100) NOT NULL,
   `code` varchar(200) NOT NULL,
@@ -987,7 +1029,15 @@ CREATE TABLE IF NOT EXISTS `taxes_commodity` (
   `added_by` varchar(100) NOT NULL,
   `deleted_by` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `taxes_commodity`
+--
+
+INSERT INTO `taxes_commodity` (`id`, `guid`, `branch_id`, `schedule`, `tax_area`, `description`, `part`, `code`, `tax`, `active_status`, `delete_status`, `added_by`, `deleted_by`) VALUES
+(4, '4f160e2434fe0e0b01da625b4e31461c', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 'simple', '2d81a2d79b828aa9e3d109184961925a', 'south', 'Pasd', 'TND-123', '2ba78d7500ac92e84953cbe019741703', 0, 0, '61F8FC7E-CB3F-4CC5-9EF2-4ED38DC992B4', ''),
+(5, 'd7226f693d76b072f1fdf50f3089339a', 'BE4CB6FB-276C-457A-9D0F-D7948222EBB3', 'simple', '60800ab1992c2df5952c54bbf19f5601', 'North', 'Pasd', 'TND-124', '81757ff8617e8582c3647d14a4291233', 0, 0, '61F8FC7E-CB3F-4CC5-9EF2-4ED38DC992B4', '');
 
 -- --------------------------------------------------------
 
