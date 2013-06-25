@@ -1,73 +1,33 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); echo $links; 
-?><table style="width: 550px">
+<?php
+echo form_open('items/item_magement');
+echo "<table>";
+
+if($count>0){$i=0;
+if($_SESSION['Posnic_User']=='admin'){
     
-<?php  echo  form_open('items/items_details'); 
-if($count!=0){
-      if($_SESSION['admin']==2){?><table >
-          <?php foreach ($row as $erow){
-        
-              ?>
-          
-          <tr><td><input type="checkbox" name="mycheck[]" value="<?php echo $erow->id ?>" /><td style="width: 100px"><?php echo $erow->code ; ?>
-        </td><td  style="width: 100px"><?php echo $erow->name  ?></td><td  style="width: 150px"><?php echo $erow->brand_id  ?></td>
-        <td style="width: 100px"><?php echo $erow->selling_price ?></td><td  style="width: 100px">
-            
-            <?php foreach ($branch as $user_b){
-            if($user_b->id==$erow->branch_id){
-                echo $user_b->store_name;
-            }
-                    
-            }?>
-        
-        </td> <td style="width: 150;margin-left: 150px"><?php if($erow->active_status==0){ ?><a href="<?php echo base_url() ?>index.php/items/to_deactivate_item/<?php echo $erow->id ?>">Deactivate</a> <?php } else{ ?><a href="<?php echo base_url() ?>index.php/items/to_activate_item/<?php echo $erow->id ?>"> Activate</a> <?php } ?></td>
-        <td style="width: 100px"><a href="<?php echo base_url() ?>index.php/items/edit_item_details/<?php echo $erow->id ?>"><?php echo $this->lang->line('edit') ?></a><td>
-        <td><a href=" <?php echo base_url() ?>index.php/items/delete_item_details_in_admin/<?php echo $erow->id ?>"><?php echo $this->lang->line('delete') ?></a></td>
-    </tr><?php }?></table>
-    <tb><?php echo form_submit('activate',$this->lang->line('activate'))?></td><tb><?php echo form_submit('deactivate',$this->lang->line('deactivate'))?></td><td><input type="submit" name="delete_item_for_admin" value="<?php echo $this->lang->line('delete') ?>"></td><tb><input type="submit" name="Add_item" value="<?php echo $this->lang->line('add_new_item') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
-  
-     <?php }else{?><table ><?php
-foreach ($row as $erow){
-        
+    echo "<tr><td>SL NO</td><td></td><td>Code</td><td>Category</td><td>Supplier</td><td>Brand</td></tr>";
+    foreach ($row as $prow){
+    echo "<tr><td>".++$i."</td><td>";?> <input type="checkbox" name="posnic[]" value="<?php echo $prow->guid ?>" /><?php echo "</td><td>$prow->code</td><td>$prow->company_name</td><td> $prow->phone</td><td>"?><a href="<?php echo base_url()?>index.php/suppliers/edit_supplier/<?php echo $prow->guid ?>">Edit</a> <?php echo "</td><td>"; if($prow->active==1){?><a href="<?php echo base_url()?>index.php/suppliers/active_supplier/<?php echo $prow->guid ?>"><?php echo $this->lang->line('active') ?></a> <?php }else{ ?><a href="<?php echo base_url()?>index.php/suppliers/deactive_supplier/<?php echo $prow->guid ?>"><?php echo $this->lang->line('deactive') ?></a> <?php  } if($prow->active_status==1){?><a href="<?php echo base_url()?>index.php/suppliers/restore_supplier/<?php echo $prow->guid ?>"><?php echo $this->lang->line('restore') ?></a> <?php } echo  "</td><td>"; ?><a href="<?php echo base_url()?>index.php/suppliers/delete/<?php echo $prow->guid ?>"><?php echo $this->lang->line('delete') ?></a> <?php "</td>";
+    
+    }
+    echo "</table>";
+    echo form_submit('active',$this->lang->line('active'));
+    echo form_submit('deactive',$this->lang->line('deactive'));
    
-?>   
+}else{
+    echo "<tr><td>SL NO</td><td>Name</td><td>companny</td><td>Phone</td></tr>";
+    foreach ($row as $prow){
+    echo "<tr><td>".++$i."</td><td>";?> <input type="checkbox" name="posnic[]" value="<?php echo $prow->guid ?>" /><?php echo "</td><td>$prow->Code</td><td>$prow->company_name</td><td> $prow->phone</td><td>"?><a href="<?php echo base_url()?>index.php/suppliers/edit_supplier/<?php echo $prow->guid ?>">Edit</a> <?php echo "</td><td>"; if($prow->active==1){?><a href="<?php echo base_url()?>index.php/suppliers/active_supplier/<?php echo $prow->guid ?>"><?php echo $this->lang->line('active') ?></a> <?php }else{ ?><a href="<?php echo base_url()?>index.php/suppliers/deactive_supplier/<?php echo $prow->guid ?>"><?php echo $this->lang->line('deactive') ?></a> <?php  }  echo  "</td><td>"; ?><a href="<?php echo base_url()?>index.php/suppliers/delete/<?php echo $prow->guid ?>"><?php echo $this->lang->line('delete') ?></a> <?php echo "</td>";
     
-    <tr><td><input type="checkbox" name="mycheck[]" value="<?php echo $erow->id ?>" /><td style="width: 100px"><?php echo $erow->code ?>
-        </td><td  style="width: 100px"><?php echo $erow->name ?></td><td  style="width: 150px">
-            <?php foreach ($brands as $item_brands){
-            if($item_brands->id==$erow->brand_id ){
-                echo $item_brands->name;
-            }
-                  
-            }?></td>
-        <td style="width: 100px"><?php echo $erow->selling_price ?></td><td  style="width: 100px">
-            
-           <?php foreach ($branch as $user_b){
-            if($user_b->id==$erow->branch_id){
-                echo $user_b->store_name;
-            }
-                    
-            }?>
-        
-        </td>
-        <td style="width: 100px"><a href="<?php echo base_url() ?>index.php/items/edit_item_details/<?php echo $erow->id ?>"><?php echo $this->lang->line('edit') ?></a><td><td style="width: 100px"><a href="<?php echo base_url() ?>index.php/items/delete_item/<?php echo $erow->id ?>"><?php echo $this->lang->line('delete') ?></a></td>
-    
-    </tr>
-    <?php ?>
-
-<?php }?></table> 
-<tb><input type="submit" name="delete_all" value="<?php echo $this->lang->line('delete') ?>"></td><tb><input type="submit" name="Add_item" value="<?php echo $this->lang->line('add_new_item') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
+    }
+    echo "</table>";
+    echo form_submit('active',$this->lang->line('active'));
+    echo form_submit('deactive',$this->lang->line('deactive'));
+}  
+echo form_submit('delete',$this->lang->line('delete'));
+}else{
   
-<?php }
-}else{   if($_SESSION['admin']==2){ ?>
-    <td><input type="submit" name="Add_item" value="<?php echo $this->lang->line('add_new_item') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
- 
-<?php }else{?>
-    <td><input type="submit" name="Add_item" value="<?php echo $this->lang->line('add_new_item') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
- 
-<?php }
+} 
 
-}
-
-
-?>  
-  <?php   echo form_close() ?> 
+echo form_submit('add',$this->lang->line('add'));echo form_submit('cancel',$this->lang->line('back_to_home'));
+?>

@@ -15,7 +15,7 @@ class Customers_payment_type extends CI_Controller{
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-               $data['count']=$this->posnic->posnic_count();                 
+                $data['count']=$this->posnic->posnic_count();                 
 	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
 	        $data["links"] = $this->pagination->create_links();  
                 $this->load->view('payment_type',$data);
