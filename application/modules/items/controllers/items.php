@@ -19,7 +19,10 @@ class Items extends CI_Controller{
 	        $data["links"] = $this->pagination->create_links();
                 $this->load->view('item_list',$data);
     }
-      function items_details(){
+    function item_magement(){
+        echo "jiji";
+    }
+            function items_details(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('items');} else{
             if($this->input->post('BacktoHome')){
                 redirect('home');
