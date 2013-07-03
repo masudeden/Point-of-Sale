@@ -30,6 +30,7 @@ class Acluser{
                );
 
         $_SESSION[$mod.'_per']=$item;
+        $_SESSION[$mod]='On';
         
         
         
@@ -44,7 +45,8 @@ class Acluser{
                    'delete'=>1
                );
 
-        $_SESSION[$sasi."_per"]=$item;  
+        $_SESSION[$sasi."_per"]=$item; 
+        $_SESSION[$sasi]='On';
     }
     function user_full_permissions(){
         $user=$_SESSION['user_groupsci_per']['depa']+ $_SESSION['branchCI_per']['branch']+$_SESSION['users_per']['user']+$_SESSION['items_per']['item'];

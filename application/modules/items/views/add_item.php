@@ -10,6 +10,7 @@ $( "#date_end_picker" ).datepicker();
 });
 
 </script><?php
+
      echo form_open('items/add_new_item');
      echo "<table>";
      echo "<tr><td>"; echo form_label($this->lang->line('code'));echo "</td><td>";echo form_input('code',set_value('code'),'id="code" autofocus');echo "</td></tr>";
@@ -24,12 +25,22 @@ $( "#date_end_picker" ).datepicker();
      echo "<tr><td>"; echo form_label($this->lang->line('start_date'));echo "</td><td>";echo form_input('start_date',set_value('start_date'),'id="date_start_picker" autofocus');echo "</td></tr>";
      echo "<tr><td>"; echo form_label($this->lang->line('end_date'));echo "</td><td>";echo form_input('end_date',set_value('end_date'),'id="date_end_picker" autofocus');echo "</td></tr>";
      echo "<tr><td>"; echo form_label($this->lang->line('location'));echo "</td><td>";echo form_input('location',set_value('location'),'id="location" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('cate_name'));echo "</td><td>"; ?><select  style="width:150" name="category"><?php    foreach ($crow as $irow){ ?><option name="<?php echo $irow->id  ?> " value="<?php echo $irow->id  ?>"> <?php echo $irow->category_name  ?> </option><?php }echo "</select>";?> <?php   echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('supplier'));echo "</td><td>";  if(count($srow)>0 ){ ?><select style="width:150" name="supplier"  ><?php foreach ($srow as $cs_row){        foreach ($sb_row as $csk_row){ if($cs_row->supplier_id == $csk_row->id){ ?><option name="<?php echo $csk_row->id  ?>" value="<?php echo $csk_row->id  ?>"> <?php echo $csk_row->company_name  ?> </option><?php }}}echo "</select>";?> <?php }  echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('brands'));echo "</td><td>"; echo "<select name=brand>";foreach ($brands as $ibrand){ ?><option value="<?php echo $ibrand->id ?>"><?php echo $ibrand->name?></option> <?php } echo "</select>"; echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('tax_area'));echo "</td><td>"; echo "<select name=area>";foreach ($area as $tarea){ ?><option value="<?php echo $tarea->id ?>"><?php echo $tarea->name ?></option> <?php } echo "</select>"; echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('tax'));echo "</td><td>"; echo "<select name=tax>";foreach ($taxes as $ttax){ ?><option value="<?php echo $ttax->id ?>"><?php echo $ttax->value."%-".$ttax->type ?></option> <?php } echo "</select>"; echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('tax_Inclusive'));echo "</td><td>"; echo "<select name=tax_in>";?><option value="1">Yes</option> <option value="1">No</option> <?php  echo "</select>"; echo "</td></tr>";
+    if($_SESSION['items_category']=='On'){
+     echo "<tr><td>"; echo form_label($this->lang->line('cate_name'));echo "</td><td>"; ?><select  style="width:150" name="category"><?php    foreach ($crow as $irow){ ?><option name="<?php echo $irow->guid  ?> " value="<?php echo $irow->guid  ?>"> <?php echo $irow->category_name  ?> </option><?php }echo "</select>";?> <?php   echo "</td></tr>";
+    }
+    if($_SESSION['suppliers']=='On'){
+     echo "<tr><td>"; echo form_label($this->lang->line('supplier'));echo "</td><td>";  if(count($srow)>0 ){ ?><select style="width:150" name="supplier"  ><?php foreach ($srow as $cs_row){      ?><option name="<?php echo $cs_row->guid  ?>" value="<?php echo $cs_row->guid  ?>"> <?php echo $cs_row->company_name  ?> </option><?php }echo "</select>";?> <?php }  echo "</td></tr>";
+    }
+    if($_SESSION['brands']=='On'){
+     echo "<tr><td>"; echo form_label($this->lang->line('brands'));echo "</td><td>"; echo "<select name=brand>";foreach ($brands as $ibrand){ ?><option value="<?php echo $ibrand->guid ?>"><?php echo $ibrand->name?></option> <?php } echo "</select>"; echo "</td></tr>";
+    }
+    if($_SESSION['taxes_area']=='On'){
+     echo "<tr><td>"; echo form_label($this->lang->line('tax_area'));echo "</td><td>"; echo "<select name=area>";foreach ($area as $tarea){ ?><option value="<?php echo $tarea->guid ?>"><?php echo $tarea->name ?></option> <?php } echo "</select>"; echo "</td></tr>";
+    }
+    if($_SESSION['taxes']=='On'){
+     echo "<tr><td>"; echo form_label($this->lang->line('tax'));echo "</td><td>"; echo "<select name=tax>";foreach ($taxes as $ttax){ ?><option value="<?php echo $ttax->guid ?>"><?php echo $ttax->value."%-".$ttax->type ?></option> <?php } echo "</select>"; echo "</td></tr>";   
+    }
+    echo "<tr><td>"; echo form_label($this->lang->line('tax_Inclusive'));echo "</td><td>"; echo "<select name=tax_in>";?><option value="1">Yes</option> <option value="1">No</option> <?php  echo "</select>"; echo "</td></tr>";
      
      echo "<tr><td>"; echo form_submit('save',$this->lang->line('save'));echo "</td><td>";echo form_submit('cancel',$this->lang->line('cancel')); echo "</td></tr>";
    echo "</table>";

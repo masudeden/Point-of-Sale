@@ -2,7 +2,8 @@
 class Items extends CI_Controller{
     function __construct() {
                 parent::__construct();
-               $this->load->library('posnic'); 
+               $this->load->library('posnic');    
+               
     }
     function index(){     
             $this->get_items();
@@ -20,13 +21,29 @@ class Items extends CI_Controller{
                 $this->load->view('item_list',$data);
     }
     function item_magement(){
-        echo "jiji";
+     if($this->input->post('add')){
+            if($_SESSION['Posnic_Add']==="Add"){
+                    $data['brands']=$this->posnic->posnic_module('brands');
+                    $data['taxes']=$this->posnic->posnic_module('taxes');
+                    $data['area']=  $this->posnic->posnic_module('taxes_area');
+                    $data['crow']=$this->posnic->posnic_module('items_category');
+                    $data['srow']=$this->posnic->posnic_module('suppliers');                   
+                    $this->load->view('add_item',$data);
+            }
+     }
+     if($this->input->post('cancel')){
+         redirect('home');
+     }
     }
             function items_details(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('items');} else{
             if($this->input->post('BacktoHome')){
                 redirect('home');
             }
+            
+            
+         
+            
             if($this->input->post('Add_item')){
                 if($_SESSION['items_per']['add']==1){
                     $this->add_new_item_in_branch();
@@ -105,22 +122,16 @@ class Items extends CI_Controller{
         
     }
     function add_new_item_in_branch(){
-        if(!$_SERVER['HTTP_REFERER']){ redirect('items'); }else{
-        if($_SESSION['items_per']['add']==1){
-        $this->load->model('item_model');
-                    $data['brands']=  $this->item_model->get_brands_user($_SESSION['Bid']);
-                    $data['taxes']=  $this->item_model->get_tax_for_user($_SESSION['Bid']);
-                    $data['area']=  $this->item_model->get_tax_area_for_user($_SESSION['Bid']);
-                    $data['crow']=$this->item_model->get_category($_SESSION['Bid']);
-                    $data['srow']=$this->item_model->get_suppier_in_branch($_SESSION['Bid']);
-                    $data['sb_row']=$this->item_model->get_supplier_details();
-                    $this->load->view('template/header');
+        if($_SESSION['Posnic_Add']==="Add"){
+                    $data['brands']=$this->posnic->posnic_module('brands');
+                    $data['taxes']=$this->posnic->posnic_module('taxes');
+                    $data['area']=  $this->posnic->posnic_module('taxes_area');
+                    $data['crow']=$this->posnic->posnic_module('items_category');
+                    $data['srow']=$this->posnic->posnic_module('suppliers');                   
                     $this->load->view('add_item',$data);
-                    $this->load->view('template/footer');
-        }else{
-            redirect('items');
-        }           
-        }
+            }else{
+                redirect('items');
+            }
     }
     function delete_item_details_in_admin($id){
         if(!$_SERVER['HTTP_REFERER']){ redirect('items'); }else{
@@ -204,12 +215,12 @@ class Items extends CI_Controller{
         }
     }
     function add_new_item(){
-        if(!$_SERVER['HTTP_REFERER']){ redirect('items'); }else{
+        
         if($this->input->post('cancel')){
             redirect('items');
         }
         if($this->input->post('save')){
-             if($_SESSION['items_per']['add']==1){
+              if($_SESSION['Posnic_Add']==="Add"){
                   $this->form_validation->set_rules("code",$this->lang->line('code'),"required");
                             $this->form_validation->set_rules("item_name",$this->lang->line('item_name'),"required");
                             $this->form_validation->set_rules("cost_price",$this->lang->line('cost_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');                           
@@ -222,43 +233,48 @@ class Items extends CI_Controller{
                             $this->form_validation->set_rules("category",$this->lang->line('category'),"required");
                             $this->form_validation->set_rules("supplier",$this->lang->line('supplier'),"required");
                             
-                        if ( $this->form_validation->run() !== false ) {
-                                    $this->load->model('item_model');
-                                    $code=$this->input->post('code');
-                                    $barcode=  $this->input->post('barcode');
-                                    $item_name=$this->input->post('item_name');
-                                    $description=$this->input->post('description');
-                                    $cost=$this->input->post('cost_price');
-                                    $sellimg=$this->input->post('selling_price');                                    
-                                    $landing=$this->input->post('landing_cost');
-                                    $mrf=$this->input->post('mrf_price');
-                                    $discount=$this->input->post('discount_amount');
-                                    $start=strtotime($this->input->post('start_date'));
-                                    $end=strtotime($this->input->post('end_date'));
-                                    $tax_in=  $this->input->post('tax_in');
-                                    $location=$this->input->post('location');                                    
-                                    $category=$this->input->post('category');
-                                    $suppier=$this->input->post('supplier');
-                                    $tax=  $this->input->post('tax');
-                                    $area=  $this->input->post('area');
-                                    $brand=  $this->input->post('brand');
-                                    if($this->item_model->check_item($code,$_SESSION['Bid'])){
-                                    $item_id= $this->item_model->add_item($_SESSION['Bid'],$_SESSION['Uid'],$tax,$area,$brand,$code,$barcode,$item_name,$description,$cost,$sellimg,$landing,$mrf,$discount,$start,$end,$location,$category,$suppier);
-                                    $this->item_model->item_setting($tax_in,$item_id,$_SESSION['Bid']);
-                                    $this->item_model->item_supplier($item_id,$cost,$sellimg,$suppier,$_SESSION['Bid'],$_SESSION['Uid']);
-                                    redirect('items');
-                                    }else{
-                                        echo " this item is  already added in this branch";
-                                        $this->add_new_item_in_branch();
-                                    }
-            
-                        }else{
-                            $this->add_new_item_in_branch();
-                        }
+                         include'../posnic/posnic.php';  
+                         for($i=0;$i<count($data);$i++){
+                             echo $data[$i][1];
+                         }
+                            
+//                        if ( $this->form_validation->run() !== false ) {
+//                                    $this->load->model('item_model');
+//                                    $code=$this->input->post('code');
+//                                    $barcode=  $this->input->post('barcode');
+//                                    $item_name=$this->input->post('item_name');
+//                                    $description=$this->input->post('description');
+//                                    $cost=$this->input->post('cost_price');
+//                                    $sellimg=$this->input->post('selling_price');                                    
+//                                    $landing=$this->input->post('landing_cost');
+//                                    $mrf=$this->input->post('mrf_price');
+//                                    $discount=$this->input->post('discount_amount');
+//                                    $start=strtotime($this->input->post('start_date'));
+//                                    $end=strtotime($this->input->post('end_date'));
+//                                    $tax_in=  $this->input->post('tax_in');
+//                                    $location=$this->input->post('location');                                    
+//                                    $category=$this->input->post('category');
+//                                    $suppier=$this->input->post('supplier');
+//                                    $tax=  $this->input->post('tax');
+//                                    $area=  $this->input->post('area');
+//                                    $brand=  $this->input->post('brand');
+//                                    if($this->item_model->check_item($code,$_SESSION['Bid'])){
+//                                    $item_id= $this->item_model->add_item($_SESSION['Bid'],$_SESSION['Uid'],$tax,$area,$brand,$code,$barcode,$item_name,$description,$cost,$sellimg,$landing,$mrf,$discount,$start,$end,$location,$category,$suppier);
+//                                    $this->item_model->item_setting($tax_in,$item_id,$_SESSION['Bid']);
+//                                    $this->item_model->item_supplier($item_id,$cost,$sellimg,$suppier,$_SESSION['Bid'],$_SESSION['Uid']);
+//                                    redirect('items');
+//                                    }else{
+//                                        echo " this item is  already added in this branch";
+//                                        $this->add_new_item_in_branch();
+//                                    }
+//            
+//                        }else{
+//                            $this->add_new_item_in_branch();
+//                        }
         
              } 
         }
-    }
+    
     }
     
   

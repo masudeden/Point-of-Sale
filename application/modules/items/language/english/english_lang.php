@@ -15,7 +15,7 @@ $lang['code']='Item Code';
  $lang['barcode']='Item Barcode';
  $lang['item_name'] 	='Item Name';
  $lang['description']='Item Description';
- $lang['cost_price']='Cost Price';
+ $lang['cost_price']='Cost';
  $lang['unit_price']='Unit Price';
  $lang['discount_amount']='Discount persentage';
  $lang['start_date']='Starting Date';
@@ -29,6 +29,12 @@ $lang['code']='Item Code';
  $lang['cate_name']='Category Name';
  $lang['receiving_item']='Stock Items';
  $lang['current_stock']='Available Stocks';
+ $lang['supplier']="Supplier";
+ $lang['brands']='Brands';
+ $lang['tax_area']='Tax Area';
+ $lang['tax_Inclusive']='Tax Inclusive';
+ $lang['mrf_price']='M R F';
+ $lang['landing_cost']='Landing Cost';
 
 
 

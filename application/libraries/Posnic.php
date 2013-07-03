@@ -16,6 +16,7 @@ class Posnic{
                 $CI->poslanguage->set_language();
                 $CI->load->library("pagination");
                 $CI->load->model('posnic_model');
+               
                 
           if(!isset($_SESSION['Uid'])){
              redirect('home');
@@ -89,7 +90,13 @@ class Posnic{
             echo 'You have no permission';
         }
     }
-    function posnic_two($value1,$value2,$table,$where){
+    function posnic_module($table){
+        if($_SESSION[$table]==='On'){
+             $CI=  get_instance();
+             return $CI->posnic_model->module_result($table,$_SESSION['Bid']);
+        }
+    }
+            function posnic_two($value1,$value2,$table,$where){
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
     }

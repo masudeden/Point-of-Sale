@@ -120,12 +120,12 @@ $lang['company']='Comapany';
  
  $lang['supplier_vs_items']='Supplier Vs Items';
  
- $lang['tax']='Tax';
+ $lang['taxes']='Tax';
  $lang['commodity']=' Tax Commodity';
- $lang['tax_area']='Tax Area';
+ $lang['taxes_area']='Tax Area';
  $lang['tax_type']='Tax Type';
  $lang['tax_commodity']='Tax Commodity';
- $lang['items_category']='Items category';
+ $lang['item_category']='Items category';
  $lang['item_code']='Item Code';
  $lang['tCode']='Tax Code';
  $lang['tdescription']='Tax Description';

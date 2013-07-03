@@ -135,5 +135,10 @@ class posnic_model extends CI_model{
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
+    function module_result($table,$bid){
+        $this->db->select()->from($table)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid);
+        $sql=  $this->db->get();
+        return $sql->result();
+    }
 }
 ?>
