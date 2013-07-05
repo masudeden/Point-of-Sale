@@ -132,28 +132,20 @@ class Customers_payment_type extends CI_Controller{
             }
             }
             if($this->input->post('active')){
-               if($_SESSION['Posnic_User']=='admin'){
                    $data=  $this->input->post('posnic');
                     foreach( $data as $key => $guid){  
                           $this->posnic->posnic_active($guid);
                }
               redirect('Customers_payment_type');
-               }
-                else{
-                   redirect('Customers_payment_type');
-            }
+              
         }
             if($this->input->post('deactive')){
-               if($_SESSION['Posnic_User']=='admin'){
                    $data=  $this->input->post('posnic');
                     foreach( $data as $key => $guid){  
                           $this->posnic->posnic_deactive($guid);
                }
               redirect('Customers_payment_type');
-               }
-            else{
-                   redirect('Customers_payment_type');
-            }
+              
         }
             if($this->input->post('delete')){
                if($_SESSION['Posnic_Delete']==="Delete"){
