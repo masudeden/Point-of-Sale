@@ -43,6 +43,9 @@ $lang['Credit Days']='Credit Days';
  $lang['cst']='CST No.';
  $lang['gst']='GST No.';
  $lang['title_of_customer']='Title';
+ $lang['active']='Active';
+ $lang['deactive']='Deactive';
+ $lang['restore']='Restore';
 
 
 ?>﻿

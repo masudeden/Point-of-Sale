@@ -66,20 +66,7 @@ class Suppliers extends CI_Controller{
                         }
                 }
         }
-    function edit_supplier_details($id){
-         if(!$_SERVER['HTTP_REFERER']){ redirect('suppliers'); }else{
-             if($_SESSION['suppliers_per']['edit']==1){
-                 $this->load->model('supplier_model');
-                 $data['row']= $this->supplier_model->get_supplier_details_for_edit($id);
-                  $this->load->view('template/header');
-                  $this->load->view('edit_supplier',$data);
-                  $this->load->view('template/footer');
-             }else{
-                 redirect('supplier');
-             }
-        }
-        
-    }
+    
     function update_supplier(){        
      
             if($this->input->post('cancel')){

@@ -1,71 +1,32 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); echo $links; 
-?><table style="width: 550px">
+<?php
+echo form_open('customers/customers_magement');
+echo "<table>";
+if($count>0){$i=0;
+if($_SESSION['Posnic_User']=='admin'){
     
-<?php  echo  form_open('customers/customers_details'); 
-if($count!=0){
-      if($_SESSION['admin']==2){?><table >
-          <?php foreach ($row as $b_row){
-          foreach ($urow as $erow){ if($b_row->customer_id==$erow->id){
-              ?>
-          
-          <tr><td><input type="checkbox" name="mycheck[]" value="<?php echo $erow->id ?>" /><td style="width: 100px"><?php echo $erow->first_name; ?>
-        </td><td  style="width: 100px"><?php echo $erow->phone ?></td><td  style="width: 150px"><?php echo $erow->email ?></td>
-        <td style="width: 100px"><?php echo $erow->last_name ?></td><td  style="width: 100px">
-            
-            <?php foreach ($branch as $user_b){
-            if($user_b->customer_id==$erow->id){
-                echo $user_b->branch_name;
-            }
-                    
-            }?>
-        
-        </td> <td style="width: 150;margin-left: 150px"><?php if($b_row->customer_active==0){ ?><a href="<?php echo base_url() ?>index.php/customers/to_deactivate_customer/<?php echo $erow->id ?>">Deactivate</a> <?php } else{ ?><a href="<?php echo base_url() ?>index.php/customers/to_activate_customer/<?php echo $erow->id ?>"> Activate</a> <?php } ?></td>
-        <td style="width: 100px"><a href="<?php echo base_url() ?>index.php/customers/edit_customer_details/<?php echo $erow->id ?>"><?php echo $this->lang->line('edit') ?></a><td>
-        <td><a href=" <?php echo base_url() ?>index.php/customers/delete_customer_details_in_admin/<?php echo $erow->id ?>"><?php echo $this->lang->line('delete') ?></a></td>
-    </tr><?php }}}?></table>
-<tb><?php echo form_submit('activate',$this->lang->line('activate'))?></td><tb><?php echo form_submit('deactivate',$this->lang->line('deactivate'))?></td><td><input type="submit" name="delete_customer_for_admin" value="<?php echo $this->lang->line('delete') ?>"></td><tb><input type="submit" name="Add_customer" value="<?php echo $this->lang->line('add_new_customer') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
-  
-     <?php }else{?><table ><?php
-foreach ($row as $b_row){
-          foreach ($urow as $erow){ if($b_row->customer_id==$erow->id){
+    echo "<tr><td>SL NO</td><td></td><td>Name</td><td>companny</td><td>Phone</td></tr>";
+    foreach ($row as $prow){
+    echo "<tr><td>".++$i."</td><td>";?> <input type="checkbox" name="posnic[]" value="<?php echo $prow->guid ?>" /><?php echo "</td><td>$prow->first_name</td><td>$prow->company_name</td><td> $prow->phone</td><td>"?><a href="<?php echo base_url()?>index.php/customers/edit_customers/<?php echo $prow->guid ?>">Edit</a> <?php echo "</td><td>"; if($prow->active==1){?><a href="<?php echo base_url()?>index.php/customers/active_customers/<?php echo $prow->guid ?>"><?php echo $this->lang->line('active') ?></a> <?php }else{ ?><a href="<?php echo base_url()?>index.php/customers/deactive_customers/<?php echo $prow->guid ?>"><?php echo $this->lang->line('deactive') ?></a> <?php  } if($prow->active_status==1){?><a href="<?php echo base_url()?>index.php/customers/restore_customers/<?php echo $prow->guid ?>"><?php echo $this->lang->line('restore') ?></a> <?php } echo  "</td><td>"; ?><a href="<?php echo base_url()?>index.php/customers/delete/<?php echo $prow->guid ?>"><?php echo $this->lang->line('delete') ?></a> <?php "</td>";
+    
+    }
+    echo "</table>";
+    echo form_submit('active',$this->lang->line('active'));
+    echo form_submit('deactive',$this->lang->line('deactive'));
    
-?>
-
-
-
+}else{
+    echo "<tr><td>SL NO</td><td>Name</td><td>companny</td><td>Phone</td></tr>";
+    foreach ($row as $prow){
+    echo "<tr><td>".++$i."</td><td>";?> <input type="checkbox" name="posnic[]" value="<?php echo $prow->guid ?>" /><?php echo "</td><td>$prow->first_name</td><td>$prow->company_name</td><td> $prow->phone</td><td>"?><a href="<?php echo base_url()?>index.php/customers/edit_customers/<?php echo $prow->guid ?>">Edit</a> <?php echo "</td><td>"; if($prow->active==1){?><a href="<?php echo base_url()?>index.php/customers/active_customers/<?php echo $prow->guid ?>"><?php echo $this->lang->line('active') ?></a> <?php }else{ ?><a href="<?php echo base_url()?>index.php/customers/deactive_customers/<?php echo $prow->guid ?>"><?php echo $this->lang->line('deactive') ?></a> <?php  }  echo  "</td><td>"; ?><a href="<?php echo base_url()?>index.php/customers/delete/<?php echo $prow->guid ?>"><?php echo $this->lang->line('delete') ?></a> <?php echo "</td>";
     
-    
-    <tr><td><input type="checkbox" name="mycheck[]" value="<?php echo $erow->id ?>" /><td style="width: 100px"><?php echo $erow->first_name; ?>
-        </td><td  style="width: 100px"><?php echo $erow->phone ?></td><td  style="width: 150px"><?php echo $erow->email ?></td>
-        <td style="width: 100px"><?php echo $erow->company_name ?></td><td  style="width: 100px">
-            
-           <?php foreach ($branch as $user_b){
-            if($user_b->customer_id==$erow->id){
-                echo $user_b->branch_name;
-            }
-                    
-            }?>
-        
-        </td>
-        <td style="width: 100px"><a href="<?php echo base_url() ?>index.php/customers/edit_customer_details/<?php echo $erow->id ?>"><?php echo $this->lang->line('edit') ?></a><td><td style="width: 100px"><a href="<?php echo base_url() ?>index.php/customers/delete_customer/<?php echo $erow->id ?>"><?php echo $this->lang->line('delete') ?></a></td>
-    
-    </tr>
-    <?php ?>
-
-<?php }}}?></table> 
-<tb><input type="submit" name="delete_all" value="<?php echo $this->lang->line('delete') ?>"></td><tb><input type="submit" name="Add_customer" value="<?php echo $this->lang->line('add_new_customer') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
+    }
+    echo "</table>";
+    echo form_submit('active',$this->lang->line('active'));
+    echo form_submit('deactive',$this->lang->line('deactive'));
+}  
+echo form_submit('delete',$this->lang->line('delete'));
+}else{
   
-<?php }
-}else{   if($_SESSION['admin']==2){ ?>
-    <tb><input type="submit" name="Add_customer" value="<?php echo $this->lang->line('add_new_customer') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
- 
-<?php }else{?>
-    <tb><input type="submit" name="Add_customer" value="<?php echo $this->lang->line('add_new_customer') ?>"></td><td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
- 
-<?php }
+} 
 
-}
-
-
-?>  
-  <?php   echo form_close() ?> 
+echo form_submit('add',$this->lang->line('add'));echo form_submit('cancel',$this->lang->line('back_to_home'));
+?>
