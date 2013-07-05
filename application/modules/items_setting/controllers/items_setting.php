@@ -34,6 +34,36 @@ class Items_setting extends CI_Controller{
         $data['guid']=$guid;
         $this->load->view('set_item',$data);
     }
+    function set(){
+        if($this->input->post('cancel')){
+            $this->get_setting();
+        }
+        if($this->input->post('save')){
+        if($_SESSION['Posnic_Add']==="Add"){
+            $guid=$this->input->post('guid');
+               $this->form_validation->set_rules("min_qty",$this->lang->line('min_qty'),'required|max_length[15]|regex_match[/^[0-9]+$/]|xss_clean');                                             
+               $this->form_validation->set_rules("max_qty",$this->lang->line('max_qty'),'required|max_length[15]|regex_match[/^[0-9]+$/]|xss_clean');                           
+             if ($this->form_validation->run() !== false ) {  
+                 $data=array(
+                    'item_id'=> $guid,
+                    'sales'=>$this->input->post('sale')?1:0,
+                    'salses_return'=>$this->input->post('salses_return')?1:0,
+                    'purchase'=>$this->input->post('purchase')?1:0,
+                    'purchase_return'=>$this->input->post('purchase_return')?1:0,
+                    'allow_negative'=>$this->input->post('allow_negative')?1:0,
+                    'tax_inclusive'=>$this->input->post('tax'),
+                    'min_q'=>$this->input->post('min_qty'),
+                    'max_q'=>$this->input->post('max_qty'));
+                    $this->posnic->posnic_add($data);
+                    redirect('items_setting'); 
+            }else{
+                $this->set_item($guid);
+            }
+        }else{
+            redirect('items_setting');
+        }   
+        }
+    }
             function update(){
         
         if (!$_SERVER['HTTP_REFERER']){ redirect('home');}

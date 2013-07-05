@@ -42,6 +42,7 @@ $lang['code']='Item Code';
  $lang['purchase']='Purchase';
  $lang['purchase_return']='Purchase Return';
  $lang['allow_negative']='Allow Negative';
+ $lang['sales']='Sales';
 
 
 ?>﻿
