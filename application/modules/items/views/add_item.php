@@ -32,7 +32,7 @@ $( "#date_end_picker" ).datepicker();
      echo "<tr><td>"; echo form_label($this->lang->line('supplier'));echo "</td><td>";  if(count($srow)>0 ){ ?><select style="width:150" name="supplier"  ><?php foreach ($srow as $cs_row){      ?><option name="<?php echo $cs_row->guid  ?>" value="<?php echo $cs_row->guid  ?>"> <?php echo $cs_row->company_name  ?> </option><?php }echo "</select>";?> <?php }  echo "</td></tr>";
     }
     if($_SESSION['brands']=='On'){
-     echo "<tr><td>"; echo form_label($this->lang->line('brands'));echo "</td><td>"; echo "<select name=brand>";foreach ($brands as $ibrand){ ?><option value="<?php echo $ibrand->guid ?>"><?php echo $ibrand->name?></option> <?php } echo "</select>"; echo "</td></tr>";
+     echo "<tr><td>"; echo form_label($this->lang->line('brands'));echo "</td><td>"; echo "<select name=brand>";echo"<option value=none>None</option>"; foreach ($brands as $ibrand){ ?><option value="<?php echo $ibrand->guid ?>"><?php echo $ibrand->name?></option> <?php } echo "</select>"; echo "</td></tr>";
     }
     if($_SESSION['taxes_area']=='On'){
      echo "<tr><td>"; echo form_label($this->lang->line('tax_area'));echo "</td><td>"; echo "<select name=area>";foreach ($area as $tarea){ ?><option value="<?php echo $tarea->guid ?>"><?php echo $tarea->name ?></option> <?php } echo "</select>"; echo "</td></tr>";

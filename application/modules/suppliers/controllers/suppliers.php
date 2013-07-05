@@ -2,7 +2,7 @@
 class Suppliers extends CI_Controller{
     function __construct() {
                 parent::__construct();
-               $this->load->library('posnic'); 
+                $this->load->library('posnic'); 
     }
     function index(){     
         
@@ -131,20 +131,7 @@ class Suppliers extends CI_Controller{
                     redirect('suppliers');
                 }
             } 
-    function delete_supplier($id){
-        if(!$_SERVER['HTTP_REFERER']){ redirect('suppliers'); }else{
-             if($_SESSION['suppliers_per']['delete']==1){
-                 $this->load->model('supplier_model');
-                 $this->supplier_model->delete_supplier_for_user($id,$_SESSION['Bid'],$_SESSION['Uid']);
-                 redirect('suppliers');
-                 
-             }else{
-                 echo "You Have no permission to delete supplier Details";
-                 $this->get_suppliers();
-             }
-            
-        }
-    }
+
    
    
     function active_supplier($guid){
@@ -158,13 +145,15 @@ class Suppliers extends CI_Controller{
                  redirect('suppliers');  
         }
     function restore_supplier($guid){
-       
+        if($_SESSION['Posnic_User']=='admin'){
                  $this->posnic->posnic_restore($guid);
+        }      
                  redirect('suppliers');  
         }
     function admin_delete($guid){
-       
+       if($_SESSION['Posnic_Delete']==="Delete"){
                  $this->posnic->posnic_delete($guid);
+       }
                  redirect('suppliers');  
         }
     function supplier_magement(){

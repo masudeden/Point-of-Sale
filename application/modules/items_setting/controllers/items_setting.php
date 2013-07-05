@@ -2,15 +2,7 @@
 class Items_setting extends CI_Controller{
     function __construct() {
                 parent::__construct();
-                $this->load->helper('form');
-                $this->load->helper('url');
-                $this->load->library('unit_test');
-                session_start();        
-                $this->load->library('session');
-                $this->load->helper(array('form', 'url'));
-                $this->load->library('poslanguage'); 
-                $this->load->library('form_validation');
-                $this->poslanguage->set_language();
+               $this->load->library('posnic');   
     }
     function index(){     
          if(!isset($_SESSION['Uid'])){
@@ -20,59 +12,23 @@ class Items_setting extends CI_Controller{
         }
     }
     function get_setting(){
-         if (!$_SERVER['HTTP_REFERER']){ redirect('home');} //check the function is call directly or not if yes then redirect to home
-        else{
-            if($_SESSION['admin']==2){// check user is admin or not
-                $this->load->library("pagination"); 
-                $this->load->model('item_setting');
-                $this->load->model('item_model');
-	        $config["base_url"] = base_url()."index.php/items_setting/get_setting";
-	        $config["total_rows"] = $this->item_model->item_count_for_admin($_SESSION['Bid']);// get item count
+                $config["base_url"] = base_url()."index.php/items_setting/get_settings";
+	        $config["total_rows"] =$this->posnic->posnic_module_count('items'); 
 	        $config["per_page"] = 8;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-                $data['brands']=  $this->item_model->get_brands_user($_SESSION['Bid']);
-                $data['set']=  $this->item_setting->get_item_setting($_SESSION['Bid']);
-                $data['count']=$this->item_model->item_count_for_admin($_SESSION['Bid']);         
-	        $data["row"] = $this->item_model->get_item_details_for_admin($config["per_page"], $page,$_SESSION['Bid']);
-                $data['urow']= $this->item_model->get_items();
-	        $data["links"] = $this->pagination->create_links();                 
-                $this->load->view('template/header');
-                $this->load->view('items_settings/item_list',$data);
-                $this->load->view('template/footer');
-            }else{
-                $this->load->library("pagination"); 
-                $this->load->model('item_setting');
-                $this->load->model('item_model');
-	        $config["base_url"] = base_url()."index.php/items_setting/get_setting";
-                $config["total_rows"] = $this->item_model->pos_item_count($_SESSION['Bid']);
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-                $data['set']=  $this->item_setting->get_item_setting($_SESSION['Bid']);  
-                $data['brands']=  $this->item_model->get_brands_user($_SESSION['Bid']);
-                $data['count']=$this->item_model->pos_item_count($_SESSION['Bid']);             
-	        $data["row"] = $this->item_model->get_item_details($config["per_page"], $page,$_SESSION['Bid']);
-                
-	        $data["links"] = $this->pagination->create_links(); 
-                
-                $this->load->view('template/header');
-                $this->load->view('items_settings/item_list',$data);
-                $this->load->view('template/footer');
-            }
-        }
+	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
+                $data['count']=$this->posnic->posnic_module_count('items');                 
+	        $data["row"] = $this->posnic->posnic_module_limit_result('items',$config["per_page"], $page);           
+	        
+                $data["links"] = $this->pagination->create_links();
+                $this->load->view('item_list',$data);
     }   
-    function edit_item($id){
-         if (!$_SERVER['HTTP_REFERER']){ redirect('home');} //check the function is call directly or not if yes then redirect to home
-        else{
-         $this->load->model('item_setting');
-         $data['row']=$this->item_setting->get_setting($id);
-                $this->load->view('template/header');
-                $this->load->view('items_settings/edit_setting',$data);
-                $this->load->view('template/footer');
-        }
+    function edit_item($guid){
+                $where=array('guid'=>$guid);
+                $data['row']=$this->posnic->posnic_module_result($where,'items');
+                $this->load->view('edit_setting',$data);
+        
     }
     function update(){
         

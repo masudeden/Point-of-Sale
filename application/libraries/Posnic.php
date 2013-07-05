@@ -49,9 +49,17 @@ class Posnic{
             echo 'You have no permission';
         }       
     }
+    function  posnic_module_result($value,$module){
+         $CI=  get_instance();
+         $mod=$_SESSION['posnic_module'];
+        if($_SESSION[$mod.'_per']['read']==1){
+                return $CI->posnic_model->get_data_as_result_user($module,$value,$_SESSION['Bid']); 
+        }else{
+                echo 'You have no permission';
+        }       
+    }
   
     function posnic_count(){
-        
          $CI=  get_instance();
          $module=$_SESSION['posnic_module'];
         if($_SESSION[$module.'_per']['read']==1){
@@ -60,6 +68,17 @@ class Posnic{
             }else{
                 return $CI->posnic_model->get_data_count_for_user($_SESSION['Bid'],$module);
             }      
+        }else{
+            echo 'You have no permission';
+        }
+    }
+    function posnic_module_count($module){
+         $CI=  get_instance();
+         $mod=$_SESSION['posnic_module'];
+        if($_SESSION[$mod.'_per']['read']==1){
+           
+                return $CI->posnic_model->get_data_count_for_user($_SESSION['Bid'],$module);
+                 
         }else{
             echo 'You have no permission';
         }
@@ -73,6 +92,17 @@ class Posnic{
             }else{
                  return $CI->posnic_model->get_data_for_user_with_limit($limit, $start,$module,$_SESSION['Bid']);
             }      
+        }else{
+            echo 'You have no permission';
+        }
+    }
+    function posnic_module_limit_result($module,$limit,$start){
+         $CI=  get_instance();
+         $mod=$_SESSION['posnic_module'];
+         if($_SESSION[$mod.'_per']['read']==1){
+            
+                 return $CI->posnic_model->get_data_for_user_with_limit($limit, $start,$module,$_SESSION['Bid']);
+                 
         }else{
             echo 'You have no permission';
         }
@@ -119,7 +149,7 @@ class Posnic{
           $CI=  get_instance();
           $branch=array('branch_id'=>$_SESSION['Bid']);
            if($_SESSION[$module.'_per']['edit']==1){
-               $CI->posnic_model->add($module,$value,$branch);
+               $CI->posnic_model->add($module,$value,$branch,$_SESSION['Uid']);
            }else{
                echo redirect($module);
            }
@@ -141,15 +171,19 @@ class Posnic{
     function posnic_restore($guid){
         $CI=  get_instance();        
         $module=$_SESSION['posnic_module'];
-        $branch=$_SESSION['Bid'];        
+        $branch=$_SESSION['Bid'];  
+    if($_SESSION['admin']==2){
         $CI->posnic_model->restore($guid,$module,$branch);
+    }
     }
     function posnic_delete($guid){
         $CI=  get_instance();        
         $module=$_SESSION['posnic_module'];
         $branch=$_SESSION['Bid'];  
         if($_SESSION['admin']==2){
+            if( $_SESSION[$module.'_per']['delete']==1){
         $CI->posnic_model->admin_delete($guid,$module,$branch,$_SESSION['Uid']);
+            }
         }else{
              $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION['Uid']);
         }

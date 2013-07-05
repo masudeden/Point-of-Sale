@@ -91,20 +91,15 @@ class Customers_payment_type extends CI_Controller{
             }
         
         function deactive_payment($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          
               $this->posnic->posnic_deactive($guid);
               redirect('customers_payment_type');
-          }else{
-              redirect('customers_payment_type');
-          }
+         
         }
         function active_payment($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+         
               $this->posnic->posnic_active($guid);
-              redirect('customers_payment_type');
-          }else{
-              redirect('customers_payment_type');
-          }
+               redirect('customers_payment_type');
         }
         function restore_payment($guid){
           if($_SESSION['Posnic_User']=='admin'){
@@ -115,12 +110,12 @@ class Customers_payment_type extends CI_Controller{
           }
         }
         function admin_delete($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($_SESSION['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
               redirect('customers_payment_type');
-          }else{
+            }else{
               redirect('customers_payment_type');
-          }
+            }
         }
         function payment_type(){
               if($this->input->post('cancel')){

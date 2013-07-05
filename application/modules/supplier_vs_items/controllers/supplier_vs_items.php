@@ -2,19 +2,11 @@
 class Supplier_vs_items extends CI_Controller{
     function __construct() {
         parent::__construct();
-               $this->load->helper('form');
-                $this->load->helper('url');
-                $this->load->library('unit_test');
-                session_start();        
-                $this->load->library('session');
-                $this->load->helper(array('form', 'url'));
-                $this->load->library('poslanguage'); 
-                $this->load->library('form_validation');
-                $this->poslanguage->set_language();
+               $this->load->library('posnic'); 
     }
     function index(){     
-         if(!isset($_SESSION['Uid'])){// check user is login or not
-                redirect('home');// if user is didnt login then redirect to login page
+         if(!isset($_SESSION['Uid'])){
+                redirect('home');
         }else{
             $this->get_suppliers();
         }

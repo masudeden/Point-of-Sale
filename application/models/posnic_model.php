@@ -35,6 +35,8 @@ class posnic_model extends CI_model{
             return $this->db->count_all_results();
       
   }
+ 
+  
   function get_data_count_for_user($bid,$table){
             $this->db->where('delete_status',0);        
             $this->db->where('active_status',0);        
@@ -94,14 +96,14 @@ class posnic_model extends CI_model{
         $this->db->where($where);
         $this->db->update($module,$value);
     }
-    function add($module,$value,$branch){
+    function add($module,$value,$branch,$uid){
        $this->db->insert($module,$value);
        $id=$this->db->insert_id();
        $this->db->where('id',$id);
        $this->db->update($module,$branch);
        $orderid=md5($id.$module);
        $guid=str_replace(".", "", "$orderid");
-       $value=array('guid'=>$guid);
+       $value=array('guid'=>$guid,'added_by'=>$uid);
        $this->db->where('id',$id);
        $this->db->update($module,$value);
     }
