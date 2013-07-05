@@ -20,7 +20,7 @@ class Items_setting extends CI_Controller{
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
                 $data['count']=$this->posnic->posnic_module_count('items');                 
 	        $data["row"] = $this->posnic->posnic_module_limit_result('items',$config["per_page"], $page);           
-	        
+	        $data['srow']= $this->posnic->posnic_module('items_setting');
                 $data["links"] = $this->pagination->create_links();
                 $this->load->view('item_list',$data);
     }   
@@ -30,7 +30,11 @@ class Items_setting extends CI_Controller{
                 $this->load->view('edit_setting',$data);
         
     }
-    function update(){
+    function set_item($guid){
+        $data['guid']=$guid;
+        $this->load->view('set_item',$data);
+    }
+            function update(){
         
         if (!$_SERVER['HTTP_REFERER']){ redirect('home');}
         else{

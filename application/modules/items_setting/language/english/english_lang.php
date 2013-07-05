@@ -36,7 +36,12 @@ $lang['code']='Item Code';
  $lang['mrf_price']='M R F';
  $lang['landing_cost']='Landing Cost';
  $lang['bulk_edit']='Bulk Edit';
-
+ $lang['min_qty']='Min Qty';
+ $lang['max_qty']='Max Qty';
+ $lang['salses_return']='Sales Return';
+ $lang['purchase']='Purchase';
+ $lang['purchase_return']='Purchase Return';
+ $lang['allow_negative']='Allow Negative';
 
 
 ?>﻿
