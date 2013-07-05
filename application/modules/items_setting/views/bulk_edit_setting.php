@@ -2,7 +2,7 @@
 echo "<table>";
 echo form_open('items_setting/bult_update');
 
-    echo form_hidden('id',$row);
+    echo form_hidden('guid',$row);
    echo "<tr><td>";echo form_label($this->lang->line('min_qty'));echo "</td><td>";echo form_input('min_qty',0,'id=min_qty' ); echo "</td></tr>";
    echo "<tr><td>";echo form_label($this->lang->line('max_qty'));echo "</td><td>";echo form_input('max_qty',0 ,'id=min_qty' ); echo "</td></tr>";
    echo "<tr><td>";echo form_label($this->lang->line('sales'));echo "</td><td>";?><input type="checkbox" name="sale" checked <?php echo set_checkbox('sale', '1'); ?>> <?php echo "</td></tr>";

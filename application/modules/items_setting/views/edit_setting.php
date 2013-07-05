@@ -1,8 +1,8 @@
 <?php
 echo "<table>";
-echo form_open('items_setting/update');
+echo form_open('items_setting/set');
 foreach ($row as $srow){
-    echo form_hidden('id',$srow->id);
+    echo form_hidden('guid',$srow->guid);
    echo "<tr><td>";echo form_label($this->lang->line('min_qty'));echo "</td><td>";echo form_input('min_qty',$srow->min_q,'id=min_qty' ); echo "</td></tr>";
    echo "<tr><td>";echo form_label($this->lang->line('max_qty'));echo "</td><td>";echo form_input('max_qty',$srow->max_q,'id=min_qty' ); echo "</td></tr>";
    echo "<tr><td>";echo form_label($this->lang->line('sales'));echo "</td><td>";?><input type="checkbox" name="sale" <?php if($srow->sales==1){?> checked<?php } ?> <?php echo set_checkbox('sale', '1'); ?>> <?php echo "</td></tr>";

@@ -74,6 +74,8 @@ class Items extends CI_Controller{
     function restore_items($guid){
          if($_SESSION['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
+              $this->load->model('core_model');
+              $this->core_model->restore_item_setting($guid,$_SESSION['Bid']);
               redirect('items');
           }else{
               redirect('items');
@@ -82,6 +84,8 @@ class Items extends CI_Controller{
     function delete($guid){
         if($_SESSION['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
+              $this->load->model('core_model');
+              $this->core_model->delete_item_setting($guid,$_SESSION['Bid']);
                 redirect('items');
             }else{
                 redirect('items');
@@ -127,14 +131,26 @@ class Items extends CI_Controller{
                                           'name'=>$this->input->post('item_name'),
                                          );
                                  if($this->posnic->check_unique($value)){                                    
-                                     $this->posnic->posnic_add($data);
+                                     $id=$this->posnic->posnic_add($data);
+                                     $this->load->model('core_model');
+                                     $this->core_model->item_setting($id,$_SESSION['Bid']);
                                      $this->get_items();
                                      }else{
                                         echo " this item is  already added in this branch";
-                                        $this->add_new_item_in_branch();
+                                        $data['brands']=$this->posnic->posnic_module('brands');
+                                        $data['taxes']=$this->posnic->posnic_module('taxes');
+                                        $data['area']=  $this->posnic->posnic_module('taxes_area');
+                                        $data['crow']=$this->posnic->posnic_module('items_category');
+                                        $data['srow']=$this->posnic->posnic_module('suppliers');                   
+                                        $this->load->view('add_item',$data);
                                     }
                         }else{
-                            $this->add_new_item_in_branch();
+                            $data['brands']=$this->posnic->posnic_module('brands');
+                            $data['taxes']=$this->posnic->posnic_module('taxes');
+                            $data['area']=  $this->posnic->posnic_module('taxes_area');
+                            $data['crow']=$this->posnic->posnic_module('items_category');
+                            $data['srow']=$this->posnic->posnic_module('suppliers');                   
+                            $this->load->view('add_item',$data);
                         }
         
              } 

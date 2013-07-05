@@ -106,6 +106,7 @@ class posnic_model extends CI_model{
        $value=array('guid'=>$guid,'added_by'=>$uid);
        $this->db->where('id',$id);
        $this->db->update($module,$value);
+       return $guid;
     }
     function deactive($guid,$module,$branch){
         $data=array('active'=>1);

@@ -10,7 +10,7 @@ echo form_open('items_setting/set');
    echo "<tr><td>";echo form_label($this->lang->line('purchase'));echo "</td><td>";?><input type="checkbox" name="purchase"> <?php echo "</td></tr>";
    echo "<tr><td>";echo form_label($this->lang->line('purchase_return'));echo "</td><td>";?><input type="checkbox" name="purchase_return" > <?php echo "</td></tr>";
    echo "<tr><td>";echo form_label($this->lang->line('allow_negative'));echo "</td><td>";?><input type="checkbox" name="allow_negative"> <?php echo "</td></tr>";
-   echo "<tr><td>";echo form_label($this->lang->line('tax_Inclusive'));echo "</td><td>";?><select name="tax"> <option value="1" >NO</option></select><?php echo "</td></tr>";
+   echo "<tr><td>";echo form_label($this->lang->line('tax_Inclusive'));echo "</td><td>";?><select name="tax"> <option value="1" >Yes</option><option value="0" >No</option></select><?php echo "</td></tr>";
    echo "<tr><td>"; echo form_submit('save',$this->lang->line('save'));echo "</td><td>";echo form_submit('cancel',$this->lang->line('cancel')); echo "</td></tr>";
     
 echo form_close();

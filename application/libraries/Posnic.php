@@ -149,7 +149,8 @@ class Posnic{
           $CI=  get_instance();
           $branch=array('branch_id'=>$_SESSION['Bid']);
            if($_SESSION[$module.'_per']['edit']==1){
-               $CI->posnic_model->add($module,$value,$branch,$_SESSION['Uid']);
+               return $CI->posnic_model->add($module,$value,$branch,$_SESSION['Uid']);
+               
            }else{
                echo redirect($module);
            }
@@ -180,13 +181,15 @@ class Posnic{
         $CI=  get_instance();        
         $module=$_SESSION['posnic_module'];
         $branch=$_SESSION['Bid'];  
-        if($_SESSION['admin']==2){
-            if( $_SESSION[$module.'_per']['delete']==1){
+         if( $_SESSION[$module.'_per']['delete']==1){
+            if($_SESSION['admin']==2){
+           
         $CI->posnic_model->admin_delete($guid,$module,$branch,$_SESSION['Uid']);
-            }
+            
         }else{
              $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION['Uid']);
         }
+       }
     }
 }
        
