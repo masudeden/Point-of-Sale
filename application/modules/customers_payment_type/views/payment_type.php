@@ -2,6 +2,7 @@
 echo form_open('customers_payment_type/payment_type');
 echo "<table>";
 if($count>0){$i=0;
+echo $links;
 if($_SESSION['Posnic_User']=='admin'){
     
      echo "<tr><td>SL NO</td><td>Type</td>";
