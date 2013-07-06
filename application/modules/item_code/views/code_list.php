@@ -24,7 +24,7 @@ if($count>0){$i=0;
     echo "</table>";
     
 
-echo form_submit('edit',$this->lang->line('bulk_edit'));
+
 }else{
   
 } 

@@ -39,39 +39,9 @@ class Item_code extends CI_Controller{
          }
     }
     function items_details(){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
-             if($this->input->post('BacktoHome')){
+             if($this->input->post('cancel')){
                 redirect('home');
             }
-             if($this->input->post('bulk_edit')){
-                  $data['row'] = $this->input->post('mycheck'); 
-                            if(!$data==''){   
-                            $this->load->view('template/header');
-                            $this->load->view('items_settings/bulk_edit_setting',$data);
-                            $this->load->view('template/footer');
-                            
-                            }else{
-                                redirect('items_setting');
-                            }
-             }
-        
-       
-             if($this->input->post('BacktoHome')){
-                redirect('home');
-            }
-             if($this->input->post('bulk_edit')){
-                  $data['row'] = $this->input->post('mycheck'); 
-                            if(!$data==''){   
-                            $this->load->view('template/header');
-                            $this->load->view('items_settings/bulk_edit_setting',$data);
-                            $this->load->view('template/footer');
-                            
-                            }else{
-                                redirect('items_setting');
-                            }
-             }
-        
-        }
     }
    
     function add_code(){
