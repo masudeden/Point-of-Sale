@@ -144,6 +144,15 @@ class Posnic{
                echo redirect($module);
            }
     }
+    function posnic_module_update($module,$value,$where){
+          $mod=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+           if($_SESSION[$mod.'_per']['edit']==1){
+               $CI->posnic_model->update($module,$value,$where);
+           }else{
+               echo redirect($module);
+           }
+    }
     function posnic_add($value){
           $module=$_SESSION['posnic_module'];
           $CI=  get_instance();

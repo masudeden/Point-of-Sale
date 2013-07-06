@@ -1,81 +1,33 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); echo $links; 
-?><table style="width: 550px">
-    
-<?php  echo  form_open('item_code/items_details'); 
-if($count!=0){
-      if($_SESSION['admin']==2){?><table >         
-          <?php 
-      foreach ($set as $iset){          
-          foreach ($row as $erow){
-        if($iset->item_id==$erow->id){
-              ?>
-          
-          <tr><td><input type="checkbox" name="mycheck[]" value="<?php echo $iset->id ?>" /><td style="width: 100px"><?php echo $erow->code ; ?>
-        </td><td  style="width: 100px"><?php echo $erow->name  ?></td><td  style="width: 150px"><?php echo $erow->brand_id  ?></td>
-        <td style="width: 100px"><?php echo $erow->selling_price ?></td>
-        <td style="width: 100px">    <?php if($erow->code_status==1){
-                ?>
-                <a href="<?php echo base_url() ?>index.php/item_code/edit_item/<?php echo $erow->id ?>"><?php echo $this->lang->line('edit') ?></a> 
-               <?php
-            
-            }else{?>
-                <a href="<?php echo base_url() ?>index.php/item_code/add_item/<?php echo $erow->id ?>"><?php echo $this->lang->line('add') ?></a>
-      <?php      }
-?>
-            
-        </td>
-    </tr><?php } }}?></table>
-   <td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
-  
-     <?php }else{?><table ><?php
-     foreach ($set as $iset){          
-          foreach ($row as $erow){
-        if($iset->item_id==$erow->id){
-
-        
-   
-?>   
-    
-    <tr><td><input type="checkbox" name="mycheck[]" value="<?php echo $iset->id ?>" /><td style="width: 100px"><?php echo $erow->code ?>
-        </td><td  style="width: 100px"><?php echo $erow->name ?></td><td  style="width: 150px">
-            <?php foreach ($brands as $item_brands){
-            if($item_brands->id==$erow->brand_id ){
-                echo $item_brands->name;
-            }
-                  
-            }?></td>
-        <td style="width: 100px"><?php echo $erow->selling_price ?></td>
-        <td style="width: 100px">
-            <?php if($erow->code_status==1){
-                ?>
-                <a href="<?php echo base_url() ?>index.php/item_code/edit_item/<?php echo $erow->id ?>"><?php echo $this->lang->line('edit') ?></a> 
-               <?php
-            
-            }else{?>
-                <a href="<?php echo base_url() ?>index.php/item_code/add_item/<?php echo $erow->id ?>"><?php echo $this->lang->line('add') ?></a>
-      <?php      }
-?>
-            
-        <td>
-    
-    </tr>
-    <?php ?>
-
-<?php } } }?></table> 
-
-    <tr><tb><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td></tr>
-  
 <?php
-}?>
+echo form_open('item_code/items_details');
+echo "<table>";
 
-<?php 
-}else{   ?>
-   <td><?php echo form_submit('BacktoHome',$this->lang->line('back_to_home')) ?></td>
- 
-<?php 
+if($count>0){$i=0;
 
-}
+   
+    
 
+    echo "<tr><td>SL NO</td><td>Name</td><td>companny</td><td>Phone</td></tr>";
+    foreach ($row as $prow){
+       
+              echo "<tr><td>".++$i."</td><td>";?> 
+<input type="checkbox" name="posnic[]" value="<?php echo $prow->guid ?>" />
+    <?php echo "</td><td>$prow->code</td><td>$prow->name</td><td> $prow->description </td><td>"; 
+   if($prow->upc_ean_code=='0'){ ?> 
+<a href="<?php echo base_url()?>index.php/item_code/set_item/<?php echo $prow->guid ?>">set</a> 
+ <?php }else{ ?>
+<a href="<?php echo base_url()?>index.php/item_code/reset_item/<?php echo $prow->guid ?>">Reset</a> 
+    <?php } echo "</td>";
+      
+                
+    }
+    echo "</table>";
+    
 
-?>  
-  <?php   echo form_close() ?> 
+echo form_submit('edit',$this->lang->line('bulk_edit'));
+}else{
+  
+} 
+
+echo form_submit('cancel',$this->lang->line('back_to_home'));
+?>
