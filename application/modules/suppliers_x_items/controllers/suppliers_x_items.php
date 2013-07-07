@@ -21,8 +21,11 @@ class Suppliers_x_items extends CI_Controller{
     }
     function add_items($guid){
          $data['supplier_id']=$guid;
-         $where=array('guid'=>$guid);
+         $where=array('supplier_id'=>$guid);
+         $where_sup=array('guid'=>$guid);
+         $data['sup']=$this->posnic->posnic_module_where('suppliers',$where_sup);         
          $data['row']=$this->posnic->posnic_module_where('suppliers_x_items',$where);
+         $data['item_row']=$this->posnic->posnic_module('items');
          $this->load->view('add_items',$data);
          
     }

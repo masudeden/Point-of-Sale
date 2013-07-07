@@ -31,6 +31,8 @@ $lang['account_no']='Account Number';
 $lang['active']='Active';
 $lang['deactive']='Deactive';
 $lang['restore']='Restore';
+$lang['suppler_company']='Company :';
+$lang['name']='Name';
 
 
 
