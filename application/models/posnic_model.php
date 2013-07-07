@@ -28,6 +28,7 @@ class posnic_model extends CI_model{
         $sql=  $this->db->get();
         return $sql->result();
   }
+  
   function get_data_count_for_admin($bid,$table){
             $this->db->where('delete_status',0);        
             $this->db->where('branch_id',$bid);         
@@ -140,6 +141,11 @@ class posnic_model extends CI_model{
     }
     function module_result($table,$bid){
         $this->db->select()->from($table)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid);
+        $sql=  $this->db->get();
+        return $sql->result();
+    }
+    function module_result_where($table,$where,$bid){
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }

@@ -126,6 +126,12 @@ class Posnic{
              return $CI->posnic_model->module_result($table,$_SESSION['Bid']);
         }
     }
+    function posnic_module_where($table,$where){
+        if($_SESSION[$table]==='On'){
+             $CI=  get_instance();
+             return $CI->posnic_model->module_result_where($table,$where,$_SESSION['Bid']);
+        }
+    }
             function posnic_two($value1,$value2,$table,$where){
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);

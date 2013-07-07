@@ -118,7 +118,7 @@ $lang['company']='Comapany';
  $lang['current_stock']='Available Stocks';
  $lang['purchase_order']='Purchase Order';
  
- $lang['supplier_vs_items']='Supplier Vs Items';
+ $lang['suppliers_x_items']='Supplier Vs Items';
  
  $lang['taxes']='Tax';
  $lang['commodity']=' Tax Commodity';

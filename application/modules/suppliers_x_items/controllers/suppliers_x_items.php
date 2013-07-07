@@ -1,71 +1,30 @@
 <?php
-class Supplier_vs_items extends CI_Controller{
-    function __construct() {
-        parent::__construct();
-               $this->load->library('posnic'); 
+class Suppliers_x_items extends CI_Controller{
+   function __construct() {
+                parent::__construct();
+                $this->load->library('posnic');               
     }
     function index(){     
-         if(!isset($_SESSION['Uid'])){
-                redirect('home');
-        }else{
-            $this->get_suppliers();
-        }
+                $this->get_items();
     }
-    
-    function get_suppliers(){// Read all suppliers
-        if (!$_SERVER['HTTP_REFERER']){ redirect('home');} //check the function is call directly or not if yes then redirect to home
-        else{
-            if($_SESSION['admin']==2){// check user is admin or not
-                $this->load->library("pagination"); 
-               
-                $this->load->model('supplier_model');
-	        $config["base_url"] = base_url()."index.php/supplier_vs_items/get_suppliers";
-	        $config["total_rows"] = $this->supplier_model->get_count_supplier_vs_item_for_admin($_SESSION['Bid']);// get supplier count
+    function get_items(){
+                $config["base_url"] = base_url()."index.php/suppliers_x_items/get_items";
+	        $config["total_rows"] =$this->posnic->posnic_module_count('suppliers'); 
 	        $config["per_page"] = 8;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-                $data['branch']=$this->supplier_model->get_selected_branch_for_view();
-                $data['count']=$this->supplier_model->get_count_supplier_vs_item_for_admin($_SESSION['Bid']);         
-	        $data["row"] = $this->supplier_model->get_details_of_supplier_vs_item_for_admin($config["per_page"], $page,$_SESSION['Bid']);
-                $data['urow']= $this->supplier_model->get_suppliers();
-	        $data["links"] = $this->pagination->create_links();                 
-                $this->load->view('template/header');
-                $this->load->view('supplier_vs_items/supplier_list',$data);
-                $this->load->view('template/footer');
-            }else{
-                $this->load->library("pagination"); 
-                
-                $this->load->model('supplier_model');
-	        $config["base_url"] = base_url()."index.php/supplier_vs_items/get_suppliers";
-                $config["total_rows"] = $this->supplier_model->get_count_supplier_vs_item_for_user($_SESSION['Bid']);
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-                $data['branch']=$this->supplier_model->get_selected_branch_for_view();
-                $data['count']=$this->supplier_model->get_count_supplier_vs_item_for_user($_SESSION['Bid']);             
-	        $data["row"] = $this->supplier_model->get_details_of_supplier_vs_item_for_user($config["per_page"], $page,$_SESSION['Bid']);
-                $data['urow']=$this->supplier_model->get_suppliers();
-	        $data["links"] = $this->pagination->create_links(); 
-                
-                $this->load->view('template/header');
-                $this->load->view('supplier_vs_items/supplier_list',$data);
-                $this->load->view('template/footer');
-            }
-        }
-        
+	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
+                $data['count']=$this->posnic->posnic_module_count('suppliers');                 
+	        $data["row"] = $this->posnic->posnic_module_limit_result('suppliers',$config["per_page"], $page);           
+	        $data["links"] = $this->pagination->create_links();
+                $this->load->view('supplier_list',$data);
     }
-    function add_items($id){
-          if (!$_SERVER['HTTP_REFERER']){ redirect('home');}else{
-        $this->load->model('supplier_model');
-        $data['row']=  $this->supplier_model->added_items_for_supplier($_SESSION['Bid'],$id);
-        $data['item']=  $this->supplier_model->get_items_detsils($_SESSION['Bid']);
-        $data['supplier_id']=$id;
-                $this->load->view('template/header');
-                $this->load->view('supplier_vs_items/add_items',$data);
-                $this->load->view('template/footer');
-          }
+    function add_items($guid){
+         $data['supplier_id']=$guid;
+         $where=array('guid'=>$guid);
+         $data['row']=$this->posnic->posnic_module_where('suppliers_x_items',$where);
+         $this->load->view('add_items',$data);
+         
     }
     function get_selected_item()
     {
@@ -75,11 +34,11 @@ class Supplier_vs_items extends CI_Controller{
 
         $value=  $this->receiving_items->get_selected_item_details($qo,$_SESSION['Bid']);
 
-$data=$value[0];
-$sel=$value[3];
-$dis=$value[1];
-$id=$value[2];
-$cost=$value[4];
+                $data=$value[0];
+                $sel=$value[3];
+                $dis=$value[1];
+                $id=$value[2];
+                $cost=$value[4];
    
 	    echo '<ul>'."\n";
 	    for($i=0;$i<count($data);$i++)
