@@ -29,7 +29,33 @@ class Suppliers_x_items extends CI_Controller{
          $this->load->view('add_items',$data);
          
     }
-    function get_selected_item()
+    function save_items(){
+        if($this->input->post('save')){       
+        if($_SESSION['Posnic_Add']==="Add"){
+            $guid=  $this->input->post('s_guid');
+            //$i_guid=  $this->input->post('guid');
+            $code=  $this->input->post('guid');
+            $quty=  $this->input->post('quty');
+            $cost[]=  $this->input->post('cost');
+            $price[]=  $this->input->post('sell');
+            $dicount[]=  $this->input->post('mrp');
+            echo count($code)."<br>".$code[0];
+                   if(!$code==''){        
+                            foreach($code as $key => $value){  
+                               echo $value."<br>";
+                                
+                            }
+                            }
+               
+           
+            
+        }    
+        }
+        if($this->input->post('cancel')){
+            redirect('suppliers_x_items');
+        }
+    }
+            function get_selected_item()
     {
           if (!$_SERVER['HTTP_REFERER']){ redirect('home');}else{
        $this->load->model('receiving_items');
@@ -54,31 +80,7 @@ class Suppliers_x_items extends CI_Controller{
           }
 	
     }
-    function save_items(){
-          if (!$_SERVER['HTTP_REFERER']){ redirect('home');}else{
-        if($this->input->post('cancel')){
-            redirect('supplier_vs_items/get_suppliers');
-        }
-        if($this->input->post('save')){
-        $itemid=  $this->input->post('itemsid');
-        $qut=  $this->input->post('quty');
-        $cost=$this->input->post('cost');
-        $price=$this->input->post('price');
-        $discount=  $this->input->post('disco');
-        $this->load->model('supplier_model');
-        $sid=$this->input->post('id');
-        $this->supplier_model->delete_item_is_already($sid,$_SESSION['Bid']);
-        
-        for($i=0;$i<count($itemid);$i++){
-           $active=  $this->input->post($itemid[$i])?1:0;
-            
-           $this->supplier_model->save_supplier($active,$_SESSION['Bid'],$_SESSION['Uid'],$itemid[$i],$qut[$i], $cost[$i], $price[$i],$discount[$i],$sid);
-            
-        }
-        $this->get_suppliers();
-    }
-    }
-    }
+  
     function delete_item($id){
          if (!$_SERVER['HTTP_REFERER']){ redirect('home');}else{
          $this->load->model('supplier_model');
