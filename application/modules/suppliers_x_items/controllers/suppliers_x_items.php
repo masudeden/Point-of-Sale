@@ -32,21 +32,7 @@ class Suppliers_x_items extends CI_Controller{
     function save_items(){
         if($this->input->post('save')){       
         if($_SESSION['Posnic_Add']==="Add"){
-            $guid=  $this->input->post('s_guid');
-            //$i_guid=  $this->input->post('guid');
-            $code=  $this->input->post('guid');
-            $quty=  $this->input->post('quty');
-            $cost[]=  $this->input->post('cost');
-            $price[]=  $this->input->post('sell');
-            $dicount[]=  $this->input->post('mrp');
-            echo count($code)."<br>".$code[0];
-                   if(!$code==''){        
-                            foreach($code as $key => $value){  
-                               echo $value."<br>";
-                                
-                            }
-                            }
-               
+            echo $this->input->post('mouse');
            
             
         }    

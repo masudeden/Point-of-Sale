@@ -221,34 +221,21 @@ function copy_items(){
     document.getElementById("project").focus();
     document.getElementById('item_edit').value='jibi';
  }else{
-    document.getElementById('item_copy').style.visibility="visible";
+   
+    
     //document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id=document.getElementById('item').value+'tr';
    
-     document.getElementById('item_copy').getElementsByTagName('input')[0].value=document.getElementById('project').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[1].value=document.getElementById('item_dis').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[2].value=document.getElementById('item_quty').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[3].value=document.getElementById('item_cost').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[4].value=document.getElementById('item_sell').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[5].value=document.getElementById('item_mrp').value;
-
-    document.getElementById('item_copy').getElementsByTagName('input')[6].id=document.getElementById('item').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
+    code=document.getElementById('project').value;
+    dis=document.getElementById('item_dis').value;
+    quty=document.getElementById('item_quty').value;
+    cost=document.getElementById('item_cost').value;
+    sell=document.getElementById('item_sell').value;
+    disc=document.getElementById('item_mrp').value;
+    item=document.getElementById('item').value;
     var iid=document.getElementById('item').value;
-    
-    document.getElementById('item_copy').getElementsByTagName('input')[0].id=iid+"c";
-    document.getElementById('item_copy').getElementsByTagName('input')[1].id=iid+"d";
-    document.getElementById('item_copy').getElementsByTagName('input')[2].id=iid+"q";
-    document.getElementById('item_copy').getElementsByTagName('input')[3].id=iid+"co";
-    document.getElementById('item_copy').getElementsByTagName('input')[4].id=iid+"s";
-    document.getElementById('item_copy').getElementsByTagName('input')[5].id=iid+"p";
-    document.getElementById('item_copy').getElementsByTagName('input')[6].id=iid;
-    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
-    
- document.getElementById('item_copy').getElementsByTagName('input')[8].value=iid;
- 
-    //document.getElementById('sl_no').innerHTML =parseFloat(1)+parseFloat(document.getElementById('item_sl').value);
-    document.getElementById('item_sl').value=1+parseFloat(document.getElementById('item_sl').value);
-    // document.getElementById('item_sl').id=1+parseFloat(document.getElementById('item_sl').value);
+      $('#item_copy_final').append('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+code+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+code+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+code+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+code+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=discount value='+code+' id='+item+'p class=item_input  ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button  value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>');
+      document.getElementById("my_table").innerHTML=('<input type=tetx name="mouse" value=jibigopi>');
+console.log();
     document.getElementById('item').value="";
     document.getElementById('project').value="";
     document.getElementById('item_dis').value="";
@@ -256,28 +243,7 @@ function copy_items(){
     document.getElementById('item_cost').value="";
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
-    
-    document.getElementById("project").focus();
-    document.getElementById('item_copy').id=document.getElementById('item').value+'tr';
-    var trid=document.getElementById('item').value+'tr';
-        $('#'+trid)
-                .clone()                    
-                    .show()
-         
-                    .appendTo( $('#parent_item').parent() );
-         
-    document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id='item_copy';
-    document.getElementById('item_copy').getElementsByTagName('input')[0].id="c";
-    document.getElementById('item_copy').getElementsByTagName('input')[1].id="d";
-    document.getElementById('item_copy').getElementsByTagName('input')[2].id="q";
-    document.getElementById('item_copy').getElementsByTagName('input')[3].id="co";
-    document.getElementById('item_copy').getElementsByTagName('input')[4].id="s";
-    document.getElementById('item_copy').getElementsByTagName('input')[5].id="p";
-    document.getElementById('item_copy').getElementsByTagName('input')[6].id="n";
-    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[8].value=iid;
-    document.getElementById('item_copy_final').getElementsByTagName('tr')[0].style.visibility="hidden";
-    document.getElementById('item_copy').getElementsByTagName('label')[0].id='sl_no';
+  
         }  
 }
 function edit_items_details(od){
@@ -304,7 +270,7 @@ function edit_items_details(od){
 }
 function remove_item(id){
     document.getElementById('total_price').value=parseFloat(document.getElementById('total_price').value)- parseFloat(document.getElementById(id+'n').value);
-   document.getElementById(id).id="jibi";
+    document.getElementById(id).id="jibi";
 }
 function stopRKey(evt) {
   var evt = (evt) ? evt : ((event) ? event : null);
@@ -372,18 +338,7 @@ document.onkeypress = stopRKey;
                 
 <table id="item_copy_final">
     
-<tr id="item_copy"  style="visibility: hidden" >
-    <td >  <label  id="sl_no" ></label>
-        <input type="input" name="code[]"    id="it_2" class="item_inputd"></td>
-       <td><input type="input" name="dis[]"  readonly="readonly"  id="it_3" class="item_input_d"></td>
-       <td><input type="input" name="quty[]"  readonly="readonly"  id="it_4" class="item_input"></td>
-       <td><input type="input" name="cost[]"  readonly="readonly"  id="it_5" class="item_input"></td>
-       <td><input type="input" name="sell[]"  readonly="readonly"  id="it_6"class="item_input"></td>
-       <td><input type="input" name="mrp[]"  readonly="readonly"  id="it_7"class="item_input"></td>       
-       <td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="it_17">
-           <input type="button"  onclick=" $(this).closest('tr').remove()" value="X" id="it_8"></td>
-       <td><input type="text" name="guid[]"></td>
-</tr>
+
 </table>
      
 </div>
@@ -394,7 +349,10 @@ document.onkeypress = stopRKey;
             
             </table
        </div>
-       
+       <div id="my_table">
+          
+       </div>
+         
 </form>
 </body>
 </html>
