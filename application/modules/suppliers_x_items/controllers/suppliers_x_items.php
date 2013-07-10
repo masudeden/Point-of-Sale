@@ -5,7 +5,8 @@ class Suppliers_x_items extends CI_Controller{
                 $this->load->library('posnic');               
     }
     function index(){     
-                $this->get_items();
+               // $this->get_items();
+             $this->load->view('annan');
     }
     function get_items(){
                 $config["base_url"] = base_url()."index.php/suppliers_x_items/get_items";
@@ -29,7 +30,13 @@ class Suppliers_x_items extends CI_Controller{
          $this->load->view('add_items',$data);
          
     }
-    function save_items(){
+    function save_get(){
+        echo $data=$this->input->post('p_new1');
+        for($i=0;$i<count($data);$i++){
+            echo $data[$i];
+        }
+    }
+            function save_items(){
         if($this->input->post('save')){       
         if($_SESSION['Posnic_Add']==="Add"){
             echo $this->input->post('mouse');

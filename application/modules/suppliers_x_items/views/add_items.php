@@ -234,7 +234,7 @@ function copy_items(){
     item=document.getElementById('item').value;
     var iid=document.getElementById('item').value;
       $('#item_copy_final').append('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+code+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+code+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+code+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+code+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=discount value='+code+' id='+item+'p class=item_input  ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button  value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>');
-      document.getElementById("my_table").innerHTML=('<input type=tetx name="mouse" value=jibigopi>');
+      $('#my_table').append('<input type=text name="mouse[]" value=jibigopi>');
 console.log();
     document.getElementById('item').value="";
     document.getElementById('project').value="";
