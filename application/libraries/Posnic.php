@@ -132,6 +132,12 @@ class Posnic{
              return $CI->posnic_model->module_result_where($table,$where,$_SESSION['Bid']);
         }
     }
+    function posnic_array_module_where($table,$where){
+        if($_SESSION[$table]==='On'){
+             $CI=  get_instance();
+             return $CI->posnic_model->module_result_array_where($table,$where,$_SESSION['Bid']);
+        }
+    }
             function posnic_two($value1,$value2,$table,$where){
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
@@ -205,6 +211,12 @@ class Posnic{
              $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION['Uid']);
         }
        }
+    }
+    function posnic_like($table,$where,$name){
+         $CI=  get_instance();        
+  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->posnic_like_data($table,$where,$name,$branch);
     }
 }
        

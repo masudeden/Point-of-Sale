@@ -29,7 +29,7 @@ $(function() {
     }    
     $( "#project" ).autocomplete({
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_main/get_item_details/",
+        source:"<?php echo base_url() ?>index.php/suppliers_x_items/get_item_details/",
         focus: function( event, ui ) {
             $( "#project" ).val( ui.item.label );
             
@@ -70,7 +70,7 @@ else
   {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_main/get_item_details_for_view/"+item_name,false);
+xmlhttp.open("GET","<?php echo base_url() ?>index.php/suppliers_x_items/get_item_details_for_view/"+item_name,false);
 
 xmlhttp.send();
 document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
@@ -233,8 +233,8 @@ function copy_items(){
     disc=document.getElementById('item_mrp').value;
     item=document.getElementById('item').value;
     var iid=document.getElementById('item').value;
-      $('#item_copy_final').append('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+code+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+code+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+code+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+code+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=discount value='+code+' id='+item+'p class=item_input  ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button  value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>');
-      $('#my_table').append('<input type=text name="mouse[]" value=jibigopi>');
+      $('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+dis+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=discount value='+disc+' id='+item+'p class=item_input  ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button  value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=text name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
+      
 console.log();
     document.getElementById('item').value="";
     document.getElementById('project').value="";
@@ -280,8 +280,9 @@ function stopRKey(evt) {
 document.onkeypress = stopRKey; 
     </script>
     <body >
+          <form action="<?php echo base_url() ?>index.php/suppliers_x_items/save_items" method="post" id="form"  >
         <div style="width: 100%; ; background: #ffcccc ">
-            <form action="<?php echo base_url() ?>index.php/suppliers_x_items/save_items" method="post" id="form"  >
+          
        <input type="hidden" name="s_guid" value="<?php echo $supplier_id ?>">
        <table style="margin-left: 150px">
        
@@ -291,7 +292,8 @@ document.onkeypress = stopRKey;
               <tr><td><label><?php echo $this->lang->line('name') ?><label></td><td><label><?php echo $i_sup->first_name  ?><label></td></tr>
               <?php } ?>
          </table>
-        </div> <div style="width: 100%;height: 350px;background:#ccccff "><div class="ui-widget item_details_css ">
+        </div>
+              <div style="width: 100%;height: 350px;background:#ccccff "><div class="ui-widget item_details_css ">
      <div id="item_div" class="item_det_div" >
         <table>
          
@@ -321,7 +323,7 @@ document.onkeypress = stopRKey;
       <tr id="<?php echo $i_row->id ?>">
     <td >
         <label  id="sl_no" ></label> 
-       <input type="input" name="code[]" value="<?php echo $i_row->id ?>"   id="<?php echo $i_row->id."c" ?>" class="item_inputd"></td>
+       <input type="input" name="coding[]" value="<?php echo $i_row->id ?>"   id="<?php echo $i_row->id."c" ?>" class="item_inputd"></td>
        <td><input type="input" name="dis[]"  readonly="readonly"  id="<?php echo $i_row->id."d" ?>" class="item_input_d"></td>
        <td><input type="input" name="quty[]"  readonly="readonly"  id="<?php echo $i_row->id."q" ?>" class="item_input"></td>
        <td><input type="input" name="cost[]"  readonly="readonly"  id="<?php echo $i_row->id."co" ?>" class="item_input"></td>
@@ -330,7 +332,7 @@ document.onkeypress = stopRKey;
        
        <td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="<?php echo $i_row->id ?>">
            <input type="button"  onclick=" $(this).closest('tr').remove()" value="X" id="<?php echo $i_row->id ?>"></td>
-      
+      <td><input type='hidden' name='items[]' value="<?php echo $i_row->id ?>" id="<?php echo $i_row->id ?>"></td>
       </tr>   
    <?php  }
     } ?>
@@ -348,11 +350,13 @@ document.onkeypress = stopRKey;
                 <tr><td></td><td></td><td></td><td></td><td><?php echo form_submit('save',$this->lang->line('save')) ?><?php echo form_submit('cancel',$this->lang->line('cancel')) ?></td></tr>
             
             </table
+            
        </div>
        <div id="my_table">
           
        </div>
          
-</form>
+
+    </form>
 </body>
 </html>

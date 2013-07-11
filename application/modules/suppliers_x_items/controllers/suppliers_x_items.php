@@ -5,8 +5,8 @@ class Suppliers_x_items extends CI_Controller{
                 $this->load->library('posnic');               
     }
     function index(){     
-               // $this->get_items();
-             $this->load->view('annan');
+              $this->get_items();
+             //$this->load->view('annan1');
     }
     function get_items(){
                 $config["base_url"] = base_url()."index.php/suppliers_x_items/get_items";
@@ -31,24 +31,66 @@ class Suppliers_x_items extends CI_Controller{
          
     }
     function save_get(){
-        echo $data=$this->input->post('p_new1');
+        $data= $this->input->post('items');
         for($i=0;$i<count($data);$i++){
-            echo $data[$i];
+               
+              if($this->posnic->check_unique($value)){  
+                                  
+              }
         }
     }
             function save_items(){
         if($this->input->post('save')){       
         if($_SESSION['Posnic_Add']==="Add"){
-            echo $this->input->post('mouse');
-           
-            
-        }    
+            $data= $this->input->post('items');
+            $sguid=  $this->input->post('s_guid');
+        for($i=0;$i<count($data);$i++){
+            $value=array('item_id'=>$data[$i],'supplier_id'=>$sguid);
+            if($this->posnic->check_unique($value)){
+                echo $data[$i];
+                                  
+            }
+        }
+        }
         }
         if($this->input->post('cancel')){
             redirect('suppliers_x_items');
         }
     }
-            function get_selected_item()
+    
+    function get_item_details(){
+       $q= addslashes($_REQUEST['term']);
+                $where=array('code'=>$q);
+                $name=$this->posnic->posnic_like('items',$where,'code');
+                $dis=  $this->posnic->posnic_like('items',$where,'name');
+                $id= $this->posnic->posnic_like('items',$where,'id');
+                $j=0;
+                $data=array();
+                 for($i=0;$i<count($name);$i++)
+                            {                                
+                                $data[$j] = array(
+                                          'label' =>$name[$i]  ,
+                                          'desc' =>$dis[$i],                                          
+                                          'id'=>$id[$i]
+                                );			
+                                        $j++;                                
+                        }
+        echo json_encode($data);
+    }
+     
+     function get_item_details_for_view($iid){
+        if ($iid=="pos") return;
+            $this->load->model('purchase');     
+            $id=urldecode($iid);
+            $where=array('code'=>$id);
+            $data=$this->posnic->posnic_array_module_where('items',$where);
+           foreach ($data as $value){ 
+            echo "  <table> <tr><td >Name  </td><td >Description</td><td >Cost</td><td >Selling Price</td><td > MRF</td></tr><tr><td><input type=text value=$value[name] class=items_div disabled ></td><td ><input type=text value =$value[description] class=items_div disabled ></td><td ><input type=text value =$value[cost_price] class=items_div disabled ></td><td ><input type=text value =$value[selling_price] class=items_div disabled ></td><td ><input type=text value= $value[mrf] class=items_div  disabled ></td></tr></table>";
+            
+            
+        }
+     }
+    function get_selected_item()
     {
           if (!$_SERVER['HTTP_REFERER']){ redirect('home');}else{
        $this->load->model('receiving_items');

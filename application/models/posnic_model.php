@@ -149,5 +149,20 @@ class posnic_model extends CI_model{
         $sql=  $this->db->get();
         return $sql->result();
     }
+    function module_result_array_where($table,$where,$bid){
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid)->limit(1);
+        $sql=  $this->db->get();
+        return $sql->result_array();
+    }
+    function posnic_like_data($table,$where,$name,$branch){
+        $this->db->select()->from($table)->like($where)->where('branch_id',0)->where('active',0)->where('active_status',0)->where('delete_status',0);
+        $sql=  $this->db->get();
+        $data=array();
+        $value=array();
+    foreach ($sql->result() as $row){
+            $data[]=$row->$name   ;
+    }
+    return $data;
+    }
 }
 ?>
