@@ -133,9 +133,21 @@ class posnic_model extends CI_model{
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
+    function admin_where_delete($where,$module,$branch,$uid){
+        $data=array('active_status'=>1,'delete_status'=>1,'deleted_by'=>$uid);
+        $this->db->where($where);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
     function user_delete($guid,$module,$branch,$uid){
         $data=array('active_status'=>1,'deleted_by'=>$uid);
         $this->db->where('guid',$guid);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
+    function user_where_delete($where,$module,$branch,$uid){
+        $data=array('active_status'=>1,'deleted_by'=>$uid);
+        $this->db->where($where);
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
@@ -150,6 +162,11 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function module_result_array_where($table,$where,$bid){
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid);
+        $sql=  $this->db->get();
+        return $sql->result_array();
+    }
+    function module_result_one_array_where($table,$where,$bid){
         $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid)->limit(1);
         $sql=  $this->db->get();
         return $sql->result_array();

@@ -138,6 +138,12 @@ class Posnic{
              return $CI->posnic_model->module_result_array_where($table,$where,$_SESSION['Bid']);
         }
     }
+    function posnic_one_array_module_where($table,$where){
+        if($_SESSION[$table]==='On'){
+             $CI=  get_instance();
+             return $CI->posnic_model->module_result_one_array_where($table,$where,$_SESSION['Bid']);
+        }
+    }
             function posnic_two($value1,$value2,$table,$where){
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
@@ -209,6 +215,20 @@ class Posnic{
             
         }else{
              $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION['Uid']);
+        }
+       }
+    }
+    function posnic_where_delete($where){
+        $CI=  get_instance();        
+        $module=$_SESSION['posnic_module'];
+        $branch=$_SESSION['Bid'];  
+         if( $_SESSION[$module.'_per']['delete']==1){
+            if($_SESSION['admin']==2){
+           
+        $CI->posnic_model->admin_where_delete($where,$module,$branch,$_SESSION['Uid']);
+            
+        }else{
+             $CI->posnic_model->user_where_delete($where,$module,$branch,$_SESSION['Uid']);
         }
        }
     }
