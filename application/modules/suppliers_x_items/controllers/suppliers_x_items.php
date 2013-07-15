@@ -32,6 +32,7 @@ class Suppliers_x_items extends CI_Controller{
          $this->load->view('add_items',$data);
          
     }
+    
   
     function save_items(){
         if($this->input->post('save')){       
@@ -117,9 +118,10 @@ class Suppliers_x_items extends CI_Controller{
                                         'cost'=>$cost[$i],
                                          'quty'=>$quty[$i],
                                          'price'=>$sell[$i],
-                                         'discount'=>$discount[$i]
+                                         'discount'=>$discount[$i],
+                                         'item_active'=>$this->input->post($data[$i])
                                  );
-                             
+                          
                              $where=array('supplier_id'=>$sguid,'item_id'=>$data[$i]);
                              $this->posnic->posnic_update($data1,$where);
                               }else{
@@ -131,7 +133,7 @@ class Suppliers_x_items extends CI_Controller{
                                   
                        }
         }
-         redirect('suppliers_x_items');
+         //redirect('suppliers_x_items');
                          
             }
           
