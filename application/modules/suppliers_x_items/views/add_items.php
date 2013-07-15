@@ -203,6 +203,7 @@ function copy_items(){
     document.getElementById(od+"p").value=document.getElementById('item_mrp').value;
    
     document.getElementById(od).id=id;
+    document.getElementById(od+'id').value=id;
     document.getElementById(od+"c").id=id+"c";
     document.getElementById(od+"d").id=id+"d";
     document.getElementById(od+"q").id=id+"q";
@@ -233,7 +234,7 @@ function copy_items(){
     disc=document.getElementById('item_mrp').value;
     item=document.getElementById('item').value;
     var iid=document.getElementById('item').value;
-      $('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+dis+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=discount value='+disc+' id='+item+'p class=item_input ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=text name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
+      $('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+dis+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=mrp value='+disc+' id='+item+'p class=item_input ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
       
 console.log();
     document.getElementById('item').value="";
@@ -300,7 +301,7 @@ document.onkeypress = stopRKey;
 </div>
 <table id="parent_item"><tr>
 <td> <label>Item Code</label> </td>
-<td> description </td><td><label>Quty</label> </td>
+<td> Name</td><td><label>Quty</label> </td>
 <td><label>Cost</label></td><td><label>selling price</label></td>
 <td><label>Discount</label></td><td></td></tr>
 <tr><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
@@ -316,21 +317,25 @@ document.onkeypress = stopRKey;
 </table>
 <table>
 <?php if(count($row)>0){
-     foreach ($row as $i_row){?>
-<tr id="<?php echo $i_row->id ?>">
+     foreach ($row as $it_row){
+         foreach ($items as $i_row){
+             if($it_row->item_id==$i_row->guid){
+         ?>
+    
+<tr id="<?php echo $i_row->guid ?>">
 <td >
 <label id="sl_no" ></label>
-<input type="input" name="coding[]" value="<?php echo $i_row->id ?>" id="<?php echo $i_row->id."c" ?>" class="item_inputd"></td>
-<td><input type="input" name="dis[]" readonly="readonly" id="<?php echo $i_row->id."d" ?>" class="item_input_d"></td>
-<td><input type="input" name="quty[]" readonly="readonly" id="<?php echo $i_row->id."q" ?>" class="item_input"></td>
-<td><input type="input" name="cost[]" readonly="readonly" id="<?php echo $i_row->id."co" ?>" class="item_input"></td>
-<td><input type="input" name="sell[]" readonly="readonly" id="<?php echo $i_row->id."s" ?>"class="item_input"></td>
-<td><input type="input" name="mrp[]" readonly="readonly" id="<?php echo $i_row->id."p" ?>"class="item_input"></td>
-<td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="<?php echo $i_row->id ?>">
-<input type="button" onclick=" $(this).closest('tr').remove()" value="X" id="<?php echo $i_row->id ?>"></td>
-<td><input type='hidden' name='items[]' value="<?php echo $i_row->id ?>" id="<?php echo $i_row->id ?>"></td>
+<input type="input" name="coding[]" value="<?php echo $i_row->code ?>" id="<?php echo $i_row->guid."c" ?>" class="item_inputd"></td>
+<td><input type="input" name="dis[]" value="<?php echo $i_row->name ?>" readonly="readonly" id="<?php echo $i_row->guid."d" ?>" class="item_input_d"></td>
+<td><input type="input" name="quty[]" value="<?php echo $it_row->quty  ?>" readonly="readonly" id="<?php echo $i_row->guid."q" ?>" class="item_input"></td>
+<td><input type="input" name="cost[]" value="<?php echo $it_row->cost ?>" readonly="readonly" id="<?php echo $i_row->guid."co" ?>" class="item_input"></td>
+<td><input type="input" name="sell[]" value="<?php echo $it_row->price  ?>" readonly="readonly" id="<?php echo $i_row->guid."s" ?>"class="item_input"></td>
+<td><input type="input" name="mrp[]" value="<?php echo $it_row->discount ?>" readonly="readonly" id="<?php echo $i_row->guid."p" ?>"class="item_input"></td>
+<td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="<?php echo $i_row->guid ?>">
+<input type="button" onclick=" $(this).closest('tr').remove()" value="X" id="<?php echo $i_row->guid ?>"></td>
+<td><input type='hidden' name='items[]' value="<?php echo $i_row->guid ?>" id="<?php echo $i_row->guid.'id' ?>"></td>
 </tr>
-<?php }
+<?php } } }
     } ?>
 </table>
 <table id="item_copy_final">
