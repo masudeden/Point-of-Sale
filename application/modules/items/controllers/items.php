@@ -161,7 +161,7 @@ class Items extends CI_Controller{
   
     function edit_items($guid){
         if($_SESSION['Posnic_Edit']==="Edit"){
-             $where=array('guid'=>$guid);
+                    $where=array('guid'=>$guid);
                     $data['irow']=$this->posnic->posnic_result($where);
                     $data['brands']=$this->posnic->posnic_module('brands');
                     $data['taxes']= $this->posnic->posnic_module('taxes');

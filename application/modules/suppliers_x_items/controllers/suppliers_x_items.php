@@ -17,10 +17,32 @@ class Suppliers_x_items extends CI_Controller{
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
                 $data['count']=$this->posnic->posnic_module_count('suppliers');                 
 	        $data["row"] = $this->posnic->posnic_module_limit_result('suppliers',$config["per_page"], $page);           
-	        
+	        $data['sup']=  $this->posnic->module_result();
                 $data["links"] = $this->pagination->create_links();
                 $this->load->view('supplier_list',$data);
     }
+    function supplier_magement(){
+        if($this->input->post('cancel')){
+            redirect('home');
+        }
+            if($this->input->post('active')){
+              $data=  $this->input->post('posnic')  ;
+              for($i=0;$i<count($data);$i++){
+                  $where=array('supplier_id'=>$data[$i]);
+                  $this->posnic->posnic_active_where($where);
+              }
+              redirect('suppliers_x_items');
+            }
+            if($this->input->post('deactive')){
+              $data=  $this->input->post('posnic')  ;
+              for($i=0;$i<count($data);$i++){
+                  $where=array('supplier_id'=>$data[$i]);
+                  $this->posnic->posnic_deactive_where($where);
+              }
+              redirect('suppliers_x_items');
+            }
+    }
+            
     function add_items($guid){
          $data['supplier_id']=$guid;
          $where=array('supplier_id'=>$guid);
@@ -58,11 +80,8 @@ class Suppliers_x_items extends CI_Controller{
             $this->form_validation->set_rules('cost[]', 'items', 'required');
             $this->form_validation->set_rules('sell[]', 'items', 'required');
             $this->form_validation->set_rules('quty[]', 'items', 'required');
-            $this->form_validation->set_rules('mrp[]', 'items', 'required');
-          
-              
-            $data= $this->input->post('items');
-             
+            $this->form_validation->set_rules('mrp[]', 'items', 'required');             
+            $data= $this->input->post('items');             
             $cost=  $this->input->post('cost');
             $sell=  $this->input->post('sell');
             $quty=  $this->input->post('quty');
@@ -139,7 +158,14 @@ class Suppliers_x_items extends CI_Controller{
         }
      }
      function deactive_supplier($guid){
-         
+              $where=array('supplier_id'=>$guid);
+              $this->posnic->posnic_deactive_where($where);
+              redirect('suppliers_x_items');
+     }
+     function active_supplier($guid){
+         $where=array('supplier_id'=>$guid);
+              $this->posnic->posnic_active_where($where);
+              redirect('suppliers_x_items');
      }
    
     

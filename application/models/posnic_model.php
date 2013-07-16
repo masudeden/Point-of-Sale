@@ -121,6 +121,18 @@ class posnic_model extends CI_model{
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
+    function deactive_where($where,$module,$branch){
+        $data=array('active'=>1);
+        $this->db->where($where);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
+    function active_where($where,$module,$branch){
+        $data=array('active'=>0);
+        $this->db->where($where);
+        $this->db->where('branch_id',$branch);
+        $this->db->update($module,$data);
+    }
     function restore($guid,$module,$branch){
         $data=array('active_status'=>0);
         $this->db->where('guid',$guid);
@@ -180,6 +192,16 @@ class posnic_model extends CI_model{
             $data[]=$row->$name   ;
     }
     return $data;
+    }
+    function module_result_admin($table,$bid){
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
+        $sql=  $this->db->get();
+        return $sql->result();
+    }
+    function module_result_user($table,$bid){
+        $this->db->select()->from($table)->where('delete_status',0)->where('active_status',0)->where('branch_id',$bid);
+        $sql=  $this->db->get();
+        return $sql->result();
     }
 }
 ?>
