@@ -37,12 +37,29 @@ class Suppliers_x_items extends CI_Controller{
     function save_items(){
         if($this->input->post('save')){       
         if($_SESSION['Posnic_Add']==="Add"){
+              $sguid=  $this->input->post('s_guid');
+             if($_SESSION['Posnic_Delete']==="Delete"){
+                $where=array('supplier_id'=>$sguid);
+                $data=$this->posnic->posnic_array_module_where('suppliers_x_items',$where);
+            
+            if(count($data)>0)     {
+                 foreach ($data as $i_value){
+                    
+                     if(!$this->input->post($i_value['item_id'])){
+                        $where1=array('supplier_id'=>$sguid,'item_id'=>$i_value['item_id']);
+                        $this->posnic->posnic_where_delete($where1);
+                       
+                     }
+                 }
+                    }
+            }
+            
             $this->form_validation->set_rules('items[]', 'items', 'required');
             $this->form_validation->set_rules('cost[]', 'items', 'required');
             $this->form_validation->set_rules('sell[]', 'items', 'required');
             $this->form_validation->set_rules('quty[]', 'items', 'required');
             $this->form_validation->set_rules('mrp[]', 'items', 'required');
-            $sguid=  $this->input->post('s_guid');
+          
               
             $data= $this->input->post('items');
              
@@ -50,93 +67,39 @@ class Suppliers_x_items extends CI_Controller{
             $sell=  $this->input->post('sell');
             $quty=  $this->input->post('quty');
             $discount=$this->input->post('mrp');
-            
-            $where=array('supplier_id'=>$sguid);
-            $data1=$this->posnic->posnic_array_module_where('suppliers_x_items',$where);
+            $item_active=  $this->input->post('item_active');
                 
-                    $status=0;
-                   for($i=0;$i<count($data);$i++){
-                     
-                        if(count($data1)===0){
-                            if ( $this->form_validation->run() !== false ) {
-                             $value=array('supplier_id'=>$sguid,'item_id'=>$data[$i]);
+            if ( $this->form_validation->run() !== false ) {                
+            for($i=0;$i<count($data);$i++){
+            $value=array('supplier_id'=>$sguid,'item_id'=>$data[$i]);
                         if($this->posnic->check_unique($value)){
                              $data2=array('item_id'=>$data[$i],
-                                        'supplier_id'=>$sguid,
-                                        'cost'=>$cost[$i],
+                                         'supplier_id'=>$sguid,
+                                         'cost'=>$cost[$i],
                                          'quty'=>$quty[$i],
                                          'price'=>$sell[$i],
-                                         'discount'=>$discount[$i]
-                                 );
+                                         'discount'=>$discount[$i],
+                                         'item_active'=>$item_active[$i]
+                                 );                             
                             $this->posnic->posnic_add($data2);
                          }else{
-                             $this->add_items($sguid);
-                         }
-                             
-                        }
-                        }else{
-                       foreach ($data1 as $value1){
-                           
-                    if($data[$i]!=$value1['item_id']){
-                        if ( $this->form_validation->run() !== false ) {
-                        $value=array('supplier_id'=>$sguid,'item_id'=>$data[$i]);
-                        if($data[$i]!=NULL and $quty[$i]!=NULL and $discount[$i]!=NULL){
-                        if($this->posnic->check_unique($value)){
-                             $data2=array('item_id'=>$data[$i],
-                                        'supplier_id'=>$sguid,
-                                        'cost'=>$cost[$i],
-                                         'quty'=>$quty[$i],
-                                         'price'=>$sell[$i],
-                                         'discount'=>$discount[$i]
-                                 );
-                            $this->posnic->posnic_add($data2);
-                         }else{
-                             $this->add_items($sguid);
-                         }
-                             
-                        }
-                        }
-                       if($status==0){
-                          if($_SESSION['Posnic_Delete']==="Delete"){ 
-                             if(count($data)>1) {
-                                    $where=array('supplier_id'=>$sguid,'item_id'=>$data[$i]);
-                                    $this->posnic->posnic_where_delete($where);
-                                    
-                             }else{
-                                    $where=array('supplier_id'=>$sguid);
-                                    $this->posnic->posnic_where_delete($where);
-                             }
-                          }
-                           $status=1;                          
-                       }
-                        
-                    }else{
-                         if($_SESSION['Posnic_Edit']==="Edit"){
-                               if ( $this->form_validation->run() !== false ) {
-                             $data1=array('item_id'=>$data[$i],
+                              $values=array('item_id'=>$data[$i],
                                         'supplier_id'=>$sguid,
                                         'cost'=>$cost[$i],
                                          'quty'=>$quty[$i],
                                          'price'=>$sell[$i],
                                          'discount'=>$discount[$i],
-                                         'item_active'=>$this->input->post($data[$i])
-                                 );
-                          
+                                         'item_active'=>$item_active[$i]
+                                 );                          
                              $where=array('supplier_id'=>$sguid,'item_id'=>$data[$i]);
-                             $this->posnic->posnic_update($data1,$where);
-                              }else{
-                             $this->add_items($sguid);
-                         }
-                         }
-                    }
-                       }
-                                  
-                       }
-        }
-         //redirect('suppliers_x_items');
+                             $this->posnic->posnic_update($values,$where);
+                         }                        
+            }     }
+            
+       redirect('suppliers_x_items');
                          
-            }
-          
+            
+        }
         }
         if($this->input->post('cancel')){
             redirect('suppliers_x_items');
