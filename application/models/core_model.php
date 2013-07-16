@@ -31,5 +31,11 @@ class Core_model extends CI_Model{
         $this->db->update('items_settings',$data);
             
         }
+    function suppliers_x_items($id,$bid,$supplier,$selling_price,$cost_price){
+            $data=array('item_id'=>$id,'supplier_id'=>$supplier,'price'=>$selling_price,'cost'=>$cost_price,'branch_id'=>$bid);
+            $this->db->insert('suppliers_x_items');
+            
+    }
+                                    
 }
 ?>

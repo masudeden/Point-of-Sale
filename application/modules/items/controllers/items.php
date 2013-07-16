@@ -134,6 +134,7 @@ class Items extends CI_Controller{
                                      $id=$this->posnic->posnic_add($data);
                                      $this->load->model('core_model');
                                      $this->core_model->item_setting($id,$_SESSION['Bid']);
+                                     $this->core_model->suppliers_x_items($id,$_SESSION['Bid'],$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost_price'));
                                      $this->get_items();
                                      }else{
                                         echo " this item is  already added in this branch";
