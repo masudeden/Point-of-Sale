@@ -138,6 +138,9 @@ class Suppliers_x_items extends CI_Controller{
             
         }
      }
+     function deactive_supplier($guid){
+         
+     }
    
     
 }

@@ -60,7 +60,7 @@ function set_item_details(value){
 document.getElementById('item_div').style.visibility="visible";
                        var item_name=value.val();
                        if(item_name=="") { item_name='pos'}
-document.getElementById('item_image').style.backgroundImage="url(<?php echo base_url() ?>item_images/"+item_name+")";
+document.getElementById('item_image').style.backgroundImage="url(<?php echo base_url() ?>item_images/"+item_name+".png)";
 var xmlhttp;
 if (window.XMLHttpRequest)
   {
@@ -115,6 +115,8 @@ function add_new_item(e){
     }
 }
 function add_new_q(e){
+    if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!="" ){
+
      var unicode=e.charCode? e.charCode : e.keyCode
     if(document.getElementById('item_quty').value!=""){
         
@@ -131,9 +133,17 @@ function add_new_q(e){
              document.getElementById("project").focus();
         }
         }
+}else{
+    
+
+    document.getElementById("project").focus();
+    
+}
       
     }
-    function add_new_cost(e){
+    function add_new_cost(e){          
+    if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!="" ){
+
      var unicode=e.charCode? e.charCode : e.keyCode
     if(document.getElementById('item_cost').value!=""){
                   if (unicode!=13 && unicode!=9){
@@ -149,8 +159,12 @@ function add_new_q(e){
              document.getElementById("item_quty").focus();
         }
         }
+    }else{
+        document.getElementById("project").focus();
     }
-    function add_new_sell(e){
+    }
+    function add_new_sell(e){        
+    if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!="" ){
        var unicode=e.charCode? e.charCode : e.keyCode
     if(document.getElementById('item_sell').value!=""){
                   if (unicode!=13 && unicode!=9){
@@ -166,8 +180,13 @@ function add_new_q(e){
              document.getElementById("item_cost").focus();
         }
         }
+    }else{
+        document.getElementById("project").focus();
+    }
     }
     function add_new_mrp(e){
+       if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!="" ){
+   
         var unicode=e.charCode? e.charCode : e.keyCode
     if(document.getElementById('item_mrp').value!="" && document.getElementById('item_quty').value!="" && document.getElementById('item_cost').value!="" && document.getElementById('item_sell').value!=""){
                   if (unicode!=13 && unicode!=9){
@@ -188,9 +207,14 @@ function add_new_q(e){
              document.getElementById("item_sell").focus();
         }
         }
+        }else{
+        document.getElementById("project").focus();
+    }
     }
 
 function copy_items(){
+ if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!="" && document.getElementById('item_quty').value!="" && document.getElementById('item_cost').value!="" && document.getElementById('item_sell').value!="" && document.getElementById('item_mrp').value!=""){
+   if(document.getElementById('item_cost').value<document.getElementById('item_sell').value) { 
  
  if(document.getElementById('item_edit').value!='jibi'){
      var od=document.getElementById('item_edit').value;
@@ -221,6 +245,9 @@ function copy_items(){
     
     document.getElementById("project").focus();
     document.getElementById('item_edit').value='jibi';
+    document.getElementById('edit_save').style.visibility="hidden";
+    document.getElementById('edit_cancel').style.visibility="hidden";
+    document.getElementById('add_button').style.visibility="visible";
  }else{
    
     
@@ -246,9 +273,32 @@ console.log();
     document.getElementById('item_mrp').value="";
   
         }
+        }else{
+        alert('Cost Must Less Than Sell price');
+         document.getElementById('item_cost').focus();
+        }
+        }else{
+        alert("Please select an item");
+        document.getElementById('project').focus();
+        }
+}
+function cancel_items(){
+    document.getElementById('item').value="";
+    document.getElementById('project').value="";
+    document.getElementById('item_dis').value="";
+    document.getElementById('item_quty').value="";
+    document.getElementById('item_cost').value="";
+    document.getElementById('item_sell').value="";
+    document.getElementById('item_mrp').value="";
+    document.getElementById('edit_save').style.visibility="hidden";
+    document.getElementById('edit_cancel').style.visibility="hidden";
+    document.getElementById('add_button').style.visibility="visible";
+
 }
 function edit_items_details(od){
-   
+    document.getElementById('edit_save').style.visibility="visible";
+    document.getElementById('edit_cancel').style.visibility="visible";
+    document.getElementById('add_button').style.visibility="hidden";
     document.getElementById('item_edit').value=od;
     document.getElementById('project').value=document.getElementById(od+'c').value;
     document.getElementById('item_dis').value=document.getElementById(od+'d').value;
@@ -313,6 +363,7 @@ document.onkeypress = stopRKey;
 <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
 <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
 <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onKeyPress="add_new_mrp(event); return numbersonly(event)" /></td>
+<td><input type="button" value="Add" onclick="copy_items()" id="add_button" > <input type="button" style="visibility:hidden;"  id="edit_save" value="save"  ><input type="button" style="visibility:hidden;"  id="edit_cancel" onclick="cancel_items()"  value="cancel" ></td>
 </tr>
 </table>
 <table>
