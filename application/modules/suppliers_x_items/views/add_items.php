@@ -45,8 +45,10 @@ response([]);
     }else{
             $( "#project" ).val( ui.item.label );
             $('#item_dis').val(ui.item.desc);
-            
-            $('#item').val(ui.item.id);
+                $('#item_cost').val(ui.item.cost);
+                $('#item_sell').val(ui.item.sell);
+                $('#item_mrp').val(ui.item.mrp);
+                $('#item').val(ui.item.id);
             console.log();
             return false;
         }
@@ -95,25 +97,7 @@ function numbersonly(e){
     }
     }
 
-function add_new_item(e){
-    if(document.getElementById('item_quty').value!="" && document.getElementById('item_cost').value!="" && document.getElementById('item_sell').value!=""){
-        if(document.getElementById('item_cost').value < document.getElementById('item_sell').value){
-            if(document.getElementById('item_sell').value<document.getElementById('item_mrp').value){
-                  var unicode=e.charCode? e.charCode : e.keyCode
-        if (unicode!=13 && unicode!=9){
-           
-        }else{
-            alert('sasi');
-        }
-            }else{
-                 alert('Seelling price should Less than MRP ');
-            }
-        }
-        else{
-            alert('Seelling price should More than Cost ');
-        }
-    }
-}
+
 function add_new_q(e){
     if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!="" ){
 
@@ -213,21 +197,36 @@ function add_new_q(e){
     }
 
 function copy_items(){
- if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!="" && document.getElementById('item_quty').value!="" && document.getElementById('item_cost').value!="" && document.getElementById('item_sell').value!="" && document.getElementById('item_mrp').value!=""){
+ if(document.getElementById('project').value!="" && document.getElementById('item_dis').value!=""  && document.getElementById('item_cost').value!="" && document.getElementById('item_sell').value!="" && document.getElementById('item_mrp').value!=""){
    if(document.getElementById('item_cost').value<document.getElementById('item_sell').value) { 
+   if(document.getElementById('item_mrp').value>=document.getElementById('item_sell').value) { 
  
  if(document.getElementById('item_edit').value!='jibi'){
      var od=document.getElementById('item_edit').value;
      var id=document.getElementById('item').value;
     document.getElementById(od+"c").value=document.getElementById('project').value;
     document.getElementById(od+"d").value=document.getElementById('item_dis').value;
-    document.getElementById(od+"q").value=document.getElementById('item_quty').value;
+    if(document.getElementById('item_quty').value==""){ 
+        qty=00;
+    
+     }else{
+          qty=document.getElementById('item_quty').value;
+     }    
+    document.getElementById(od+"q").value=qty;
     document.getElementById(od+"co").value=document.getElementById('item_cost').value;
     document.getElementById(od+"s").value=document.getElementById('item_sell').value;
     document.getElementById(od+"p").value=document.getElementById('item_mrp').value;
+    
+    document.getElementById(od+"c0").value=document.getElementById('project').value;
+    document.getElementById(od+"d0").value=document.getElementById('item_dis').value;
+    document.getElementById(od+"q0").value=document.getElementById('item_quty').value;
+    
+    document.getElementById(od+"co0").value=document.getElementById('item_cost').value;
+    document.getElementById(od+"s0").value=document.getElementById('item_sell').value;
+    document.getElementById(od+"p0").value=document.getElementById('item_mrp').value;
    
     document.getElementById(od).id=id;
-    document.getElementById(od+'id').value=id;
+   // document.getElementById(od+'id').value=id;
     document.getElementById(od+"c").id=id+"c";
     document.getElementById(od+"d").id=id+"d";
     document.getElementById(od+"q").id=id+"q";
@@ -260,9 +259,8 @@ function copy_items(){
     sell=document.getElementById('item_sell').value;
     disc=document.getElementById('item_mrp').value;
     item=document.getElementById('item').value;
-    var iid=document.getElementById('item').value;
-    $('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+dis+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=mrp[] value='+disc+' id='+item+'p class=item_input ></td><td><select name=item_active[] ><option value=0 ><?php echo $this->lang->line('active')?></option><option value=1 ><?php echo $this->lang->line('deactive')?></option></select></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
-      
+    $('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd disabled ><input type=hidden name="coding[]" value='+code+' id='+item+'c class=item_inputd disabled ></td><td><input type=text name=dis[] value='+dis+' id='+item+'d class=item_input_d disabled ><input type=hidden name=dis[] value='+dis+' id='+item+'d class=item_input_d  ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input disabled ><input type=hidden name=quty[] value='+quty+' id='+item+'q class=item_input  ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input disabled ><input type=hidden name=cost[] value='+cost+' id='+item+'co class=item_input  ></td><td><input type=text name=sell[] disabled value='+sell+' id='+item+'s class=item_input  ><input type=hidden name=sell[] value='+sell+' id='+item+'s class=item_input  ></td><td><input type=text name=mrp[] value='+disc+' id='+item+'p class=item_input disabled ><input type=hidden name=mrp[] value='+disc+' id='+item+'p class=item_input ></td><td><select name=item_active[] ><option value=0 ><?php echo $this->lang->line('active')?></option><option value=1 ><?php echo $this->lang->line('deactive')?></option></select></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
+     
 console.log();
     document.getElementById('item').value="";
     document.getElementById('project').value="";
@@ -272,6 +270,10 @@ console.log();
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
   
+        }
+        }else{
+        alert('Selling Price Must Less Than MRP price');
+         document.getElementById('item_mrp').focus();
         }
         }else{
         alert('Cost Must Less Than Sell price');
@@ -353,7 +355,7 @@ document.onkeypress = stopRKey;
 <td> <label>Item Code</label> </td>
 <td> Name</td><td><label>Quty</label> </td>
 <td><label>Cost</label></td><td><label>selling price</label></td>
-<td><label>Discount</label></td><td></td></tr>
+<td><label>MRP</label></td><td></td></tr>
 <tr><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
 <td><input type="hidden" id="item_pro"> <input type="hidden" id="item_sl" value="0">
 <input id="project" name="project" type="text" class="item_inputd" />
@@ -363,7 +365,7 @@ document.onkeypress = stopRKey;
 <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
 <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
 <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onKeyPress="add_new_mrp(event); return numbersonly(event)" /></td>
-<td><input type="button" value="Add" onclick="copy_items()" id="add_button" > <input type="button" style="visibility:hidden;"  id="edit_save" value="save"  ><input type="button" style="visibility:hidden;"  id="edit_cancel" onclick="cancel_items()"  value="cancel" ></td>
+<td><input type="button" value="Add" onclick="copy_items()" id="add_button" > <input type="button" style="visibility:hidden;"  id="edit_save" value="save" onclick="copy_items()"  ><input type="button" style="visibility:hidden;"  id="edit_cancel" onclick="cancel_items()"  value="cancel" ></td>
 </tr>
 </table>
 <table>
@@ -376,12 +378,12 @@ document.onkeypress = stopRKey;
 <tr id="<?php echo $i_row->guid ?>">
 <td >
 <label id="sl_no" ></label>
-<input type="input" name="coding[]" value="<?php echo $i_row->code ?>" id="<?php echo $i_row->guid."c" ?>" class="item_inputd"></td>
-<td><input type="input" name="dis[]" value="<?php echo $i_row->name ?>" readonly="readonly" id="<?php echo $i_row->guid."d" ?>" class="item_input_d"></td>
-<td><input type="input" name="quty[]" value="<?php echo $it_row->quty  ?>" readonly="readonly" id="<?php echo $i_row->guid."q" ?>" class="item_input"></td>
-<td><input type="input" name="cost[]" value="<?php echo $it_row->cost ?>" readonly="readonly" id="<?php echo $i_row->guid."co" ?>" class="item_input"></td>
-<td><input type="input" name="sell[]" value="<?php echo $it_row->price  ?>" readonly="readonly" id="<?php echo $i_row->guid."s" ?>"class="item_input"></td>
-<td><input type="input" name="mrp[]" value="<?php echo $it_row->discount ?>" readonly="readonly" id="<?php echo $i_row->guid."p" ?>"class="item_input"></td>
+<input type="input" name="coding[]" value="<?php echo $i_row->code ?>" id="<?php echo $i_row->guid."c" ?>" disabled class="item_inputd"><input type="hidden" name="coding[]" value="<?php echo $i_row->code ?>" id="<?php echo $i_row->guid."c0" ?>" class="item_inputd"></td>
+<td><input type="text" name="dis[]" value="<?php echo $i_row->name ?>"  id="<?php echo $i_row->guid."d" ?>" disabled class="item_input_d"><input type="hidden" name="dis[]" value="<?php echo $i_row->name ?>"  id="<?php echo $i_row->guid."d0" ?>" class="item_input_d"></td>
+<td><input type="text"  value="<?php echo $it_row->quty  ?>" disabled id="<?php echo $i_row->guid."q" ?>" class="item_input"><input type="hidden" name="quty[]" value="<?php echo $it_row->quty  ?>"  id="<?php echo $i_row->guid."q0" ?>" class="item_input"></td>
+<td><input type="text" name="cost[]" value="<?php echo $it_row->cost ?>" disabled id="<?php echo $i_row->guid."co" ?>" class="item_input"><input type="hidden" name="cost[]" value="<?php echo $it_row->cost ?>"  id="<?php echo $i_row->guid."co0" ?>" class="item_input"></td>
+<td><input type="text" name="sell[]" value="<?php echo $it_row->price  ?>" disabled id="<?php echo $i_row->guid."s" ?>"class="item_input"><input type="hidden" name="sell[]" value="<?php echo $it_row->price  ?>"  id="<?php echo $i_row->guid."s0" ?>"class="item_input"></td>
+<td><input type="text" name="mrp[]" value="<?php echo $it_row->mrp  ?>" disabled id="<?php echo $i_row->guid."p" ?>"class="item_input"><input type="hidden" name="mrp[]" value="<?php echo $it_row->mrp  ?>"  id="<?php echo $i_row->guid."p0" ?>"class="item_input"></td>
 <td><select name="item_active[]"><option value="0" <?php if($it_row->item_active==0){ ?> selected="selected" <?php } ?>><?php echo $this->lang->line('active')?></option><option  value="1" <?php if($it_row->item_active==1){ ?> selected="selected" <?php } ?>><?php  echo $this->lang->line('deactive')?></option></select></td>
 <td><input type="hidden" name="<?php echo $i_row->guid ?>" value="ji"></td>     
 <td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="<?php echo $i_row->guid ?>">

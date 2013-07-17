@@ -97,7 +97,7 @@ class Suppliers_x_items extends CI_Controller{
                                          'cost'=>$cost[$i],
                                          'quty'=>$quty[$i],
                                          'price'=>$sell[$i],
-                                         'discount'=>$discount[$i],
+                                         'mrp'=>$discount[$i],
                                          'item_active'=>$item_active[$i]
                                  );                             
                             $this->posnic->posnic_add($data2);
@@ -107,7 +107,7 @@ class Suppliers_x_items extends CI_Controller{
                                         'cost'=>$cost[$i],
                                          'quty'=>$quty[$i],
                                          'price'=>$sell[$i],
-                                         'discount'=>$discount[$i],
+                                         'mrp'=>$discount[$i],
                                          'item_active'=>$item_active[$i]
                                  );                          
                              $where=array('supplier_id'=>$sguid,'item_id'=>$data[$i]);
@@ -130,6 +130,9 @@ class Suppliers_x_items extends CI_Controller{
                 $where=array('code'=>$q);
                 $name=$this->posnic->posnic_like('items',$where,'code');
                 $dis=  $this->posnic->posnic_like('items',$where,'name');
+                $sell=  $this->posnic->posnic_like('items',$where,'selling_price');
+                $cost=  $this->posnic->posnic_like('items',$where,'cost_price');
+                $mrp=  $this->posnic->posnic_like('items',$where,'mrp');
                 $id= $this->posnic->posnic_like('items',$where,'guid');
                 $j=0;
                 $data=array();
@@ -138,6 +141,9 @@ class Suppliers_x_items extends CI_Controller{
                                 $data[$j] = array(
                                           'label' =>$name[$i]  ,
                                           'desc' =>$dis[$i],                                          
+                                          'cost' =>$cost[$i],                                          
+                                          'sell' =>$sell[$i],                                          
+                                          'mrp' =>$mrp[$i],                                          
                                           'id'=>$id[$i]
                                 );			
                                         $j++;                                
@@ -152,7 +158,7 @@ class Suppliers_x_items extends CI_Controller{
             $where=array('code'=>$id);
             $data=$this->posnic->posnic_one_array_module_where('items',$where);
            foreach ($data as $value){ 
-            echo "  <table> <tr><td >Name  </td><td >Description</td><td >Cost</td><td >Price</td><td > MRF</td></tr><tr><td><input type=text value=$value[name] class=items_div disabled ></td><td ><input type=text value =$value[description] class=items_div style=width:100px disabled ></td><td ><input type=text value =$value[cost_price] class=items_div disabled ></td><td ><input type=text value =$value[selling_price] class=items_div disabled ></td><td ><input type=text value= $value[mrf] class=items_div  disabled ></td></tr></table>";
+            echo "  <table> <tr><td >Name  </td><td >Description</td><td >Cost</td><td >Price</td><td > MRF</td></tr><tr><td><input type=text value=$value[name] class=items_div disabled ></td><td ><input type=text value =$value[description] class=items_div style=width:100px disabled ></td><td ><input type=text value =$value[cost_price] class=items_div disabled ></td><td ><input type=text value =$value[selling_price] class=items_div disabled ></td><td ><input type=text value= $value[mrp] class=items_div  disabled ></td></tr></table>";
             
             
         }
