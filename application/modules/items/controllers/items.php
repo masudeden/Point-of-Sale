@@ -18,6 +18,9 @@ class Items extends CI_Controller{
                 $data['count']=$this->posnic->posnic_count();                 
 	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
 	        $data["links"] = $this->pagination->create_links();
+                $data['brands'] =  $this->posnic->posnic_module('brands');
+                $data['suppliers'] = $this->posnic->posnic_module('suppliers');
+                $data['items_category']= $this->posnic->posnic_module('items_category');
                 $this->load->view('item_list',$data);
     }
     function item_magement(){
@@ -27,6 +30,7 @@ class Items extends CI_Controller{
                     $data['taxes']=$this->posnic->posnic_module('taxes');
                     $data['area']=  $this->posnic->posnic_module('taxes_area');
                     $data['crow']=$this->posnic->posnic_module('items_category');
+                    $data['tax_type']=  $this->posnic->posnic_module('tax_types');
                     $data['srow']=$this->posnic->posnic_module('suppliers');                   
                     $this->load->view('add_item',$data);
             }
@@ -105,8 +109,8 @@ class Items extends CI_Controller{
                             $this->form_validation->set_rules('tax', $this->lang->line('tax'),'required');
                             $this->form_validation->set_rules('area', $this->lang->line('tax_area'),'required');
                             $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            $this->form_validation->set_rules('mrf_price', $this->lang->line('mrf_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            $this->form_validation->set_rules('landing_cost', $this->lang->line('landing_cost'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
+                            $this->form_validation->set_rules('mrp_price', $this->lang->line('mrf_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
+                            
                           if ( $this->form_validation->run() !== false ) {
                                    $data=array('code'=>$this->input->post('code'),
                                     'barcode'=>$this->input->post('barcode'),
@@ -114,8 +118,8 @@ class Items extends CI_Controller{
                                     'description'=>$this->input->post('description'),
                                     'cost_price'=>$this->input->post('cost_price'),
                                     'selling_price'=>$this->input->post('selling_price'),
-                                    'landing_cost'=>$this->input->post('landing_cost'),
-                                    'mrf'=>$this->input->post('mrf_price'),
+                                   
+                                    'mrp'=>$this->input->post('mrp_price'),
                                     'discount_amount'=>$this->input->post('discount_amount'),
                                     'start_date'=>strtotime($this->input->post('start_date')),
                                     'end_date'=>strtotime($this->input->post('end_date')),
@@ -134,13 +138,14 @@ class Items extends CI_Controller{
                                      $id=$this->posnic->posnic_add($data);
                                      $this->load->model('core_model');
                                      $this->core_model->item_setting($id,$_SESSION['Bid']);
-                                     $this->core_model->suppliers_x_items($id,$_SESSION['Bid'],$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost_price'));
+                                     $this->core_model->suppliers_x_items($id,$_SESSION['Bid'],$this->input->post('mrp_price'),$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost_price'));
                                      $this->get_items();
                                      }else{
                                         echo " this item is  already added in this branch";
                                         $data['brands']=$this->posnic->posnic_module('brands');
                                         $data['taxes']=$this->posnic->posnic_module('taxes');
                                         $data['area']=  $this->posnic->posnic_module('taxes_area');
+                                        $data['tax_type']=  $this->posnic->posnic_module('tax_types');
                                         $data['crow']=$this->posnic->posnic_module('items_category');
                                         $data['srow']=$this->posnic->posnic_module('suppliers');                   
                                         $this->load->view('add_item',$data);
@@ -148,6 +153,7 @@ class Items extends CI_Controller{
                         }else{
                             $data['brands']=$this->posnic->posnic_module('brands');
                             $data['taxes']=$this->posnic->posnic_module('taxes');
+                            $data['tax_type']=  $this->posnic->posnic_module('tax_types');
                             $data['area']=  $this->posnic->posnic_module('taxes_area');
                             $data['crow']=$this->posnic->posnic_module('items_category');
                             $data['srow']=$this->posnic->posnic_module('suppliers');                   
@@ -166,6 +172,7 @@ class Items extends CI_Controller{
                     $data['irow']=$this->posnic->posnic_result($where);
                     $data['brands']=$this->posnic->posnic_module('brands');
                     $data['taxes']= $this->posnic->posnic_module('taxes');
+                    $data['tax_type']=  $this->posnic->posnic_module('tax_types');
                     $data['area']= $this->posnic->posnic_module('taxes_area');
                     $data['crow']=$this->posnic->posnic_module('items_category');
                     $data['srow']=$this->posnic->posnic_module('suppliers');
@@ -185,7 +192,6 @@ class Items extends CI_Controller{
                             $this->form_validation->set_rules('area', $this->lang->line('tax_area'),'required');
                             $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
                             $this->form_validation->set_rules('mrf_price', $this->lang->line('mrf_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            $this->form_validation->set_rules('landing_cost', $this->lang->line('landing_cost'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
                            
                         if ( $this->form_validation->run() !== false ) {
                                      $data=array('code'=>$this->input->post('code'),
@@ -194,8 +200,8 @@ class Items extends CI_Controller{
                                     'description'=>$this->input->post('description'),
                                     'cost_price'=>$this->input->post('cost_price'),
                                     'selling_price'=>$this->input->post('selling_price'),
-                                    'landing_cost'=>$this->input->post('landing_cost'),
-                                    'mrf'=>$this->input->post('mrf_price'),
+                                    
+                                    'mrp'=>$this->input->post('mrf_price'),
                                     'discount_amount'=>$this->input->post('discount_amount'),
                                     'start_date'=>strtotime($this->input->post('start_date')),
                                     'end_date'=>strtotime($this->input->post('end_date')),
