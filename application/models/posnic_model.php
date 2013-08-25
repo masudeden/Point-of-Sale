@@ -56,6 +56,7 @@ class posnic_model extends CI_model{
                 $this->db->limit($limit, $start);            
                 $this->db->where('delete_status',0);  
                 $this->db->where('active_status',0); 
+                $this->db->where('active',0);
                 $this->db->where('branch_id',$bid); 
                 $query = $this->db->get($table);
                 return $query->result();
@@ -184,15 +185,15 @@ class posnic_model extends CI_model{
         return $sql->result_array();
     }
     function posnic_like_data($table,$where,$name,$branch){
-        $this->db->select()->from($table)->like($where)->where('branch_id',0)->where('active',0)->where('active_status',0)->where('delete_status',0);
+        $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',0)->where('delete_status',0);
         $sql=  $this->db->get();
         $data=array();
-        $value=array();
     foreach ($sql->result() as $row){
             $data[]=$row->$name   ;
     }
     return $data;
     }
+    
     function module_result_admin($table,$bid){
         $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
@@ -203,5 +204,33 @@ class posnic_model extends CI_model{
         $sql=  $this->db->get();
         return $sql->result();
     }
+    function posnic_module_like($table,$where,$branch){
+        $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',0)->where('delete_status',0);
+        $sql=  $this->db->get();
+        $data=array();
+         $j=0;
+    foreach ($sql->result() as $row){
+             $data[$j] = $row;
+                                        $j++; 
+    }
+    return $data;
+    }
+    function posnic_join_like($table1,$table2,$like,$where,$branch){
+        
+          $this->db->select()->from($table1)->like($like);
+         
+          $this->db->join($table2, "$where".'','left');
+          $this->db->group_by("$table2".'.guid');
+          $sql=$this->db->get();
+              $data=array();
+                    $j=0;
+               foreach ($sql->result() as $row){
+                        $data[$j] = $row;
+                                                   $j++; 
+               }
+               return $data;
+    }
+    
+    
 }
 ?>

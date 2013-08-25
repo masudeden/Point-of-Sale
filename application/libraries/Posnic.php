@@ -256,10 +256,19 @@ class Posnic{
        }
     }
     function posnic_like($table,$where,$name){
-         $CI=  get_instance();        
-  
+         $CI=  get_instance();  
          $branch=$_SESSION['Bid'];
          return $CI->posnic_model->posnic_like_data($table,$where,$name,$branch);
+    }
+    function posnic_module_like($table,$where){
+         $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->posnic_module_like($table,$where,$branch);
+    }
+    function posnic_join_like($table1,$table2,$like,$where){
+         $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->posnic_join_like($table1,$table2,$like,$where,$branch);
     }
 }
        

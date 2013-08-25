@@ -9,7 +9,8 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/css/jquery.ui.base.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>auto/css/jquery.ui.theme.css" />
 
-    <script>      
+    <script>    
+        console.log();
 $(function() {   
     function lightwell(request, response) {
         function hasMatch(s) {
@@ -23,17 +24,20 @@ $(function() {
         }           
         for  (i = 0, l = projects.length; i<l; i++) {
             obj = projects[i];
-            if (hasMatch(obj.label) || hasMatch(obj.desc)) {
+            if (hasMatch(obj.label) || hasMatch(obj.name)) {
                 matches.push(obj);				
             }
         }
         response(matches);
     }    
+    var sup=document.getElementById('sup_guid').value;
     $( "#project" ).autocomplete({
+        
+    
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_main/get_item_details/",
+        source:"<?php echo base_url() ?>index.php/purchase_order/get_item_details/sup/",
         focus: function( event, ui ) {
-            $( "#project" ).val( ui.item.label );
+            $( "#project" ).val( ui.item.code );
             return false;
         },
         select: function( event, ui ) {
@@ -44,14 +48,14 @@ $(function() {
            document.getElementById('project').value="";
            return false;
     }else{
-            $( "#project" ).val( ui.item.label );
-            $('#item_dis').val(ui.item.desc);   
-            $('#item_cost').val(ui.item.cost);  
-            $('#item_sell').val(ui.item.sell);  
+            $( "#project" ).val( ui.item.code );
+            $('#item_dis').val(ui.item.name);   
+            $('#item_cost').val(ui.item.cost_price);  
+            $('#item_sell').val(ui.item.selling_price);  
             $('#item_mrp').val(ui.item.mrp);  
-            $( "#item_pro" ).val( ui.item.label ); 
-            $('#item_cost1').val(ui.item.cost);  
-            $('#item_sell1').val(ui.item.sell);  
+            $( "#item_pro" ).val( ui.item.code ); 
+            $('#item_cost1').val(ui.item.cost_price);  
+            $('#item_sell1').val(ui.item.selling_price );  
             $('#item_mrp1').val(ui.item.mrp);  
             $('#item').val(ui.item.id);
             return false;
@@ -60,20 +64,21 @@ $(function() {
     })    
     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
         return $( "<li>" )
-            .append( "<a style=font-size:12px>" + item.label +"    "+ item.name+
+            .append( "<a style=font-size:12px>" + item.code +"    "+ item.name+
                 "</a>" )               
             .appendTo( ul );
     };
-    $( "#supplier" ).autocomplete({
+    $( "#supplier").autocomplete({
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_main/get_selected_supplier/",
+        source:"<?php echo base_url() ?>index.php/purchase_order/get_selected_supplier/",
         focus: function( event, ui ) {
             $( "#supplier" ).val( ui.item.label );
             return false;
         },
-        select: function( event, ui ) {
+        select: function(event, ui ) {
              $( "#supplier" ).val( ui.item.label);
             $( "#name" ).val( ui.item.company );
+            $("#sup_guid").val(ui.item.guid);
   
             return false;
         
@@ -100,7 +105,7 @@ else
   {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_main/get_item_details_for_view/"+item_name,false);
+xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_order/get_item_details_for_view/"+item_name,false);
 
 xmlhttp.send();
 document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
@@ -324,32 +329,20 @@ function copy_items(){
     document.getElementById("project").focus();
     document.getElementById('item_edit').value='jibi';
  }else{
-    document.getElementById('item_copy').style.visibility="visible";
+   
     //document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id=document.getElementById('item').value+'tr';
    
-     document.getElementById('item_copy').getElementsByTagName('input')[0].value=document.getElementById('project').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[1].value=document.getElementById('item_dis').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[2].value=document.getElementById('item_quty').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[3].value=document.getElementById('item_cost').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[4].value=document.getElementById('item_sell').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[5].value=document.getElementById('item_mrp').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[6].value=document.getElementById('item_net').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[8].id=document.getElementById('item').value;
-    var iid=document.getElementById('item').value;
+    code=document.getElementById('project').value;
+    dis=document.getElementById('item_dis').value;
+    quty=document.getElementById('item_quty').value;
+    cost=document.getElementById('item_cost').value;
+    sell=document.getElementById('item_sell').value;
+    mrp=document.getElementById('item_mrp').value;
+    net=document.getElementById('item_net').value;
+    item=document.getElementById('item').value;
     
-    document.getElementById('item_copy').getElementsByTagName('input')[0].id=iid+"c";
-    document.getElementById('item_copy').getElementsByTagName('input')[1].id=iid+"d";
-    document.getElementById('item_copy').getElementsByTagName('input')[2].id=iid+"q";
-    document.getElementById('item_copy').getElementsByTagName('input')[3].id=iid+"co";
-    document.getElementById('item_copy').getElementsByTagName('input')[4].id=iid+"s";
-    document.getElementById('item_copy').getElementsByTagName('input')[5].id=iid+"p";
-    document.getElementById('item_copy').getElementsByTagName('input')[6].id=iid+"n";
-    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[8].id=iid;
-    document.getElementById('sl_no').innerHTML =parseFloat(1)+parseFloat(document.getElementById('item_sl').value);
-    document.getElementById('item_sl').value=1+parseFloat(document.getElementById('item_sl').value);
-     document.getElementById('item_sl').id=1+parseFloat(document.getElementById('item_sl').value);
+   $('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+dis+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=mrp[] value='+mrp+' id='+item+'p class=item_input ></td><td><input type=text name=mrp[] value='+net+' id='+item+'n class=item_input ></td><td><select name=item_active[] ><option value=0 ><?php echo $this->lang->line('active')?></option><option value=1 ><?php echo $this->lang->line('deactive')?></option></select></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
+    
     document.getElementById('item').value="";
     document.getElementById('project').value="";
     document.getElementById('item_dis').value="";
@@ -359,26 +352,8 @@ function copy_items(){
     document.getElementById('item_mrp').value="";
     document.getElementById('item_net').value="";
     document.getElementById("project").focus();
-    document.getElementById('item_copy').id=document.getElementById('item').value+'tr';
-    var trid=document.getElementById('item').value+'tr';
-        $('#'+trid)
-                .clone()                    
-                    .show()
-         
-                    .appendTo( $('#parent_item').parent() );
-         
-    document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id='item_copy';
-    document.getElementById('item_copy').getElementsByTagName('input')[0].id="c";
-    document.getElementById('item_copy').getElementsByTagName('input')[1].id="d";
-    document.getElementById('item_copy').getElementsByTagName('input')[2].id="q";
-    document.getElementById('item_copy').getElementsByTagName('input')[3].id="co";
-    document.getElementById('item_copy').getElementsByTagName('input')[4].id="s";
-    document.getElementById('item_copy').getElementsByTagName('input')[5].id="p";
-    document.getElementById('item_copy').getElementsByTagName('input')[6].id="n";
-    document.getElementById('item_copy').getElementsByTagName('input')[7].id=document.getElementById('item').value;
-    document.getElementById('item_copy').getElementsByTagName('input')[8].id=iid;
-   document.getElementById('item_copy_final').getElementsByTagName('tr')[0].style.visibility="hidden";
-     document.getElementById('item_copy').getElementsByTagName('label')[0].id='sl_no';
+    
+    
         }  
 }
 function edit_items_details(od){
@@ -410,8 +385,8 @@ function remove_item(id){
 }
 	</script>
         <div style="width: 100%; ; background: #ffcccc ">
-   <form action="supplier_vs_items/save_items" method="post" id="form">
-	  
+   <form action="purchase_order/save_items" method="post" id="form">
+       <input type="text" name="supplier_id" id="sup_guid">
        <table style="margin-left: 150px">
             <tr><td><?php echo form_label($this->lang->line('supplier code'))?></td>
                 <td><input type="text" id="supplier"  name="estado"  autocomplete="off" style="width: 100px" /></td>
@@ -439,7 +414,7 @@ function remove_item(id){
         <td> <label>Item Code</label> </td>
         <td> description  </td><td><label>Quty</label> </td>
         <td><label>Cost</label></td><td><label>selling price</label></td>
-        <td><label>M R P</label></td><td><label>Net Amount</label></td></tr>
+        <td><label>M R P</label></td><td><label>Delivery Date</label></td><td><label>Net Amount</label></td></tr>
     <tr><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
     <td><input type="hidden" id="item_pro"> <input type="hidden" id="item_sl" value="0">
             <input id="project" name="project" type="text"  class="item_inputd" />
@@ -451,18 +426,7 @@ function remove_item(id){
         <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
         <td><input type="hidden" id="item_net1" value="00" > <input type="text" id="item_net" class="item_input" disabled   /></td></tr> 
 </table><table id="item_copy_final">
-<tr id="item_copy"  style="visibility: hidden" >
-    <td >
-        <label  id="sl_no" ></label> <input type="input" name="code[]" disabled   id="it_2" class="item_inputd"></td>
-    <td><input type="input" name="dis[]"  disabled  id="it_3" class="item_input_d"></td>
-       <td><input type="input" name="quty[]"  disabled  id="it_4" class="item_input"></td>
-       <td><input type="input" name="cost[]"  disabled  id="it_5" class="item_input"></td>
-       <td><input type="input" name="sell[]"  disabled  id="it_6"class="item_input"></td>
-       <td><input type="input" name="mrp[]"  disabled  id="it_7"class="item_input"></td>
-       <td><input type="input" name="net[]"  disabled  id="it_8"class="item_input"></td>
-       <td><input type="button" name="item[]" onclick="edit_items_details(this.id)" value="Edit" id="it_1">
-           <input type="button" name="code[]" onclick="remove_item(this.id); $(this).closest('tr').remove()" value="X" id="it_8"></td>
-   </tr>
+
 </table>
      
 </div>

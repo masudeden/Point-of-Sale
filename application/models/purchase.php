@@ -63,7 +63,7 @@ class Purchase extends CI_Model{
         $id=array();
         $cost=array();
         $sell=array();
-        $mrf=array();
+        $mrp=array();
         $iname=array();
         foreach ($sql->result() as $row){
             $name[]=$row->code  ;
@@ -71,7 +71,7 @@ class Purchase extends CI_Model{
             $id[]=$row->id;    
             $cost[]=$row->cost_price ;
             $sell[]=$row->selling_price ;
-            $mrf[]=$row->mrf;
+            $mrp[]=$row->mrp;
             $iname[]=$row->name;
         }
         $sasi[0]=$name;
@@ -79,7 +79,7 @@ class Purchase extends CI_Model{
         $sasi[2]=$id;    
         $sasi[3]=$cost;
         $sasi[4]=$sell;
-        $sasi[5]=$mrf;
+        $sasi[5]=$mrp;
         $sasi[6]=$iname;
         return $sasi;  
     }
@@ -93,7 +93,7 @@ class Purchase extends CI_Model{
             $data[1]=$row->description ;
             $data[2]=$row->cost_price;
             $data[3]=$row->selling_price ;
-            $data[4]=$row->mrf ;
+            $data[4]=$row->mrp ;
         }
         return $data;
         }else{

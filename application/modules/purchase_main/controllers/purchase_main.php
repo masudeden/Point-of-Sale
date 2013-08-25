@@ -93,10 +93,8 @@ class Purchase_main extends CI_Controller{
                             {                                
                                 $data[$j] = array(
                                           'label' =>$name[$i]  ,
-                                          'company' =>$company[$i],
-                                          'phone' =>$phone[$i],
-                                          'email'=>$email[$i], 
-                                          'id'=>$id[$i]
+                                          'company' =>$company[$i]
+                                          
                                          
                                 );			
                                         $j++;                                
