@@ -230,6 +230,9 @@ $r=0;
            echo "You Have No Permission To Edit Users";
            $this->get_pos_users_details();
        }
+       if(isset($_POST['Cancel'])){
+           redirect('users');
+       }
 }
 function update_user_branch($id,$depapartment){
    

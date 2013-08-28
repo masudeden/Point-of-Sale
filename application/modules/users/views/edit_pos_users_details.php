@@ -1,33 +1,18 @@
-
-
-	
-
-
-
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-foreach ($row as $erow){
-   
-  
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
 
 
 
 
 
-?>
 
 
-<script>
-$(function() {
-$( "#datepicker" ).datepicker();
-});
-</script>
+
 </head>
 <body>
-
-
-
-
-<table>
+   
+<?php foreach ($row as $erow){?>
+		
+  <table>
     <?php $form =array('id'=>'form1',
                         'runat'=>'server');
     echo form_open('users/upadate_pos_users_details',$form)?>
@@ -47,8 +32,8 @@ $( "#datepicker" ).datepicker();
     <tr><td><?php echo form_label($this->lang->line('date_of'))?></td><td><input type="text" id="datepicker" name="dob" value="<?php echo date('n/j/Y', strtotime('+0 year, +0 days',$erow->dob));   ?>"> </td></tr>
    
     <tr><td><?php echo form_label($this->lang->line('user_groups'))?></td><td>
-
-            <script>
+           
+<script>
 function select_branch(tbTo)
 {    
  var arrLU="";
@@ -126,6 +111,7 @@ for(ii = 0; ii < arrTo.length; ii++)
                 xmlhttp.open("GET","<?php echo base_url() ?>index.php/user_groupsselecting/get_user_groups_branch/"+arrLU[arrTo[ii]],false);
                 xmlhttp.send();
               no.text = xmlhttp.responseText;
+              
  tbTo[ii] = no; 
 }
 }
@@ -207,8 +193,7 @@ var arrLU="";
         if(arrLU!=""){
         xmlhttp.open("GET","<?php echo base_url() ?>index.php/user_groupsselecting/get_selected_user_groups/"+arrLU,false);
         xmlhttp.send();
-            
-            document.getElementById("depa").value = xmlhttp.responseText;
+             document.getElementById("depa").value = xmlhttp.responseText;
             
            }else{
                 document.getElementById("mine").innerHTML="";
@@ -219,7 +204,7 @@ var arrLU="";
     <?php if($_SESSION['admin']==2){ 
         foreach ($branch as $brow) {
         
- ?> <option name="<?php echo $brow->id ?>" value="<?php echo $brow->id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
+ ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
         }}else{ foreach ($branch as $brow) {
           
         ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->branch_name ?></option>
@@ -227,12 +212,14 @@ var arrLU="";
 
 </select>
 <select multiple id="myDiv" name="ToLJ" style="width: 150">
+    
 </select>
 <input type="button" onClick="move(this.form.ToLJ,this.form.lang),get_selected(this.form.lang)" 
 value="->">
 <input type="button" onClick="backmove(this.form.lang,this.form.ToLJ),get_selected(this.form.lang)" 
 value="<-">
-<select multiple  name="lang" size="7" name="ToLJed" style="width: 250">
+<select multiple  name="lang" size="7"  style="width: 250">
+
 <?php foreach ($selected_depart as $s_b_row) {
      foreach ($selected_branch as $b_row){
     if($b_row->branch_id==$s_b_row->branch_id ){
@@ -240,33 +227,34 @@ value="<-">
     <option value="<?php echo $s_b_row->branch_id.".".$s_b_row->depart_id  ?>"><?php echo  $b_row->branch_name ." ( " . $s_b_row->depart_name ." )"?></option>
     <?php } } }?>
 </select>
-<input type="hidden" name="depa" id="depa">
-        </td></tr>
-    
-   
+<input type="hidden" name="depa" id="depa"></td></tr>
     <tr><td><?php echo form_label($this->lang->line('user_name'))?></td><td><input type="text" name="pos_users_id" value="<?php echo $erow->user_id ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('photo'))?></td><td><img src="<?php echo base_url();?>uploads/<?php if($file_name=="null"){ echo $erow->image;}else{echo $file_name;}?>"><input type="hidden" name="image_name" value="<?php if($file_name=='null'){ echo $erow->image;}else{echo $file_name;} ?>" </td></tr>
-    <tr><td><input type="submit" name="UPDATE" value="update" onclick="get_selected(this.form.lang)"></td> 
+    <tr><td><?php echo form_label($this->lang->line('password'))?></td><td><?php echo form_input('password',set_value('password'), 'id="password" autofocus')?></td></tr>
+   <tr><td></td> 
        
-        
-        <?php echo form_close(); 
-    echo form_open('users/cancel')?>
-        <td><?php echo form_submit('Cancel',$this->lang->line('cancel')) ?></td>
+   <td><input type="submit" name="Save" value="<?php echo $this->lang->line('save') ?>" >
+          
+        <?php echo form_submit('Cancel', $this->lang->line('cancel')) ?></td>
     </tr> 
         
-        <?php 
         
-        echo form_close();
+
+
+
+
     
-    
-}?>
-    <?php echo $error;
-$id= $erow->id?>
-<?php echo form_open_multipart('users/do_upload/'."$id");?>
-<input type="file" name="userfile" size="50" /><input type="submit" value="<?php $this->lang->line('photo') ?>" /></form>
-    
-</table>
-    <?php echo validation_errors(); ?>
-</body>
-</html>
- 
+
+    <?php form_close() ?>
+    <?php //echo validation_errors(); ?>
+   </table>
+<?php }?>
+</script>
+            
+
+              
+
+
+
+
+</form>
+<?php echo validation_errors(); ?>

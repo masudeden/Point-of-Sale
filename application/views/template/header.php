@@ -4,10 +4,6 @@
   <title>POS</title>
 <head>
 
-<script src="<?php echo base_url();?>js/jquery-1.9.1.js"></script>
-<script src="<?php echo base_url();?>js/jquery-ui.js"></script>
-<script type="text/javascript" src="<?php echo base_url();?>js/jquery-1.3.2.js" ></script>
-<script type="text/javascript" src="<?php echo base_url();?>js/ajaxupload.3.5.js" ></script>
 <script > 
 
 function languaged(value){
@@ -16,7 +12,7 @@ function languaged(value){
 	$.ajax({
             
 		type: "post",
-		url: "http://localhost/PointOfSale/index.php/userlogin/setlanguage/"+jibi
+		url: "<?php echo base_url(); ?>index.php/userlogin/setlanguage/"+jibi
 					
 		
         });

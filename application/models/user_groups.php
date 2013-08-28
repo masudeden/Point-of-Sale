@@ -15,6 +15,11 @@ class User_groups extends CI_Model{
             foreach ($sql->result() as $row) {
                 $name= $row->dep_name ;
             }
+        $this->db->select()->from('user_groups')->where('guid',$depa_id);
+            $sql=$this->db->get();
+            foreach ($sql->result() as $row) {
+                $name= $row->dep_name ;
+            }
         $data=array('emp_id'=>$id,
                     'depart_name'=>$name,
                     'depart_id'=>$depa_id,

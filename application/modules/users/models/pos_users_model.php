@@ -60,7 +60,7 @@ class Pos_users_model extends CI_Model{
           return $sql->result();
       }
    function edit_pos_users($id){
-       $this->db->select()->from('users')->where('id',$id);
+       $this->db->select()->from('users')->where('guid',$id);
         $sql=$this->db->get();       
         return $sql->result();
    }
@@ -90,7 +90,7 @@ class Pos_users_model extends CI_Model{
            'dob'=>$dob 	                              
        );
 
-       $this->db->where('id',$id);
+       $this->db->where('guid',$id);
        $this->db->update('users',$data);
    }
    function delete_pos_users($id,$deleted_by,$branch){          
