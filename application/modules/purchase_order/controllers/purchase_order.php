@@ -19,8 +19,10 @@ class Purchase_order extends CI_Controller{
                     echo $name[$i]."<br>";
                 }
     }
-            
-    function get_selected_supplier()
+    function  set_seleted_item_suppier($suid){
+        $_SESSION['supplier_guid']=$suid;
+    }
+            function get_selected_supplier()
     {       
        $q= addslashes($_REQUEST['term']);
                 $where=array('company_name'=>$q);
@@ -43,11 +45,11 @@ class Purchase_order extends CI_Controller{
     
     }
    
-   function get_item_details($sup){
+   function get_item_details(){
        $q= addslashes($_REQUEST['term']);
                 $like=array('code'=>$q);    
                
-                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="2a4e7a8de41c967c9097b2e4a1a0e662" AND items.active_status=0  AND items.active=0  ';
+                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$_SESSION['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
                 $data=$this->posnic-> posnic_join_like('suppliers_x_items','items',$like,$where);
         echo json_encode($data);
     }   
