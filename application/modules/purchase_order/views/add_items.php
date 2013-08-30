@@ -11,6 +11,13 @@
 
     <script>    
         console.log();
+        $('#form').find('.input').keypress(function(e){
+    if ( e.which == 13 ) // Enter key = keycode 13
+    {
+        $(this).next().focus();  //Use whatever selector necessary to focus the 'next' input
+    }
+    return false;
+});
 $(function() {   
     function lightwell(request, response) {
         function hasMatch(s) {
@@ -49,6 +56,33 @@ xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_order/set_seleted
 
 xmlhttp.send();
                         });
+                        
+                        
+           
+    $("#project").blur(function()
+			{
+                            data=document.getElementById('item').value;
+                            if(document.getElementById(data)){
+                            alert('This Item Is already Added');
+                     
+                              document.getElementById('item').value="";
+    document.getElementById('project').value="";
+    document.getElementById('item_dis').value="";
+    document.getElementById('item_quty').value="";
+    document.getElementById('item_cost').value="";
+    document.getElementById('item_sell').value="";
+    document.getElementById('item_mrp').value="";
+    document.getElementById('item_net').value="";
+    document.getElementById('item_date').value="";
+    
+    document.getElementById('item_edit').value='jibi';
+    window.setTimeout(function ()
+    {
+         document.getElementById('project').focus();
+    }, 0);
+                            }
+                        });             
+                        
     $( "#project" ).autocomplete({
         
     
@@ -59,15 +93,9 @@ xmlhttp.send();
             return false;
         },
         select: function( event, ui ) {
-    if(document.getElementById(ui.item.id)){
-        
-       
-           document.getElementById("project").focus();
-           document.getElementById('project').value="";
-            
-           
-    }else{
+    
             $( "#project" ).val( ui.item.code );
+            $( "#demo_project" ).val( ui.item.code );
             $('#item_dis').val(ui.item.name);   
             $('#item_cost').val(ui.item.cost_price);  
             $('#item_sell').val(ui.item.selling_price);  
@@ -76,9 +104,10 @@ xmlhttp.send();
             $('#item_cost1').val(ui.item.cost_price);  
             $('#item_sell1').val(ui.item.selling_price );  
             $('#item_mrp1').val(ui.item.mrp);  
-            $('#item').val(ui.item.id);
+            $('#item').val(ui.item.guid);
+            document.getElementById('project').focus();
             return false;
-        }
+        
         }
     })    
     .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
@@ -159,7 +188,7 @@ function add_new_item(e){
         if (unicode!=13 && unicode!=9){
            
         }else{
-            alert('sasi');
+          
         }
             }else{
                  alert('Seelling price should Less than MRP ');
@@ -318,13 +347,14 @@ function copy_items(){
  if(document.getElementById('item_edit').value!='jibi'){
      var od=document.getElementById('item_edit').value;
      var id=document.getElementById('item').value;
-    document.getElementById(od+"c").value=document.getElementById('project').value;
+    document.getElementById(od+"c").value=document.getElementById('demo_project').value;
     document.getElementById(od+"d").value=document.getElementById('item_dis').value;
     document.getElementById(od+"q").value=document.getElementById('item_quty').value;
     document.getElementById(od+"co").value=document.getElementById('item_cost').value;
     document.getElementById(od+"s").value=document.getElementById('item_sell').value;
     document.getElementById(od+"p").value=document.getElementById('item_mrp').value;
     document.getElementById(od+"n").value=document.getElementById('item_net').value;
+    document.getElementById(od+"dd").value=document.getElementById('item_date').value;
     document.getElementById(od).id=id;
     document.getElementById(od+"c").id=id+"c";
     document.getElementById(od+"d").id=id+"d";
@@ -333,21 +363,24 @@ function copy_items(){
     document.getElementById(od+"s").id=id+"s";
     document.getElementById(od+"p").id=id+"p";
     document.getElementById(od+"n").id=id+"n";
+    document.getElementById(od+"dd").id=id+"dd";
     document.getElementById('item').value="";
     document.getElementById('project').value="";
+    document.getElementById('demo_project').value="";
     document.getElementById('item_dis').value="";
     document.getElementById('item_quty').value="";
     document.getElementById('item_cost').value="";
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
     document.getElementById('item_net').value="";
+    document.getElementById('item_date').value="";
     document.getElementById("project").focus();
     document.getElementById('item_edit').value='jibi';
  }else{
    
     //document.getElementById('item_copy_final').getElementsByTagName('tr')[0].id=document.getElementById('item').value+'tr';
    
-    code=document.getElementById('project').value;
+    code=document.getElementById('demo_project').value;
     dis=document.getElementById('item_dis').value;
     quty=document.getElementById('item_quty').value;
     cost=document.getElementById('item_cost').value;
@@ -357,10 +390,15 @@ function copy_items(){
     item=document.getElementById('item').value;
     del_date=document.getElementById('item_date').value;
      code=document.getElementById('project').value;
-   $('<tr id='+item+'><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+dis+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=mrp[] value='+mrp+' id='+item+'p readonly=readonly class=item_input ></td><td><input type=text name=del_date[] value='+del_date+' id='+item+'dd class=item_input readonly=readonly> </td><td><input type=text name=mrp[] readonly=readonly value='+net+' id='+item+'n class=item_input ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick= $(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
+     discri=document.getElementById('item_dis').value;
+         roll=parseInt(document.getElementById('roll_no').value);
+   $('<tr id='+item+'><td><label id='+item+'roll class=roll_class>'+roll+'</label><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+discri+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=mrp[] value='+mrp+' id='+item+'p readonly=readonly class=item_input ></td><td><input type=text name=del_date[] value='+del_date+' id='+item+'dd class=item_input readonly=readonly> </td><td><input type=text name=mrp[] readonly=readonly value='+net+' id='+item+'n class=item_input ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick=reduce_balance("'+item+'");$(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
     document.getElementById(item+'c').value=code;
+    document.getElementById(item+'d').value=discri;
+      document.getElementById('roll_no').value=roll+1;
     document.getElementById('item').value="";
     document.getElementById('project').value="";
+    document.getElementById('demo_project').value="";
     document.getElementById('item_dis').value="";
     document.getElementById('item_quty').value="";
     document.getElementById('item_cost').value="";
@@ -375,13 +413,17 @@ function copy_items(){
 }
 function edit_items_details(od){
     document.getElementById('item_edit').value=od;
+    document.getElementById('item').value=od;
     document.getElementById('project').value=document.getElementById(od+'c').value;
+    document.getElementById('demo_project').value=document.getElementById(od+'c').value;
     document.getElementById('item_dis').value=document.getElementById(od+'d').value;
     document.getElementById('item_quty').value=document.getElementById(od+'q').value;
     document.getElementById('item_cost').value=document.getElementById(od+'co').value;
     document.getElementById('item_sell').value=document.getElementById(od+'s').value;
     document.getElementById('item_mrp').value=document.getElementById(od+'p').value;
     document.getElementById('item_net').value=document.getElementById(od+'n').value;
+    document.getElementById('item_date').value=document.getElementById(od+'dd').value;
+    document.getElementById('item_date1').value=document.getElementById(od+'dd').value;
     
   //  document.getElementById('item_dis1').value= document.getElementById('item_dis').value;
     document.getElementById('item_quty1').value= document.getElementById('item_quty').value;
@@ -390,7 +432,7 @@ function edit_items_details(od){
     document.getElementById('item_mrp1').value=document.getElementById('item_mrp').value;
     document.getElementById('item_net1').value=document.getElementById('item_net').value;
     document.getElementById('hidden_total_price').value=(parseFloat(document.getElementById('hidden_total_price').value))-(parseFloat(document.getElementById(id+'n').value));
-    document.getElementById('item').value=od;
+    
     //document.getElementById('item_save').style.visibility="visible";
     console.log(document.getElementById('item_dis').value);
     document.getElementById("project").focus();
@@ -404,7 +446,7 @@ function add_new_row(){
    
    
     if(document.getElementById('item_edit').value!='jibi'){
-        alert('jibi');
+      
      document.getElementById('hidden_total_price').value=parseFloat(document.getElementById('hidden_total_price').value)+parseFloat(document.getElementById('item_net').value);
      document.getElementById('hidden_total_price').value=(parseFloat(document.getElementById('hidden_total_price').value))-(parseFloat(document.getElementById('item_net1').value));
 // document.getElementById('hidden_total_price').value=parseFloat( document.getElementById('total_price').value);
@@ -412,7 +454,7 @@ function add_new_row(){
          document.getElementById('hidden_total_price').value=parseFloat(document.getElementById('hidden_total_price').value)+parseFloat(document.getElementById('item_net').value);
 
         }
-        discounte_amount();
+        frieight_amount();
         copy_items();
      
 }
@@ -433,21 +475,71 @@ function discounte_amount(){
         freight=parseFloat(document.getElementById('freight').value)
         if(freight==""){freight=0;}
         if(round_amt==""){round_amt=0;}
-         document.getElementById('discount_amt').value=discount+freight+round_amt;
+         document.getElementById('discount_amt').value=discount;
         if (isNaN(document.getElementById('total_price').value)) 
     document.getElementById('total_price').value=00;
     
         if (isNaN(document.getElementById('discount_amt').value)) 
-    document.getElementById('discount_amt').value='00ko';
+    document.getElementById('discount_amt').value=0;
         if (isNaN(document.getElementById('round_amt').value)) 
     document.getElementById('round_amt').value=00;
         if (isNaN(document.getElementById('freight').value)) 
     document.getElementById('freight').value=00;
     }
-    
+    if(document.getElementById('discount').value==0 || isNaN(document.getElementById('discount').value)){
+        document.getElementById('total_price').value=parseFloat(document.getElementById('hidden_total_price').value)+round_amt+freight;
+    }
+    frieight_amount();
 }
+function frieight_amount(){
+         if(parseFloat(document.getElementById('hidden_total_price').value)>0){
+discount=parseFloat(document.getElementById('discount_amt').value);
+frieight=parseFloat(document.getElementById('freight').value);
+round_amt=parseFloat(document.getElementById('round_amt').value);
+    if (isNaN(discount) || discount=="") {
+    discount=0;}
+        if (isNaN(frieight)|| frieight=="") {
+    frieight=00;}
+        if (isNaN(round_amt)|| round_amt=="") {
+    round_amt=00;}
+
+     document.getElementById('total_price').value=(parseFloat(document.getElementById('hidden_total_price').value)-discount)+frieight+round_amt;
+         }
+
+}
+function reduce_balance(id){
+    
+     document.getElementById('hidden_total_price').value=(parseFloat(document.getElementById('hidden_total_price').value)-parseFloat(document.getElementById(id+'n').value));
+       frieight_amount();
+       if(isNaN(parseFloat(document.getElementById('hidden_total_price').value)) || parseFloat(document.getElementById('hidden_total_price').value)=="" ||parseFloat(document.getElementById('hidden_total_price').value==0)){
+           document.getElementById('total_price').value="00";
+       }
+        var elements = document.getElementsByClassName('roll_class');
+var j=1;
+console.log();
+var my_id=id+'roll';
+for (var i = 0; i < elements.length; i++) {
+    elements[0].value=1;
+   if(parseFloat(document.getElementById(my_id).innerHTML)==i){
+     elements[i].innerHTML =parseFloat(elements[i-1].innerHTML)
+   }else{
+       if(i!=0){
+         elements[i].innerHTML =parseFloat(elements[i-1].innerHTML)+1;
+        j++;
+       }
+   }
+     document.getElementById('roll_no').value=elements.length;
+}
+}
+function stopRKey(evt) {
+  var evt = (evt) ? evt : ((event) ? event : null);
+  var node = (evt.target) ? evt.target : ((evt.srcElement) ? evt.srcElement : null);
+  if ((evt.keyCode == 13) && (node.type=="text")) {return false;}
+}
+document.onkeypress = stopRKey;
 	</script>
         <input type="hidden" id="supplier_guid" value="not">
+        <input type="hidden" id="roll_no" value="1">
         
         <div style="width: 100%;  background: #ffcccc ">
    <form action="purchase_order/save_items" method="post" id="form">
@@ -458,14 +550,14 @@ function discounte_amount(){
                 <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate" onkeypress="return datesonly(event)" style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" name="podate" onkeypress="return datesonly(event)" style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="discount_amt" id="discount_amt" readonly="readonly" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
-                <td><?php echo form_label($this->lang->line('Round off Amount'))?></td><td><input type="text" name="round_amt" id="round_amt" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('Round off Amount'))?></td><td><input type="text" name="round_amt" id="round_amt" onkeyup="frieight_amount()" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
             </tr>
             <tr><td><?php echo form_label($this->lang->line('supplier name'))?></td><td>
                     <input type="text" id="name" name="estado" autocomplete="off" disabled style="width: 100px"/>
                     <input type="hidden"   name="supplier"> </td>
              <td><?php echo form_label($this->lang->line('pono'))?></td><td><input type="text" name="pono" onkeypress="return datesonly(event)" style="width: 100px"></td>
              <td><?php echo form_label($this->lang->line('discount'))?></td><td><input type="text" name="discount" id="discount" maxlength="3" onkeyup="discounte_amount()" onkeypress="return numbersonly(event)"  style="width: 100px"  ></td>
-             <td><?php echo form_label($this->lang->line('Freight'))?></td><td><input type="text" name="freight" id="freight" onkeypress="return numbersonly(event)" style="width: 100px"></td>
+             <td><?php echo form_label($this->lang->line('Freight'))?></td><td><input type="text" name="freight" id="freight" onkeyup="frieight_amount()" onkeypress="return numbersonly(event)" style="width: 100px"></td>
             </tr>
               </table>
         </div> <div style="width: 100%;height: 350px;background:#ccccff "><div class="ui-widget item_details_css ">
@@ -482,7 +574,7 @@ function discounte_amount(){
         <td><label>M R P</label></td><td><label>Delivery Date</label></td><td><label>Net Amount</label></td><td></td><td></td></tr>
     <tr><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
     <td><input type="hidden" id="item_pro"> <input type="hidden" id="item_sl" value="0">
-        <input id="project" name="project" type="text" onkeydown="return check_supplier_is_select(event)" class="item_inputd" />
+        <input id="project" name="project" type="text" onkeydown="return check_supplier_is_select(event)" class="item_inputd" /><input type="hidden" id="demo_project">
             <input type="hidden" id="project-id" /></td>
         <td><input type="text" id="item_dis" disabled class="item_input_d"/></td>
         <td><input type="hidden" id="item_quty1"> <input type="text" id="item_quty" class="item_input"  onkeyup="net_amount()" onKeyPress="add_new_q(event);  return numbersonly(event)"  /></td>
