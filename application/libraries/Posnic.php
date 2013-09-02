@@ -168,7 +168,7 @@ class Posnic{
            if($_SESSION[$module.'_per']['edit']==1){
                $CI->posnic_model->update($module,$value,$where);
            }else{
-               echo redirect($module);
+             redirect($module);
            }
     }
     function posnic_module_update($module,$value,$where){
@@ -180,11 +180,20 @@ class Posnic{
                echo redirect($module);
            }
     }
+    function posnic_module_add($module,$value){
+          $mod=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+           if($_SESSION[$mod.'_per']['add']==1){
+               $CI->posnic_model->add_module($module,$value);
+           }else{
+               echo redirect($module);
+           }
+    }
     function posnic_add($value){
           $module=$_SESSION['posnic_module'];
           $CI=  get_instance();
           $branch=array('branch_id'=>$_SESSION['Bid']);
-           if($_SESSION[$module.'_per']['edit']==1){
+           if($_SESSION[$module.'_per']['add']==1){
                return $CI->posnic_model->add($module,$value,$branch,$_SESSION['Uid']);
                
            }else{

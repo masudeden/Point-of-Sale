@@ -1,6 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
- $lang['tax']='Tax';;
+ $lang['tax']='Tax';
+ $lang['supplier_id']='Supplier';
+ $lang['expdate']='Expiry Date';
  $lang['save']='Save';
  $lang['cancel']='Cancel';
  $lang['update']='Update';

@@ -5,7 +5,8 @@ class Purchase_order extends CI_Controller{
                 $this->load->library('posnic');               
     }
     function index(){     
-              $this->get_items();
+              //$this->get_items();
+              $this->get_list();
               //$this->annan();
              //$this->load->view('annan1');
     }
@@ -70,9 +71,70 @@ class Purchase_order extends CI_Controller{
     
   
     function save_items(){
-       $_SESSION['sup']= $this->input->post('supplier_id');
-     }
-   
+           if($this->input->post('save')){       
+        if($_SESSION['Posnic_Add']==="Add"){
+        
+            $this->form_validation->set_rules('supplier_id',$this->lang->line('supplier_id'), 'required');
+            $this->form_validation->set_rules('expdate',$this->lang->line('expdate'), 'required');
+            $this->form_validation->set_rules('pono', $this->lang->line('pono'), 'required');
+            $this->form_validation->set_rules('podate', $this->lang->line('podate'), 'required');                      
+           
+            if ( $this->form_validation->run() !== false ) {    
+      $supplier=  $this->input->post('supplier_id');
+      $expdate=strtotime($this->input->post('expdate'));
+      $pono= $this->input->post('pono');
+      $podate= strtotime($this->input->post('podate'));
+      $discount=  $this->input->post('discount');
+      $freight=  $this->input->post('freight');
+      $round_amt=  $this->input->post('round_amt');
+      $total_items=$this->input->post('roll_no');
+      $remark=  $this->input->post('remark');
+      $note=  $this->input->post('note');
+      $item_total=  $this->input->post('hidden_total_price');
+      $dis_amt= (trim($item_total)*$discount)/100;
+      $grand_total=  (trim($item_total)-$dis_amt)+trim($freight)+trim($round_amt);
+      $item=  $this->input->post('items');
+      $quty=  $this->input->post('quty');
+      $cost=  $this->input->post('cost');
+      $sell=  $this->input->post('sell');
+      $mrp=  $this->input->post('mrp');
+      $del_date=  $this->input->post('del_date');
+      $net=  $this->input->post('net');
+             $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$dis_amt,'freight'=>$freight,'round_amt'=>$freight,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$item_total);
+            $guid= $this->posnic->posnic_add($value);
+            $module='purchase_order_items';
+      for($i=0;$i<count($item);$i++){
+          $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=>$del_date[$i]);
+          $this->posnic->posnic_module_add($module,$item_value);
+      }
+      redirect('purchase_order/get_list');
     
+     }else{
+         $this->get_items();
+     }
+        }
+           }
+    }
+    function get_list(){
+        
+	        $config["base_url"] = base_url()."index.php/purchase_order/get_list";
+	        $config["total_rows"] =$this->posnic->posnic_count(); 
+	        $config["per_page"] = 8;
+	        $config["uri_segment"] = 3;
+	        $this->pagination->initialize($config);	 
+	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
+                $data['count']=$this->posnic->posnic_count();                 
+	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
+	        $data["links"] = $this->pagination->create_links(); 
+                $where=array();
+                $data['sup']=  $this->posnic->posnic_module_where('suppliers',$where);
+                $this->load->view('order_list',$data);
+    }
+    function purchase_order_magement(){
+        
+    }
+    function edit_purchase_order($guid){
+    
+    }
 }
 ?>

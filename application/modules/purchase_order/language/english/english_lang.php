@@ -1,7 +1,13 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$lang['tax']='Tax';;
+ $lang['supplier_id']='Supplier';
+ $lang['expdate']='Expiry Date';
+$lang['pono']='Purchase Order No';
+$lang['podate']='Purchase Order Date';
 $lang['save']='Save';
+$lang['freight']='Freight';
+$lang['item']='Items';
+$lang['total_amount']='Item';
 $lang['cancel']='Cancel';
 $lang['update']='Update';
 $lang['add']='Add';
@@ -27,9 +33,11 @@ $lang['date_of']='Date OF Birth';
 $lang['company']='Comapany';
 $lang['website']='Website';
 $lang['comments']='Comments';
+
 $lang['account_no']='Account Number';
-$lang['active']='Active';
-$lang['deactive']='Deactive';
+$lang['approve']='Approve PO';
+$lang['deapprove']='Reject PO';
+$lang['purchase_cancel']='Cancel Order';
 $lang['restore']='Restore';
 $lang['suppler_company']='Company :';
 $lang['name']='Name';
@@ -37,14 +45,13 @@ $lang['addnewporder']='Add Purchse Order';
  $lang['supplier code']='Company Name';
  $lang['supplier name']='Supplier Name';
  $lang['exp_date']='Expiry Date[dd/mm/yyyy]';
- $lang['pono']='PO No';
- $lang['podate']='PO Date';
+ 
  $lang['discount']='Discount';
  $lang['disamount']='Discount Amount';
  $lang['Freight']='Freight';
  $lang['Round off Amount']='Round off Amount';
 
 
-
+$lang['pocancel']='Cancel PO'
 
 ?>﻿

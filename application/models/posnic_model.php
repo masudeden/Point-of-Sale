@@ -230,7 +230,18 @@ class posnic_model extends CI_model{
                }
                return $data;
     }
-    
+    function add_module($module,$value){
+        $this->db->insert($module,$value);
+       $id=$this->db->insert_id();
+       $this->db->where('id',$id);
+       $orderid=md5($id.$module);
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id);
+       $this->db->update($module,$value);
+       return $guid;
+        
+    }
     
 }
 ?>
