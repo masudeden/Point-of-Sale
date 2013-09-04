@@ -10,7 +10,7 @@ class Purchase_order extends CI_Controller{
               //$this->annan();
              //$this->load->view('annan1');
     }
-    function get_items(){
+    function add_order(){
         $this->load->view('add_items');
     }
     function annan(){
@@ -131,10 +131,32 @@ class Purchase_order extends CI_Controller{
                 $this->load->view('order_list',$data);
     }
     function purchase_order_magement(){
+        if(isset($_POST['add'])){
+            if($_SESSION['Posnic_Add']==="Add"){
+            $this->add_order();
+            }else{
+                  echo "You  Have No permmission To Edit PO";
+                    $this->get_list();
+            }
+        }
         
     }
     function edit_purchase_order($guid){
-    
+        if($_SESSION['Posnic_Edit']==="Edit"){
+                $where=array('guid'=>$guid);
+                $data['order']=  $this->posnic->posnic_module_where('purchase_order',$where);
+                $where=array('order_id'=>$guid);
+                $data['order_items']=  $this->posnic->posnic_module_all_where('purchase_order_items',$where);
+                $where=array();
+                $data['item']= $this->posnic->posnic_module_all_where('items',$where);
+                $where=array();
+                $data['sup']=  $this->posnic->posnic_module_all_where('suppliers',$where);
+                $this->load->view('update_order',$data);
+    }else{
+        echo "You  Have No permmission To Edit PO";
+        $this->get_list();
     }
+    
+        }
 }
 ?>

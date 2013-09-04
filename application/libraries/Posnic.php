@@ -141,6 +141,12 @@ class Posnic{
              return $CI->posnic_model->module_result_where($table,$where,$_SESSION['Bid']);
         }
     }
+    function posnic_module_all_where($table,$where){
+      
+             $CI=  get_instance();
+             return $CI->posnic_model->posnic_module_all_where($table,$where,$_SESSION['Bid']);
+       
+    }
     function posnic_array_module_where($table,$where){
         if($_SESSION[$table]==='On'){
              $CI=  get_instance();

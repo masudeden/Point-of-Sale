@@ -174,6 +174,11 @@ class posnic_model extends CI_model{
         $sql=  $this->db->get();
         return $sql->result();
     }
+    function posnic_module_all_where($table,$where,$bid){
+        $this->db->select()->from($table)->where($where)->where('branch_id',$bid);
+        $sql=  $this->db->get();
+        return $sql->result();
+    }
     function module_result_array_where($table,$where,$bid){
         $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
