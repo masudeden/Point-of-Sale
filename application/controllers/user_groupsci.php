@@ -168,16 +168,16 @@ class user_groupsci extends CI_Controller{
                
                }else{
                    echo "This is user_groups is already added in this branch";
-                $this->load->model('branch');
-                $data['branch']=  $this->branch->get_branch();
-                $this->load->view('template/header');                
+                $this->load->model('user_groups');      
+                $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
+                $this->load->view('template/header');               
                 $this->load->view('add_user_groups',$data);
                 $this->load->view('template/footer');
                }
            }else{
-                $this->load->model('branch');
-                $data['branch']=  $this->branch->get_branch();
-                $this->load->view('template/header');                
+              $this->load->model('user_groups');      
+                $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
+                $this->load->view('template/header');               
                 $this->load->view('add_user_groups',$data);
                 $this->load->view('template/footer');
            }
@@ -238,7 +238,7 @@ class user_groupsci extends CI_Controller{
                  $this->load->view('template/footer');
             }else{
                 echo "you have No permission To Edit user_groups";                
-                redirect('user_groupsci');
+               redirect('user_groupsci');
             }
         }
         function update_user_groups(){
@@ -266,7 +266,7 @@ class user_groupsci extends CI_Controller{
         }
         function edit_user_groups_permission($id){
             
-            if($_SESSION['full_per']==8888){
+            if($_SESSION['full_per']==8888 or $_SESSION['admin']==2){
                  $this->load->model('user_groups');
                  $data['row']=$this->user_groups->get_seleted_user_groups_details($id);
                  $this->load->model('permissions');
@@ -285,8 +285,8 @@ class user_groupsci extends CI_Controller{
                  $this->load->view('template/footer');
             }else{
                 echo "You have no permission to edit User permissions";
-               
-                redirect('user_groupsci');
+               //
+               // redirect('user_groupsci');
             }
         }
         function update_user_groups_permission(){

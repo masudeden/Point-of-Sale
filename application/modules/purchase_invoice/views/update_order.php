@@ -57,7 +57,7 @@ else
   {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_order/set_seleted_item_suppier/"+item_name,false);
+xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_invoice/set_seleted_item_suppier/"+item_name,false);
 
 xmlhttp.send();
                         });
@@ -92,7 +92,7 @@ xmlhttp.send();
         
     
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_order/get_item_details",
+        source:"<?php echo base_url() ?>index.php/purchase_invoice/get_item_details",
         focus: function( event, ui ) {
             $( "#project" ).val( ui.item.code );
             return false;
@@ -123,7 +123,7 @@ xmlhttp.send();
     };
     $( "#supplier").autocomplete({
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_order/get_selected_supplier/",
+        source:"<?php echo base_url() ?>index.php/purchase_invoice/get_selected_supplier/",
         focus: function( event, ui ) {
             $( "#supplier" ).val( ui.item.label );
             return false;
@@ -158,7 +158,7 @@ else
   {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_order/get_item_details_for_view/"+item_name,false);
+xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_invoice/get_item_details_for_view/"+item_name,false);
 
 xmlhttp.send();
 document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
@@ -595,7 +595,7 @@ discounte_amount();
                       return false ;
         }
        else{
-           if(document.getElementById('purchase_order_date').value!=""){
+           if(document.getElementById('purchase_invoice_date').value!=""){
        window.setTimeout(function ()
     {
          document.getElementById('discount').focus();
@@ -615,7 +615,7 @@ discounte_amount();
                       if(unicode==27){
                         window.setTimeout(function ()
     {
-         document.getElementById('purchase_order_date').focus();
+         document.getElementById('purchase_invoice_date').focus();
     }, 0);
                       }
                       return false ;
@@ -703,7 +703,7 @@ discounte_amount();
        
        window.setTimeout(function ()
     {
-         document.getElementById('purchase_order_date').focus();
+         document.getElementById('purchase_invoice_date').focus();
     }, 0);
                }else{
                return false;
@@ -721,7 +721,7 @@ document.onkeypress = stopRKey;
         <body  >
         
      
-        <form action="<?php echo base_url() ?>index.php/purchase_order/update_order" method="post" id="form">
+        <form action="<?php echo base_url() ?>index.php/purchase_invoice/update_order" method="post" id="form">
            <?php foreach ($order as $po) {
                
      foreach ($sup as $sup_details){
@@ -734,7 +734,7 @@ document.onkeypress = stopRKey;
         <input type="hidden" name="roll_no" id="roll_no" value="<?php echo $po->total_items+1 ?>"><?php echo form_label($this->lang->line('supplier code'))?></td>
                 <td><input type="text" id="supplier"  name="estado" readonly="readonly" value="<?php echo $sup_details->company_name; ?>" autocomplete="off" style="width: 100px" /></td>
                 <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate"  value="<?php echo date('j/n/Y', strtotime('+0 days,+0 year',$po->exp_date )); ?>" onkeypress="return exp_date(event); " id="expdate" style="width: 100px"></td>
-                <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" name="podate" id="purchase_order_date" value="<?php echo date('j/n/Y', strtotime('+0 days,+0 year',$po->po_date )); ?>" onkeypress="return order_date(event)"  style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" name="podate" id="purchase_invoice_date" value="<?php echo date('j/n/Y', strtotime('+0 days,+0 year',$po->po_date )); ?>" onkeypress="return order_date(event)"  style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="discount_amt" id="discount_amt" value="<?php echo $po->discount_amt ?>" readonly="readonly" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('Round off Amount'))?></td><td><input type="text" name="round_amt" value="<?php echo $po->round_amt; ?>" id="round_amt" onkeyup="frieight_amount()" onkeypress="return order_round(event)"  style="width: 100px"></td>
             </tr>

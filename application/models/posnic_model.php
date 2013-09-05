@@ -175,7 +175,7 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function posnic_module_all_where($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where('delete_status',0)->where('active_status',0)->where($where)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }
@@ -235,14 +235,15 @@ class posnic_model extends CI_model{
                }
                return $data;
     }
-    function add_module($module,$value){
-        $this->db->insert($module,$value);
+    function add_module($module,$value,$branch){
+       $this->db->insert($module,$value);
        $id=$this->db->insert_id();
        $this->db->where('id',$id);
        $orderid=md5($id.$module);
        $guid=str_replace(".", "", "$orderid");
        $value=array('guid'=>$guid);
        $this->db->where('id',$id);
+       $this->db->update($module,$branch);
        $this->db->update($module,$value);
        return $guid;
         

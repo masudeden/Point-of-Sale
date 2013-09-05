@@ -384,7 +384,7 @@ function copy_items(){
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
     document.getElementById('item_net').value="";
-    document.getElementById('item_date').value="";
+    //document.getElementById('item_date').value="";
     document.getElementById("project").focus();
     document.getElementById('item_edit').value='jibi';
  }else{
@@ -416,7 +416,7 @@ function copy_items(){
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
     document.getElementById('item_net').value="";
-    document.getElementById('item_date').value='';
+    //document.getElementById('item_date').value='';
     document.getElementById("project").focus();
     
     
@@ -712,18 +712,18 @@ function stopRKey(evt) {
 document.onkeypress = stopRKey;
 
 	</script>
-        <input type="hidden" id="supplier_guid" value="not">
-        <input type="hidden" name="roll_no" id="roll_no" value="1">
+        
         
      
    <form action="purchase_order/save_items" method="post" id="form">
-          <div style="width: 100%;  background: #ffcccc ">
+          <div style="width: 100%;  background: #ffcccc "><input type="hidden" id="supplier_guid" value="not">
+        <input type="hidden" name="roll_no" id="roll_no" value="1">
        <input type="hidden" name="supplier_id" id="sup_guid">
        <table style="margin-left: 150px">
             <tr><td><?php echo form_label($this->lang->line('supplier code'))?></td>
                 <td><input type="text" id="supplier"  name="estado"  autocomplete="off" style="width: 100px" /></td>
-                <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate" onkeypress="return exp_date(event); " id="expdate" style="width: 100px"></td>
-                <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" name="podate" id="purchase_order_date" onkeypress="return order_date(event)"  style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate" value="<?php  echo date("d/m/Y") ?>" onkeypress="return exp_date(event); " id="expdate" style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" value="<?php  echo date("d/m/Y") ?>" name="podate" id="purchase_order_date" onkeypress="return order_date(event)"  style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="discount_amt" id="discount_amt" readonly="readonly" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('Round off Amount'))?></td><td><input type="text" name="round_amt" id="round_amt" onkeyup="frieight_amount()" onkeypress="return order_round(event)"  style="width: 100px"></td>
             </tr>
@@ -757,7 +757,7 @@ document.onkeypress = stopRKey;
         <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onclick="items_cost_click();net_amount()"  onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
         <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onclick="item_sell_click();net_amount()"  onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
         <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
-        <td><input type="hidden" id="item_date1" value="00" > <input type="text" id="item_date" class="item_input"  ></td>
+        <td><input type="hidden" id="item_date1" value="00" > <input type="text" id="item_date" class="item_input" value="<?php  echo date("Y/m/d") ?>" ></td>
         <td><input type="hidden" id="item_net1"> <input type="text" id="item_net" class="item_input" disabled   /></td><td><input type="button" onclick="add_new_row();discounte_amount()" value="+"></td></tr> 
 </table>       <div id="div_element">
                 </div>
@@ -766,7 +766,7 @@ document.onkeypress = stopRKey;
     </div>
         <div style="width: 100%;height:200px;background:#99ffcc ">
             <table>
-                <tr><td>Remarks</td><td><textarea rows="4" cols="50" name="remark"></textarea> </td><td>Note</td><td><textarea rows="4" cols="50" name="note"></textarea> </td><td>Total amount</td><td><input type="text" disabled  name="total_price" id="total_price" value="00"><input type="hidden" disabled  name="hidden_total_price" id="hidden_total_price" value="00"></td></tr>
+                <tr><td>Remarks</td><td><textarea rows="4" cols="50" name="remark"></textarea> </td><td>Note</td><td><textarea rows="4" cols="50" name="note"></textarea> </td><td>Total amount</td><td><input type="text" disabled  name="total_price" id="total_price" value="00"><input type="hidden"   name="hidden_total_price" id="hidden_total_price" value="00"></td></tr>
                 <tr><td></td><td></td><td></td><td></td><td><?php echo form_submit('save',$this->lang->line('save')) ?><?php echo form_submit('cancel',$this->lang->line('cancel')) ?></td></tr>
             
             </table>

@@ -1,5 +1,5 @@
 <?php
-class Purchase_order extends CI_Controller{
+class Purchase_invoice extends CI_Controller{
    function __construct() {
                 parent::__construct();
                 $this->load->library('posnic');               
@@ -103,12 +103,12 @@ class Purchase_order extends CI_Controller{
       $net=  $this->input->post('net');
              $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$dis_amt,'freight'=>$freight,'round_amt'=>$freight,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$item_total);
            $guid= $this->posnic->posnic_add($value);
-            $module='purchase_order_items';
+            $module='purchase_invoice_items';
       for($i=0;$i<count($item);$i++){
           $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
       $this->posnic->posnic_module_add($module,$item_value);
       }
- redirect('purchase_order/get_list');
+ redirect('purchase_invoice/get_list');
     
      }else{
          $this->get_items();
@@ -118,7 +118,7 @@ class Purchase_order extends CI_Controller{
     }
     function get_list(){
         
-	        $config["base_url"] = base_url()."index.php/purchase_order/get_list";
+	        $config["base_url"] = base_url()."index.php/purchase_invoice/get_list";
 	        $config["total_rows"] =$this->posnic->posnic_count(); 
 	        $config["per_page"] = 8;
 	        $config["uri_segment"] = 3;
@@ -131,7 +131,7 @@ class Purchase_order extends CI_Controller{
                 $data['sup']=  $this->posnic->posnic_module_where('suppliers',$where);
                 $this->load->view('order_list',$data);
     }
-    function purchase_order_magement(){
+    function purchase_invoice_magement(){
         if(isset($_POST['add'])){
             if($_SESSION['Posnic_Add']==="Add"){
             $this->add_order();
@@ -144,12 +144,12 @@ class Purchase_order extends CI_Controller{
         }
         
     }
-    function edit_purchase_order($guid){
+    function edit_purchase_invoice($guid){
         if($_SESSION['Posnic_Edit']==="Edit"){
                 $where=array('guid'=>$guid);
-                $data['order']=  $this->posnic->posnic_module_where('purchase_order',$where);
+                $data['order']=  $this->posnic->posnic_module_where('purchase_invoice',$where);
                 $where=array('order_id'=>$guid);
-                $data['order_items']=  $this->posnic->posnic_module_all_where('purchase_order_items',$where);
+                $data['order_items']=  $this->posnic->posnic_module_all_where('purchase_invoice_items',$where);
                 $where=array();
                 $data['item']= $this->posnic->posnic_module_all_where('items',$where);
                 $where=array();
@@ -197,20 +197,20 @@ class Purchase_order extends CI_Controller{
              
                  if($_SESSION['Posnic_Delete']==="Delete"){
                 $where=array('order_id'=>$guid);
-               $data=$this->posnic->posnic_array_other_module_where('purchase_order_items',$where);
+               $data=$this->posnic->posnic_array_other_module_where('purchase_invoice_items',$where);
             
             if(count($data)>0)     { $i=0;
                  foreach ($data as $i_value){
              
                      if(!$this->input->post($i_value['item'])){
                         $where=array('guid'=>$i_value['guid']);
-                        $this->posnic->posnic_module_delete($where,'purchase_order_items');
+                        $this->posnic->posnic_module_delete($where,'purchase_invoice_items');
                        
                      }
                  }
                     }
             }
-            $module='purchase_order_items';
+            $module='purchase_invoice_items';
              for($i=0;$i<count($item);$i++){         
       
                $value=array('order_id'=>$guid,'item'=>$item[$i]);
@@ -226,7 +226,7 @@ class Purchase_order extends CI_Controller{
              }  
             $this->get_list();
             }else{
-                $this->edit_purchase_order($guid);
+                $this->edit_purchase_invoice($guid);
             }
             
             
@@ -237,7 +237,7 @@ class Purchase_order extends CI_Controller{
     }
         }
         else{
-            redirect('purchase_order/get_list');
+            redirect('purchase_invoice/get_list');
         }}
 }
 ?>

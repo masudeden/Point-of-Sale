@@ -153,6 +153,12 @@ class Posnic{
              return $CI->posnic_model->module_result_array_where($table,$where,$_SESSION['Bid']);
         }
     }
+    function posnic_array_other_module_where($table,$where){
+        
+             $CI=  get_instance();
+             return $CI->posnic_model->module_result_array_where($table,$where,$_SESSION['Bid']);
+        
+    }
     function posnic_one_array_module_where($table,$where){
         if($_SESSION[$table]==='On'){
              $CI=  get_instance();
@@ -163,8 +169,12 @@ class Posnic{
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
     }
-            function check_unique($data){
-        $module=$_SESSION['posnic_module'];
+     function check_unique($data){
+          $module=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+          return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
+    }
+     function check_module_unique($data,$module){
           $CI=  get_instance();
           return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
     }
@@ -189,8 +199,9 @@ class Posnic{
     function posnic_module_add($module,$value){
           $mod=$_SESSION['posnic_module'];
           $CI=  get_instance();
+          $branch=array('branch_id'=>$_SESSION['Bid']);
            if($_SESSION[$mod.'_per']['add']==1){
-               $CI->posnic_model->add_module($module,$value);
+               $CI->posnic_model->add_module($module,$value,$branch);
            }else{
                echo redirect($module);
            }
@@ -253,6 +264,20 @@ class Posnic{
             
         }else{
              $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION['Uid']);
+        }
+       }
+    }
+    function posnic_module_delete($guid,$module1){
+        $CI=  get_instance();
+        $branch=$_SESSION['Bid']; 
+          $module=$_SESSION['posnic_module'];
+         if( $_SESSION[$module.'_per']['delete']==1){
+            if($_SESSION['admin']==2){
+           
+        $CI->posnic_model->admin_where_delete($guid,$module1,$branch,$_SESSION['Uid']);
+            
+        }else{
+             $CI->posnic_model->admin_where_delete($guid,$module1,$branch,$_SESSION['Uid']);
         }
        }
     }

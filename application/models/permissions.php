@@ -65,7 +65,7 @@ class Permissions extends CI_Model{
     }
     
     function get_users_permission($id,$bid){
-         $this->db->select()->from('user_x_page_x_permissions')->where('depart_id ',$id)->where('branch_id',$bid); 	 
+         $this->db->select()->from('users_x_page_x_permissions')->where('depart_id ',$id)->where('branch_id',$bid); 	 
                 $sql=  $this->db->get();              
                 foreach ($sql->result() as $row) {            
                 $data = $row->permission    ;            
@@ -73,7 +73,7 @@ class Permissions extends CI_Model{
             return $data; 
     }
     function get_items_permission($id,$bid){
-         $this->db->select()->from('item_x_page_permissions')->where('depart_id ',$id)->where('branch_id',$bid); 	 
+         $this->db->select()->from('items_x_page_permissions')->where('depart_id ',$id)->where('branch_id',$bid); 	 
                 $sql=  $this->db->get();              
                 foreach ($sql->result() as $row) {            
                 $data = $row->permission    ;            

@@ -57,7 +57,7 @@ else
   {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_order/set_seleted_item_suppier/"+item_name,false);
+xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_invoice/set_seleted_item_suppier/"+item_name,false);
 
 xmlhttp.send();
                         });
@@ -92,7 +92,7 @@ xmlhttp.send();
         
     
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_order/get_item_details",
+        source:"<?php echo base_url() ?>index.php/purchase_invoice/get_item_details",
         focus: function( event, ui ) {
             $( "#project" ).val( ui.item.code );
             return false;
@@ -123,7 +123,7 @@ xmlhttp.send();
     };
     $( "#supplier").autocomplete({
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_order/get_selected_supplier/",
+        source:"<?php echo base_url() ?>index.php/purchase_invoice/get_selected_supplier/",
         focus: function( event, ui ) {
             $( "#supplier" ).val( ui.item.label );
             return false;
@@ -158,7 +158,7 @@ else
   {
   xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
   }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_order/get_item_details_for_view/"+item_name,false);
+xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_invoice/get_item_details_for_view/"+item_name,false);
 
 xmlhttp.send();
 document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
@@ -384,7 +384,7 @@ function copy_items(){
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
     document.getElementById('item_net').value="";
-    document.getElementById('item_date').value="";
+    //document.getElementById('item_date').value="";
     document.getElementById("project").focus();
     document.getElementById('item_edit').value='jibi';
  }else{
@@ -416,7 +416,7 @@ function copy_items(){
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
     document.getElementById('item_net').value="";
-    document.getElementById('item_date').value='';
+    //document.getElementById('item_date').value='';
     document.getElementById("project").focus();
     
     
@@ -480,7 +480,6 @@ function check_supplier_is_select(){
     }
 }
 function discounte_amount(){
-  
     if(parseFloat(document.getElementById('hidden_total_price').value)>0){
         total=parseFloat(document.getElementById('hidden_total_price').value);
         discount=(total*parseFloat(document.getElementById('discount').value))/100;
@@ -500,18 +499,14 @@ function discounte_amount(){
     document.getElementById('round_amt').value=00;
         if (isNaN(document.getElementById('freight').value)) 
     document.getElementById('freight').value=00;
-    }else{
-          document.getElementById('discount_amt').value=0;
     }
     if(document.getElementById('discount').value==0 || isNaN(document.getElementById('discount').value)){
         document.getElementById('total_price').value=parseFloat(document.getElementById('hidden_total_price').value)+round_amt+freight;
-        document.getElementById('discount_amt').value=0;
     }
-      frieight_amount();
+    frieight_amount();
     total=parseFloat(document.getElementById('hidden_total_price').value);
-  
     if(total=="" || total==0 || isNaN(total)){
-       document.getElementById('total_price').value="0";
+        document.getElementById('total_price').value="0";
     }
 }
 function frieight_amount(){
@@ -553,7 +548,6 @@ for (var i = 0; i < elements.length; i++) {
    }
      document.getElementById('roll_no').value=elements.length;
 }
-discounte_amount();
 }
  function exp_date(e){      
      var unicode=e.charCode? e.charCode : e.keyCode
@@ -595,7 +589,7 @@ discounte_amount();
                       return false ;
         }
        else{
-           if(document.getElementById('purchase_order_date').value!=""){
+           if(document.getElementById('purchase_invoice_date').value!=""){
        window.setTimeout(function ()
     {
          document.getElementById('discount').focus();
@@ -615,7 +609,7 @@ discounte_amount();
                       if(unicode==27){
                         window.setTimeout(function ()
     {
-         document.getElementById('purchase_order_date').focus();
+         document.getElementById('purchase_invoice_date').focus();
     }, 0);
                       }
                       return false ;
@@ -703,7 +697,7 @@ discounte_amount();
        
        window.setTimeout(function ()
     {
-         document.getElementById('purchase_order_date').focus();
+         document.getElementById('purchase_invoice_date').focus();
     }, 0);
                }else{
                return false;
@@ -718,35 +712,29 @@ function stopRKey(evt) {
 document.onkeypress = stopRKey;
 
 	</script>
-        <body  >
+        
         
      
-        <form action="<?php echo base_url() ?>index.php/purchase_order/update_order" method="post" id="form">
-           <?php foreach ($order as $po) {
-               
-     foreach ($sup as $sup_details){
-           if($sup_details->guid===$po->supplier_id){
-           ?>   <div style="width: 100%;  background: #ffcccc ">
-               <input type="hidden" name="supplier_id" id="sup_guid" value="<?php echo $po->supplier_id; ?>" >
-       <input type="hidden" name="order_id" value="<?php echo $po->guid ?>" >
+   <form action="purchase_invoice/save_items" method="post" id="form">
+          <div style="width: 100%;  background: #ffcccc "><input type="hidden" id="supplier_guid" value="not">
+        <input type="hidden" name="roll_no" id="roll_no" value="1">
+       <input type="hidden" name="supplier_id" id="sup_guid">
        <table style="margin-left: 150px">
-            <tr><td>    <input type="hidden" id="supplier_guid" value="<?php echo $po->supplier_id; ?>">
-        <input type="hidden" name="roll_no" id="roll_no" value="<?php echo $po->total_items+1 ?>"><?php echo form_label($this->lang->line('supplier code'))?></td>
-                <td><input type="text" id="supplier"  name="estado" readonly="readonly" value="<?php echo $sup_details->company_name; ?>" autocomplete="off" style="width: 100px" /></td>
-                <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate"  value="<?php echo date('j/n/Y', strtotime('+0 days,+0 year',$po->exp_date )); ?>" onkeypress="return exp_date(event); " id="expdate" style="width: 100px"></td>
-                <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" name="podate" id="purchase_order_date" value="<?php echo date('j/n/Y', strtotime('+0 days,+0 year',$po->po_date )); ?>" onkeypress="return order_date(event)"  style="width: 100px"></td>
-                <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="discount_amt" id="discount_amt" value="<?php echo $po->discount_amt ?>" readonly="readonly" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
-                <td><?php echo form_label($this->lang->line('Round off Amount'))?></td><td><input type="text" name="round_amt" value="<?php echo $po->round_amt; ?>" id="round_amt" onkeyup="frieight_amount()" onkeypress="return order_round(event)"  style="width: 100px"></td>
+            <tr><td><?php echo form_label($this->lang->line('supplier code'))?></td>
+                <td><input type="text" id="supplier"  name="estado"  autocomplete="off" style="width: 100px" /></td>
+                <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate" value="<?php  echo date("d/m/Y") ?>" onkeypress="return exp_date(event); " id="expdate" style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" value="<?php  echo date("d/m/Y") ?>" name="podate" id="purchase_invoice_date" onkeypress="return order_date(event)"  style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="discount_amt" id="discount_amt" readonly="readonly" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
+                <td><?php echo form_label($this->lang->line('Round off Amount'))?></td><td><input type="text" name="round_amt" id="round_amt" onkeyup="frieight_amount()" onkeypress="return order_round(event)"  style="width: 100px"></td>
             </tr>
             <tr><td><?php echo form_label($this->lang->line('supplier name'))?></td><td>
-                    <input type="text" id="name" name="estado" value="<?php echo $sup_details->first_name; ?>" autocomplete="off" disabled style="width: 100px"/>
-                    <input type="hidden"  value="<?php echo $sup_details->first_name; ?>" name="supplier"> </td>
-                <td><?php echo form_label($this->lang->line('pono'))?></td><td><input type="text" name="pono" value="<?php echo $po->po_no; ?>" id="purchse_order_no" onkeypress="return order_number(event)" style="width: 100px"></td>
-                <td><?php echo form_label($this->lang->line('discount'))?></td><td><input type="text" name="discount" value="<?php echo $po->discount; ?>" id="discount" maxlength="3" onkeyup="discounte_amount()" onkeypress="return order_discount(event)"  style="width: 100px"  ></td>
-             <td><?php echo form_label($this->lang->line('Freight'))?></td><td><input type="text" name="freight" id="freight" value="<?php echo $po->freight; ?>" onkeyup="frieight_amount()" onkeypress="return order_freight(event)" style="width: 100px"></td>
+                    <input type="text" id="name" name="estado" autocomplete="off" disabled style="width: 100px"/>
+                    <input type="hidden"   name="supplier"> </td>
+                <td><?php echo form_label($this->lang->line('pono'))?></td><td><input type="text" name="pono" id="purchse_order_no" onkeypress="return order_number(event)" style="width: 100px"></td>
+             <td><?php echo form_label($this->lang->line('discount'))?></td><td><input type="text" name="discount" id="discount" maxlength="3" onkeyup="discounte_amount()" onkeypress="return order_discount(event)"  style="width: 100px"  ></td>
+             <td><?php echo form_label($this->lang->line('Freight'))?></td><td><input type="text" name="freight" id="freight" onkeyup="frieight_amount()" onkeypress="return order_freight(event)" style="width: 100px"></td>
             </tr>
               </table>
-     <?php }}?>
         </div> <div style="width: 100%;height: 350px;background:#ccccff "><div class="ui-widget item_details_css ">
      <div id="item_div" class="item_det_div" >
         <table>
@@ -769,51 +757,22 @@ document.onkeypress = stopRKey;
         <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onclick="items_cost_click();net_amount()"  onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
         <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onclick="item_sell_click();net_amount()"  onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
         <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
-        <td><input type="hidden" id="item_date1" value="00" > <input type="text" id="item_date" class="item_input"  ></td>
+        <td><input type="hidden" id="item_date1" value="00" > <input type="text" id="item_date" class="item_input" value="<?php  echo date("Y/m/d") ?>" ></td>
         <td><input type="hidden" id="item_net1"> <input type="text" id="item_net" class="item_input" disabled   /></td><td><input type="button" onclick="add_new_row();discounte_amount()" value="+"></td></tr> 
 </table>       <div id="div_element">
-    <table id="item_copy_final">
-        <?php $i=1;
-        foreach ($order_items as $items) { 
-            foreach ($item as $op_item ){
-                if($op_item->guid===$items->item){
-            ?>
-        <tr id="<?php echo $op_item->guid ?>"><td><label id="<?php echo $op_item->guid.'roll' ?>" class=roll_class><?php echo $i++; ?></label></td>
-            <td><input type="text" class="item_inputd" id="<?php echo $op_item->guid.'c' ?>" readonly="readonly" value="<?php echo $op_item->code ?>" ></td>
-            <td><input type="text" class="item_input_d" id="<?php echo $op_item->guid.'d' ?>" readonly="readonly" value="<?php echo $op_item->name  ?>" ></td>
-            <td><input type="text" class="item_input" name="quty[]" id="<?php echo $op_item->guid.'q' ?>" readonly="readonly" value="<?php echo $items->quty  ?>" ></td>
-            <td><input type="text" class="item_input" name="cost[]" id="<?php echo $op_item->guid.'co' ?>" readonly="readonly" value="<?php echo $items->cost ?>" ></td>
-            <td><input type="text" class="item_input" name="sell[]" id="<?php echo $op_item->guid.'s' ?>" readonly="readonly" value="<?php echo $items->sell ?>" ></td>
-            <td><input type="text" class="item_input" name="mrp[]" id="<?php echo $op_item->guid.'p' ?>" readonly="readonly" value="<?php echo $items->mrp ?>" ></td>
-            <td><input type="text" class="item_input" name="del_date[]" id="<?php echo $op_item->guid.'dd' ?>" readonly="readonly" value="<?php echo date('j/n/Y', strtotime('+0 days,+0 year',$items->date ));   ?>" ></td>
-            <td><input type="text" class="item_input" name="net[]" id="<?php echo $op_item->guid.'n' ?>" readonly="readonly" value="<?php echo $items->amount  ?>" ></td>
-            <td><input type="hidden" name="items[]" value="<?php echo $op_item->guid ?>"> <input type="button" id="<?php echo $op_item->guid ?>" onclick="edit_items_details(this.id)" name="items[]"  value="edit" ></td>
-            <td><input type="hidden" name="<?php  echo $op_item->guid  ?>" value="<?php  echo $op_item->guid  ?>" ><input type="button" id="<?php echo $op_item->guid ?>" onclick="reduce_balance('<?php echo $op_item->guid ?>');$(this).closest('tr').remove()"  value="x" ></td>
-            
-        </tr>
-            
-                <?php }}}?>
-    </table>
                 </div>
      
 </div>
-        </div><div>
-            
-        </div>
+    </div>
         <div style="width: 100%;height:200px;background:#99ffcc ">
             <table>
-                <tr><td>Remarks</td><td><textarea rows="4" cols="50" name="remark"><?php echo $po->remark ?></textarea> </td><td>Note</td><td><textarea rows="4" cols="50" name="note"><?php echo $po->note ?></textarea> </td><td>Total amount</td><td><input type="text" disabled  name="total_price" id="total_price" value=""><input type="hidden"  name="hidden_total_pric" id="hidden_total_price" value="<?php echo $po->total_item_amt ?>"></td></tr>
+                <tr><td>Remarks</td><td><textarea rows="4" cols="50" name="remark"></textarea> </td><td>Note</td><td><textarea rows="4" cols="50" name="note"></textarea> </td><td>Total amount</td><td><input type="text" disabled  name="total_price" id="total_price" value="00"><input type="hidden"   name="hidden_total_price" id="hidden_total_price" value="00"></td></tr>
                 <tr><td></td><td></td><td></td><td></td><td><?php echo form_submit('save',$this->lang->line('save')) ?><?php echo form_submit('cancel',$this->lang->line('cancel')) ?></td></tr>
             
             </table>
-       </div>   
-            <script>
-                discounte_amount();
-            </script> <?php 
-       
-                }  ?>
+       </div>
    </form>
-       <?php echo validation_errors();
+        <?php echo validation_errors();
  ?>
 </body>
 </html>
