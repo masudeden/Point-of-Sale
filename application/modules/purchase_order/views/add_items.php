@@ -715,7 +715,7 @@ document.onkeypress = stopRKey;
         
         
      
-   <form action="purchase_order/save_items" method="post" id="form">
+   <form action="save_items" method="post" id="form">
           <div style="width: 100%;  background: #ffcccc "><input type="hidden" id="supplier_guid" value="not">
         <input type="hidden" name="roll_no" id="roll_no" value="1">
        <input type="hidden" name="supplier_id" id="sup_guid">
@@ -766,7 +766,7 @@ document.onkeypress = stopRKey;
     </div>
         <div style="width: 100%;height:200px;background:#99ffcc ">
             <table>
-                <tr><td>Remarks</td><td><textarea rows="4" cols="50" name="remark"></textarea> </td><td>Note</td><td><textarea rows="4" cols="50" name="note"></textarea> </td><td>Total amount</td><td><input type="text" disabled  name="total_price" id="total_price" value="00"><input type="hidden"   name="hidden_total_price" id="hidden_total_price" value="00"></td></tr>
+                <tr><td>Remarks</td><td><textarea rows="4" cols="50" name="remark"></textarea> </td><td>Note</td><td><textarea rows="4" cols="50" name="note"></textarea> </td><td>Total amount</td><td><input type="text" disabled  name="total_price" id="total_price" value="00"><input type="hidden"   name="hidden_total_price" id="hidden_total_price" value=""></td></tr>
                 <tr><td></td><td></td><td></td><td></td><td><?php echo form_submit('save',$this->lang->line('save')) ?><?php echo form_submit('cancel',$this->lang->line('cancel')) ?></td></tr>
             
             </table>

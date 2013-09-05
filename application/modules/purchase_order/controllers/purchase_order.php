@@ -79,6 +79,7 @@ class Purchase_order extends CI_Controller{
             $this->form_validation->set_rules('expdate',$this->lang->line('expdate'), 'required');
             $this->form_validation->set_rules('pono', $this->lang->line('pono'), 'required');
             $this->form_validation->set_rules('podate', $this->lang->line('podate'), 'required');                      
+            $this->form_validation->set_rules('hidden_total_price', $this->lang->line('hidden_total_price'), 'required');                      
            
             if ( $this->form_validation->run() !== false ) {    
       $supplier=  $this->input->post('supplier_id');
@@ -111,9 +112,11 @@ class Purchase_order extends CI_Controller{
  redirect('purchase_order/get_list');
     
      }else{
-         $this->get_items();
+          $this->load->view('add_items');
      }
         }
+           }else{
+               redirect('purchase_order');
            }
     }
     function get_list(){
@@ -139,7 +142,8 @@ class Purchase_order extends CI_Controller{
                   echo "You  Have No permmission To Edit PO";
                     $this->get_list();
             }
-        }if($_POST['cancel']){
+        }
+        if(isset($_POST['cancel'])){
             redirect('home');
         }
         
