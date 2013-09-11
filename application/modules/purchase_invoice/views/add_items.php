@@ -715,7 +715,7 @@ document.onkeypress = stopRKey;
         
         
      
-   <form action="purchase_invoice/save_items" method="post" id="form">
+   <form action="save_items" method="post" id="form">
           <div style="width: 100%;  background: #ffcccc "><input type="hidden" id="supplier_guid" value="not">
         <input type="hidden" name="roll_no" id="roll_no" value="1">
        <input type="hidden" name="supplier_id" id="sup_guid">

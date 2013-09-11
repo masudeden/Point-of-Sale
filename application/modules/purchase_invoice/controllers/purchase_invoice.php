@@ -111,9 +111,12 @@ class Purchase_invoice extends CI_Controller{
  redirect('purchase_invoice/get_list');
     
      }else{
-         $this->get_items();
+         $this->add_order();
+                 
      }
         }
+           }else{
+               $this->get_list();
            }
     }
     function get_list(){
@@ -139,7 +142,7 @@ class Purchase_invoice extends CI_Controller{
                   echo "You  Have No permmission To Edit PO";
                     $this->get_list();
             }
-        }if($_POST['cancel']){
+        }if(isset($_POST['cancel'])){
             redirect('home');
         }
         
