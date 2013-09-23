@@ -11,7 +11,7 @@ class Branch extends CI_Model{
             
     }
     function set_branch($id,$branch_id){
-        $this->db->select()->from('branchs')->where('id',$id);
+        $this->db->select()->from('branchs')->where('guid',$id);
             $sql1=  $this->db->get();
             $j=0;
        foreach ($sql1->result() as $row) {                
@@ -21,10 +21,11 @@ class Branch extends CI_Model{
             $sql=$this->db->get();
             foreach ($sql->result() as $row) {
                 $name= $row->store_name ;
+                $branch_guid=$row->guid;
             }
             $data=array('emp_id'=>$id,
                     'branch_name'=>$name,
-                    'branch_id'=>$branch);                       
+                    'branch_id'=>$branch_guid);                       
                     $this->db->insert('users_x_branchs',$data);
     }
     function get_user_branch($id){

@@ -193,7 +193,7 @@ $r=0;
                 $this->form_validation->set_rules('state',$this->lang->line('state'),"required");
                 $this->form_validation->set_rules('zip',$this->lang->line('zip'),"required");
                 $this->form_validation->set_rules('dob',$this->lang->line('date_of'),"required");                 
-                $this->form_validation->set_rules('depa',$this->lang->line('user_groups'),"required");              
+               // $this->form_validation->set_rules('depa',$this->lang->line('user_groups'),"required");              
                 $this->form_validation->set_rules('pos_users_id','pos_users_id',"required");
                 $this->form_validation->set_rules('country','Country',"required");
                 $id=  $this->input->post('id');	  
@@ -224,7 +224,7 @@ $r=0;
     }else{
         $this->load->model('branch');
         $data['branch']=  $this->branch->get_branch();
-        $this->edit_pos_users_details($id);        
+        $this->edit_pos_users_details($id,$data);        
         }
        }else{
            echo "You Have No Permission To Edit Users";

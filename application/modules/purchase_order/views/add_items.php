@@ -211,7 +211,7 @@ function add_new_q(e){
                   if (unicode!=13 && unicode!=9){           
         }
        else{
-           document.getElementById("item_cost").focus();        
+           document.getElementById("item_free").focus();        
              //document.getElementById("project").focus();
         }
          if (unicode!=27){           
@@ -219,6 +219,25 @@ function add_new_q(e){
        else{
            //document.getElementById("item_cost").focus();        
              document.getElementById("project").focus();
+        }
+        }
+      
+    }
+function add_free(e){
+     var unicode=e.charCode? e.charCode : e.keyCode
+    if(document.getElementById('item_free').value!=""){
+        
+                  if (unicode!=13 && unicode!=9){           
+        }
+       else{
+           document.getElementById("item_cost").focus();        
+             //document.getElementById("project").focus();
+        }
+         if (unicode!=27){           
+        }
+       else{
+           //document.getElementById("item_cost").focus();        
+             document.getElementById("item_quty").focus();
         }
         }
       
@@ -247,10 +266,10 @@ function add_new_q(e){
         }
        else{
            //document.getElementById("item_cost").focus();        
-             document.getElementById("item_quty").focus();
+             document.getElementById("item_free").focus();
         }
         }else{
-             document.getElementById("item_quty").focus();    
+             document.getElementById("item_free").focus();    
         }
     }
     function add_new_sell(e){
@@ -364,6 +383,7 @@ function copy_items(){
     document.getElementById(od+"co").value=document.getElementById('item_cost').value;
     document.getElementById(od+"s").value=document.getElementById('item_sell').value;
     document.getElementById(od+"p").value=document.getElementById('item_mrp').value;
+    document.getElementById(od+"f").value=document.getElementById('item_free').value;
     document.getElementById(od+"n").value=document.getElementById('item_net').value;
     document.getElementById(od+"dd").value=document.getElementById('item_date').value;
     document.getElementById(od).id=id;
@@ -371,6 +391,7 @@ function copy_items(){
     document.getElementById(od+"d").id=id+"d";
     document.getElementById(od+"q").id=id+"q";
     document.getElementById(od+"co").id=id+"co";
+    document.getElementById(od+"f").id=id+"f";
     document.getElementById(od+"s").id=id+"s";
     document.getElementById(od+"p").id=id+"p";
     document.getElementById(od+"n").id=id+"n";
@@ -380,6 +401,7 @@ function copy_items(){
     document.getElementById('demo_project').value="";
     document.getElementById('item_dis').value="";
     document.getElementById('item_quty').value="";
+    document.getElementById('item_free').value="";
     document.getElementById('item_cost').value="";
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
@@ -398,12 +420,13 @@ function copy_items(){
     sell=document.getElementById('item_sell').value;
     mrp=document.getElementById('item_mrp').value;
     net=document.getElementById('item_net').value;
+    free=document.getElementById('item_free').value;
     item=document.getElementById('item').value;
     del_date=document.getElementById('item_date').value;
      code=document.getElementById('project').value;
      discri=document.getElementById('item_dis').value;
          roll=parseInt(document.getElementById('roll_no').value);
-   $('<tr id='+item+'><td><label id='+item+'roll class=roll_class>'+roll+'</label></td><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+discri+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=mrp[] value='+mrp+' id='+item+'p readonly=readonly class=item_input ></td><td><input type=text name=del_date[] value='+del_date+' id='+item+'dd class=item_input readonly=readonly> </td><td><input type=text name=net[] readonly=readonly value='+net+' id='+item+'n class=item_input ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick=reduce_balance("'+item+'");$(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
+   $('<tr id='+item+'><td><label id='+item+'roll class=roll_class>'+roll+'</label></td><td><input type=text name="coding[]" value='+code+' id='+item+'c class=item_inputd readonly=readonly ></td><td><input type=text name=dis[] value='+discri+' id='+item+'d class=item_input_d readonly=readonly ></td><td><input type=text name=quty[] value='+quty+' id='+item+'q class=item_input readonly=readonly ></td><td><input type=text name=free[] value='+free+' id='+item+'f class=item_input readonly=readonly ></td><td><input type=text name=cost[] value='+cost+' id='+item+'co class=item_input readonly=readonly ></td><td><input type=text name=sell[] value='+sell+' id='+item+'s class=item_input readonly=readonly ></td><td><input type=text name=mrp[] value='+mrp+' id='+item+'p readonly=readonly class=item_input ></td><td><input type=text name=del_date[] value='+del_date+' id='+item+'dd class=item_input readonly=readonly> </td><td><input type=text name=net[] readonly=readonly value='+net+' id='+item+'n class=item_input ></td><td><input type=button name=item[] value=Edit id='+item+' onclick=edit_items_details(this.id)></td><td><input type=button value=x id='+item+' onclick=reduce_balance("'+item+'");$(this).closest("tr").remove() ></td><td><input type=hidden name=items[] value='+item+' id='+item+'></td></tr>').fadeIn("slow").appendTo('#item_copy_final');
     document.getElementById(item+'c').value=code;
     document.getElementById(item+'d').value=discri;
       document.getElementById('roll_no').value=roll+1;
@@ -413,6 +436,7 @@ function copy_items(){
     document.getElementById('item_dis').value="";
     document.getElementById('item_quty').value="";
     document.getElementById('item_cost').value="";
+    document.getElementById('item_free').value="";
     document.getElementById('item_sell').value="";
     document.getElementById('item_mrp').value="";
     document.getElementById('item_net').value="";
@@ -430,6 +454,7 @@ function edit_items_details(od){
     document.getElementById('item_dis').value=document.getElementById(od+'d').value;
     document.getElementById('item_quty').value=document.getElementById(od+'q').value;
     document.getElementById('item_cost').value=document.getElementById(od+'co').value;
+    document.getElementById('item_free').value=document.getElementById(od+'f').value;
     document.getElementById('item_sell').value=document.getElementById(od+'s').value;
     document.getElementById('item_mrp').value=document.getElementById(od+'p').value;
     document.getElementById('item_net').value=document.getElementById(od+'n').value;
@@ -441,6 +466,7 @@ function edit_items_details(od){
     document.getElementById('item_cost1').value=document.getElementById('item_cost').value;
     document.getElementById('item_sell1').value=document.getElementById('item_sell').value;
     document.getElementById('item_mrp1').value=document.getElementById('item_mrp').value;
+    document.getElementById('item_free1').value=document.getElementById('item_free').value;
     document.getElementById('item_net1').value=document.getElementById('item_net').value;
     document.getElementById('hidden_total_price').value=(parseFloat(document.getElementById('hidden_total_price').value))-(parseFloat(document.getElementById(id+'n').value));
     
@@ -745,7 +771,7 @@ document.onkeypress = stopRKey;
        
 <table id="parent_item"><tr> <td></td>
         <td> <label>Item Code</label> </td>
-        <td> description  </td><td><label>Quty</label> </td>
+        <td> description  </td><td><label>Quty</label> </td><td><label>Free</label> </td>
         <td><label>Cost</label></td><td><label>selling price</label></td>
         <td><label>M R P</label></td><td><label>Delivery Date</label></td><td><label>Net Amount</label></td><td></td><td></td></tr>
     <tr> <td>&nbsp;</td><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
@@ -754,6 +780,7 @@ document.onkeypress = stopRKey;
             <input type="hidden" id="project-id" /></td>
         <td><input type="text" id="item_dis" disabled class="item_input_d"/></td>
         <td><input type="hidden" id="item_quty1"> <input type="text" id="item_quty" class="item_input"  onkeyup="net_amount()" onKeyPress="add_new_q(event);  return numbersonly(event)"  /></td>
+        <td><input type="hidden" id="item_free1"> <input type="text" id="item_free" class="item_input"  onkeyup="net_amount()" onKeyPress="add_free(event);  return numbersonly(event)"  /></td>
         <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onclick="items_cost_click();net_amount()"  onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
         <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onclick="item_sell_click();net_amount()"  onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
         <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
