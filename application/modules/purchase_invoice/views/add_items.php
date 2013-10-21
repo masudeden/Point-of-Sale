@@ -38,16 +38,9 @@ $(function() {
         response(matches);
     }    
    
-    $("#supplier").blur(function()
+    $("#purchase_order").blur(function()
 			{
-                            document.getElementById("div_element").innerHTML="";
-                           document.getElementById("div_element").innerHTML='<table id="item_copy_final"></table>';
-                        document.getElementById('hidden_total_price').value=0;
-                       discounte_amount();
-                        document.getElementById('roll_no').value=1;
-                            var item_name=document.getElementById('sup_guid').value;
-                           document.getElementById('supplier_guid').value=item_name;
-                        
+                     item_name=document.getElementById('sup_guid').value;
                         var xmlhttp;
 if (window.XMLHttpRequest)
   {
@@ -60,76 +53,22 @@ else
 xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_invoice/set_seleted_item_suppier/"+item_name,false);
 
 xmlhttp.send();
+document.getElementById("item_div").innerHTML=xmlhttp.responseText;
                         });
                         
                         
-           
-    $("#project").blur(function()
-			{
-                            data=document.getElementById('item').value;
-                            if(document.getElementById(data)){
-                            alert('This Item Is already Added');
-                     
-                              document.getElementById('item').value="";
-    document.getElementById('project').value="";
-    document.getElementById('item_dis').value="";
-    document.getElementById('item_quty').value="";
-    document.getElementById('item_cost').value="";
-    document.getElementById('item_sell').value="";
-    document.getElementById('item_mrp').value="";
-    document.getElementById('item_net').value="";
-    document.getElementById('item_date').value="";
-    
-    document.getElementById('item_edit').value='jibi';
-    window.setTimeout(function ()
-    {
-         document.getElementById('project').focus();
-    }, 0);
-                            }
-                        });             
+              
                         
-    $( "#project" ).autocomplete({
-        
-    
+ 
+    $( "#purchase_order").autocomplete({
         minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_invoice/get_item_details",
+        source:"<?php echo base_url() ?>index.php/purchase_invoice/get_selected_order/",
         focus: function( event, ui ) {
-            $( "#project" ).val( ui.item.code );
-            return false;
-        },
-        select: function( event, ui ) {
-    
-            $( "#project" ).val( ui.item.code );
-            $( "#demo_project" ).val( ui.item.code );
-            $('#item_dis').val(ui.item.name);   
-            $('#item_cost').val(ui.item.cost_price);  
-            $('#item_sell').val(ui.item.selling_price);  
-            $('#item_mrp').val(ui.item.mrp);  
-            $( "#item_pro" ).val( ui.item.code ); 
-            $('#item_cost1').val(ui.item.cost_price);  
-            $('#item_sell1').val(ui.item.selling_price );  
-            $('#item_mrp1').val(ui.item.mrp);  
-            $('#item').val(ui.item.guid);
-            document.getElementById('project').focus();
-            return false;
-        
-        }
-    })    
-    .data( "ui-autocomplete" )._renderItem = function( ul, item ) {
-        return $( "<li>" )
-            .append( "<a style=font-size:12px>" + item.code +"    "+ item.name+
-                "</a>" )               
-            .appendTo( ul );
-    };
-    $( "#supplier").autocomplete({
-        minLength: 0,
-        source:"<?php echo base_url() ?>index.php/purchase_invoice/get_selected_supplier/",
-        focus: function( event, ui ) {
-            $( "#supplier" ).val( ui.item.label );
+            $( "#purchase_order" ).val( ui.item.label );
             return false;
         },
         select: function(event, ui ) {
-             $( "#supplier" ).val( ui.item.label);
+             $( "#purchase_order" ).val( ui.item.label);
             $( "#name" ).val( ui.item.company );
             $("#sup_guid").val(ui.item.guid);
   
@@ -145,28 +84,12 @@ xmlhttp.send();
     };
 });
 function set_item_details(value){
-document.getElementById('item_div').style.visibility="visible";
-                       var item_name=value.val();  
-                       if(item_name=="") { item_name='pos'}
-document.getElementById('item_image').style.backgroundImage="url(<?php echo base_url() ?>item_images/"+item_name+")";
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_invoice/get_item_details_for_view/"+item_name,false);
 
-xmlhttp.send();
-document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
 
 
 }
 function disable_item_div(){
-    document.getElementById('item_div').style.visibility="hidden";
+  
 }
 function numbersonly(e){
         var unicode=e.charCode? e.charCode : e.keyCode
@@ -474,7 +397,7 @@ function add_new_row(){
 function check_supplier_is_select(){
     if(document.getElementById('supplier_guid').value=='not'){
       // alert('Please Select Supplier');
-      document.getElementById('supplier').focus();
+      document.getElementById('purchase_order').focus();
       document.getElementById('project').value="";
       alert('Please Select Particular Supplier');
     }
@@ -557,7 +480,7 @@ for (var i = 0; i < elements.length; i++) {
                       if(unicode==27){
                         window.setTimeout(function ()
     {
-         document.getElementById('supplier').focus();
+         document.getElementById('purchase_order').focus();
     }, 0);
                       }
                       return false ;
@@ -720,8 +643,8 @@ document.onkeypress = stopRKey;
         <input type="hidden" name="roll_no" id="roll_no" value="1">
        <input type="hidden" name="supplier_id" id="sup_guid">
        <table style="margin-left: 150px">
-            <tr><td><?php echo form_label($this->lang->line('supplier code'))?></td>
-                <td><input type="text" id="supplier"  name="estado"  autocomplete="off" style="width: 100px" /></td>
+            <tr><td><?php echo form_label($this->lang->line('po_code'))?></td>
+                <td><input type="text" id="purchase_order"  name="estado"  autocomplete="off" style="width: 100px" /></td>
                 <td><?php echo form_label($this->lang->line('exp_date'))?></td><td><input type="text" name="expdate" value="<?php  echo date("d/m/Y") ?>" onkeypress="return exp_date(event); " id="expdate" style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('podate'))?></td><td><input type="text" value="<?php  echo date("d/m/Y") ?>" name="podate" id="purchase_invoice_date" onkeypress="return order_date(event)"  style="width: 100px"></td>
                 <td><?php echo form_label($this->lang->line('disamount'))?></td><td><input type="text" name="discount_amt" id="discount_amt" readonly="readonly" onkeypress="return numbersonly(event)"  style="width: 100px"></td>
@@ -729,48 +652,23 @@ document.onkeypress = stopRKey;
             </tr>
             <tr><td><?php echo form_label($this->lang->line('supplier name'))?></td><td>
                     <input type="text" id="name" name="estado" autocomplete="off" disabled style="width: 100px"/>
-                    <input type="hidden"   name="supplier"> </td>
-                <td><?php echo form_label($this->lang->line('pono'))?></td><td><input type="text" name="pono" id="purchse_order_no" onkeypress="return order_number(event)" style="width: 100px"></td>
+                    <input type="hidden"   name="purchase_order"> </td>
+                <td><?php echo form_label($this->lang->line('pi_no'))?></td><td><input type="text" name="pono" id="purchse_order_no" onkeypress="return order_number(event)" style="width: 100px"></td>
              <td><?php echo form_label($this->lang->line('discount'))?></td><td><input type="text" name="discount" id="discount" maxlength="3" onkeyup="discounte_amount()" onkeypress="return order_discount(event)"  style="width: 100px"  ></td>
              <td><?php echo form_label($this->lang->line('Freight'))?></td><td><input type="text" name="freight" id="freight" onkeyup="frieight_amount()" onkeypress="return order_freight(event)" style="width: 100px"></td>
             </tr>
               </table>
         </div> <div style="width: 100%;height: 350px;background:#ccccff "><div class="ui-widget item_details_css ">
      <div id="item_div" class="item_det_div" >
-        <table>
-         
-            <tr><td id="myDiv"></td><td><div id="item_image" class="details_size" ></div></td></tr>
-        </table>
+       
     </div>
        
-<table id="parent_item"><tr> <td></td>
-        <td> <label>Item Code</label> </td>
-        <td> description  </td><td><label>Quty</label> </td>
-        <td><label>Cost</label></td><td><label>selling price</label></td>
-        <td><label>M R P</label></td><td><label>Delivery Date</label></td><td><label>Net Amount</label></td><td></td><td></td></tr>
-    <tr> <td>&nbsp;</td><input type="hidden" id="item"><input type="hidden" id="item_edit" value="jibi">
-    <td><input type="hidden" id="item_pro"> <input type="hidden" id="item_sl" value="0">
-        <input id="project" name="project" type="text" onkeyup="check_supplier_is_select()" onclick="check_supplier_is_select()" class="item_inputd" /><input type="hidden" id="demo_project">
-            <input type="hidden" id="project-id" /></td>
-        <td><input type="text" id="item_dis" disabled class="item_input_d"/></td>
-        <td><input type="hidden" id="item_quty1"> <input type="text" id="item_quty" class="item_input"  onkeyup="net_amount()" onKeyPress="add_new_q(event);  return numbersonly(event)"  /></td>
-        <td><input type="hidden" id="item_cost1"> <input type="text" id="item_cost"class="item_input" onclick="items_cost_click();net_amount()"  onkeyup="net_amount()"  onKeyPress=" add_new_cost(event); return numbersonly(event)" /></td>
-        <td><input type="hidden" id="item_sell1"> <input type="text" id="item_sell" class="item_input" onclick="item_sell_click();net_amount()"  onKeyPress="add_new_sell(event); return numbersonly(event)" /></td>
-        <td><input type="hidden" id="item_mrp1"> <input type="text" id="item_mrp" class="item_input" onclick=""  onKeyPress="add_new_mrp(event); return numbersonly(event)"  /></td>
-        <td><input type="hidden" id="item_date1" value="00" > <input type="text" id="item_date" class="item_input" value="<?php  echo date("Y/m/d") ?>" ></td>
-        <td><input type="hidden" id="item_net1"> <input type="text" id="item_net" class="item_input" disabled   /></td><td><input type="button" onclick="add_new_row();discounte_amount()" value="+"></td></tr> 
-</table>       <div id="div_element">
+    <div id="div_element">
                 </div>
      
 </div>
     </div>
-        <div style="width: 100%;height:200px;background:#99ffcc ">
-            <table>
-                <tr><td>Remarks</td><td><textarea rows="4" cols="50" name="remark"></textarea> </td><td>Note</td><td><textarea rows="4" cols="50" name="note"></textarea> </td><td>Total amount</td><td><input type="text" disabled  name="total_price" id="total_price" value="00"><input type="hidden"   name="hidden_total_price" id="hidden_total_price" value="00"></td></tr>
-                <tr><td></td><td></td><td></td><td></td><td><?php echo form_submit('save',$this->lang->line('save')) ?><?php echo form_submit('cancel',$this->lang->line('cancel')) ?></td></tr>
-            
-            </table>
-       </div>
+       
    </form>
         <?php echo validation_errors();
  ?>

@@ -2,7 +2,7 @@
 
  $lang['supplier_id']='Supplier';
  $lang['expdate']='Expiry Date';
-$lang['pono']='Purchase Order No';
+$lang['pi_no']='Purchase Invoice No';
 $lang['podate']='Purchase Order Date';
 $lang['save']='Save';
 $lang['freight']='Freight';
@@ -42,7 +42,7 @@ $lang['restore']='Restore';
 $lang['suppler_company']='Company :';
 $lang['name']='Name';
 $lang['addnewporder']='Add Purchse Order';
- $lang['supplier code']='Company Name';
+ $lang['po_code']='Purchase Order No:';
  $lang['supplier name']='Supplier Name';
  $lang['exp_date']='Expiry Date[dd/mm/yyyy]';
  

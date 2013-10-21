@@ -160,9 +160,15 @@ class Posnic{
         
     }
     function posnic_one_array_module_where($table,$where){
-        if($_SESSION[$table]==='On'){
+        
              $CI=  get_instance();
              return $CI->posnic_model->module_result_one_array_where($table,$where,$_SESSION['Bid']);
+        
+    }
+    function posnic_one_field_module_where($field,$table,$where){
+        if($_SESSION[$table]==='On'){
+             $CI=  get_instance();
+             return $CI->posnic_model->module_result_one_field_where($field,$table,$where,$_SESSION['Bid']);
         }
     }
             function posnic_two($value1,$value2,$table,$where){

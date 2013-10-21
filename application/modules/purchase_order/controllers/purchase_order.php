@@ -98,6 +98,7 @@ class Purchase_order extends CI_Controller{
       $item=  $this->input->post('items');
       $quty=  $this->input->post('quty');
       $cost=  $this->input->post('cost');
+      $free=  $this->input->post('free');
       $sell=  $this->input->post('sell');
       $mrp=  $this->input->post('mrp');
       $del_date= $this->input->post('del_date');
@@ -106,7 +107,7 @@ class Purchase_order extends CI_Controller{
            $guid= $this->posnic->posnic_add($value);
             $module='purchase_order_items';
       for($i=0;$i<count($item);$i++){
-          $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
+          $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
       $this->posnic->posnic_module_add($module,$item_value);
       }
  redirect('purchase_order/get_list');
@@ -190,6 +191,7 @@ class Purchase_order extends CI_Controller{
       $grand_total=  (trim($item_total)-$dis_amt)+trim($freight)+trim($round_amt);
       $item=  $this->input->post('items');
       $quty=  $this->input->post('quty');
+      $free=  $this->input->post('free');
       $cost=  $this->input->post('cost');
       $sell=  $this->input->post('sell');
       $mrp=  $this->input->post('mrp');
@@ -219,11 +221,11 @@ class Purchase_order extends CI_Controller{
       
                $value=array('order_id'=>$guid,'item'=>$item[$i]);
                         if($this->posnic->check_module_unique($value,$module)){
-                            $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=>strtotime($del_date[$i]));
+                            $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=>strtotime($del_date[$i]));
                             $this->posnic->posnic_module_add($module,$item_value);
             }else{
                 $where=array('order_id'=>$guid,'item'=>$item[$i]);
-                            $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=>strtotime($del_date[$i]));
+                            $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=>strtotime($del_date[$i]));
                             $this->posnic->posnic_module_update($module,$item_value,$where);
             }
                 

@@ -7,6 +7,7 @@ class Purchase_invoice extends CI_Controller{
     function index(){     
               //$this->get_items();
               $this->get_list();
+              //$name=$this->posnic->posnic_one_field_module_where('company_name','suppliers',$supname);
               //$this->annan();
              //$this->load->view('annan1');
     }
@@ -21,23 +22,36 @@ class Purchase_invoice extends CI_Controller{
                 }
     }
     function  set_seleted_item_suppier($suid){
-        $_SESSION['supplier_guid']=$suid;
+        
+            $this->load->model('purchase');     
+            $id=urldecode($suid);
+            $where=array('order_id'=>$id);
+            $data=$this->posnic->posnic_one_array_module_where('purchase_invoice_items',$where);
+           
+            foreach ($data as $value){ 
+            echo " <tr><td >Name  </td><td >Cost</td><td >Price</td><td > MRF</td></tr><tr><td ><input type=text style=width:150px disabled value =$value[quty]   ></td><td ><input type=text value =$value[order_id] class=items_div disabled ></td><td ><input type=text value =$value[free] class=items_div disabled ></td><td ><input type=text value= $value[cost] class=items_div  disabled ></td></tr>";
+            
+            
+        }
+           
     }
-            function get_selected_supplier()
+            function get_selected_order()
     {       
        $q= addslashes($_REQUEST['term']);
-                $where=array('company_name'=>$q);
-                $name=$this->posnic->posnic_like('suppliers',$where,'company_name');
-                $dis=  $this->posnic->posnic_like('suppliers',$where,'first_name');
-                $id= $this->posnic->posnic_like('suppliers',$where,'guid');
+                $where=array('po_no'=>$q,'order_status'=>1);
+                $po=$this->posnic->posnic_like('purchase_order',$where,'po_no');
+                $sup=  $this->posnic->posnic_like('purchase_order',$where,'supplier_id');
+                $guid= $this->posnic->posnic_like('purchase_order',$where,'guid');
                 $j=0;
                 $data=array();
-                 for($i=0;$i<count($name);$i++)
-                            {                                
+                 for($i=0;$i<count($po);$i++)
+                            {                   
+                     $supname=array('guid'=>$sup[$i]);
+                     $name=$this->posnic->posnic_one_field_module_where('company_name','suppliers',$supname);
                                 $data[$j] = array(
-                                          'label' =>$name[$i]  ,
-                                          'company' =>$dis[$i],  
-                                          'guid'=>$id[$i]
+                                          'label' =>$po[$i],
+                                          'company' =>$name,
+                                          'guid'=>$guid[$i]
                                           
                                 );			
                                         $j++;                                

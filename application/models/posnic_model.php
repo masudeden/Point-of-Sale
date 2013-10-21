@@ -185,9 +185,18 @@ class posnic_model extends CI_model{
         return $sql->result_array();
     }
     function module_result_one_array_where($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid)->limit(1);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result_array();
+    }
+    function module_result_one_field_where($field,$table,$where,$bid){
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',0)->where('active',0)->where('branch_id',$bid);
+         $sql=  $this->db->get();
+        $data;
+    foreach ($sql->result() as $row){
+            $data=$row->$field   ;
+    }
+    return $data;
     }
     function posnic_like_data($table,$where,$name,$branch){
         $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',0)->where('delete_status',0);
@@ -210,20 +219,19 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function posnic_module_like($table,$where,$branch){
-        $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',0)->where('delete_status',0);
-        $sql=  $this->db->get();
-        $data=array();
+         $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',0)->where('delete_status',0);
+         $sql=  $this->db->get();
+         $data=array();
          $j=0;
     foreach ($sql->result() as $row){
              $data[$j] = $row;
-                                        $j++; 
+             $j++; 
     }
     return $data;
     }
     function posnic_join_like($table1,$table2,$like,$where,$branch){
         
-          $this->db->select()->from($table1)->like($like);
-         
+          $this->db->select()->from($table1)->like($like);         
           $this->db->join($table2, "$where".'','left');
           $this->db->group_by("$table2".'.guid');
           $sql=$this->db->get();
