@@ -26,13 +26,39 @@ class Purchase_invoice extends CI_Controller{
             $this->load->model('purchase');     
             $id=urldecode($suid);
             $where=array('order_id'=>$id);
-            $data=$this->posnic->posnic_one_array_module_where('purchase_invoice_items',$where);
-           
+            $order_where=array('guid'=>$id);
+            $item_where=array();
+            $data=$this->posnic->posnic_one_array_module_where('purchase_order_items',$where);
+            $order=$this->posnic->posnic_one_array_module_where('purchase_order',$order_where);
+            $itmes=$this->posnic->posnic_one_array_module_where('items',$item_where);
+           echo "<table><tr><td >Code</td>
+               <td >Name  </td>
+               <td >Order Quatity</td>
+               <td >Free</td>
+               <td >Quantity Received</td>
+               <td > Qty Yet To Invoice</td>
+               <td > Qty Yet To Invoice On free</td>
+               </tr>";
             foreach ($data as $value){ 
-            echo " <tr><td >Name  </td><td >Cost</td><td >Price</td><td > MRF</td></tr><tr><td ><input type=text style=width:150px disabled value =$value[quty]   ></td><td ><input type=text value =$value[order_id] class=items_div disabled ></td><td ><input type=text value =$value[free] class=items_div disabled ></td><td ><input type=text value= $value[cost] class=items_div  disabled ></td></tr>";
-            
-            
-        }
+                
+                foreach ($order as $p_order)
+                    {
+                    foreach ($itmes as $p_items){
+                        if($p_items['guid']==$value['item'])
+                            {          
+                           $name=$p_items['name'];
+            echo " <tr><td ><input type=text  value ='".$p_items['code']."' disabled  ></td>
+                          <td ><input type=text  value ='".$name."' disabled  ></td>
+                          <td ><input type=text value =$value[quty]  disabled ></td>
+                          <td ><input type=text value =$value[free]  disabled ></td>
+                          <td ><input type=text value =$value[free]  disabled ></td>
+                          <td ><input type=text   ></td>
+                          <td ><input type=text   ></td>
+                          </tr>";
+                            }            
+                    }
+                }
+        }echo "</table>";
            
     }
             function get_selected_order()

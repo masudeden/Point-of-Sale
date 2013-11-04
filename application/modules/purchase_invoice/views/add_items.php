@@ -53,7 +53,7 @@ else
 xmlhttp.open("GET","<?php echo base_url() ?>index.php/purchase_invoice/set_seleted_item_suppier/"+item_name,false);
 
 xmlhttp.send();
-document.getElementById("item_div").innerHTML=xmlhttp.responseText;
+document.getElementById("div_element").innerHTML=xmlhttp.responseText;
                         });
                         
                         
