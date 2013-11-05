@@ -16,9 +16,9 @@ class Userlogin extends CI_Controller
     }
     function index(){       
         if(!isset($_SESSION['Uid'])){
-            $this->load->view('template/header');
+            $this->load->view('template/login/header');
             $this->load->view('login');
-            $this->load->view('template/footer');
+            $this->load->view('template/login/footer');
         }else{
             $this->load->view('template/header');
             $this->load->view('home');
@@ -29,7 +29,10 @@ function employee()
 {
     redirect('/employees');
 }
-function login(){
+function testlogin(){
+    echo mysql_real_escape_string($_POST['username']);;
+}
+        function login(){
     
     $this->load->library('form_validation');
    
@@ -41,51 +44,36 @@ function login(){
             $password=$this->input->post('password');
             $this->load->model('logindetails');
             if($this->logindetails->login($username,$password)){
-               
+              
                 $_SESSION['Uid']= $this->logindetails->loginid($username,$password);
                 if(!$this->logindetails->check_user_is_active_or_not($_SESSION['Uid']))
                 {
                     if($this->logindetails->check_admin($_SESSION['Uid'])){
                      $_SESSION['admin']=2;
-                     $this->load->view('template/header');
-                     redirect('posmain/set_user_default_branch');
-                     $this->load->view('template/footer');
+                     echo '22'; 
                 }else{
-                   echo "Your Account Has Been Deactivated Please contact with Admin";
-                   $this->load->view('template/header');
-                   $this->load->view('login');
-                   $this->load->view('template/footer');
+                   echo "11";
                 }
                    
                 }else{
                 if($this->logindetails->check_admin($_SESSION['Uid'])){
                      $_SESSION['admin']=2;
-                     $this->load->view('template/header');
-                     redirect('posmain/set_user_default_branch');
-                     $this->load->view('template/footer');
+                      echo '22';
                 }else{
                if($this->logindetails->is_in_active_branchs($_SESSION['Uid'])!=0){
                     $_SESSION['admin']=0;
-                    $this->load->view('template/header');
-                    redirect('posmain/set_user_default_branch');
-                    $this->load->view('template/footer');
+                     echo '22';
                }else{
-                   echo "Your Branchs Are Not corrently Active Please Contact With Admin";
-                   $this->load->view('template/header');
-                   $this->load->view('login');
-                   $this->load->view('template/footer');
+                   echo "1";
+                  
                }}}
             }else{
-                echo "Invalid Username and password";                
-                $this->load->view('template/header');
-                $this->load->view('login');
-                $this->load->view('template/footer');                 
+                echo "2";                
+                               
             }           
             }  else {          
               
-             $this->load->view('template/header');
-             $this->load->view('login');
-             $this->load->view('template/footer');
+             echo "3";
         }
     }
    

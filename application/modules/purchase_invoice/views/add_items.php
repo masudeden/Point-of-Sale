@@ -91,12 +91,35 @@ function set_item_details(value){
 function disable_item_div(){
   
 }
-function numbersonly(e){
+    function numbersonly(e){
         var unicode=e.charCode? e.charCode : e.keyCode
         if (unicode!=8 && unicode!=46 && unicode!=37 && unicode!=38 && unicode!=39 && unicode!=40){ //if the key isn't the backspace key (which we should allow)
         if (unicode<48||unicode>57)
-        return false 
+        return false ;       
     }
+    }
+    function quantity_enter(e){
+          var guid=e.target.id;
+            finald=guid.split("_quty_enter");  
+            if(parseFloat(document.getElementById(guid).value) > (parseFloat(document.getElementById(finald[0]+'_f_quty').value)- parseFloat(document.getElementById(finald[0]+'_quty_rec').value)) || parseFloat(document.getElementById(guid).value)==0){
+                document.getElementById(guid).value=document.getElementById(finald[0]+'_quty').value;                   
+            }
+    }
+    function free_enter(e){
+          var guid=e.target.id;
+            finald=guid.split("_free_enter");           
+            if(parseFloat(document.getElementById(guid).value) > (parseFloat(document.getElementById(finald[0]+'_f_free').value)-parseFloat(document.getElementById(finald[0]+'_free_rec').value)) || parseFloat(document.getElementById(guid).value)==0){
+                document.getElementById(guid).value=document.getElementById(finald[0]+'_free').value;
+            }
+    }
+    function add_invoice(e){
+        var guid=e.target.id;       
+       
+            if(document.getElementById(guid+'_quty_enter').value <= (parseFloat(document.getElementById(guid+'_f_quty').value)-parseFloat(document.getElementById(guid+'_quty_rec').value))&& document.getElementById(guid+'_free_enter').value <= (parseFloat(document.getElementById(guid+'_f_free').value)-parseFloat(document.getElementById(guid+'_free_rec').value)) && document.getElementById(guid+'_quty_enter').value!="" && document.getElementById(guid+'_free_enter').value!=""){
+                alert('yes');
+           } else{
+               alert('Please Enter Item Quantity');
+           }
     }
     function datesonly(e){
         var unicode=e.charCode? e.charCode : e.keyCode

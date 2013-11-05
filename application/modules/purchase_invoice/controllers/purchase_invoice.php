@@ -28,16 +28,29 @@ class Purchase_invoice extends CI_Controller{
             $where=array('order_id'=>$id);
             $order_where=array('guid'=>$id);
             $item_where=array();
+            $invoice_where=array('po_id'=>$id);
             $data=$this->posnic->posnic_one_array_module_where('purchase_order_items',$where);
             $order=$this->posnic->posnic_one_array_module_where('purchase_order',$order_where);
             $itmes=$this->posnic->posnic_one_array_module_where('items',$item_where);
+            $inv=$this->posnic->posnic_one_array_module_where('purchase_invoice',$invoice_where);
+            $invoice;
+            $status=0;
+            if(count($inv)===0){
+                $status=1;
+            }else{
+                foreach ($inv as $in_item){ 
+                
+                $inv_id=$in_item['guid'];
+                }
+            }
            echo "<table><tr><td >Code</td>
                <td >Name  </td>
                <td >Order Quatity</td>
                <td >Free</td>
-               <td >Quantity Received</td>
-               <td > Qty Yet To Invoice</td>
-               <td > Qty Yet To Invoice On free</td>
+               <td >Quty Recvd</td>
+               <td >Free Recvd</td>
+               <td > Qty Yet To Inv</td>
+               <td > Qty Yet To Inv<br> On free</td>
                </tr>";
             foreach ($data as $value){ 
                 
@@ -47,13 +60,33 @@ class Purchase_invoice extends CI_Controller{
                         if($p_items['guid']==$value['item'])
                             {          
                            $name=$p_items['name'];
-            echo " <tr><td ><input type=text  value ='".$p_items['code']."' disabled  ></td>
-                          <td ><input type=text  value ='".$name."' disabled  ></td>
-                          <td ><input type=text value =$value[quty]  disabled ></td>
-                          <td ><input type=text value =$value[free]  disabled ></td>
-                          <td ><input type=text value =$value[free]  disabled ></td>
-                          <td ><input type=text   ></td>
-                          <td ><input type=text   ></td>
+                           if($status===0){
+                           $inv_i_where=array('invoice_id'=>$inv_id,'item'=>$p_items['guid']);
+                            $inv_item=$this->posnic->posnic_one_array_module_where('purchase_invoice_items',$inv_i_where);
+                           foreach ($inv_item as $inv_item_get){
+                               $free=$inv_item_get['free'];
+                               $qutnty=$inv_item_get['quty'];
+                           }
+                           }else{
+                                $free=00;
+                               $qutnty=00;
+                           }
+            echo " <tr><td ><input type=hidden id='".$p_items['guid'].'_guid'."' value='".$p_items['guid']."'><input type=text  value ='".$p_items['code']."' disabled  ></td>
+                          <td ><input type=text  value ='".$name."' disabled   ></td>
+                          <td >
+                          <input type=hidden id='".$p_items['guid'].'_f_quty'."' value='".$value['quty']."'>
+                          <input type=text value ='".$value['quty']."' id='".$p_items['guid'].'_quty'."'  disabled class='item_input' ></td>
+                          <td >
+                          <input type=hidden id='".$p_items['guid'].'_f_free'."' value='".$value['free']."'>
+                          <input type=text value ='".$value['free']."' id='".$p_items['guid'].'_free'."' disabled class='item_input' ></td>
+                              
+                          <td ><input type=text value =$qutnty  disabled class='item_input'  ></td>
+                          <input type=hidden id='".$p_items['guid'].'_quty_rec'."' value='".$qutnty."'>
+                          <td ><input type=text value =$free  disabled class='item_input'  ></td>
+                          <input type=hidden id='".$p_items['guid'].'_free_rec'."' value='".$free."'>
+                          <td ><input type=text name='quty' onkeypress='return numbersonly(event)' onkeyup='quantity_enter(event)'  class='item_input' id='".$p_items['guid'].'_quty_enter'."' ></td>
+                          <td ><input type=text name='free' onkeypress='return numbersonly(event)' onkeyup='free_enter(event)' class='item_input' id='".$p_items['guid'].'_free_enter'."' ></td>
+                          <td><input type=button value='ADD' onclick='add_invoice(event)' id='".$p_items['guid']."'></td>
                           </tr>";
                             }            
                     }
