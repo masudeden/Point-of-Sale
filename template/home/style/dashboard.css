@@ -17,7 +17,7 @@
 	margin: 0 .5% 1em;
 	vertical-align: top;
 	text-decoration: none;
-	background: -moz-linear-gradient(center top , #153450,#05639b) repeat scroll 0 0 rgba(0, 0, 0, 0);
+	background: linear-gradient(#153450,#05639b) repeat scroll 0 0 rgba(0, 0, 0, 0);
 	border-radius: 5px;
 }
 
@@ -30,7 +30,7 @@
 
 .shortcuts .shortcut:hover {
 	background-color: rgba(0, 0, 0, 0.10);
-        background: -moz-linear-gradient(center top ,  #022133,#153450) repeat scroll 0 0 rgba(0, 0, 0, 0);
+        background: linear-gradient(#022133,#153450) repeat scroll 0 0 rgba(0, 0, 0, 0);
 }
 
 .shortcuts .shortcut:hover span {

@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>HOME</title>
+<title>USER</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
 <link href="<?php echo base_url() ?>template/home/css/bootstrap.css" rel="stylesheet" media="screen">

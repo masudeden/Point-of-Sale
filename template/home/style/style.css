@@ -358,13 +358,13 @@ ul.messages_layout .dropdown-menu li {
 
 
 .stats-container{    display: block;    margin: 0 0 20px;}
-.stats-heading {    background: -moz-linear-gradient(center top ,#022133,#022133) repeat scroll 0 0 rgba(0, 0, 0, 0);   border-top-left-radius: 2px;    border-top-right-radius: 2px;    letter-spacing: 0.04em;    padding: 5px 10px;    text-align: center;    text-transform: uppercase;}
-.stats-body-alt {  background: -moz-linear-gradient(center top ,#05639B ,#05639B) repeat scroll 0 0 rgba(0, 0, 0, 0);   border-bottom-left-radius: 0;    border-bottom-right-radius: 0;    font-size: 48px;    font-weight: 300;    padding: 0px;}
+.stats-heading {    background: linear-gradient(#022133,#022133) repeat scroll 0 0 rgba(0, 0, 0, 0);   border-top-left-radius: 2px;    border-top-right-radius: 2px;    letter-spacing: 0.04em;    padding: 5px 10px;    text-align: center;    text-transform: uppercase;}
+.stats-body-alt {  background: linear-gradient(#05639B ,#05639B) repeat scroll 0 0 rgba(0, 0, 0, 0);   border-bottom-left-radius: 0;    border-bottom-right-radius: 0;    font-size: 48px;    font-weight: 300;    padding: 0px;}
 .stats-body-alt .text-center {    margin-top: -5px;}
 .stats-body-alt .text-top {    font-size: 24px;    vertical-align: super;}
 .stats-body-alt div + small {    display: block;    font-size: 14px;    font-weight: 400;    margin-bottom: 4px;    margin-top: -7px;    opacity: 0.7;    text-align: center;}
 .stats-body-alt div + small {    display: block;    font-size: 14px;    font-weight: 400;    margin-bottom: 4px;    margin-top: -7px;    opacity: 0.7;    text-align: center;}
-.stats-footer {    border-bottom-left-radius: 2px;    border-bottom-right-radius: 2px;    color: rgba(255, 255, 255, 0.4);    padding: 5px 10px; 	background: -moz-linear-gradient(center top ,#05639b, #000000) repeat scroll 0 0 rgba(0, 0, 0, 0);  }
+.stats-footer {    border-bottom-left-radius: 2px;    border-bottom-right-radius: 2px;    color: rgba(255, 255, 255, 0.4);    padding: 5px 10px; 	background: linear-gradient(#05639b, #000000) repeat scroll 0 0 rgba(0, 0, 0, 0);  }
 
 .thumb img, .thumb-xs img, .thumb-sm img, .thumb-md img, .thumb-lg img {    height: auto;    max-width: 100%;    vertical-align: middle;}
 .thumb {    display: inline-block;    width: 64px;}
