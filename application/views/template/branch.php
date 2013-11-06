@@ -27,7 +27,11 @@
         document.getElementById("branch").value=jibi;
         }
 </script>
-<select id="branch">
+<div class="container">
+  <div class="top-navbar header b-b"> <a data-original-title="Toggle navigation" class="toggle-side-nav pull-left" href="#"><i class="icon-reorder"></i> </a>
+    <div class="brand pull-left"> <a href="index.html"><img src="images/logo.png" width="147" height="33"></a></div>
+    <ul class="nav navbar-nav navbar-right  hidden-xs">
+        <li class="dropdown user  hidden-xs"><select id="branch">
 <?php 
 echo form_open('home/change_branch') ; 
 if($_SESSION['admin']==2){
@@ -46,4 +50,15 @@ if($_SESSION['admin']==2){
 </select>
     <?php echo form_close(); 
 }
-   ?>
+   ?></li>
+      
+      <li class="dropdown user  hidden-xs"> <a href="user_profile.html"><i class="icon-user"></i> My Profile</a>
+      </li>
+      <li class="dropdown user  hidden-xs"> <a href="login.html"><i class="icon-key"></i> Log Out</a>
+      </li>
+    </ul>
+    <form class="pull-right" >
+      <input type="search" placeholder="Search..." class="search" id="search-input">
+    </form>
+  </div>
+</div>

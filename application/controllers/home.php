@@ -29,7 +29,7 @@ class Home extends CI_Controller
         $data['row']=  $this->branch->get_user_branchs($_SESSION['Uid']);
         $data['a_row']=$this->branch->get_active_user_branchs($_SESSION['Uid']);
         }
-        $this->load->view('template/header');
+        $this->load->view('template/home/header');
         if($_SESSION['Setting']['Branch']==1){
         $this->load->view('template/branch',$data);
           }
@@ -37,19 +37,19 @@ class Home extends CI_Controller
         $modules['row']=  $this->modules_model->get_modules($_SESSION['Bid']);
         $modules['mode']=$this->modules_model->get_modules_basced_on_branch();
         $this->load->view('home',$modules);   
-        $this->load->view('template/footer');   
+        $this->load->view('template/home/footer');   
         
        
     }
     function set_branchs($branch){
        // $_SESSION['user_branch']=$branch;        
     }    
-      function home_main(){
+      function home_main($module){
           
           $this->load->model('modules_model');
           $data=  $this->modules_model->get_modulenames($_SESSION["Bid"]);
           for($i=0;$i<count($data);$i++){
-            if($this->input->post($data[$i])){
+            if($data[$i]==$module){
                 $_SESSION['posnic_module']=$data[$i];
                 $_SESSION[$data[$i].'_per']['read']==1?$_SESSION['Posnic_Read']="Read":$_SESSION['Posnic_Read']="null";
                 $_SESSION[$data[$i].'_per']['add']==1?$_SESSION['Posnic_Add']="Add":$_SESSION['Posnic_Add']="null";
