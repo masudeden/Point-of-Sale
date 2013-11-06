@@ -20,6 +20,7 @@ $lang['first_name']='ഒന്നാം പേര്‌';
 $lang['last_name']='പിതാവിന്റെ പേര് ';
 $lang['sex']='വര്‍ഗ്ഗം';
 $lang['age']='പ്രായം';
+$lang['please_login']='ദയവായി ലോഗിണ്‍ ചെയുക ';
 $lang['address']='മേല്‍വിലാസം';
 $lang['address1']='മേല്‍വിലാസം 1';
 $lang['address2']='മേല്‍വിലാസം 2';

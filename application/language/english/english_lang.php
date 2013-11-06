@@ -21,6 +21,7 @@ $lang['first_name']='First Name';
 $lang['last_name']='Last Name';
 $lang['sex']='Sex';
 $lang['age']='Age';
+$lang['please_login']='Please Login';
 $lang['address']='Address';
 $lang['address1']='Address 1';
 $lang['address2']='Address 2';

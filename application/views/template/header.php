@@ -1,8 +1,4 @@
-<html >
-<head>
-  <meta charset="utf-8">
-  <title>POS</title>
-<head>
+
 
 <script > 
 
@@ -31,9 +27,7 @@ var lang = document.getElementById("chnagelanged").value;
 }
 
 </script>
-
-</head>
-<body><form action="">  
+<form action="">  
         <tr>                        
            <td><select  name="ToLB" id="chnagelanged" style="width:150">    
    <option name="english" value="english" onClick="set_language(this.form.ToLB)">English</option>

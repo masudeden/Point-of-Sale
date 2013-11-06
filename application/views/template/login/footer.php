@@ -7,7 +7,7 @@
 		$(document).ready(function()
 		{
 			// We'll catch form submission to do it in AJAX, but this works also with JS disabled
-			$('#login-form').submit(function(event)
+			$('#login_form').submit(function(event)
 			{
 				// Stop full page load
 				event.preventDefault();
