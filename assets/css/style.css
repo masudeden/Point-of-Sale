@@ -1,0 +1,21 @@
+body{font-family: Arial,Helvetica,sans-serif;background-color: #F0F0F0; font-size: 12px;}
+h1{color:#072936;}
+.wrapper { margin: 0 auto; width: 730px; }
+footer { border-top: 1px solid #CCCCCC; float: right; font-size: 12px; margin: 40px 0 0; padding: 10px; width: 81%;}
+/*Datatables style*/
+#big_table_wrapper {background-color: #fff; }
+#big_table_wrapper .dataTables_length {float:left;}
+#big_table_wrapper .dataTables_filter {float:right;}
+#big_Table_wrapper .ui-toolbar{padding:5px;}
+#big_Table_wrapper .ui-toolbar{padding:5px;}
+#big_table{width:730px; text-align: center;}
+.dataTables_paginate .ui-button {    margin-right: -0.1em !important;}
+.paging_full_numbers .ui-button {    color: #333333 !important;    cursor: pointer;    margin: 0;    padding: 2px 6px;}
+.dataTables_info {    float: left;    width: 50%;}
+.dataTables_info {    padding-top: 3px;}
+.dataTables_paginate {    float: right;    text-align: right;}
+.dataTables_paginate {    width: auto;}
+.paging_full_numbers {    width: 350px !important;}
+#big_table_processing > img {padding-left:20px;}
+.actions{ display:block; padding:3px;  }
+.actions a { margin-left:10px; margin-right: 10px; }

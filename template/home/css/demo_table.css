@@ -32,6 +32,7 @@
 
 .dataTables_wrapper {
 	position: relative;
+        
 	clear: both;
 	zoom: 1; /* Feeling sorry for IE */
 }
@@ -40,16 +41,17 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	width: 250px;
-	height: 30px;
+	width: 220px;
+	height: 26px;
+        border-radius: 10px;
 	margin-left: -125px;
 	margin-top: -15px;
 	padding: 14px 0 2px 0;
-	border: 1px solid #ddd;
+	
 	text-align: center;
 	color: #999;
-	font-size: 14px;
-	background-color: white;
+	font-size: 0px;
+	background-image: url(../ajax-loader_dark.Gif);
 }
 
 .dataTables_length {
@@ -150,11 +152,13 @@ table.display {
 }
 
 table.display thead th {
-	padding: 3px 18px 3px 10px;
+	padding: 3px 18px 3px 20px;
 	border-bottom: 1px solid rgba(255,255,255, 0.3);
+        
 	font-weight: bold;
 	cursor: pointer;
 	* cursor: hand;
+        
 }
 
 table.display tfoot th {
@@ -182,19 +186,19 @@ table.display td.center {
  */
 
 .sorting_asc {
-	background: url(../img/sort_desc.png) no-repeat center right;
+	background: url(../img/sort_desc.png) no-repeat center left;
 }
 
 .sorting_desc {
-	background: url(../img/sort_desc.png) no-repeat center right;
+	background: url(../img/sort_desc.png) no-repeat center left;
 }
 
 .sorting {
-	background: url('../img/sort_both.png') no-repeat center right;
+	background: url('../img/sort_both.png') no-repeat center left;
 }
 
 .sorting_asc_disabled {
-	background: url('../img/sort_asc_disabled.png') no-repeat center right;
+	background: url('../img/sort_asc_disabled.png') no-repeat center left;
 }
 
 .sorting_desc_disabled {
@@ -246,11 +250,12 @@ table.display tr.even.gradeU {
 
 
 tr.odd {
-	background-color: rgba(0, 0, 0, 0.8);
+	
 }
 
 tr.even {
-	background-color: rgba(0, 0, 0, 0.8);
+	
+        background: linear-gradient(#05639B, #05639B) repeat scroll 0 0 rgba(0, 0, 0, 0);
 }
 
 

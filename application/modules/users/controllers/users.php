@@ -20,6 +20,9 @@ class Users extends CI_Controller{
         
        // $this->pos_users_testing();
     } 
+    function funny(){
+        
+    }
     function pos_users_testing(){
          $this->load->model('pos_users_model');
         $test= $this->pos_users_model->get();

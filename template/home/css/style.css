@@ -12,7 +12,7 @@
 	position: relative;
 	height: 60px;
 	line-height: 40px;
-	background-color: rgba(0, 0, 0, 0.40);
+	background: linear-gradient(#153450, #05639B) repeat scroll 0 0 rgba(0, 0, 0, 0);
 	border: 1px solid rgba(255,255,255, 0.3);
 }
 
