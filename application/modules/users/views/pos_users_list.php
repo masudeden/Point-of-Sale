@@ -31,19 +31,35 @@
 			$(document).ready( function () {
            $('#example1').dataTable({
                                       "bProcessing": true,
-									  "bServerSide": true,
-                                      "sAjaxSource": "http://localhost/dashboard/data.php",
-					aoColumns: [  null, null, null, null, 
+					"bServerSide": true,
+                                      "sAjaxSource": "<?php echo base_url() ?>index.php/users/users_data_table",
+                                      
+					aoColumns: [  
+                                    
+         { "bVisible": false} , {	"sName": "ID",
+                   						"bSearchable": false,
+                   						"bSortable": false,
+                                                                
+                   						"fnRender": function (oObj) {
+                   							return "<input type=checkbox >";
+								},
+								
+								
+							},
+        
+        null, null, null, null, null, 
 
  							{	"sName": "ID",
                    						"bSearchable": false,
                    						"bSortable": false,
+                                                                
                    						"fnRender": function (oObj) {
-                   							return "<a href='EditData.php?id=" + oObj.aData[0] + "'><i class='icon-edit'></i> </a><a href='EditData.php?id=" + oObj.aData[0] + "'><i class=' icon-remove-circle'></i> </a>";
+                   							return "<a href='EditData.php?id=" + oObj.aData[0] + "'><i class='icon-edit'></i>"+ oObj.aData[7] + "</a><a href='EditData.php?id=" + oObj.aData[0] + "'><i class=' icon-remove-circle'></i> </a>";
 								},
 								
 								
 							}
+ 							
 
  						]
 						
@@ -162,6 +178,9 @@
           <th >Browser</th>
           <th >Platform(s)</th>
           <th>Engine version</th>
+          <th>Engine version</th>
+          <th>Engine version</th>
+          <th>Action</th>
           <th>Action</th>
           </tr>
         </thead>

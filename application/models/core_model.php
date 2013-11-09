@@ -61,6 +61,17 @@ class Core_model extends CI_Model{
     }
     return $data;
     }
+    function user_fetch_array($like,$start,$end,$sOrder){
+        $this->db->select();
+         $this->db->limit($start,$end);       
+        $this->db->order_by($sOrder);
+        $this->db->or_like($like);
+        
+      
+                 
+                $query = $this->db->get('ajax');
+                return $query->result_array();
+    }
                                     
 }
 ?>

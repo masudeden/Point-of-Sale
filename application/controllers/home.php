@@ -56,7 +56,7 @@ class Home extends CI_Controller
                 $_SESSION[$data[$i].'_per']['edit']==1?$_SESSION['Posnic_Edit']="Edit":$_SESSION['Posnic_Edit']="null";              
                 $_SESSION[$data[$i].'_per']['delete']==1?$_SESSION['Posnic_Delete']="Delete":$_SESSION['Posnic_Delete']="null";
                 
-                redirect($data[$i]);
+                redirect($module);
                 
             }  
           }
