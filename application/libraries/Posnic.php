@@ -1,21 +1,24 @@
 <?php
 class Posnic{
-  
-    function __construct() {
-       
-          $CI=  get_instance();
-          
-                $CI->load->helper('form');
-                $CI->load->helper('url');
-                $CI->load->library('unit_test');
-                $CI->load->library('session');      
+ private $CI;
+
+    public function __construct()
+    {
+       $this->CI =& get_instance();
+
+       $this->CI->load->helper('url');
+       $this->CI->load->library('session');
+                $this->CI->load->helper('form');
+                $this->CI->load->helper('url');
+                $this->CI->load->library('unit_test');
+                $this->CI->load->library('session');      
                 session_start();
-                $CI->load->helper(array('form', 'url'));
-                $CI->load->library('poslanguage'); 
-                $CI->load->library('form_validation');
-                $CI->poslanguage->set_language();
-                $CI->load->library("pagination");
-                $CI->load->model('posnic_model');
+                $this->CI->load->helper(array('form', 'url'));
+                $this->CI->load->library('poslanguage'); 
+                $this->CI->load->library('form_validation');
+                $this->CI->poslanguage->set_language();
+                $this->CI->load->library("pagination");
+                $this->CI->load->model('posnic_model');
                
                 
           if(!isset($_SESSION['Uid'])){
