@@ -245,12 +245,19 @@ class posnic_model extends CI_model{
                }
                return $data;
     }
-    function posnic_join_where($table1,$table2,$where,$branch){
+    function posnic_data_table($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where){
         
-          $this->db->select()->from($table1);   
-          $where=$where."AND $table2.branch_id ='".$branch." '";
-          $this->db->join($table2, "$where".'','left');
-          $this->db->group_by("$table2".'.guid');
+          $this->db->select()->from($table1);  
+        $this->db->limit('3','0'); 
+        $this->db->order_by($order);
+        if($where!=null){
+        $this->db->where($where);
+        }
+        //$this->db->where('users.guid <>',2);
+        $this->db->or_like($like);
+        $join_where=$join_where."AND $table2.branch_id ='".$branch." ' AND $table2.delete_status=0";
+          $this->db->join($table2, "$join_where".'','left');
+        
           $query=$this->db->get();
              return $query->result_array();
             

@@ -316,10 +316,10 @@ class Posnic{
          $branch=$_SESSION['Bid'];
          return $CI->posnic_model->posnic_join_like($table1,$table2,$like,$where,$branch);
     }
-    function posnic_join_where($table1,$table2,$where){
+    function posnic_data_table($end,$start,$table1,$table2,$join_where,$order,$like,$where){
          $CI=  get_instance();  
          $branch=$_SESSION['Bid'];
-         return $CI->posnic_model->posnic_join_where($table1,$table2,$where,$branch);
+         return $CI->posnic_model->posnic_data_table($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where);
     }
 }
        

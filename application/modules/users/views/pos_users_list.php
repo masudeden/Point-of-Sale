@@ -54,11 +54,26 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							return "<a href='EditData.php?id=" + oObj.aData[0] + "'><i class='icon-edit'></i>"+ oObj.aData[7] + "</a><a href='EditData.php?id=" + oObj.aData[0] + "'><i class=' icon-remove-circle'></i> </a>";
+                   							if(oObj.aData[8]==0){
+                                                                            return "<p>Active</p>";
+                                                                        }else{
+                                                                            return "<p>Deactive</p>";
+                                                                        }
 								},
 								
 								
-							}
+							},
+ 							{	"sName": "ID1",
+                   						"bSearchable": false,
+                   						"bSortable": false,
+                                                                
+                   						"fnRender": function (oObj) {
+                   							return "<a href='EditData.php?id=" + oObj.aData[0] + "'><i class='icon-edit'></i></a><a href='EditData.php?id=" + oObj.aData[0] + "'><i class=' icon-remove-circle'></i> </a>";
+								},
+								
+								
+							},
+
  							
 
  						]
@@ -175,12 +190,13 @@
       <thead>
         <tr>
           <th>Rendering engine</th>
-          <th >Browser</th>
-          <th >Platform(s)</th>
-          <th>Engine version</th>
-          <th>Engine version</th>
-          <th>Engine version</th>
-          <th>Action</th>
+          <th >Select</th>
+          <th >User Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Phone </th>
+          <th>Email</th>
+          <th>Status</th>
           <th>Action</th>
           </tr>
         </thead>

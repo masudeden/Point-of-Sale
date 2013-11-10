@@ -17,64 +17,70 @@ class Users extends CI_Controller{
     function index(){
         $this->load->library('poslanguage');                 
         $this->poslanguage->set_language();
-       $this->get_pos_users_details();
-       // $this->users_data_table();
+        $this->get_pos_users_details();
+       //$this->users_data_table();
         
        // $this->pos_users_testing();
     } 
-    function funny(){
-        
-    }
+    
     function pos_users_testing(){
-         $this->load->model('pos_users_model');
+        $this->load->model('pos_users_model');
         $test= $this->pos_users_model->get();
-  
-          $expected_result ='is_true';
+        $expected_result ='is_true';
 
         $test_name = 'Adds one plus one';
        
         $this->unit->run($test, $expected_result, $test_name);
-      return $this->unit->report();
+        return $this->unit->report();
         
         
         
     }
     function users_data_table(){     
-	$aColumns = array( 'browser','id','engine', 'platform', 'version', 'version','version', 'id' );	
+	$aColumns = array( 'guid','email','user_id',  'first_name','last_name','phone', 'email',  'user_active', 'emp_id' );	
 	$start = "";
         $end="";
 	if ( $this->input->get_post('iDisplayLength') != '-1' )	{
 		$start = $this->input->get_post('iDisplayStart');
 		$end=	 $this->input->get_post('iDisplayLength');                
 	}	
-	$sOrder1="";
+	$order="";
 	if ( isset( $_GET['iSortCol_0'] ) )
 	{	
 		for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
 		{
 			if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
 			{
-				$sOrder1.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
 			}
 		}
 		
-                $sOrder11 = substr_replace( $sOrder1, "", -1 );
+                $order = substr_replace( $order, "", -1 );
                 
 	}
 	
-	$sWhere1 = array();
+	$like = array();
 	
         if ( $_GET['sSearch'] != "" )
 	{
-	$sWhere1 =array('engine'=>  $this->input->get_post('sSearch'),'browser'=>$this->input->get_post('sSearch'));
+	$like =array('first_name'=>  $this->input->get_post('sSearch'),
+            'user_id'=>  $this->input->get_post('sSearch'),
+            'email'=>  $this->input->get_post('sSearch'),
+            'phone'=>  $this->input->get_post('sSearch'),
+            'last_name'=>  $this->input->get_post('sSearch'),
+            'email'=>$this->input->get_post('sSearch'));
             
         }
         $this->load->model('core_model');
-        $rResult1 = $this->core_model->user_fetch_array($sWhere1,$end,$start,$sOrder11);
+       // $rResult1 = $this->core_model->user_fetch_array($sWhere1,$end,$start,$sOrder11);
+        $join_where='users_x_branchs.emp_id=users.guid ';
+      
+         $rResult1 = $this->core_model->posnic_data_table($end,$start,'users','users_x_branchs',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
+       // $rResult1 = $this->posnic->posnic_data_table($end,$start,'users','users_x_branchs',$join_where,$order,$like,$where);
+       $this->load->model('pos_users_model');
+	$iFilteredTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);;
 	
-	$iFilteredTotal = 27;
-	
-	$iTotal = 27;
+	$iTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);;
 	
 	$output1 = array(
 		"sEcho" => intval($_GET['sEcho']),
@@ -87,7 +93,7 @@ class Users extends CI_Controller{
 		$row = array();
 		for ( $i=0 ; $i<count($aColumns) ; $i++ )
 		{
-			if ( $aColumns[$i] == "version" )
+			if ( $aColumns[$i] == "id" )
 			{
 				$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
 			}
