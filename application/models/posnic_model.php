@@ -231,9 +231,11 @@ class posnic_model extends CI_model{
     }
     function posnic_join_like($table1,$table2,$like,$where,$branch){
         
-          $this->db->select()->from($table1)->like($like);         
+          $this->db->select()->from($table1)->like($like);    
+          $where=$where."AND $table2.branch_id ='".$branch." '";
           $this->db->join($table2, "$where".'','left');
           $this->db->group_by("$table2".'.guid');
+         
           $sql=$this->db->get();
               $data=array();
                     $j=0;
@@ -242,6 +244,16 @@ class posnic_model extends CI_model{
                                                    $j++; 
                }
                return $data;
+    }
+    function posnic_join_where($table1,$table2,$where,$branch){
+        
+          $this->db->select()->from($table1);   
+          $where=$where."AND $table2.branch_id ='".$branch." '";
+          $this->db->join($table2, "$where".'','left');
+          $this->db->group_by("$table2".'.guid');
+          $query=$this->db->get();
+             return $query->result_array();
+            
     }
     function add_module($module,$value,$branch){
        $this->db->insert($module,$value);
