@@ -1,92 +1,4 @@
-<!DOCTYPE html>
-<html>
 
-<!-- Mirrored from www.riaxe.com/envato/thin-admin/ios7/dynamic_table.html by HTTrack Website Copier/3.x [XR&CO'2013], Wed, 06 Nov 2013 08:45:05 GMT -->
-<head>
-<title>Thin Admin</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- Bootstrap -->
-<link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>template/data_table/css/bootstrap.min.css.css">
-<link href="<?php echo base_url() ?>template/home/css/bootstrap.css" rel="stylesheet" media="screen">
-<link href="<?php echo base_url() ?>template/home/css/thin-admin.css" rel="stylesheet" media="screen">
-<link href="<?php echo base_url() ?>template/home/css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="<?php echo base_url() ?>template/home/style/style.css" rel="stylesheet">
-<link href="<?php echo base_url() ?>template/home/style/dashboard.css" rel="stylesheet">
-
-<link href="<?php echo base_url() ?>template/home/css/demo_page.css" rel="stylesheet">
-<link href="<?php echo base_url() ?>template/home/css/demo_table.css" rel="stylesheet">
-<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!--[if lt IE 9]>
-      <script src="<?php echo base_url() ?>template/home//assets/js/html5shiv.js"></script>
-      <script src="<?php echo base_url() ?>template/home//assets/js/respond.min.js"></script>
-    <![endif]-->
-<link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>template/data_table/css/bootstrap.min.css">
-               
-
-        <script src="<?php echo base_url() ?>template/data_table/js/jquery.min.js" type="text/javascript"></script>
-        <script src="<?php echo base_url() ?>template/data_table/js/jquery.dataTables.min.js" type="text/javascript"></script>
-	<script type="text/javascript" language="javascript" src="<?php echo base_url() ?>template/data_table/js/jquery.js"></script>
-		<script type="text/javascript" language="javascript" src="<?php echo base_url() ?>template/data_table/js/jquery.dataTables.js"></script>
-			<script type="text/javascript" charset="utf-8">
-			$(document).ready( function () {
-           $('#example1').dataTable({
-                                      "bProcessing": true,
-					"bServerSide": true,
-                                      "sAjaxSource": "<?php echo base_url() ?>index.php/users/users_data_table",
-                                      
-					aoColumns: [  
-                                    
-         { "bVisible": false} , {	"sName": "ID",
-                   						"bSearchable": false,
-                   						"bSortable": false,
-                                                                
-                   						"fnRender": function (oObj) {
-                   							return "<input type=checkbox >";
-								},
-								
-								
-							},
-        
-        null, null, null, null, null, 
-
- 							{	"sName": "ID",
-                   						"bSearchable": false,
-                   						"bSortable": false,
-                                                                
-                   						"fnRender": function (oObj) {
-                   							if(oObj.aData[8]==0){
-                                                                            return "<p>Active</p>";
-                                                                        }else{
-                                                                            return "<p>Deactive</p>";
-                                                                        }
-								},
-								
-								
-							},
- 							{	"sName": "ID1",
-                   						"bSearchable": false,
-                   						"bSortable": false,
-                                                                
-                   						"fnRender": function (oObj) {
-                   							return "<a href='EditData.php?id=" + oObj.aData[0] + "'><i class='icon-edit'></i></a><a href='EditData.php?id=" + oObj.aData[0] + "'><i class=' icon-remove-circle'></i> </a>";
-								},
-								
-								
-							},
-
- 							
-
- 						]
-						
-						
-                                    }
-                                    );
-			} );
-                        console.log();
-		</script>
-                <script type="text/javascript" charset="utf-8" language="javascript" src="<?php echo base_url() ?>template/data_table/js/DT_bootstrap.js"></script>
-</head>
-<body>
 <div class="container">
   <div class="top-navbar header b-b"> <a data-original-title="Toggle navigation" class="toggle-side-nav pull-left" href="#"><i class="icon-reorder"></i> </a>
     <div class="brand pull-left"> <a href="index.html"><img src="images/logo.png" width="147" height="33"></a></div>
@@ -186,6 +98,10 @@
         <div class="full_width big"></div>
   <div id="demo">
       <div id="dynamic">
+          <?php echo form_open('users/list'); 
+          
+          ?>
+          <input type="submit" value="add" class="green big btn">
     <table cellpadding="0" cellspacing="0" border="0" class="display  table-striped " id="example1">
       <thead>
         <tr>
@@ -214,7 +130,9 @@
           <th></th>
           </tr>
         </tfoot>
-  </table></div>
+  </table>
+      <?php  echo form_close()?>
+      </div>
     </div>
         
         

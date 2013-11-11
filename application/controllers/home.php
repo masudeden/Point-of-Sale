@@ -159,6 +159,9 @@ class Home extends CI_Controller
      function user_groups(){
         redirect('user_groupsci');
     }
-    
+    function logout(){
+         session_destroy();
+           redirect('userlogin');
+    }
 }
 ?>

@@ -7,8 +7,7 @@ class Users extends CI_Controller{
         parent::__construct();
         $this->load->helper('form');
         $this->load->helper('url');
-        $this->load->library('unit_test');
-               
+        $this->load->library('unit_test');              
         $this->load->library('posnic');  
         $this->load->helper(array('form', 'url'));
         $this->load->library('poslanguage');                 
@@ -42,7 +41,7 @@ class Users extends CI_Controller{
         $end="";
 	if ( $this->input->get_post('iDisplayLength') != '-1' )	{
 		$start = $this->input->get_post('iDisplayStart');
-		$end=	 $this->input->get_post('iDisplayLength');                
+		$end=	 $this->input->get_post('iDisplayLength');              
 	}	
 	$order="";
 	if ( isset( $_GET['iSortCol_0'] ) )
@@ -77,7 +76,7 @@ class Users extends CI_Controller{
       
          $rResult1 = $this->core_model->posnic_data_table($end,$start,'users','users_x_branchs',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
        // $rResult1 = $this->posnic->posnic_data_table($end,$start,'users','users_x_branchs',$join_where,$order,$like,$where);
-       $this->load->model('pos_users_model');
+        $this->load->model('pos_users_model');
 	$iFilteredTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);;
 	
 	$iTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);;

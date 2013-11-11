@@ -5,37 +5,46 @@ class Acluser{
        
     }
     function module_permissions($mod,$bid,$id){
-         $CI=  get_instance();
-         $CI->load->library('session');
-         $CI->load->model('aclpermissionmodel');
+        
+          $CI=  get_instance();
+          $CI->load->library('session');
+          $CI->load->model('aclpermissionmodel');
+          $module_name=$CI->aclpermissionmodel->get_module_name($mod);  
+          $CI->config->load("$module_name/posnic");
+          
+          
+          $acl_list =$CI->config->item('M_ACL');
+          //$permission=$CI->aclpermissionmodel->get_admin_permission($mod);
+         
+  
+          
          $deaprt=$CI->aclpermissionmodel->get_user_groups($id,$bid);
           
-         $num=0000;
+         $permission=0;
          for($i=0;$i<count($deaprt);$i++){
-         $num=$num+$CI->aclpermissionmodel->get_user_modules_permissions($deaprt[$i],$bid,$mod); 
+         
+         $permission =$permission+ $CI->aclpermissionmodel->get_user_modules_permissions($deaprt[$i],$bid,$mod);
          
          }
-         
-        if($num%10==0){  $read=0; }else{  $read=1; }
-        if($num/10%10==0){  $add=0; }else{  $add=1; }
-        if($num/100%10==0){ $edit=0; }else{  $edit=1; }
-        if($num/1000%10==0){ $delete= 0; }else{  $delete= 1; }
-         
-        $item = array(
-                   "$mod"=>$read."".$add."".$edit."".$delete,
-                   'read'=>$read,
-                   'add'=> $add,
-                   'edit' =>$edit,
-                   'delete'=>$delete
-               );
-
-        $_SESSION[$mod.'_per']=$item;
-        $_SESSION[$mod]='On';
-        
-        
-        
+         $item=array();
+         for($j=0;$j<count($acl_list);$j++){
+               $per_v= substr($permission,$j,1);
+               if($per_v=="" or $per_v==0){               
+                        // array_push($item["$acl_list"]=>0);
+                    $second_array = array("$acl_list[$j]" => 0);
+                    $item = array_merge((array)$item, (array)$second_array);
+                       }else{
+                    $second_array = array("$acl_list[$j]" => 1);
+                    $item = array_merge((array)$item, (array)$second_array);
+                   }
+         }
+        $second_array = array($module_name => $permission);
+        $item = array_merge((array)$item, (array)$second_array);
+        $_SESSION[$module_name.'_per']=$item;
+        $_SESSION[$module_name]='On';   
     }  
     function admin_module_permissions($mode){
+    
         $sasi=$mode;
              $item = array(
                    $mode=>1111,

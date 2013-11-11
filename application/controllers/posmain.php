@@ -28,10 +28,9 @@ class Posmain extends CI_Controller{
         $data=$this->branch->get_user_default_branch($_SESSION['Uid']);
         $this->pos_setting();       
         if($_SESSION['admin']==2){
-           $admin=  $this->branch->branch_for_admin();
-         
+             $admin=  $this->branch->branch_for_admin();         
              $this->acl_session_for_user($admin);        
-             redirect('home');
+            redirect('home');
         }else{
              if($this->branch->check_branch_is_in_active($data,$_SESSION['Uid'])){
              $this->acl_session_for_user($data);        
@@ -57,7 +56,10 @@ class Posmain extends CI_Controller{
        
         $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
             for($i=0;$i<count($modules);$i++){
+                
                 $this->acluser->module_permissions($modules[$i],$b_id ,$_SESSION['Uid']);
+               
+                
             }
         
         }

@@ -39,7 +39,7 @@ class Modules_model extends CI_Model{
             $this->db->select()->from('modules')->where('guid',$row->module_id);
             $val=$this->db->get();
             foreach ($val->result() as $mod){
-                $data[]=$mod->module_name;
+                $data[]=$mod->guid;
             }
         }
         return $data;

@@ -100,6 +100,7 @@ class Branch extends CI_Model{
    }
    function get_user_default_branch($id){
        $this->db->select()->from('users')->where('id',$id);
+       $data="";
                  $sql=  $this->db->get();              
                  foreach ($sql->result() as $row) {            
              $data = $row->default_branch   ;            
