@@ -31,15 +31,16 @@ class Home extends CI_Controller
         $data['row']=$this->branch->get_active_user_branchs($_SESSION['Uid']);
         }
        
-        $this->load->view('template/home/header');
+        $this->load->view('template/app/header');
         if($_SESSION['Setting']['Branch']==1){
         $this->load->view('template/branch',$data);
           }
         $this->load->model('modules_model')  ;
         $modules['cate']= $this->modules_model->get_module_category();      
         $modules['row']=  $this->modules_model->get_modules($_SESSION['Bid']);
-        $this->load->view('home',$modules);   
-        $this->load->view('template/home/footer');   
+        $this->load->view('home',$modules);  
+        $this->load->view('template/app/navigation');
+        $this->load->view('template/app/footer');   
         
        
     }

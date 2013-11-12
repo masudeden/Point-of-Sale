@@ -127,7 +127,7 @@ class Users extends CI_Controller{
                 $data['urow']= $this->pos_users_model->get_branch_pos_users_for_admin();
 	        $data["links"] = $this->pagination->create_links(); 
                 
-                $this->load->view('template/app/header');
+                $this->load->view('template/table/header');
                 $this->load->view('pos_users_list',$data);
                 $this->load->view('template/app/footer');
          }else{
@@ -148,7 +148,7 @@ class Users extends CI_Controller{
                 $data['urow']=$this->pos_users_model->get_user_details_for_user($_SESSION['Uid']);
 	        $data["links"] = $this->pagination->create_links(); 
                 
-                $this->load->view('template/app/header');
+                $this->load->view('template/table/header');
                 $this->load->view('pos_users_list',$data);
                 $this->load->view('template/app/footer');
         }else{
