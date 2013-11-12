@@ -324,6 +324,30 @@ class Posnic{
          $branch=$_SESSION['Bid'];
          return $CI->posnic_model->posnic_data_table($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where);
     }
+    function branchs(){
+        $CI=  get_instance();
+        $CI->load->model('setting');
+        $CI->load->model('branch');        
+        $data['branch_settings']=$CI->setting->get_branch_setting();
+        if($_SESSION['admin']==2){
+            
+        $data['row']= $CI->branch->get_branch();
+        
+        }else{
+        
+        $data['row']=$CI->branch->get_active_user_branchs($_SESSION['Uid']);
+        }
+        return $data;
+    }
+    function modules(){
+        $CI=  get_instance();
+        $CI->load->model('modules_model')  ;
+        
+        $data['cate']= $CI->modules_model->get_module_category();      
+        $data['row']=  $CI->modules_model->get_modules($_SESSION['Bid']);
+        $data['active']=$_SESSION['active_module'];
+        return $data;
+    }
 }
        
 ?>

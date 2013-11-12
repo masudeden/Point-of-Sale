@@ -35,11 +35,12 @@ class Home extends CI_Controller
         if($_SESSION['Setting']['Branch']==1){
         $this->load->view('template/branch',$data);
           }
+        $modules['active']="home";
         $this->load->model('modules_model')  ;
         $modules['cate']= $this->modules_model->get_module_category();      
         $modules['row']=  $this->modules_model->get_modules($_SESSION['Bid']);
-        $this->load->view('home',$modules);  
-        $this->load->view('template/app/navigation');
+        $this->load->view('home');  
+        $this->load->view('template/app/navigation',$modules);
         $this->load->view('template/app/footer');   
         
        
@@ -59,7 +60,7 @@ class Home extends CI_Controller
                 $_SESSION[$data[$i].'_per']['add']==1?$_SESSION['Posnic_Add']="Add":$_SESSION['Posnic_Add']="null";
                 $_SESSION[$data[$i].'_per']['edit']==1?$_SESSION['Posnic_Edit']="Edit":$_SESSION['Posnic_Edit']="null";              
                 $_SESSION[$data[$i].'_per']['delete']==1?$_SESSION['Posnic_Delete']="Delete":$_SESSION['Posnic_Delete']="null";
-                
+                $_SESSION['active_module']=$data[$i];
                 redirect($module);
                 
             }  

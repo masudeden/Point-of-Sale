@@ -16,6 +16,7 @@ class Users extends CI_Controller{
     function index(){
         $this->load->library('poslanguage');                 
         $this->poslanguage->set_language();
+        
         $this->get_pos_users_details();
        //$this->users_data_table();
         
@@ -109,51 +110,17 @@ class Users extends CI_Controller{
 	
        echo json_encode($output1);
     }
-            function get_pos_users_details(){
-         if($_SESSION['admin']==2){
-             $this->load->helper("url");
-                $this->load->model('pos_users_model');
-                $this->load->model('branch');                  
-                $this->load->library("pagination"); 
-	        $config["base_url"] = base_url()."index.php/users/get_pos_users_details";
-	        $config["total_rows"] = $this->pos_users_model->pos_users_count_for_admin($_SESSION['Bid']);
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-                $data['branch']=$this->branch->get_selected_branch_for_view();
-                $data['count']=$this->pos_users_model->pos_users_count_for_admin($_SESSION['Bid']);         
-	        $data["row"] = $this->pos_users_model->get_pos_users_details_for_admin($config["per_page"], $page,$_SESSION['Bid']);
-                $data['urow']= $this->pos_users_model->get_branch_pos_users_for_admin();
-	        $data["links"] = $this->pagination->create_links(); 
-                
-                $this->load->view('template/table/header');
-                $this->load->view('pos_users_list',$data);
-                $this->load->view('template/app/footer');
-         }else{
-        if($_SESSION['users_per']['read']==1){ 
-                $this->load->helper("url");
-                $this->load->model('pos_users_model');
-                $this->load->model('branch');                   
-                $this->load->library("pagination"); 
-	        $config["base_url"] = base_url()."index.php/users/get_pos_users_details";
-	        $config["total_rows"] = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-                $data['branch']=$this->branch->get_selected_branch_for_user_view();
-                $data['count']=$this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);             
-	        $data["row"] = $this->pos_users_model->get_pos_users_details($config["per_page"], $page,$_SESSION['Uid'],$_SESSION['Bid']);
-                $data['urow']=$this->pos_users_model->get_user_details_for_user($_SESSION['Uid']);
-	        $data["links"] = $this->pagination->create_links(); 
-                
-                $this->load->view('template/table/header');
-                $this->load->view('pos_users_list',$data);
-                $this->load->view('template/app/footer');
+    function get_pos_users_details(){         
+           
+        if($_SESSION['users_per']['access']==1){
+        $this->load->view('template/app/header'); 
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $this->load->view('pos_users_list');
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
         }else{
             redirect('home');
-        }}
+        }
     }
     function edit_pos_users_details($id){
         if($_SESSION['users_per']['edit']==1){ 

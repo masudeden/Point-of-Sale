@@ -7,21 +7,26 @@
 					</div>
 				</div>
 				<ul id="text_nav_side_fixed">
-                                    <li class="link_active"><a href="javascript:void(0)"><span class="icon-dashboard"></span>Dashboard</a></li>
+                                    <li <?php if($active==='home'){ ?> class="link_active" <?php }?> ><a href="<?php echo base_url()?>index.php/home/"><span class="icon-dashboard"></span>Dashboard</a></li>
                                              <?php  
                                       if($row>0){
                                       foreach ($cate as $m_cate){ ?>
-					<li>
-						<a href="javascript:void(0)"><span class="icon-dashboard"></span><?php echo $this->lang->line($m_cate->Category_name) ?></a>
-						<?php if(count($row)>0) {?>
+                                    <li >
+						
+						<?php if($m_cate->no!=1) {?>
+                                        <a href="javascript:void(0)"><span class="icon-dashboard"></span><?php echo $this->lang->line($m_cate->Category_name) ?></a>
                                                 <ul>
-                                                    <?php                                          
+                                                <?php                                          
                                                    foreach ($row as $mode){
                                                    if($m_cate->guid==$mode->cate_id){?>
-							<li ><a href="<?php echo base_url()?>index.php/home/home_main/<?php echo $mode->module_name?>"><?php echo $this->lang->line($mode->module_name) ?></a></li>							
+							<li <?php if($active===$mode->module_name){ ?> class="link_active" <?php }?> ><a href="<?php echo base_url()?>index.php/home/home_main/<?php echo $mode->module_name?>"><?php echo $this->lang->line($mode->module_name) ?></a></li>							
                                                         <?php } } ?>
 						</ul>
-                                                <?php } ?>
+                                                <?php }else{
+                                                    ?>
+                                        <a href="<?php echo base_url()?>index.php/home/home_main/<?php echo $mode->module_name?>"><span class="icon-dashboard"></span><?php echo $this->lang->line($m_cate->Category_name) ?></a>
+                                                        <?php
+                                                } ?>
 					</li>
                                         <?php } }?>
 								
