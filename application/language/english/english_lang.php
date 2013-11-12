@@ -180,6 +180,7 @@ $lang['company']='Comapany';
  $lang['customer_category']='Customer Category';
  $lang['user_groupsci']='User Groups';
  $lang['branchCI']='Branchs';
+ $lang['branchs']='Branchs';
  $lang['purchase_oder']='Purchase Order';
  $lang['purchase_invoice']='Purchase Invoice';
  $lang['customers_payment_type']='Customers Payment Type';

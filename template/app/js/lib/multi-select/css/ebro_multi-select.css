@@ -1,0 +1,21 @@
+.ms-container .ms-selectable {margin-right:10%}
+.ms-selectable,.ms-selection {width:45%}
+.ms-container ul.ms-list {width:auto;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;height:201px}
+.ms-container .ms-list.ms-focus{-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow:  none;}
+.ms-container .ms-list {-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none}
+.ms-container .ms-optgroup-label {color:#333;background:#f8f8f8;font-size:11px;text-transform:uppercase;border-bottom:1px solid #e3e3e3;padding:2px 0 0 5px}
+.custom-header,.custom-footer {background:#f2f2f2;line-height:20px;padding:2px 2px;text-align:center;border-style:solid;border-color:#ccc}
+.custom-header {border-width:1px 1px 0 1px}
+.custom-footer {border-width:0 1px 1px}
+
+.custom-header-search {background:#f2f2f2;padding:4px;border-style:solid;border-color:#ccc;border-width:1px 1px 0 1px}
+.custom-header-search input {width:100%;min-height:26px;line-height:26px;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;margin:0}
+
+.ms-container {background: url(../img/ebro_switch.png) no-repeat 50% 42%}
+.ms-selected {display: inherit}
+
+.ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection {font-size:13px}
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  { 
+    .ms-container {background-image: url('../img/ebro_switch%402x.png') !important;background-size: 22px !important}
+}

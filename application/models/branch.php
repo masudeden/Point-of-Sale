@@ -5,7 +5,7 @@ class Branch extends CI_Model{
         parent::__construct();
     }
     function get_branch(){
-            $this->db->select()->from('branchs');
+            $this->db->select()->from('branchs')->where('delete_status',0);
             $sql=  $this->db->get();
             return $sql->result();  
             
@@ -169,8 +169,8 @@ class Branch extends CI_Model{
                 $data[] = $row;
             }
             return $data;
-           }
-          return false;
+            }
+            return false;
    }
    function get_branch_details_for_edit($id){
         $this->db->select()->from('branchs')->where('id',$id);
@@ -216,22 +216,18 @@ class Branch extends CI_Model{
        $value=array('deleted_by'=>$u_id,'active_status '=>1);
        $this->db->where('id',$id);
        $this->db->update('branchs',$value);
-       
        $data=array('active_status '=>1);
-
        $this->db->where('branch_id',$id);
        $this->db->update('users_x_branchs',$data);
    }
    function delete_branch_for_admin($id){
        $data=array('active_status '=>1,'delete_status'=>1);
        $this->db->where('id',$id);
-       $this->db->update('branchs',$data);
-       
+       $this->db->update('branchs',$data);       
        $this->db->where('branch_id',$id);
        $this->db->update('users_x_branchs',$data);
    }
    function check_branch_is_in_active($id,$eid){
-       
         $this->db->select()->from('users_x_branchs')->where('branch_id',$id)->where('emp_id',$eid)->where('active_status',0)->where('delete_status',0);
         $sql=$this->db->get();
         if($sql->num_rows()>0){
@@ -250,23 +246,16 @@ class Branch extends CI_Model{
         return $data;
     }
     function get_active_user_branchs($id){
-       $this->db->select()->from('users_x_branchs')->where('emp_id',$id);
-       $sql_b=  $this->db->get();
-        $data=array();
-        $value=array();
-       $j=0;
-        foreach ($sql_b->result() as $brow){
-             $data[]=$brow->branch_id  ;
-        }
-        for($i=0;$i<count($data);$i++){
-           $this->db->select()->from('branchs')->where('guid',$data[$i])->where('active_status',0);
-           $sql=  $this->db->get();
-          foreach ($sql->result() as $row){
-                $value[$j]=$row->id;     
-               $j++;
-           }
-        }
-        return $value;
+        
+        $this->db->select('branchs.*');
+        $this->db->from('branchs');  
+        $this->db->join('users_x_branchs', " users_x_branchs.branch_id= branchs.guid ",'left');
+        $this->db->where('users_x_branchs.active_status ',0);
+        $this->db->where('users_x_branchs.delete_status ',0);
+        $this->db->where('users_x_branchs.emp_id',$id);
+        $query=$this->db->get();
+        return $query->result();
+       
     }
     function activate_branch($id){
         $data=array('active_status'=>0);

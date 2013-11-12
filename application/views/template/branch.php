@@ -3,7 +3,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.min.js"></script>
 <script>
     function change_branch(){
-        var jibi = document.getElementById("branch").value;
+        var posnic = document.getElementById("branch").value;
         
     
      var xmlhttp;
@@ -16,7 +16,7 @@
         xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
         }
        
-        xmlhttp.open("GET","<?php echo base_url() ?>index.php/posmain/change_user_branch/"+jibi,false);
+        xmlhttp.open("GET","<?php echo base_url() ?>index.php/posmain/change_user_branch/"+posnic,false);
         xmlhttp.send();
         alert('Branch Is Changed')
          setTimeout("location.reload(true);");
@@ -27,38 +27,54 @@
         document.getElementById("branch").value=jibi;
         }
 </script>
-<div class="container">
-  <div class="top-navbar header b-b"> <a data-original-title="Toggle navigation" class="toggle-side-nav pull-left" href="#"><i class="icon-reorder"></i> </a>
-    <div class="brand pull-left"> <a href="index.html"><img src="images/logo.png" width="147" height="33"></a></div>
-    <ul class="nav navbar-nav navbar-right  hidden-xs">
-        <li class="dropdown user  hidden-xs"><select id="branch">
-<?php 
-echo form_open('home/change_branch') ; 
+
+<div id="wrapper_all">
+			<header id="top_header">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-6 col-sm-2">
+		
+						</div>
+                                            <div class="col-sm-push-4 col-sm-3 text-right hidden-xs" style="margin-top:5px ">
+												            <?php 
+echo form_open('home/change_branch') ; ?>
+                                                    <select id="branch" class="select form-control">
+<?php
 if($_SESSION['admin']==2){
     foreach ($row as $brow){ ?>
-        <option onclick="change_branch()" value="<?php echo $brow->id ?>" ><?php echo $brow->store_name  ?></option>
+        <option onclick="change_branch()" value="<?php echo $brow->guid ?>" ><?php echo $brow->store_name  ?></option>
    <?php }
 }else{
 ?>
 
 <?php foreach ($row as $brow){ 
-     for($i=0;$i<count($a_row);$i++){
-         if($a_row[$i]==$brow->branch_id){
-    ?><option onclick="change_branch()" value="<?php echo $brow->branch_id ?>" ><?php echo $brow->branch_name ?></option>
     
-   <?php }}}} ?>
+    ?><option onclick="change_branch()" value="<?php echo $brow->guid ?>" ><?php echo $brow->store_name ?></option>
+    
+   <?php }} ?>
 </select>
     <?php echo form_close(); 
 }
-   ?></li>
-      
-      <li class="dropdown user  hidden-xs"> <a href="user_profile.html"><i class="icon-user"></i> My Profile</a>
-      </li>
-      <li class="dropdown user  hidden-xs"> <a href="login.html"><i class="icon-key"></i> Log Out</a>
-      </li>
-    </ul>
-    <form class="pull-right" >
-      <input type="search" placeholder="Search..." class="search" id="search-input">
-    </form>
-  </div>
-</div>
+   ?>
+						</div>
+						<div class="col-xs-6 col-sm-push-4 col-sm-3">
+							<div class="pull-right dropdown">
+								<a href="#" class="user_info dropdown-toggle" title="Jonathan Hay" data-toggle="dropdown">
+									<img src="img/user_avatar.png" alt="">
+									<span class="caret"></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li><a href="user_profile.html">Profile</a></li>									
+                                                                        <li><a href="<?php echo base_url() ?>index.php/home/logout">Log Out</a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-pull-6 col-sm-4">
+							<form class="main_search">
+								<input type="text" id="search_query" name="search_query" class="typeahead form-control">
+								<button type="submit" class="btn btn-primary btn-xs"><i class="icon-search icon-white"></i></button>
+							</form> 
+						</div>
+					</div>
+				</div>
+			</header>

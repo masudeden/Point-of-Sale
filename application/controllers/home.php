@@ -11,6 +11,7 @@ class Home extends CI_Controller
         $this->poslanguage->set_language();               
     }
     function index(){
+       
         if(!isset($_SESSION['Uid'])){
             redirect('userlogin');            
         }
@@ -22,20 +23,21 @@ class Home extends CI_Controller
         $data['branch_settings']=$this->setting->get_branch_setting();
         if($_SESSION['admin']==2){
             $_SESSION['Posnic_User']='admin';
-         $data['row']=  $this->branch->get_branch();
+            $data['row']=  $this->branch->get_branch();
         
         }else{
         $_SESSION['Posnic_User']='user';
-        $data['row']=  $this->branch->get_user_branchs($_SESSION['Uid']);
-        $data['a_row']=$this->branch->get_active_user_branchs($_SESSION['Uid']);
+        
+        $data['row']=$this->branch->get_active_user_branchs($_SESSION['Uid']);
         }
+       
         $this->load->view('template/home/header');
         if($_SESSION['Setting']['Branch']==1){
         $this->load->view('template/branch',$data);
           }
         $this->load->model('modules_model')  ;
+        $modules['cate']= $this->modules_model->get_module_category();      
         $modules['row']=  $this->modules_model->get_modules($_SESSION['Bid']);
-        $modules['mode']=$this->modules_model->get_modules_basced_on_branch();
         $this->load->view('home',$modules);   
         $this->load->view('template/home/footer');   
         
@@ -48,6 +50,7 @@ class Home extends CI_Controller
           
           $this->load->model('modules_model');
           $data=  $this->modules_model->get_modulenames($_SESSION["Bid"]);
+         
           for($i=0;$i<count($data);$i++){
             if($data[$i]==$module){
                 $_SESSION['posnic_module']=$data[$i];
@@ -160,8 +163,10 @@ class Home extends CI_Controller
         redirect('user_groupsci');
     }
     function logout(){
-         session_destroy();
+        if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
+           session_destroy();
            redirect('userlogin');
+        }
     }
 }
 ?>

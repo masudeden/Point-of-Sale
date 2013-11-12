@@ -1,104 +1,111 @@
-
-
-
-<div class="wrapper">
-   <div class="left-nav">
-    <div id="side-nav">
-      <ul id="nav">
-        <li class="current"> <a href="index.html"> <i class="icon-dashboard"></i> Dashboard </a> </li>
-        
-        
-        
-        <li> <a href="chart.html"> <i class="icon-bar-chart"></i> Charts &amp; Statistics </a> </li>
-        <li> <a href="gallery.html"> <i class="icon-picture"></i> Gallery </a> </li>
-        <li> <a href="timeline.html"> <i class="icon-time"></i> Timeline </a> </li>
-       
-      </ul>
-    </div>
-  </div>
-  <div class="page-content">
-    <div class="content container">
-      
-      <div class="row">
-        <div class="col-lg-12">
-          <div class="widget">
-            
-            <!-- /widget-header -->
-            
-              <div class="shortcuts"> 
-                  <?php
-
-?>
-                    <?php $i=0; 
-       if($row>0){
-       foreach ($row as $mid){
-     foreach ($mode as $mo_id){
-         if($mid->module_id ==$mo_id->guid){
-            
-             if($i%9==0){  }
-             
-        ?>
+						
+			<nav id="top_navigation">
+				<div class="container">
+					<ul id="icon_nav_h" class="top_ico_nav clearfix">
+						<li>
+							<a href="#">
+								<i class="icon-home icon-2x"></i>
+								<span class="menu_label">Home</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-edit icon-2x"></i>
+								<span class="menu_label">Content</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-group icon-2x"></i>
+								<span class="menu_label">Users</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<span class="label label-danger">12</span>
+								<i class="icon-tasks icon-2x"></i>
+								<span class="menu_label">Tasks</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-beaker icon-2x"></i>
+								<span class="menu_label">Plugins</span>
+							</a>
+						</li>
+						<li class="active">             
+							<a href="#">
+								<i class="icon-book icon-2x"></i>
+								<span class="menu_label">Help</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<span class="label label-success">$2 347</span>
+								<i class="icon-tags icon-2x"></i>
+								<span class="menu_label">E-Commerce</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-wrench icon-2x"></i>
+								<span class="menu_label">Settings</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<!-- mobile navigation -->
+			<nav id="mobile_navigation"></nav>
+			
+			
+			<section class="container clearfix main_section">
+				<div id="main_content_outer" class="clearfix">
+					<div id="main_content">
+						
+						<!-- main content -->
+					
            
-                  <a class="shortcut" href="<?php echo base_url()?>index.php/home/home_main/<?php echo $mo_id->module_name?>" ><i class="shortcut-icon icon-bookmark"></i><span class="shortcut-label"><?php echo $this->lang->line($mo_id->module_name) ?></span> </a>
-        <?php    $i++;
-}} } }?>
-                  
-              
-              <!-- /shortcuts --> 
-            </div>
-            <!-- /widget-content --> 
-          </div>
-        </div>
-       
-      </div>
-     
-      <div class="row">
-        <div class="col-md-12">
-          <div class="row">
-            <div class="col-md-2 col-xs-12 col-sm-6"> <a href="#" class="stats-container">
-              <div class="stats-heading">Profit</div>
-              <div class="stats-body-alt"> 
-                <!--i class="fa fa-bar-chart-o"></i-->
-                <div class="text-center"><span class="text-top">$</span>345</div>
-                 </div>
-           
-              </a> </div>
-            <div class="col-md-2 col-xs-12 col-sm-6"> <a href="#" class="stats-container">
-              <div class="stats-heading">Revenue</div>
-              <div class="stats-body-alt"> 
-                <!--i class="fa fa-bar-chart-o"></i-->
-                <div class="text-center"><span class="text-top">$</span>34.7k</div>
-               </div>
-             
-              </a> </div>
-            <div class="col-md-2 col-xs-12 col-sm-6"> <a href="#" class="stats-container">
-              <div class="stats-heading">Members</div>
-              <div class="stats-body-alt"> 
-                <!--i class="fa fa-bar-chart-o"></i-->
-                <div class="text-center"><span class="text-top"></span>207</div>
-                </div>
-              
-              </a> </div>
-            <div class="col-md-2 col-xs-12 col-sm-6"> <a href="#" class="stats-container">
-              <div class="stats-heading">Orders</div>
-              <div class="stats-body-alt"> 
-                <!--i class="fa fa-bar-chart-o"></i-->
-                <div class="text-center"><span class="text-top">$</span>345</div>
-                 </div>
-              
-              </a> </div>
-          </div>
-        </div>
-      </div>
-     
-    </div>
-  </div>
-</div>
-<div class=" footer "> <p class="center" style="margin-left:400px ">2013 &copy; POSNIC. </p></div>
+						
+						
+						
+						
 
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
-<script src="js/jquery.js"></script> 
-<script src="js/bootstrap.min.js"></script> 
-<script type="text/javascript" src="js/smooth-sliding-menu.js"></script> 
-
-<!--switcher html start-->
+					</div>
+				</div>
+			</section>
+			<div id="footer_space"></div>
+		</div>
+	
+        
+        	
+		<nav id="side_fixed_nav">
+			<div class="slim_scroll">
+				<div class="side_nav_actions">
+					<a href="javascript:void(0)" id="side_fixed_nav_toggle"><span class="icon-align-justify"></span></a>
+					<div id="toogle_nav_visible" class="make-switch switch-mini" data-on="success" data-on-label="<i class='icon-lock'></i>" data-off-label="<i class='icon-unlock-alt'></i>">
+						<input id="nav_visible_input" type="checkbox">
+					</div>
+				</div>
+				<ul id="text_nav_side_fixed">
+                                    <li class="link_active"><a href="javascript:void(0)"><span class="icon-dashboard"></span>Dashboard</a></li>
+                                             <?php  
+                                      if($row>0){
+                                      foreach ($cate as $m_cate){ ?>
+					<li>
+						<a href="javascript:void(0)"><span class="icon-dashboard"></span><?php echo $this->lang->line($m_cate->Category_name) ?></a>
+						<?php if(count($row)>0) {?>
+                                                <ul>
+                                                    <?php                                          
+                                                   foreach ($row as $mode){
+                                                   if($m_cate->guid==$mode->cate_id){?>
+							<li ><a href="<?php echo base_url()?>index.php/home/home_main/<?php echo $mode->module_name?>"><?php echo $this->lang->line($mode->module_name) ?></a></li>							
+                                                        <?php } } ?>
+						</ul>
+                                                <?php } ?>
+					</li>
+                                        <?php } }?>
+								
+				</ul>
+			</div>
+		</nav>

@@ -1,0 +1,24 @@
+.ms-parent { display: inline-block; position: relative; vertical-align: middle; }
+.ms-choice { display: block; height: 28px; padding: 0; overflow: hidden; position: relative; cursor: pointer; border: 1px solid #aaa; white-space: nowrap; line-height: 26px; color: #444; text-decoration: none; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; background-color: #fff; }
+.ms-choice.disabled { background-color: #f4f4f4; background-image: none; border: 1px solid #ddd; cursor: default; }
+.ms-choice > span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; float: left; padding-left: 8px; }
+.ms-choice > span.placeholder { color: #999 }
+.ms-choice > div { float: right; width: 20px; height: 26px; background: url('multiple-select.png') left top no-repeat; }
+.ms-choice > div.open { background: url('multiple-select.png') right top no-repeat }
+.ms-drop { overflow: hidden; display: none; margin-top: -1px; padding: 0; position: absolute; z-index: 1000; top: 100%; background: #fff; color: #000; border: 1px solid #aaa; -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; -webkit-box-shadow: 0 4px 5px rgba(0, 0, 0, .15); -moz-box-shadow: 0 4px 5px rgba(0, 0, 0, .15); box-shadow: 0 4px 5px rgba(0, 0, 0, .15); }
+.ms-search { display: inline-block; margin: 0; min-height: 26px; padding: 4px; position: relative; white-space: nowrap; width: 100%; z-index: 10000; }
+.ms-search input { -webkit-border-radius: 0; -moz-border-radius: 0; border-radius: 0; -webkit-box-shadow: none; -moz-box-shadow: none; box-shadow: none; background: #fff url('multiple-select.png') no-repeat 100% -22px; height: 26px }
+.ms-search, .ms-search input { -webkit-box-sizing: border-box; -khtml-box-sizing: border-box; -moz-box-sizing: border-box; -ms-box-sizing: border-box; box-sizing: border-box; margin:0;min-height:25px;width:100%}
+.ms-drop ul { overflow: auto; margin: 0; padding: 5px 8px; }
+.ms-drop ul > li { list-style: none; display: list-item; background-image: none; position: static; }
+.ms-drop ul > li .disabled { opacity: .35; filter: Alpha(Opacity=35); }
+.ms-drop ul > li.multiple { display: block; float: left; }
+.ms-drop ul > li.group { clear: both }
+.ms-drop ul > li.multiple label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ms-drop ul > li label {font-size:13px}
+.ms-drop ul > li label.optgroup { font-weight: bold }
+.ms-drop input[type="checkbox"] { margin:0 4px 0 0;vertical-align:-1px }
+
+@media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min-resolution: 144dpi)  { 
+	.ms-choice > div,.ms-choice > div.open,.ms-search input {background-image: url('multiple-select%402x.png') !important;background-size: 40px !important}
+}

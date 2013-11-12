@@ -1,0 +1,18 @@
+.stickyNote-queue { z-index: 108; position: fixed; background: #fff; border: 1px solid #999999; -moz-box-shadow: 0 0 5px #bbb; -webkit-box-shadow: 0 0 5px #bbb; box-shadow: 0 0 5px #bbb; width: 250px; overflow: hidden; }
+.stickyNote-note { padding-right: 20px; margin: 0; }
+.stickyNote { font-size: 12px; color: #333; display: none; padding: 10px 20px 10px 10px; position: relative; }
+.stickyNote-close { position: absolute; top: 9px; right: 8px; }
+.top-right { right: 20px }
+.top-center { top: -2px; left: 50%; margin-left: -125px; }
+.top-left { left: 20px }
+.top-right, .top-center, .top-left { top: -2px }
+.bottom-right { right: 20px }
+.bottom-center { bottom: -2px; left: 50%; margin-left: -125px; }
+.bottom-left { left: 20px }
+.bottom-right, .bottom-center, .bottom-left { bottom: -2px }
+.stickyNote + .stickyNote { border-top: 1px solid #ccc }
+
+.stickyNote-success{background-color:#dff0d8;border-left:4px solid #a3d48e}
+.stickyNote-info{background-color:#d9edf7;border-left:4px solid #85c5e5}
+.stickyNote-warning{background-color:#f9edbe;border-left:4px solid #f0c36d}
+.stickyNote-important{background-color:#f2dede;border-left:4px solid #d59595}

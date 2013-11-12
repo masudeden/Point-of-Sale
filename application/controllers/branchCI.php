@@ -12,7 +12,7 @@ class BranchCI extends CI_Controller{
                 $this->load->library('form_validation');
     }
     function index(){
-        // if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
+        if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
         if($_SESSION['Setting']['Branch']==1){
          if(!isset($_SESSION['Uid'])){
                 $this->load->view('template/header');
@@ -24,7 +24,7 @@ class BranchCI extends CI_Controller{
         }else{
             redirect('home');
         }
-         //}
+         }
     }
     function get_branch(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{

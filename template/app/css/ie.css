@@ -1,0 +1,13 @@
+.boxed #wrapper_all {border-left:1px solid #ccc;border-right:1px solid #ccc}
+.top_text_nav > li > ul {margin:1px 0 0 1px}
+.fc-event {background:#aaa}
+.has-switch span.switch-right {background:#ddd}
+.irs-from, .irs-to, .irs-single {background:#aaa}
+.tabbable-bordered .nav-tabs > li.active > a, .nav-tabs > li.active > a,.tabbable-bordered .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:focus,.tabbable-bordered .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:hover {border-top-width:1px}
+.tabs-below.tabbable-bordered .nav-tabs > li.active > a,.tabs-below.tabbable-bordered .nav-tabs > li.active > a:focus,.tabs-below.tabbable-bordered .nav-tabs > li.active > a:hover {border-bottom-width:1px}
+.tabs-left.tabbable-bordered .nav-tabs > li.active > a,.tabs-left.tabbable-bordered .nav-tabs > li.active > a:focus,.tabs-left.tabbable-bordered .nav-tabs > li.active > a:hover {border-left-width:1px}
+.tabs-right.tabbable-bordered .nav-tabs > li.active > a,.tabs-right.tabbable-bordered .nav-tabs > li.active > a:focus,.tabs-right.tabbable-bordered .nav-tabs > li.active > a:hover {border-right-width:1px}
+
+#style_switcher li {margin:0 8px 8px 0 !important}
+
+body.side_fixed {overflow-x:hidden}
