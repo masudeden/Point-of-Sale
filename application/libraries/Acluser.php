@@ -43,19 +43,23 @@ class Acluser{
         $_SESSION[$module_name.'_per']=$item;
         $_SESSION[$module_name]='On';   
     }  
-    function admin_module_permissions($mode){
-    
-        $sasi=$mode;
-             $item = array(
-                   $mode=>1111,
-                   'read'=>1,
-                   'add'=>1,
-                   'edit' =>1,
-                   'delete'=>1
-               );
-
-        $_SESSION[$sasi."_per"]=$item; 
-        $_SESSION[$sasi]='On';
+    function admin_module_permissions($mod){
+          $CI=  get_instance();
+          $CI->load->model('aclpermissionmodel');
+          $module_name=$CI->aclpermissionmodel->get_module_name($mod);  
+          $CI->config->load("$module_name/posnic");
+          $acl_list =$CI->config->item('M_ACL');
+         $item=array();
+         for($j=0;$j<count($acl_list);$j++){
+              
+                    $second_array = array("$acl_list[$j]" => 1);
+                    $item = array_merge((array)$item, (array)$second_array);
+                   
+         }
+        $second_array = array($module_name =>  count($acl_list));
+        $item = array_merge((array)$item, (array)$second_array);
+        $_SESSION[$module_name.'_per']=$item;
+        $_SESSION[$module_name]='On';        
     }
     function user_full_permissions(){
         $user=$_SESSION['user_groupsci_per']['depa']+ $_SESSION['branchCI_per']['branch']+$_SESSION['users_per']['user']+$_SESSION['items_per']['item'];

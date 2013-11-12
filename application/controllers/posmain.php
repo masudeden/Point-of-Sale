@@ -29,8 +29,9 @@ class Posmain extends CI_Controller{
         $this->pos_setting();       
         if($_SESSION['admin']==2){
              $admin=  $this->branch->branch_for_admin();         
-             $this->acl_session_for_user($admin);        
-            redirect('home');
+             $this->acl_session_for_user($admin);  
+            
+          //  redirect('home');
         }else{
              if($this->branch->check_branch_is_in_active($data,$_SESSION['Uid'])){
              $this->acl_session_for_user($data);        
