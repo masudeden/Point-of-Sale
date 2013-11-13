@@ -5,7 +5,7 @@
 		ebro_datatables.fixed_col();
 		ebro_datatables.colReorder_visibility();
 		ebro_datatables.scroll();
-		ebro_datatables.table_tools();
+		
 		
 		//* add placeholder to search input
         $('.dataTables_filter input').each(function() {
@@ -60,28 +60,6 @@
             }
         },
         //* column reorder & toggle visibility
-        table_tools: function() {
-            if($('#dt_table_tools').length) {
-                $('#dt_table_tools').dataTable({
-					"sDom": "<'dt-top-row'Tlf>r<'dt-wrapper't><'dt-row dt-bottom-row'<'row'<'col-sm-6'i><'col-sm-6 text-right'p>>",
-                    "oTableTools": {
-                        "aButtons": [
-                            "copy",
-                            "print",
-                            {
-                                "sExtends":    "collection",
-                                "sButtonText": 'Save <span class="caret" />',
-                                "aButtons":    [ "csv", "xls", "pdf" ]
-                            }
-                        ],
-                        "sSwfPath": "js/lib/dataTables/extras/TableTools/media/swf/copy_csv_xls_pdf.swf"
-                    },
-                    "fnInitComplete": function(oSettings, json) {
-                        $(this).closest('#dt_table_tools_wrapper').find('.DTTT.btn-group').addClass('table_tools_group').children('a.btn').each(function(){
-                            $(this).addClass('btn-sm btn-default');
-                        });
-                    }
-                });
-            }
-		}
+     
+		
 	}

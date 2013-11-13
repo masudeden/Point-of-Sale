@@ -114,6 +114,7 @@ class Users extends CI_Controller{
            
         if($_SESSION['users_per']['access']==1){
         $this->load->view('template/app/header'); 
+        $this->load->view('template/table/header');         
         $this->load->view('template/branch',$this->posnic->branchs());
         $this->load->view('pos_users_list');
         $this->load->view('template/app/navigation',$this->posnic->modules());

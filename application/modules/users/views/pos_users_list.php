@@ -1,4 +1,13 @@
-						
+<style type="text/css">
+    .row-fluid{
+        border:1px solid #bbb;
+    }
+    .dataTables_info{
+        margin-left: 100px;
+    }
+    
+    
+</style>					
 			<nav id="top_navigation">
 				<div class="container">
 					<ul id="icon_nav_h" class="top_ico_nav clearfix">
@@ -64,13 +73,36 @@
 					<div id="main_content">
 						
 						<!-- main content -->
-					
-           
-						
-						
-						
-						
-
+<div class="row">
+							<div class="col-sm-12">
+								<div class="panel panel-default">
+									<div class="panel-heading">
+										<h4 class="panel-title">Basic</h4>
+									</div>
+        <table id="dt_table_tools" class="table-striped table-condensed" style="width: 100%"><thead>
+        <tr>
+          <th>Id</th>
+          <th >Select</th>
+          <th >User Id</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Phone </th>
+          <th>Email</th>
+          <th>Status</th>
+          <th>Action</th>
+          </tr>
+        </thead>
+        <tbody >
+        
+        
+       
+        </tbody>
+     
+  </table>
+                                                </div>
+      
+					</div>
+				</div>
 					</div>
 				</div>
 			</section>
@@ -79,4 +111,4 @@
 	
         
         	
-		
+      

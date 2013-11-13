@@ -27,7 +27,8 @@
         document.getElementById("branch").value=jibi;
         }
 </script>
-
+</head>
+<body class=" sidebar_hidden side_fixed">
 <div id="wrapper_all">
 			<header id="top_header">
 				<div class="container">

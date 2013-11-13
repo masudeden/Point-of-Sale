@@ -1,5 +1,5 @@
 div.dt-top-row {height:0;line-height:0;position:relative}
-div.dt-bottom-row {background:#fafafa;font-size:11px;overflow:hidden;padding:10px;border-top:1px solid #ccc;-webkit-box-shadow: inset 0 1px #fff;-moz-box-shadow: inset 0 1px #fff;-ms-box-shadow: inset 0 1px #fff;box-shadow: inset 0 1px #fff}
+div.dt-bottom-row {background:#fafafa;font-size:13px;overflow:hidden;padding:0px;border-top:1px solid #ccc;-webkit-box-shadow: inset 0 1px #fff;-moz-box-shadow: inset 0 1px #fff;-ms-box-shadow: inset 0 1px #fff;box-shadow: inset 0 1px #fff}
 div.dataTables_length{position:absolute;right:190px;top:-31px}
 div.dataTables_length select{width:60px;padding:3px;border:none;font-size:13px}
 div.dataTables_filter{position:absolute;right:10px;top:-31px}
