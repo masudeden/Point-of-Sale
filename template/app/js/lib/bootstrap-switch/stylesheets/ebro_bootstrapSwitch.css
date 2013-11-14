@@ -1,6 +1,6 @@
 .has-switch {border-color:#aaa;border-color:rgba(0,0,0,.3);-webkit-border-radius: 0;-moz-border-radius: 0;border-radius: 0;}
 .has-switch span {-webkit-box-shadow: inset 0 2px 2px rgba(0,0,0,.1);-moz-box-shadow: inset 0 2px 2px rgba(0,0,0,.1);box-shadow: inset 0 2px 2px rgba(0,0,0,.1);font-weight:700;padding-left:4px;padding-right:4px;-webkit-border-radius: 0 !important;-moz-border-radius: 0 !important;border-radius: 0 !important}
-.has-switch label:before {display:block;content:'';position:absolute;left:50%;top:50%;margin:-5px 0 0 -2px;background: url(../img/switch_handle.png) no-repeat 0 0;width:5px;height:10px}
+.has-switch label:before {display:block;content:'';position:absolute;left:50%;top:50%;margin:-5px 0 0 -2px;width:5px;height:10px}
 .has-switch.switch-mini label:before {width:3px;height:8px;margin:-3px 0 0 -2px}
 .has-switch span.switch-mini, .has-switch label.switch-mini {line-height:11px}
 .has-switch.switch-width-large span {min-width:100px;text-align:center}

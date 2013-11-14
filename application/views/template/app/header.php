@@ -16,6 +16,7 @@
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/img/flags/flags.css">
         <!-- retina ready -->
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/retina.css">
+              
         <!-- bootstrap switch -->
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/bootstrap-switch/stylesheets/bootstrap-switch.css">
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/bootstrap-switch/stylesheets/ebro_bootstrapSwitch.css">        
@@ -38,3 +39,17 @@
 
         <!-- custom fonts -->
                 <link href='<?php echo base_url() ?>template/app/fonts/css?family=Roboto:300,700&amp;subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	        <link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/multi-select/css/multi-select.css">
+			<link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/multi-select/css/ebro_multi-select.css">
+		 <!-- select2 -->
+			<link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/select2/select2.css">
+			<link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/select2/ebro_select2.css">
+		<!-- datepicker -->
+			<link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/datepicker/css/datepicker.css">
+		<!-- iCheck -->
+			<link href="<?php echo base_url() ?>template/app/js/lib/iCheck/skins/minimal/minimal.css" rel="stylesheet">
+                        
+		<!-- timepicker -->
+			<link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/timepicker/css/bootstrap-timepicker.min.css">
+                        
+	                <link href="<?php echo base_url() ?>template/app/validation/prettify.css" rel="stylesheet">

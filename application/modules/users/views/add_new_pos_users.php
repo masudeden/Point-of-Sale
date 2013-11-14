@@ -1,17 +1,260 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); ?>
+   	
+<nav id="top_navigation">
+				<div class="container">
+					<ul id="icon_nav_h" class="top_ico_nav clearfix">
+						<li>
+							<a href="#">
+								<i class="icon-home icon-2x"></i>
+								<span class="menu_label">Home</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-edit icon-2x"></i>
+								<span class="menu_label">Content</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-group icon-2x"></i>
+								<span class="menu_label">Users</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<span class="label label-danger">12</span>
+								<i class="icon-tasks icon-2x"></i>
+								<span class="menu_label">Tasks</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-beaker icon-2x"></i>
+								<span class="menu_label">Plugins</span>
+							</a>
+						</li>
+						<li class="active">             
+							<a href="#">
+								<i class="icon-book icon-2x"></i>
+								<span class="menu_label">Help</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<span class="label label-success">$2 347</span>
+								<i class="icon-tags icon-2x"></i>
+								<span class="menu_label">E-Commerce</span>
+							</a>
+						</li>
+						<li>             
+							<a href="#">
+								<i class="icon-wrench icon-2x"></i>
+								<span class="menu_label">Settings</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+			<!-- mobile navigation -->
+                        <nav id="mobile_navigation"></nav>
+                        <section id="wizard" class="container clearfix main_section">
+			
+				<form id="commentForm" method="" action="" class="form-horizontal">
+				<div id="rootwizard">
+					<ul>
+					  	<li><a href="#tab1" data-toggle="tab">Personal Details</a></li>
+						<li><a href="#tab2" data-toggle="tab">Contact Details</a></li>
+						<li><a href="#tab3" data-toggle="tab">User Group</a></li>
+						<li><a href="#tab4" data-toggle="tab">Profile Details</a></li>
+					</ul>
+                                    
+					<div class="tab-content">
+					    <div class="tab-pane" id="tab1">
+                                                <div class="row">
+						<div class="col-sm-3">
+                                                     <div class="fileupload fileupload-new" data-provides="fileupload">
+                                                    <div class="fileupload-new img-thumbnail" style="width: 178px; height: 120px;"><img src="img/no_img_180.png" alt=""></div>
+                                                    <div class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
+                                                    <div>
+                                                        <span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+                                                        <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                    </div>
+                                                </div>
+                                                </div>
+						<div class="col-sm-3">
+					    	<div class="control-group">
+							   <div class="form_sep">
+								<label for="userName" class="req">User name</label>
+								<input id="userName" name="userName" type="text" class="required form-control" data-required="true">
+								</div>
+							  </div>
 
+							  <div class="control-group">
+							   <div class="form_sep">
+							<label for="email" class="req">Email</label>
+							<input id="email" name="email" type="text" class="required email form-control" data-required="true" data-type="email">
+							</div>
+							  </div>
+                                                  </div>
+						<div class="col-sm-3">
+					    	<div class="control-group">
+							   <div class="form_sep">
+								<label for="userName" class="req">Age</label>
+								<input id="userName" name="userName" type="text" class="required form-control" data-required="true">
+								</div>
+							  </div>
 
+							  <div class="control-group">
+							   <div class="form_sep">
+							<label for="email" class="req">Sex</label>
+							<input id="email" name="email" type="text" class="required email form-control" data-required="true" data-type="email">
+							</div>
+							  </div>
+                                                  </div>
+						<div class="col-sm-3">
+					    	<div class="control-group">
+							   <div class="form_sep">
+								<label for="userName" class="req">Date Of Birth</label>
+								<div class="input-group date ebro_datepicker" data-date-start-view="2" data-date-autoclose="true" data-date-format="dd.mm.yyyy">
+                                                                <input class="form-control" type="text">
+                                                                <span class="input-group-addon">
+                                                                <i class="icon-calendar"></i>
+                                                                </span>
+                                                                </div>
+								</div>
+							  </div>
 
+                                                  </div>
+                                                 </div>
+					    </div>
+					    <div class="tab-pane" id="tab2">
+					               <div class="row">
+						<div class="col-sm-3">
+					    	<div class="control-group">
+							<div class="form_sep">
+								<label for="reg_textarea_message" class="req">Message</label>
+								<textarea name="reg_textarea_message" id="reg_textarea_message" cols="30" rows="4" class="form-control" data-required="true" data-minlength="40"></textarea>
+							</div>
+						 </div> 
+                                                  </div>
+                                                  <div class="col-sm-3">
+					    	<div class="control-group">
+							   <div class="form_sep">
+								<label for="userName" class="req">City</label>
+								<input id="userName" name="userName" type="text" class="required form-control" data-required="true">
+								</div>
+							  </div>
 
+							  <div class="control-group">
+							   <div class="form_sep">
+							<label for="email" class="req">State</label>
+							<input id="email" name="email" type="text" class="required email form-control" data-required="true" data-type="email">
+							</div>
+							  </div>
+                                                  </div>
+                                                  <div class="col-sm-3">
+					    	<div class="control-group">
+							   <div class="form_sep">
+								<label for="userName" class="req">Country</label>
+								<input id="userName" name="userName" type="text" class="required form-control" data-required="true">
+								</div>
+							  </div>
 
+							  <div class="control-group">
+							   <div class="form_sep">
+							<label for="email" class="req">Zip</label>
+							<input id="email" name="email" type="text" class="required email form-control" data-required="true" data-type="email">
+							</div>
+							  </div>
+                                                  </div>
+                                                  <div class="col-sm-3">
+					    	<div class="control-group">
+							   <div class="form_sep">
+								<label for="userName" class="req">Email</label>
+								<input id="emailfield" name="userName" type="text" class="required form-control" data-required="true">
+								</div>
+							  </div>
 
+							  <div class="control-group">
+							   <div class="form_sep">
+							<label for="email" class="req">Phone</label>
+                                                        <input id="email" name="email" type="text" id="" class=" required email form-control" data-required="true" data-type="email">
+							</div>
+							  </div>
+                                                  </div>
+                                                 </div>
+					    </div>
+						<div class="tab-pane" id="tab3">
+						<div class="row">
+						<div class="col-sm-3">
+                                                    <label for="email" class="req">Branch</label>
+<select id="branch" name="FromLJ" style="width:150" class="form-control">
+    <?php if($_SESSION['admin']==2){ 
+        foreach ($branch as $brow) {
+        
+ ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
+        }}else{ foreach ($branch as $brow) {
+          
+        ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->branch_name ?></option>
+<?php }}?>
 
+</select>
+                                                </div>
+						<div class="col-sm-3">
+	 <label for="email" class="req">Users Group</label>
+<select multiple id="myDiv" name="ToLJ" size="7" class="form-control">
+</select></div><div class="col-sm-1">
+<br><br><br>
+<button type="button" class="btn btn-success" onClick="move(this.form.ToLJ,this.form.lang),get_selected(this.form.lang)">
+  <i class="icon-user icon-arrow-right"></i> 
+</button><br><br>
+<button type="button" class="btn btn-success" onClick="backmove(this.form.lang,this.form.ToLJ),get_selected(this.form.lang)">
+  <i class="icon-user icon-arrow-left"></i>
+</button></div>
+  <div class="col-sm-3">
+       <label for="email" class="req">Selected user Group</label>
+<select multiple  name="lang" size="7"   class="form-control required">
 
-</head>
-<body>
+</select></div>
+                                                  </div>
+                                                 </div>
+					    
+						<div class="tab-pane" id="tab4">
+							           <div class="row">
+						<div class="col-sm-3">
+					    	<div class="control-group">
+							   <div class="form_sep">
+								<label for="userName" class="req">User name</label>
+								<input id="userName" name="userName" type="text" class="required form-control" data-required="true">
+								</div>
+							  </div>
 
-		
-                <?php
+							  <div class="control-group">
+							   <div class="form_sep">
+							<label for="email" class="req">Email</label>
+							<input id="email" name="email" type="text" class="required email form-control" data-required="true" data-type="email">
+							</div>
+							  </div>
+        
+                                                    </div>
+                                                  </div>
+                                                 </div>
+                                            <input type="submit" value="Save" name="save">
+                                            <ul class="pager wizard">
+							<li class="previous first" style="display:none;"><a href="#">First</a></li>
+							<li class="previous"><a href="#">Previous</a></li>
+							<li class="next last" style="display:none;"><a href="#">Submit</a></li>
+						  	<li class="next"><a href="#">Next</a></li>
+						</ul>
+					    </div>
+						
+					</div>	
+				</div>
+				</form>
+                        </section>
+			
+			
+                         <?php
                     $form =array('id'=>'form1',
                         'runat'=>'server',
                         'name'=>'combo_box');
@@ -198,26 +441,7 @@ var arrLU="";
            }
 }
 </script>
-<select id="branch" name="FromLJ" style="width:150">
-    <?php if($_SESSION['admin']==2){ 
-        foreach ($branch as $brow) {
-        
- ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
-        }}else{ foreach ($branch as $brow) {
-          
-        ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->branch_name ?></option>
-<?php }}?>
 
-</select>
-<select multiple id="myDiv" name="ToLJ" style="width: 150">
-</select>
-<input type="button" onClick="move(this.form.ToLJ,this.form.lang),get_selected(this.form.lang)" 
-value="->">
-<input type="button" onClick="backmove(this.form.lang,this.form.ToLJ),get_selected(this.form.lang)" 
-value="<-">
-<select multiple  name="lang" size="7"  style="width: 250">
-
-</select>
 <input type="hidden" name="depa" id="depa"></td></tr>
     <tr><td><?php echo form_label($this->lang->line('user_name'))?></td><td><?php echo form_input('pos_users_id',set_value('pos_users_id'), 'id="pos_users_id" autofocus')?> </td></tr>
     <tr><td><?php echo form_label($this->lang->line('password'))?></td><td><?php echo form_input('password',set_value('password'), 'id="password" autofocus')?></td></tr>
@@ -251,3 +475,40 @@ value="<-">
 
 </form>
 <?php echo validation_errors(); ?>
+			<div id="footer_space"></div>
+		</div>
+	
+        <script>
+	$(document).ready(function() {
+		var $validator = $("#commentForm").validate({
+		  rules: {
+		    emailfield: {
+		      required: true,
+		      email: true,
+		      minlength: 3
+		    },
+		    namefield: {
+		      required: true,
+		      minlength: 3
+		    },
+		    urlfield: {
+		      required: true,
+		      minlength: 3,
+		      url: true
+		    }
+		  }
+		});
+
+	  	$('#rootwizard').bootstrapWizard({
+	  		'tabClass': 'nav nav-pills',
+	  		'onNext': function(tab, navigation, index) {
+	  			var $valid = $("#commentForm").valid();
+	  			if(!$valid) {
+	  				$validator.focusInvalid();
+	  				return false;
+	  			}
+	  		}
+	  	});	
+		window.prettyPrint && prettyPrint()
+	});	
+	</script>

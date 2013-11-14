@@ -37,7 +37,7 @@ class Users extends CI_Controller{
         
     }
     function users_data_table(){     
-	$aColumns = array( 'guid','email','user_id',  'first_name','last_name','phone', 'email',  'user_active', 'emp_id' );	
+	$aColumns = array( 'guid','email','user_id',  'first_name','last_name','phone', 'email',  'user_active', 'emp_id','user_active', );	
 	$start = "";
         $end="";
 	if ( $this->input->get_post('iDisplayLength') != '-1' )	{
@@ -386,7 +386,7 @@ function do_upload($id)
         }
        
         
-        function delete_selected_pos_users(){
+        function posnic_users(){
             if($this->input->post('BacktoHome')){
                 redirect('home');
             }
@@ -421,7 +421,7 @@ function do_upload($id)
                redirect('pos_users');
               }
            }
-            if($this->input->post('Add_pos_users')){
+            if($this->input->post('add_new')){
                  if($_SESSION['users_per']['add']==1){  
                     $this->load->model('user_groups');
                     $this->load->model('branch');
@@ -432,10 +432,12 @@ function do_upload($id)
                     $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
                      }
                     $data['depa']= $this->user_groups->get_user_groups();  
-                   
-                   // $this->load->view('template/header');
+                    $this->load->view('template/app/header'); 
+                    $this->load->view('template/table/header');         
+                    $this->load->view('template/branch',$this->posnic->branchs());
                     $this->load->view('add_new_pos_users',$data);
-                    $this->load->view('template/footer');
+                    $this->load->view('template/app/navigation',$this->posnic->modules());
+                    $this->load->view('template/app/footer');
              
              
              }else{

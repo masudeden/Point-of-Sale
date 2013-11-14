@@ -33,10 +33,10 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[8]==0){
-                                                                            return "<p>Active</p>";
+                   							if(oObj.aData[9]==0){
+                                                                            return '<select  class="select  my_select"><option onclick="" >Active</option><option onclick="" >Inactive</option></select>';
                                                                         }else{
-                                                                            return "<p>Deactive</p>";
+                                                                            return '<a href="#" class="btn my_active btn-success glyphicon glyphicon-thumbs-up glyphicon-left ">Active</a>';
                                                                         }
 								},
 								
@@ -62,6 +62,7 @@
                                     
                                     );
 			} );
-                        
+                       
 		</script>
                 <script type="text/javascript" charset="utf-8" language="javascript" src="<?php echo base_url() ?>template/data_table/js/DT_bootstrap.js"></script>
+

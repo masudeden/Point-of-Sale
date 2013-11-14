@@ -16,7 +16,7 @@
                         </ul>
                     </div>
                     <div class="col-sm-1 text-right">
-                        <small class="text-muted">POSNIC 1.03</small>
+                        <small class="text-muted">POSNIC </small>
                     </div>
                 </div>
             </div>
@@ -47,8 +47,37 @@
         <script src="<?php echo base_url() ?>template/app/js/lib/flot/jquery.flot.tooltip.min.js"></script>
         <script src="<?php echo base_url() ?>template/app/js/lib/flot/jquery.flot.resize.js"></script>
         <script src="<?php echo base_url() ?>template/app/js/pages/ebro_dashboard1.js"></script>
+<!--[[ page specific plugins ]]-->
 
-
+		<!-- 2col multiselect -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/multi-select/js/jquery.multi-select.js"></script>
+		<!-- select2 -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/select2/select2.min.js"></script>
+		<!-- datepicker -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/datepicker/js/bootstrap-datepicker.js"></script>
+		<!-- iCheck -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/iCheck/jquery.icheck.min.js"></script>
+		<!-- parsley -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/parsley/parsley.min.js"></script>
+			
+			<script src="<?php echo base_url() ?>template/app/js/pages/ebro_form_validate.js"></script>
+<!-- jquery steps -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/jquery-steps/jquery.steps.min.js"></script>
+		<!-- parsley -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/parsley/parsley.min.js"></script>
+			
+			<script src="<?php echo base_url() ?>template/app/js/pages/ebro_wizard.js"></script>
+                        <script src="<?php echo base_url() ?>template/app/js/lib/jasny_plugins/bootstrap-fileupload.js"></script>
+			
+			<script src="<?php echo base_url() ?>template/app/js/pages/ebro_form_extended.js"></script>
+<!-- datepicker -->
+			
+                        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+                        
+                        <script src="<?php echo base_url() ?>template/app/validation/jquery.bootstrap.wizard.js"></script>
+                        <script src="<?php echo base_url() ?>template/app/validation/prettify.js"></script>
+		<!-- timepicker -->
+			<script src="<?php echo base_url() ?>template/app/js/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
         <!--[if lte IE 9]>
                 <script src="<?php echo base_url() ?>template/app/js/ie/jquery.placeholder.js"></script>
                 <script>
@@ -106,7 +135,7 @@
                         <div class="style_items" id="style_pattern">
                                 <p class="style_title">Pattern (boxed layout)</p>
                                 <ul class="clearfix">
-                                        <li class="pattern_active" style="background:url(img/patterns/pattern_1.png) no-repeat 0 0" title="pattern_1">Pattern 1</li>
+                                        <li class="pattern_active" style="background:url(<?php echo base_url() ?>img/patterns/pattern_1.png) no-repeat 0 0" title="pattern_1">Pattern 1</li>
                                         <li style="background:url(<?php echo base_url() ?>template/app/img/patterns/pattern_2.png) no-repeat 0 0" title="pattern_2">Pattern 2</li>
                                         <li style="background:url(<?php echo base_url() ?>template/app/img/patterns/pattern_3.png) no-repeat 0 0" title="pattern_3">Pattern 3</li>
                                         <li style="background:url(<?php echo base_url() ?>template/app/img/patterns/pattern_4.png) no-repeat 0 0" title="pattern_4">Pattern 4</li>
