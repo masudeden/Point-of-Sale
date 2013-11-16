@@ -198,9 +198,6 @@
 					}
 				});
 			}
-				/* For jquery.chained.remote.js */    
-				$("#series-remote").remoteChained("#mark-remote", "js/lib/chained/json.php");
-				$("#model-remote").remoteChained("#series-remote", "js/lib/chained/json.php");
 				
 		}
 	}

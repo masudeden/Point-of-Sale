@@ -21,11 +21,16 @@
                 </div>
             </div>
         </footer>
-        
+                <script src="<?php echo base_url() ?>template/app/validate/js1/jquery-1.8.3.min.js"></script>
+        <script src="<?php echo base_url() ?>template/app/validate/js/bootstrap.min"></script>
+        <script src="<?php echo base_url() ?>template/app/validate/js/jquery.validate.min.js"></script>
+	
+	<script src="<?php echo base_url() ?>template/app/validate/js/wizard.min.js"></script>
+    <script src="<?php echo base_url() ?>template/app/validate/js/form_wizard.js"></script>
         <script src="<?php echo base_url() ?>template/app/js/jquery.min.js"></script>
         <script src="<?php echo base_url() ?>template/app/js/lib/dataTables/media/js/jquery.dataTables.min.js"></script>
-	<script src="<?php echo base_url() ?>template/app/js/lib/dataTables/media/DT_bootstrap.js"></script>
-	<script src="<?php echo base_url() ?>template/app/js/pages/ebro_datatables.js"></script>
+        <script src="<?php echo base_url() ?>template/app/js/lib/dataTables/media/DT_bootstrap.js"></script>
+        <script src="<?php echo base_url() ?>template/app/js/pages/ebro_datatables.js"></script>
         <script src="<?php echo base_url() ?>template/app/bootstrap/js/bootstrap.min.js"></script>
         <script src="<?php echo base_url() ?>template/app/js/jquery.ba-resize.min.js"></script>
         <script src="<?php echo base_url() ?>template/app/js/jquery_cookie.min.js"></script>
@@ -49,35 +54,35 @@
         <script src="<?php echo base_url() ?>template/app/js/pages/ebro_dashboard1.js"></script>
 <!--[[ page specific plugins ]]-->
 
-		<!-- 2col multiselect -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/multi-select/js/jquery.multi-select.js"></script>
-		<!-- select2 -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/select2/select2.min.js"></script>
-		<!-- datepicker -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/datepicker/js/bootstrap-datepicker.js"></script>
-		<!-- iCheck -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/iCheck/jquery.icheck.min.js"></script>
-		<!-- parsley -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/parsley/parsley.min.js"></script>
-			
-			<script src="<?php echo base_url() ?>template/app/js/pages/ebro_form_validate.js"></script>
+                <!-- 2col multiselect -->
+                        <script src="<?php echo base_url() ?>template/app/js/lib/multi-select/js/jquery.multi-select.js"></script>
+                <!-- select2 -->
+                        <script src="<?php echo base_url() ?>template/app/js/lib/select2/select2.min.js"></script>
+                <!-- datepicker -->
+                        <script src="<?php echo base_url() ?>template/app/js/lib/datepicker/js/bootstrap-datepicker.js"></script>
+                <!-- iCheck -->
+                        <script src="<?php echo base_url() ?>template/app/js/lib/iCheck/jquery.icheck.min.js"></script>
+                <!-- parsley -->
+                        <script src="<?php echo base_url() ?>template/app/js/lib/parsley/parsley.min.js"></script>
+                        
+                        <script src="<?php echo base_url() ?>template/app/js/pages/ebro_form_validate.js"></script>
 <!-- jquery steps -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/jquery-steps/jquery.steps.min.js"></script>
-		<!-- parsley -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/parsley/parsley.min.js"></script>
-			
-			<script src="<?php echo base_url() ?>template/app/js/pages/ebro_wizard.js"></script>
+                        <script src="<?php echo base_url() ?>template/app/js/lib/jquery-steps/jquery.steps.min.js"></script>
+                <!-- parsley -->
+                        <script src="<?php echo base_url() ?>template/app/js/lib/parsley/parsley.min.js"></script>
+                        
+                        <script src="<?php echo base_url() ?>template/app/js/pages/ebro_wizard.js"></script>
                         <script src="<?php echo base_url() ?>template/app/js/lib/jasny_plugins/bootstrap-fileupload.js"></script>
-			
-			<script src="<?php echo base_url() ?>template/app/js/pages/ebro_form_extended.js"></script>
+                        
+                        <script src="<?php echo base_url() ?>template/app/js/pages/ebro_form_extended.js"></script>
 <!-- datepicker -->
-			
+                        
                         <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
                         
                         <script src="<?php echo base_url() ?>template/app/validation/jquery.bootstrap.wizard.js"></script>
                         <script src="<?php echo base_url() ?>template/app/validation/prettify.js"></script>
-		<!-- timepicker -->
-			<script src="<?php echo base_url() ?>template/app/js/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
+                <!-- timepicker -->
+                        <script src="<?php echo base_url() ?>template/app/js/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
         <!--[if lte IE 9]>
                 <script src="<?php echo base_url() ?>template/app/js/ie/jquery.placeholder.js"></script>
                 <script>
@@ -86,7 +91,7 @@
                         });
                 </script>
         <![endif]-->
-        
+
     <!-- style switcher -->
                 <div id="style_switcher" class="switcher_open">
             <a href="#" class="switcher_toggle"><i class="icon-cog"></i></a>

@@ -32,7 +32,7 @@
 		<link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/style.css">
 	<!-- ebro theme -->
 		<link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/theme/color_1.css" id="theme">
-		
+		  <link rel="stylesheet" href="<?php echo base_url() ?>template/app/validate/css/wizard.css">
 	<!--[if lt IE 9]>
 		<link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/ie.css">
 		<script src="<?php echo base_url() ?>template/app/js/ie/html5shiv.js"></script>
@@ -285,31 +285,97 @@
 						<!-- main content -->
 						
 					
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="panel panel-default">
-									<div class="panel-heading">
-										<h4 class="panel-title">Table Tools</h4>
-									</div>
-									<table id="dt_table_tools" class="table table-striped table-condensed">
-										<thead>
-											<tr>
-												<th>id</th>
-												<th>Short name</th>
-												<th>Long Name</th>
-												<th>Calling Code</th>
-												<th>ISO 2</th>
-												<th>ccTLD</th>
-												<th>UN Member</th>
-											</tr>
-										</thead>
-										<tbody>
-											</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-
+								<div class="widget-content form-container">
+											<form id="wizard-demo-2" class="form-horizontal" data-forward-only="false">
+												<fieldset class="wizard-step">
+													<legend class="wizard-label"><i class="icon-book"></i> Account</legend>
+													<div class="control-group">
+														<label class="control-label">Username <span class="required">*</span></label>
+														<div class="controls">
+															<input type="text" name="wizard[username]" class="required span12">
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label">Email <span class="required">*</span></label>
+														<div class="controls">
+															<input type="text" name="wizard[email]" class="required email span12" />
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label">Password <span class="required">*</span></label>
+														<div class="controls">
+															<input type="password" name="wizard[password]" class="required span12">
+														</div>
+													</div>
+												</fieldset>
+												<fieldset class="wizard-step">
+													<legend class="wizard-label"><i class="icon-user"></i> Member</legend>
+													<div class="control-group">
+														<label class="control-label">Fullname <span class="required">*</span></label>
+														<div class="controls">
+															<input type="text" name="wizard[fullname]" class="required span12">
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label">Address <span class="required">*</span></label>
+														<div class="controls">
+															<textarea name="wizard[address]" class="required span12"></textarea>
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label">Gender <span class="required">*</span></label>
+														<div class="controls">
+															<label class="radio"><input type="radio" name="wizard[gender]" class="required"> Male</label>
+															<label class="radio"><input type="radio" name="wizard[gender]" class="required"> Female</label>
+															<label for="wizard[gender]" class="error" generated="true" style="display:none"></label>
+														</div>
+													</div>
+												</fieldset>
+												<fieldset class="wizard-step">
+													<legend class="wizard-label"><i class="icon-pencil"></i> Membership</legend>
+													<div class="control-group">
+														<label class="control-label">Membership Period <span class="required">*</span></label>
+														<div class="controls">
+															<select name="wizard[period]" class="required">
+																<option>1 Month</option>
+																<option>3 Months</option>
+																<option>6 Months</option>
+																<option>1 Year</option>
+															</select>
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label">Package <span class="required">*</span></label>
+														<div class="controls">
+															<label class="radio"><input type="radio" name="wizard[package]" class="required"> Basic</label>
+															<label class="radio"><input type="radio" name="wizard[package]" /> Full</label>
+															<label class="radio"><input type="radio" name="wizard[package]" /> Premium</label>
+															<label for="wizard[package]" class="error" generated="true" style="display:none"></label>
+														</div>
+													</div>
+												</fieldset>
+												<fieldset class="wizard-step">
+													<legend class="wizard-label"><i class="icon-ok"></i> Confirmation</legend>
+													<div class="control-group">
+														<label class="control-label">Payment Method <span class="required">*</span></label>
+														<div class="controls">
+															<select name="wizard[payment]" class="required">
+																<option>PayPal</option>
+																<option>Visa</option>
+																<option>Mastercard</option>
+																<option>Wire Transfer</option>
+															</select>
+														</div>
+													</div>
+													<div class="control-group">
+														<div class="controls">
+															<label class="checkbox"><input type="checkbox" name="wizard[tos]" class="required"> I agree to the terms of service <span class="required">*</span></label>
+															<label for="wizard[tos]" class="error" generated="true" style="display:none"></label>
+														</div>
+													</div>
+												</fieldset>
+											</form>
+										</div>
 					</div>
 				</div>
 			</section>
@@ -421,6 +487,12 @@
 				</ul>
 			</div>
 		</nav>
+                    <script src="<?php echo base_url() ?>template/app/validate/js/jquery-1.8.3.min.js"></script>
+        <script src="<?php echo base_url() ?>template/app/validate/js/bootstrap.min"></script>
+        <script src="<?php echo base_url() ?>template/app/validate/js/jquery.validate.min.js"></script>
+	
+	<script src="<?php echo base_url() ?>template/app/validate/js/wizard.min.js"></script>
+    <script src="<?php echo base_url() ?>template/app/validate/js/form_wizard.js"></script>
 
 	<!--[[ common plugins ]]-->
 	

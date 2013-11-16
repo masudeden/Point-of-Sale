@@ -962,3 +962,27 @@
 			.search_item > img {max-width:100%;float:none;display:block;margin:0 0 14px !important}
 			.search_item_body {clear:both}
 		}
+                .my_wizwd{
+                    border: solid 4px;
+                    border-color: #48AC2E;
+                    padding: 27px 39px 24px 46px;
+                }
+                .error{
+                    color: #cc0000;
+                      
+                }
+                .error required{
+                    border-color: #cc0000;
+                      
+                }
+                  input.error, textarea.error, select.error {
+    background: none repeat scroll 0 0 #FFF2F2 !important;
+    border: 1px solid #CC0000 !important;
+                  }
+                  .my_wizard{
+                      
+                       padding: 30px 30px 30px 30px;
+                       background: none repeat scroll 0 0 #F9F9F9;
+                       border-bottom: 1px solid #E1E1E1;
+    display: block;
+                  }
