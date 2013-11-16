@@ -1,5 +1,4 @@
-
-
+<input type="button" class="btn btn-danger" value="jibi">
 <nav id="top_navigation">
                                 <div class="container">
                                         <ul id="icon_nav_h" class="top_ico_nav clearfix">
@@ -58,16 +57,15 @@
                         </nav>
                         <!-- mobile navigation -->
                         <nav id="mobile_navigation"></nav>
-                        <section id="wizard" class="container clearfix main_section my_wizard">
+                        <section id="wizard" class="container clearfix main_section ">
                         
                                     
 											<form id="wizard-demo-2" class="form-horizontal" data-forward-only="false">
-												<fieldset class="wizard-step">
+												<fieldset class="wizard-step ">
                                                                                                     
-                                                                                                    <legend class="wizard-label "><p class="btn btn-success"><i class="icon-book"></i> Account</p></legend>
+                                                                                                    <legend class="wizard-label "><i class="icon-book"></i> Account</legend>
                                                                                                         
-                                                                                                        <br><br><br>
-                                                                                        <div class="row my_wizard">
+                                                                                                    <div class="row my_wizard">
 											<div class="col-sm-3">
 												<div class="step_info">
 													<div class="fileupload fileupload-new" data-provides="fileupload">
@@ -117,8 +115,8 @@
 										</div>
 												</fieldset>
 												<fieldset class="wizard-step">
-                                                                                                    <legend class="wizard-label "><p class="btn btn-success"><i class="icon-book"></i>Contact Details</p></legend>
-													<div class="row">
+                                                                                                    <legend class="wizard-label "><i class="icon-book"></i>Contact Details</legend>
+													<div class="row my_wizard">
 											<div class="col-sm-3">
 												<div class="step_info">
 													<h4>Profile</h4>

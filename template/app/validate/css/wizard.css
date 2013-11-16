@@ -15,25 +15,29 @@
 /* Wizard Navigation
 ================================================== */
 
+.form-actions button{
+     background:#48AC2E;
+     color: #ffffff;
+     border-radius: 0px;
+     margin-top: 1%;
+}
+.form-actions{
+    margin-left: 40%;
+   
+    
+    
+}
 .wizard-nav ul
 {
     margin: 0;
     padding: 0;
     float: left;
+    margin-left: 1px;
 }
 
 .wizard-nav
 {
-    background: #fafafa repeat-x left bottom;
-    background-image: -ms-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), to(#f2f2f2));
-    background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
-    background-image: linear-gradient(top, #ffffff, #f2f2f2);
-    position: relative;
-    border-bottom: 1px solid #bbb;
-    margin-bottom: -1px;
+   
 }
 
 .wizard-nav
@@ -53,6 +57,11 @@
     clear: both;
 }
 
+.wizard-nav ul li span
+{
+   
+}
+
 .wizard-nav ul li
 {
     float: left;
@@ -61,16 +70,18 @@
     padding: 0 25px;
     cursor: pointer;
     margin-right: -25px;
-    background: url(wizard-nav.png) no-repeat left -50px;
+    
     display: block;
     max-height: 50px;
     overflow: hidden;
+    color: #ffffff;
 }
 
 .wizard-nav ul li.disabled a, 
 .wizard-nav ul li.disabled span
 {
     color: #aaa;
+     background: none repeat scroll 0 0 #F9F9F9;
 }
 
 .wizard-nav ul li.disabled, 
@@ -88,20 +99,18 @@
 
 .wizard-nav ul li:first-child
 {
-    background-position: -25px -50px;
-    padding-left: 12px;
+    
 }
 
 .wizard-nav ul li:last-child
 {
-    padding-right: 12px;
-    border-right: 1px solid #ccc;
+   
 }
 
 .wizard-nav ul li:first-child.current, 
 .wizard-nav ul li:first-child:hover.current
 {
-    background-position: -25px top;
+   
 }
 
 .wizard-nav ul li:first-child:hover
@@ -109,23 +118,20 @@
     background-position: -25px -100px;
 }
 
-.wizard-nav ul li.current, 
-.wizard-nav ul li.current:hover
+.wizard-nav ul li.current span
 {
-    background-position: left top;
+    background-color: #48AC2E;
+    color: #ffffff;
 }
 
 .wizard-nav ul li.current:first-child
 {
-    -webkit-box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.1);
-    box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.1);
+    
 }
 
 .wizard-nav ul li:hover
 {
-    background-position: left -100px;
-    color: #555;
+   
 }
 
 .wizard-nav ul li a, 
@@ -134,8 +140,11 @@
     display: block;
     line-height: 50px;
     text-decoration: none;
-    padding: 0 16px;
-    color: #444;
+    padding: 0 20px;
+    color: #000;
+    
+       
+  
 }
 
 /* Vertical Wizard
@@ -253,6 +262,7 @@
     .wizard-nav ul li:first-child
     {
         padding-left: 0;
+        
     }
 
     .wizard-nav ul li:last-child
