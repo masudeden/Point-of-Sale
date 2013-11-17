@@ -77,7 +77,7 @@
                         <script src="<?php echo base_url() ?>template/app/js/pages/ebro_form_extended.js"></script>
 <!-- datepicker -->
                         
-                        <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+                         <script src="<?php echo base_url() ?>template/app/validate/js/jquery.validate.min.js"></script>
                         
                         <script src="<?php echo base_url() ?>template/app/validation/jquery.bootstrap.wizard.js"></script>
                         <script src="<?php echo base_url() ?>template/app/validation/prettify.js"></script>

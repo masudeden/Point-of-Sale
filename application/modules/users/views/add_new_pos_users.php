@@ -1,4 +1,4 @@
-<input type="button" class="btn btn-danger" value="jibi">
+<input type="button" class="btn  glyphicon glyphicon-arrow-left" value="jibi">
 <nav id="top_navigation">
                                 <div class="container">
                                         <ul id="icon_nav_h" class="top_ico_nav clearfix">
@@ -91,7 +91,58 @@
                                                                                                 <div class="col-sm-3">
 												<div class="form_sep">
 													<label for="age" class="req">Age</label>
-													<input id="age" name="age" type="text" class="form-control required number" data-required="true" data-type="email">
+                                                                                                        <input id="age" name="age" type="text" class="form-control required number  " maxlength="2" data-required="true" data-type="email">
+												</div>
+												<div class="form_sep">
+													<label for="address">Sex</label>
+													<select id="sex" name="sex" class="form-control required">
+                                                                                                        <option>Male</option>
+                                                                                                        <option>Female</option>
+                                                                                                        <option>Other</option>                                                                                                       
+                                                                                                        </select>
+												</div>  
+											    </div>
+                                                                                            <div class="col-sm-3">
+												<div class="form_sep">
+													<label for="email" class="req">Date Of Birth</label>
+													 <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                                                          <input name="dob" class="form-control required" type="text">
+													<span class="input-group-addon"><i class="icon-calendar"></i></span>
+                                                                                                        </div>
+                                                                                                       
+												</div>  
+											    </div>
+										</div>
+												</fieldset>
+												<fieldset class="wizard-step">     
+                                                                                                    <legend class="wizard-label "><i class="icon-book"></i> Account</legend>                                                                                                        
+                                                                                                    <div class="row my_wizard" style="margin-top: -20px;">
+											<div class="col-sm-3">
+												<div class="step_info">
+													<div class="fileupload fileupload-new" data-provides="fileupload">
+                                                                                                            <div class="fileupload-new img-thumbnail" style="width: 178px; height: 120px;"><img src="img/no_img_180.png" alt=""></div>
+                                                                                                            <div class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
+                                                                                                            <div>
+                                                                                                                <span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+                                                                                                                <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                                                                            </div>
+                                                                                                        </div>
+												</div> 
+											</div>
+											<div class="col-sm-3">
+												<div class="form_sep">
+													<label for="firstname" class="req">First name</label>
+													<input id="firstname" name="firstname" type="text" class="required form-control">
+												</div>
+												<div class="form_sep">
+													<label for="lastname" class="req">Last name</label>
+													<input id="lastname" name="lastname" type="text" class="form-control required" data-required="true" data-minlength="3">
+												</div>
+												</div>
+                                                                                                <div class="col-sm-3">
+												<div class="form_sep">
+													<label for="age" class="req">Age</label>
+                                                                                                        <input id="age" name="age" type="text" class="form-control required number  " maxlength="2" data-required="true" data-type="email">
 												</div>
 												<div class="form_sep">
 													<label for="address">Sex</label>
@@ -115,77 +166,106 @@
 										</div>
 												</fieldset>
 												<fieldset class="wizard-step">
-                                                                                                    <legend class="wizard-label "><i class="icon-book"></i>Contact Details</legend>
-													<div class="row my_wizard">
+													<legend class="wizard-label"><i class="icon-pencil"></i> Membership</legend>
+													  <div class="row my_wizard" style="margin-top: -20px;">
 											<div class="col-sm-3">
 												<div class="step_info">
-													<h4>Profile</h4>
-													<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-													<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+													<div class="fileupload fileupload-new" data-provides="fileupload">
+                                                                                                            <div class="fileupload-new img-thumbnail" style="width: 178px; height: 120px;"><img src="img/no_img_180.png" alt=""></div>
+                                                                                                            <div class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
+                                                                                                            <div>
+                                                                                                                <span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+                                                                                                                <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                                                                            </div>
+                                                                                                        </div>
 												</div> 
 											</div>
-											<div class="col-sm-9">
+											<div class="col-sm-3">
 												<div class="form_sep">
-													<label for="name">First name</label>
-													<input id="name" name="name" type="text" class="form-control">
+													<label for="firstname" class="req">First name</label>
+													<input id="firstname" name="firstname" type="text" class="required form-control">
 												</div>
 												<div class="form_sep">
-													<label for="surname" class="req">Last name</label>
-													<input id="surname" name="surname" type="text" class="form-control" data-required="true" data-minlength="3">
+													<label for="lastname" class="req">Last name</label>
+													<input id="lastname" name="lastname" type="text" class="form-control required" data-required="true" data-minlength="3">
+												</div>
+												</div>
+                                                                                                <div class="col-sm-3">
+												<div class="form_sep">
+													<label for="age" class="req">Age</label>
+                                                                                                        <input id="age" name="age" type="text" class="form-control required number  " maxlength="2" data-required="true" data-type="email">
 												</div>
 												<div class="form_sep">
-													<label for="email" class="req">Email</label>
-													<input id="email" name="email" type="text" class="form-control" data-required="true" data-type="email">
-												</div>
-												<div class="form_sep">
-													<label for="address">Address</label>
-													<input id="address" name="address" type="text" class="form-control">
+													<label for="address">Sex</label>
+													<select id="sex" name="sex" class="form-control required">
+                                                                                                        <option>Male</option>
+                                                                                                        <option>Female</option>
+                                                                                                        <option>Other</option>                                                                                                       
+                                                                                                        </select>
 												</div>  
-											</div>
+											    </div>
+                                                                                            <div class="col-sm-3">
+												<div class="form_sep">
+													<label for="email" class="req">Date Of Birth</label>
+													 <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                                                          <input name="dob" class="form-control required" type="text">
+													<span class="input-group-addon"><i class="icon-calendar"></i></span>
+                                                                                                        </div>
+                                                                                                       
+												</div>  
+											    </div>
 										</div>
 												</fieldset>
 												<fieldset class="wizard-step">
-													<legend class="wizard-label"><i class="icon-pencil"></i> Membership</legend>
-													<div class="control-group">
-														<label class="control-label">Membership Period <span class="required">*</span></label>
-														<div class="controls">
-															<select name="wizard[period]" class="required">
-																<option>1 Month</option>
-																<option>3 Months</option>
-																<option>6 Months</option>
-																<option>1 Year</option>
-															</select>
-														</div>
-													</div>
-													<div class="control-group">
-														<label class="control-label">Package <span class="required">*</span></label>
-														<div class="controls">
-															<label class="radio"><input type="radio" name="wizard[package]" class="required"> Basic</label>
-															<label class="radio"><input type="radio" name="wizard[package]" /> Full</label>
-															<label class="radio"><input type="radio" name="wizard[package]" /> Premium</label>
-															<label for="wizard[package]" class="error" generated="true" style="display:none"></label>
-														</div>
-													</div>
-												</fieldset>
-												<fieldset class="wizard-step">
 													<legend class="wizard-label"><i class="icon-ok"></i> Confirmation</legend>
-													<div class="control-group">
-														<label class="control-label">Payment Method <span class="required">*</span></label>
-														<div class="controls">
-															<select name="wizard[payment]" class="required">
-																<option>PayPal</option>
-																<option>Visa</option>
-																<option>Mastercard</option>
-																<option>Wire Transfer</option>
-															</select>
-														</div>
-													</div>
-													<div class="control-group">
-														<div class="controls">
-															<label class="checkbox"><input type="checkbox" name="wizard[tos]" class="required"> I agree to the terms of service <span class="required">*</span></label>
-															<label for="wizard[tos]" class="error" generated="true" style="display:none"></label>
-														</div>
-													</div>
+																  <div class="row my_wizard" style="margin-top: -20px;">
+											<div class="col-sm-3">
+												<div class="step_info">
+													<div class="fileupload fileupload-new" data-provides="fileupload">
+                                                                                                            <div class="fileupload-new img-thumbnail" style="width: 178px; height: 120px;"><img src="img/no_img_180.png" alt=""></div>
+                                                                                                            <div class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
+                                                                                                            <div>
+                                                                                                                <span class="btn btn-default btn-file"><span class="fileupload-new">Select image</span><span class="fileupload-exists">Change</span><input type="file" /></span>
+                                                                                                                <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">Remove</a>
+                                                                                                            </div>
+                                                                                                        </div>
+												</div> 
+											</div>
+											<div class="col-sm-3">
+												<div class="form_sep">
+													<label for="firstname" class="req">First name</label>
+													<input id="firstname" name="firstname" type="text" class="required form-control">
+												</div>
+												<div class="form_sep">
+													<label for="lastname" class="req">Last name</label>
+													<input id="lastname" name="lastname" type="text" class="form-control required" data-required="true" data-minlength="3">
+												</div>
+												</div>
+                                                                                                <div class="col-sm-3">
+												<div class="form_sep">
+													<label for="age" class="req">Age</label>
+                                                                                                        <input id="age" name="age" type="text" class="form-control required number  " maxlength="2" data-required="true" data-type="email">
+												</div>
+												<div class="form_sep">
+													<label for="address">Sex</label>
+													<select id="sex" name="sex" class="form-control required">
+                                                                                                        <option>Male</option>
+                                                                                                        <option>Female</option>
+                                                                                                        <option>Other</option>                                                                                                       
+                                                                                                        </select>
+												</div>  
+											    </div>
+                                                                                            <div class="col-sm-3">
+												<div class="form_sep">
+													<label for="email" class="req">Date Of Birth</label>
+													 <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                                                          <input name="dob" class="form-control required" type="text">
+													<span class="input-group-addon"><i class="icon-calendar"></i></span>
+                                                                                                        </div>
+                                                                                                       
+												</div>  
+											    </div>
+										</div>
 												</fieldset>
 											</form>
 										
