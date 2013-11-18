@@ -18,9 +18,18 @@
     padding:1px 1px 1px 3px;
     transition: none 0s ease 0s;
     }
-    
+    .alert-success {
+padding: 12px 1px 12px 24px;
+color: #003333;
+
+font-size: 20px;
+
+
+
+
+}
 </style>	
-    	
+
 <nav id="top_navigation">
 				<div class="container">
 					<ul id="icon_nav_h" class="top_ico_nav clearfix">
@@ -82,6 +91,8 @@
 			
 			
 			<section class="container clearfix main_section">
+                  
+
 				<div id="main_content_outer" class="clearfix">
 					<div id="main_content">
 						<?php echo form_open('users/posnic_users') ?>

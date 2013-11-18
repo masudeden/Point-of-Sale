@@ -22,13 +22,19 @@ class Users extends CI_Controller{
         
        // $this->pos_users_testing();
     } 
-    function users($msg,$val){
-        $this->load->view('template/app/header'); 
+    function users(){        
+        if($_SESSION['users_per']['add']==1){ 
+        $data['msg']='new_user_added_successfully';
+        $data['type']='success';
+        $this->load->view('template/app/header',$data); 
         $this->load->view('template/table/header');         
         $this->load->view('template/branch',$this->posnic->branchs());
         $this->load->view('pos_users_list');
         $this->load->view('template/app/navigation',$this->posnic->modules());
         $this->load->view('template/app/footer');
+        }else{
+            redirect('home');
+        }
     }
     function pos_users_testing(){
         $this->load->model('pos_users_model');
@@ -120,6 +126,7 @@ class Users extends CI_Controller{
     function get_pos_users_details(){         
            
         if($_SESSION['users_per']['access']==1){
+          
         $this->load->view('template/app/header'); 
         $this->load->view('template/table/header');         
         $this->load->view('template/branch',$this->posnic->branchs());
@@ -518,7 +525,7 @@ function do_upload($id)
                           $id= $this->pos_users_model->adda_new_pos_users($dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,'10');
                           $this->add_user_branchs($id,$user_groups);
                           $this->add_user_user_groups($id,$user_groups);                           
-                          $this->users('new_user_added_successfully',1);
+                          redirect('users/users');
                          
                           }
                           else{

@@ -66,3 +66,15 @@
 		</script>
                 <script type="text/javascript" charset="utf-8" language="javascript" src="<?php echo base_url() ?>template/data_table/js/DT_bootstrap.js"></script>
 
+<script type="text/javascript">
+   
+         $(function() {
+               <?php if($msg!==""){ ?>
+                var jibi=$.bootstrapGrowl("<?php echo $this->lang->line($msg) ?>jibi", { type: "<?php echo $type ?>" });
+               
+               <?php }  ?>
+               
+            });
+
+
+    </script>

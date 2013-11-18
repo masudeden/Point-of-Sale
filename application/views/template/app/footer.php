@@ -83,6 +83,8 @@
                         <script src="<?php echo base_url() ?>template/app/validation/prettify.js"></script>
                 <!-- timepicker -->
                         <script src="<?php echo base_url() ?>template/app/js/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
+                         <script src="<?php echo base_url() ?>template/app/validate/js/bootstrap-alert.js"></script>
+                         <script src="<?php echo base_url() ?>template/app/validate/js/jquery.bootstrap-growl.js"></script>
         <!--[if lte IE 9]>
                 <script src="<?php echo base_url() ?>template/app/js/ie/jquery.placeholder.js"></script>
                 <script>

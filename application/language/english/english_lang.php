@@ -244,6 +244,7 @@ $lang['login_details']="Login Details";
 $lang['password']="Password";
 $lang['confirm_password']="Confirm Password";
 $lang['username']="User Id";
+$lang['new_user_added_successfully']="New User Added Successfully";
 
  
  
