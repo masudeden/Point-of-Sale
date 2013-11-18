@@ -25,11 +25,11 @@ class User_groups extends CI_Model{
                     'depart_id'=>$depa_id,
                     'branch_id'=>$branch_id);
        $this->db->insert('users_x_user_groups',$data);
-       $id=$this->db->insert_id();
-       $orderid=md5($id.'usergroup');
+       $id1=$this->db->insert_id();
+       $orderid=md5($id1.'usergroup');
        $guid=str_replace(".", "", "$orderid");
        $value=array('guid'=>$guid);
-       $this->db->where('id',$id);
+       $this->db->where('id',$id1);
        $this->db->update('users_x_user_groups',$value);
        return $guid;
     }

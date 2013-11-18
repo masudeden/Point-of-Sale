@@ -133,7 +133,7 @@ class Pos_users_model extends CI_Model{
        $value=array('guid'=>$guid);
        $this->db->where('id',$id);
        $this->db->update('users',$value);
-       return $id;                        
+       return $guid;                        
        }
        function get(){
          return TRUE;

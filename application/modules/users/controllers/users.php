@@ -22,7 +22,14 @@ class Users extends CI_Controller{
         
        // $this->pos_users_testing();
     } 
-    
+    function users($msg,$val){
+        $this->load->view('template/app/header'); 
+        $this->load->view('template/table/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $this->load->view('pos_users_list');
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
+    }
     function pos_users_testing(){
         $this->load->model('pos_users_model');
         $test= $this->pos_users_model->get();
@@ -226,10 +233,10 @@ $r=0;
     function upadate_pos_users_details(){
        if($_SESSION['users_per']['edit']==1){ 
        $this->load->library('form_validation');
-                $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
+                $this->form_validation->set_rules("firstname",$this->lang->line('first_name'),"required"); 
                 $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');
                 $this->form_validation->set_rules('age', $this->lang->line('age'), 'required|max_length[2]|regex_match[/^[0-9]+$/]|xss_clean');
-                $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
+                $this->form_validation->set_rules("lastname",$this->lang->line('last_name'),"required"); 
                 $this->form_validation->set_rules('email', $this->lang->line('email'), 'valid_email|required');                
                 $this->form_validation->set_rules('address',$this->lang->line('address'),"required");
                 $this->form_validation->set_rules('city',$this->lang->line('city'),"required");
@@ -470,7 +477,7 @@ function do_upload($id)
       if ($this->input->post('Cancel')) {
              $this->get_pos_users_details(); 
             }
-            if ($this->input->post('Save')) {                            
+            if ($this->input->post('submit')) {                   
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
                 $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');
@@ -510,9 +517,8 @@ function do_upload($id)
                           if($this->pos_users_model->user_checking($email,$emp_id,$dob)==FALSE){                              
                           $id= $this->pos_users_model->adda_new_pos_users($dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,'10');
                           $this->add_user_branchs($id,$user_groups);
-                          $this->add_user_user_groups($id,$user_groups);
-                                                  
-                          $this->get_pos_users_details();                           
+                          $this->add_user_user_groups($id,$user_groups);                           
+                          $this->users('new_user_added_successfully',1);
                          
                           }
                           else{
@@ -539,7 +545,7 @@ function do_upload($id)
                     $data['depa']= $this->user_groups->get_user_groups();  
                    
                    // $this->load->view('template/header');
-                    $this->load->view('add_new_pos_users',$data);
+                //    $this->load->view('add_new_pos_users',$data);
                     $this->load->view('template/footer');
               }    
              }                

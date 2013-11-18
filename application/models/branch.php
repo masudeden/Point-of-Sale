@@ -27,6 +27,13 @@ class Branch extends CI_Model{
                     'branch_name'=>$name,
                     'branch_id'=>$branch_guid);                       
                     $this->db->insert('users_x_branchs',$data);
+                    $id1=$this->db->insert_id();
+       $orderid=md5($id1.'branch');
+       $guid=str_replace(".", "", "$orderid");
+       $value=array('guid'=>$guid);
+       $this->db->where('id',$id1);
+       $this->db->update('users_x_branchs',$value);
+                    
     }
     function get_user_branch($id){
             $this->db->select()->from('users_x_branchs')->where('emp_id',$id);

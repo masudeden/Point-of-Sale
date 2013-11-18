@@ -306,3 +306,7 @@
         background-position: -25px -100px;
     }
 }
+    .my_submit{
+   
+    display: none !important;
+    }

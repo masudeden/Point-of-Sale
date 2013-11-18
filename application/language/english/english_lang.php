@@ -8,6 +8,8 @@ $lang['users']='User';
 $lang['item']='Item';
 $lang['delete']='Delete';
 $lang['user']='Users';
+$lang['other']='Other';
+
 $lang['delete_user']='Delete User';
 $lang['add_new_user']='Add New User';
 $lang['add_new_customer']='Add New Customer';
@@ -224,6 +226,24 @@ $lang['password']='PASSWORD';
 $lang['activate']='Activate';
 $lang['deactivate']="Deactivate";
 $lang['addnew']="Add New";
+$lang['change']="Change";
+$lang['select_image']="Select Image";
+$lang['male']="Male";
+$lang['female']="Female";
+$lang['contact_details']="Contact Details";
+$lang['personal_details']="Personal Details";
+$lang['address']="Address";
+$lang['city']="City";
+$lang['state']="State";
+$lang['country']="Country";
+$lang['zip']="Zip";
+$lang['email']="Email";
+$lang['phone']="Phone";
+$lang['user_group']="User Groups";
+$lang['login_details']="Login Details";
+$lang['password']="Password";
+$lang['confirm_password']="Confirm Password";
+$lang['username']="User Id";
 
  
  
