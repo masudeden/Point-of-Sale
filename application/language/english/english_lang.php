@@ -244,7 +244,10 @@ $lang['login_details']="Login Details";
 $lang['password']="Password";
 $lang['confirm_password']="Confirm Password";
 $lang['username']="User Id";
+$lang['remove']="Remove";
 $lang['new_user_added_successfully']="New User Added Successfully";
+$lang['this user is alreay added']="This User Alraedy Added";
+$lang['U have No Permission to Add New User']="U have No Permission to Add New User";
 
  
  

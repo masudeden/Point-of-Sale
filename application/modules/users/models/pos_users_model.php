@@ -139,12 +139,12 @@ class Pos_users_model extends CI_Model{
          return TRUE;
        }
        function user_checking($email,$emp_id,$dob){
-           $this->db->select()->from('users')->where('email',$email)->where('user_id',$emp_id);
+       $this->db->select()->from('users')->where('email',$email)->or_where('user_id',$emp_id);
        $sql=$this->db->get();
-           if($sql->num_rows()>0){
+       if($sql->num_rows()>0){
                return TRUE;
        }else{
-           return FALSE;
+               return FALSE;
        }
        }
        function activate_user($id,$branch){                

@@ -18,16 +18,7 @@
     padding:1px 1px 1px 3px;
     transition: none 0s ease 0s;
     }
-    .alert-success {
-padding: 12px 1px 12px 24px;
-color: #003333;
-
-font-size: 20px;
-
-
-
-
-}
+ 
 </style>	
 
 <nav id="top_navigation">

@@ -70,7 +70,7 @@
    
          $(function() {
                <?php if($msg!==""){ ?>
-                var jibi=$.bootstrapGrowl("<?php echo $this->lang->line($msg) ?>jibi", { type: "<?php echo $type ?>" });
+                var jibi=$.bootstrapGrowl("<?php echo $this->lang->line($msg) ?>", { type: "<?php echo $type ?>" });
                
                <?php }  ?>
                

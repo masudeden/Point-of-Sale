@@ -18,12 +18,37 @@ class Users extends CI_Controller{
         $this->poslanguage->set_language();
         
         $this->get_pos_users_details();
+     //$this->load->view('sample');
        //$this->users_data_table();
         
        // $this->pos_users_testing();
     } 
-    function users(){        
-        if($_SESSION['users_per']['add']==1){ 
+    function photo_upload($name)
+	{
+		$config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '10000';
+		$config['max_width']  = '11024';
+		$config['max_height']  = '3768';
+                $config['file_name'] = $name;
+
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$error = array('error' => $this->upload->display_errors());
+		}
+		else
+		{
+			$data = array('upload_data' => $this->upload->data());
+		}
+              
+                      $upload_data = $this->upload->data();
+                      return  $file_name =$upload_data['file_name'];
+	}
+
+    function new_users(){        
+        if($_SESSION['users_per']['read']==1){ 
         $data['msg']='new_user_added_successfully';
         $data['type']='success';
         $this->load->view('template/app/header',$data); 
@@ -35,6 +60,36 @@ class Users extends CI_Controller{
         }else{
             redirect('home');
         }
+    }
+    function user_error($msg){
+             if($_SESSION['users_per']['add']==1){  
+                    $this->load->model('user_groups');
+                    $this->load->model('branch');
+                     if($_SESSION['admin']==2){ 
+                     $data['branch']=$this->branch->get_user_for_branch_admin();
+                     }
+                     else{
+                    $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
+                     }
+                    $data['depa']= $this->user_groups->get_user_groups();  
+                    $this->load->view('template/app/header',$msg); 
+                    $this->load->view('template/table/header');         
+                    $this->load->view('template/branch',$this->posnic->branchs());
+                    $this->load->view('add_new_pos_users',$data);
+                    $this->load->view('template/app/navigation',$this->posnic->modules());
+                    $this->load->view('template/app/footer');             
+             
+             }else{
+                    $data['msg']='U have No Permission to Add New User';
+                    $data['type']='error';
+                    $this->load->view('template/app/header',$data); 
+                    $this->load->view('template/table/header');         
+                    $this->load->view('template/branch',$this->posnic->branchs());
+                    $this->load->view('pos_users_list');
+                    $this->load->view('template/app/navigation',$this->posnic->modules());
+                    $this->load->view('template/app/footer');
+                
+             }
     }
     function pos_users_testing(){
         $this->load->model('pos_users_model');
@@ -240,6 +295,7 @@ $r=0;
     function upadate_pos_users_details(){
        if($_SESSION['users_per']['edit']==1){ 
        $this->load->library('form_validation');
+               
                 $this->form_validation->set_rules("firstname",$this->lang->line('first_name'),"required"); 
                 $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');
                 $this->form_validation->set_rules('age', $this->lang->line('age'), 'required|max_length[2]|regex_match[/^[0-9]+$/]|xss_clean');
@@ -372,7 +428,7 @@ function do_upload($id)
 		{
                    
                       $upload_data = $this->upload->data();
-                       $file_name =$upload_data['file_name'];
+                      $file_name =$upload_data['file_name'];
                       $error="";
                       $this->after_uploading($id, $error,$file_name);
 			
@@ -388,7 +444,7 @@ function do_upload($id)
                 $this->load->model('user_groups');
                 $data['row']=  $this->pos_users_model->edit_pos_users($id); 
                
-               $data['selected_branch']=$this->branch->get_selected_branch($id);
+                $data['selected_branch']=$this->branch->get_selected_branch($id);
                 $data['selected_depart']=$this->user_groups->get_user_depart($id);
                 
                 $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
@@ -486,12 +542,14 @@ function do_upload($id)
             }
             if ($this->input->post('submit')) {                   
                 $this->load->library('form_validation');
+               
                 $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
                 $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');
                 $this->form_validation->set_rules('age', $this->lang->line('age'), 'required|max_length[2]|regex_match[/^[0-9]+$/]|xss_clean');
                 $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
                 $this->form_validation->set_rules('email', $this->lang->line('email'), 'valid_email|required');
                 $this->form_validation->set_rules('password',$this->lang->line('password'),"required");
+                $this->form_validation->set_rules('confirm_password',$this->lang->line('confirm_password'),"required");
                 $this->form_validation->set_rules('address',$this->lang->line('address'),"required");
                 $this->form_validation->set_rules('city',$this->lang->line('city'),"required");
                 $this->form_validation->set_rules('state',$this->lang->line('state'),"required");
@@ -507,7 +565,7 @@ function do_upload($id)
                           $last_name=  $this->input->post('last_name');
                           $email=$this->input->post('email');
 			  $emp_id=$this->input->post('pos_users_id');
-                          $password=$this->input->post('password');
+                          $password=$this->input->post('confirm_password');
                           $address=$this->input->post('address');
                           $phone=$this->input->post('phone');
                           $city=$this->input->post('city');
@@ -521,39 +579,42 @@ function do_upload($id)
                           $dob= strtotime($yourdatetime);
                           $created_by=$_SESSION['Uid'];
                           $this->load->model('pos_users_model');
-                          if($this->pos_users_model->user_checking($email,$emp_id,$dob)==FALSE){                              
-                          $id= $this->pos_users_model->adda_new_pos_users($dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,'10');
+                          if($this->pos_users_model->user_checking($email,$emp_id,$dob)==FALSE){  
+                                 $config['upload_path'] = './uploads/';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '10000';
+		$config['max_width']  = '11024';
+		$config['max_height']  = '3768';
+                $config['file_name'] = $emp_id;
+
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+			$error = array('error' => $this->upload->display_errors());
+		}
+		else
+		{
+			$data1 = array('upload_data' => $this->upload->data());
+		}
+                    
+                $upload_data = $this->upload->data();
+                $file_name =$upload_data['file_name'];
+                          $id= $this->pos_users_model->adda_new_pos_users($dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,$file_name);
                           $this->add_user_branchs($id,$user_groups);
                           $this->add_user_user_groups($id,$user_groups);                           
-                          redirect('users/users');
-                         
+                    redirect('users/new_users');
                           }
                           else{
-                   echo 'this user is alreay added';
-                   
-                  $this->load->model('user_groups');
-                    $this->load->model('branch');
-                    $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
-                    $data['depa']= $this->user_groups->get_user_groups(); 
-                   $this->load->view('template/header');
-                    $this->load->view('add_new_pos_users',$data);
-                    $this->load->view('template/footer');
-                        
+                              $data['msg']='this user is alreay added';
+                              $data['type']='danger';
+                                       
+                             $this->user_error($data);                       
                           }
             }else{
-                    $this->load->model('user_groups');
-                    $this->load->model('branch');
-                     if($_SESSION['admin']==2){ 
-                     $data['branch']=$this->branch->get_user_for_branch_admin();
-                     }
-                     else{
-                    $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
-                     }
-                    $data['depa']= $this->user_groups->get_user_groups();  
-                   
-                   // $this->load->view('template/header');
-                //    $this->load->view('add_new_pos_users',$data);
-                    $this->load->view('template/footer');
+                   $data['msg']='';
+                   $data['type']='';
+                         $this->user_error($data);
               }    
              }                
         }else{

@@ -76,7 +76,7 @@
                                                                                                             <div class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
                                                                                                             <div>
                                                                                                                 <span class="btn btn-default btn-file"><span class="fileupload-new"><?php echo $this->lang->line('select_image') ?></span><span class="fileupload-exists"><?php echo $this->lang->line('change') ?></span>
-                                                                                                                    <input type="file" name="photos" /></span>
+                                                                                                                    <input type="file" name="userfile" /></span>
                                                                                                                 <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload"><?php echo $this->lang->line('remove') ?></a>
                                                                                                             </div>
                                                                                                         </div>
@@ -205,8 +205,14 @@
                                                                                                                      echo form_input($email)?>
 												</div>
                                                                                                 <div class="form_sep">
+                                                                                                    <input type="text" name="first_name1">
 													<label for="phone"><?php echo $this->lang->line('phone') ?></label>
-													<input id="phone" name="phone" type="text" class="form-control required  number"  data-required="true" >
+													
+                                                                                                         <?php $phone=array('name'=>'phone',
+                                                                                                                                    'class'=>'required  form-control number',
+                                                                                                                                    'id'=>'phone',
+                                                                                                                                    'value'=>set_value('phone'));
+                                                                                                                     echo form_input($phone)?>
 												</div>
 											    </div>
 										</div>
@@ -494,17 +500,20 @@ var arrLU="";
 }
 </script>
 
-    <?php //echo validation_errors(); ?>
+    <?php if(validation_errors()!=""){
+        ?>
+<div class="col-sm-3 label label-warning">
+ <?php   echo validation_errors()?>
+</div>
+<?php
+    } ?>
 
     
-</script>
-             
 
-              
-
+        
 
 
 
                         </div>
 
-<?php echo validation_errors(); ?>
+
