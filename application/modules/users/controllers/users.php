@@ -292,6 +292,42 @@ $r=0;
     function cancel(){
         $this->get_pos_users_details();
     }
+    function edit($guid){
+         if($_SESSION['users_per']['edit']==1){  
+                    $this->load->model('user_groups');
+                    $this->load->model('branch');
+                    $this->load->model('pos_users_model');
+                    if($_SESSION['admin']==2){ 
+                    $data['branch']=$this->branch->get_user_for_branch_admin();
+                    }
+                    else{
+                    $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
+                    }
+                    $data['row']=  $this->pos_users_model->edit_pos_users($guid); 
+                    $data['error']="";
+                    $data['file_name']="null";
+                    $data['selected_branch']=$this->branch->get_selected_branch($guid);
+                    $data['selected_depart']=$this->user_groups->get_user_depart($guid);
+                    $data['depa']= $this->user_groups->get_user_groups();  
+                    $this->load->view('template/app/header'); 
+                    $this->load->view('template/table/header');         
+                    $this->load->view('template/branch',$this->posnic->branchs());
+                    $this->load->view('edit_pos_users_details',$data);
+                    $this->load->view('template/app/navigation',$this->posnic->modules());
+                    $this->load->view('template/app/footer');             
+             
+             }else{
+                    $data['msg']='U have No Permission to Add New User';
+                    $data['type']='error';
+                    $this->load->view('template/app/header',$data); 
+                    $this->load->view('template/table/header');         
+                    $this->load->view('template/branch',$this->posnic->branchs());
+                    $this->load->view('pos_users_list');
+                    $this->load->view('template/app/navigation',$this->posnic->modules());
+                    $this->load->view('template/app/footer');
+                
+             }
+    }
     function upadate_pos_users_details(){
        if($_SESSION['users_per']['edit']==1){ 
        $this->load->library('form_validation');

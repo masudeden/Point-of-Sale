@@ -1,13 +1,4 @@
-
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>template/data_table/css/bootstrap.min.css">
-        <link  rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/dataTables/media/DT_bootstrap.css">
-	<link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/dataTables/extras/TableTools/media/css/TableTools.css">     
-
-        <script src="<?php echo base_url() ?>template/app/js/jquery.min.js"></script>
-        <script src="<?php echo base_url() ?>template/data_table/js/jquery.dataTables.min.js" type="text/javascript"></script>
-	<script type="text/javascript" language="javascript" src="<?php echo base_url() ?>template/data_table/js/jquery.js"></script>
-		<script type="text/javascript" language="javascript" src="<?php echo base_url() ?>template/data_table/js/jquery.dataTables.js"></script>
-			<script type="text/javascript" charset="utf-8">
+	<script type="text/javascript" charset="utf-8">
 			$(document).ready( function () {
            $('#dt_table_tools').dataTable({
                                       "bProcessing": true,
@@ -47,7 +38,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							return "<a href='edit/" + oObj.aData[0] + "'><i class='icon-edit'></i></a><a href='edit/" + oObj.aData[0] + "'><i class=' icon-remove-circle'></i> </a>";
+                   							return '<a href="<?php echo base_url() ?>index.php/users/edit/'+oObj.aData[0]+'" ><i class="icon-edit"></i></a><a href="<?php echo base_url() ?>index.php/users/delete/'+oObj.aData[0]+'"><i class=" icon-remove-circle"></i> </a>';
 								},
 								
 								
