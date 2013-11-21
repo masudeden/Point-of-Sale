@@ -68,7 +68,11 @@
                                                                                           <?php   $form =array('id'=>'wizard-demo-2',
                                                                                               'runat'=>'server',
                                                                                               'class'=>'form-horizontal');
-                                                                         echo form_open_multipart('users/add_pos_users_details/',$form);?>
+                                                                         echo form_open_multipart('users/upadate_pos_users_details',$form);
+                                                                         $guid=array('name'=>'guid','value'=>$erow->guid)?>
+
+                                                                             <input type="text" name="guid" value="<?php echo $erow->guid?>">
+                                                                             
 												<fieldset class="wizard-step ">
                                                                                                     
                                                                                                     <legend class="wizard-label "><i class="icon-user"></i> <?php echo $this->lang->line('personal_details') ?></legend>
@@ -267,7 +271,16 @@
 												<div class="form_sep">
                                                                                             <select multiple  name="lang" size="7" class="form-control"  style="width: 250">
 
+                                                                                            <?php foreach ($selected_depart as $s_b_row) {
+                                                                                                 foreach ($selected_branch as $b_row){
+                                                                                                if($b_row->branch_id==$s_b_row->branch_id ){
+                                                                                                ?>
+                                                                                                <option value="<?php echo $s_b_row->branch_id.".".$s_b_row->depart_id  ?>"><?php echo  $b_row->branch_name ." ( " . $s_b_row->depart_name ." )"?></option>
+                                                                                                <?php } } }?>
                                                                                             </select>
+                                                                                                   
+                                                                                                    <?php $depa=array('id'=>'depa','name'=>'depa');
+                                                                                                    echo form_hidden($depa)?>
                                                                                                 </div>  
 											    </div>
 										</div>
@@ -289,7 +302,7 @@
 												<div class="form_sep">
 												<label for="password" class="req"><?php echo $this->lang->line('password') ?></label>												
                                                                                                               <?php $password=array('name'=>'password',
-                                                                                                                                    'class'=>'required  form-control ',
+                                                                                                                                    'class'=>'  form-control ',
                                                                                                                                     'id'=>'password',
                                                                                                                                     'value'=>set_value('password'));
                                                                                                                      echo form_input($password)?>
@@ -298,7 +311,7 @@
 												
 												<label for="reg_password_repeat" class="req"><?php echo $this->lang->line('confirm_password') ?></label>                                                                                               
                                                                                                  <?php $confirm_password=array('name'=>'confirm_password',
-                                                                                                                                    'class'=>'required  form-control ',
+                                                                                                                                    'class'=>' form-control ',
                                                                                                                                     'id'=>'confirm_password',
                                                                                                                                     'equalto'=>"#password",
                                                                                                                                     'value'=>set_value('confirm_password'));
