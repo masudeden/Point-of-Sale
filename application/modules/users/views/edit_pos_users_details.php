@@ -69,9 +69,10 @@
                                                                                               'runat'=>'server',
                                                                                               'class'=>'form-horizontal');
                                                                          echo form_open_multipart('users/upadate_pos_users_details',$form);
-                                                                         $guid=array('name'=>'guid','value'=>$erow->guid)?>
-
-                                                                             <input type="text" name="guid" value="<?php echo $erow->guid?>">
+                                                                         $guid=array('name'=>'guid','value'=>$erow->guid);
+                                                                        ?>
+                                                                                
+                                                                             <input type="hidden" name="guid" value="<?php echo $erow->guid?>">
                                                                              
 												<fieldset class="wizard-step ">
                                                                                                     
@@ -248,7 +249,7 @@
                                                                                            
                                                                                             
                          
-                                                                                            <input type="hidden" name="depa" id="depa">
+                                                                                          
 												</div> 
 											</div>
 											<div class="col-sm-3">
@@ -268,19 +269,19 @@
 												</div>  
 											    </div>
                                                                                             <div class="col-sm-3">
-												<div class="form_sep">
+												<div class="form_sep"><?php  $deapart?>
                                                                                             <select multiple  name="lang" size="7" class="form-control"  style="width: 250">
 
-                                                                                            <?php foreach ($selected_depart as $s_b_row) {
+                                                                                            <?php  foreach ($selected_depart as $s_b_row) {
                                                                                                  foreach ($selected_branch as $b_row){
                                                                                                 if($b_row->branch_id==$s_b_row->branch_id ){
+                                                                                                    $deapart=$deapart.' '.$b_row->branch_id.".".$s_b_row->depart_id;
                                                                                                 ?>
                                                                                                 <option value="<?php echo $s_b_row->branch_id.".".$s_b_row->depart_id  ?>"><?php echo  $b_row->branch_name ." ( " . $s_b_row->depart_name ." )"?></option>
                                                                                                 <?php } } }?>
                                                                                             </select>
+                                                                                                    <input type="hidden" id="depa" name="department" value="<?php echo $deapart ?>">
                                                                                                    
-                                                                                                    <?php $depa=array('id'=>'depa','name'=>'depa');
-                                                                                                    echo form_hidden($depa)?>
                                                                                                 </div>  
 											    </div>
 										</div>
@@ -544,26 +545,7 @@ var arrLU="";
    
 
 		
-  <table>
-    <?php $form =array('id'=>'form1',
-                        'runat'=>'server');
-    echo form_open('users/upadate_pos_users_details',$form)?>
-    <input type="hidden" name="id" value="<?php echo $erow->id?>">
-    <tr><td><?php echo form_label($this->lang->line('first_name'))?> </td><td><input type="text" name="first_name" value="<?php echo $erow->first_name ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('last_name'))?></td><td><input type="text" name="last_name" value="<?php echo $erow->last_name ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('sex'))?></td><td><select name="sex"><option name="male" value="Male" <?php if($erow->sex=='Male') {?> selected <?php }?>>Male</option><option name="Female" value="FeMale"<?php if($erow->sex=='FeMale'){ ?>selected<?php }?>>Female</option></select></td></tr>
-    <tr><td><?php echo form_label($this->lang->line('age'))?></td><td><input type="text" name="age" value="<?php echo $erow->age ?>"></td></tr>
-     
-     <tr><td><?php echo form_label($this->lang->line('address'))?></td><td><input type="text" name="address" value="<?php echo $erow->address ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('city'))?></td><td><input type="text" name="city" value="<?php echo $erow->city ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('state'))?></td><td><input type="text" name="state" value="<?php echo $erow->state ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('zip'))?></td><td><input type="text" name="zip" value="<?php echo $erow->zip ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('country'))?></td><td><input type="text" name="country" value="<?php echo $erow->country ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('email'))?></td><td><input type="text" name="email" value="<?php echo $erow->email ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('phone'))?></td><td><input type="text" name="phone" value="<?php echo $erow->phone ?>" maxlength="13"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('date_of'))?></td><td><input type="text" id="datepicker" name="dob" value="<?php echo date('n/j/Y', strtotime('+0 year, +0 days',$erow->dob));   ?>"> </td></tr>
-   
-    <tr><td><?php echo form_label($this->lang->line('user_groups'))?></td><td>
+>
            
 <script>
 function select_branch(tbTo)
@@ -732,55 +714,7 @@ var arrLU="";
            }
 }
 </script>
-<select id="branch" name="FromLJ" style="width:150">
-    <?php if($_SESSION['admin']==2){ 
-        foreach ($branch as $brow) {
-        
- ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
-        }}else{ foreach ($branch as $brow) {
-          
-        ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->branch_name ?></option>
-<?php }}?>
 
-</select>
-<select multiple id="myDiv" name="ToLJ" style="width: 150">
-    
-</select>
-<input type="button" onClick="move(this.form.ToLJ,this.form.lang),get_selected(this.form.lang)" 
-value="->">
-<input type="button" onClick="backmove(this.form.lang,this.form.ToLJ),get_selected(this.form.lang)" 
-value="<-">
-<select multiple  name="lang" size="7"  style="width: 250">
-
-<?php foreach ($selected_depart as $s_b_row) {
-     foreach ($selected_branch as $b_row){
-    if($b_row->branch_id==$s_b_row->branch_id ){
-    ?>
-    <option value="<?php echo $s_b_row->branch_id.".".$s_b_row->depart_id  ?>"><?php echo  $b_row->branch_name ." ( " . $s_b_row->depart_name ." )"?></option>
-    <?php } } }?>
-</select>
-<input type="hidden" name="depa" id="depa"></td></tr>
-    <tr><td><?php echo form_label($this->lang->line('user_name'))?></td><td><input type="text" name="pos_users_id" value="<?php echo $erow->user_id ?>"> </td></tr>
-    <tr><td><?php echo form_label($this->lang->line('password'))?></td><td><?php echo form_input('password',set_value('password'), 'id="password" autofocus')?></td></tr>
-   <tr><td></td> 
-       
-   <td><input type="submit" name="Save" value="<?php echo $this->lang->line('save') ?>" >
-          
-        <?php echo form_submit('Cancel', $this->lang->line('cancel')) ?></td>
-    </tr> 
-        
-        
-
-
-
-
-    
-
-    <?php form_close() ?>
-    <?php //echo validation_errors(); ?>
-   </table>
-
-</script>
             
 
               

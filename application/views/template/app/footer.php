@@ -21,10 +21,11 @@
                 </div>
             </div>
         </footer>
+
                 <script src="<?php echo base_url() ?>template/app/validate/js1/jquery-1.8.3.min.js"></script>
         <script src="<?php echo base_url() ?>template/app/validate/js/bootstrap.min"></script>
         <script src="<?php echo base_url() ?>template/app/validate/js/jquery.validate.min.js"></script>
-	
+	  
 	<script src="<?php echo base_url() ?>template/app/validate/js/wizard.min.js"></script>
     <script src="<?php echo base_url() ?>template/app/validate/js/form_wizard.js"></script>
         <script src="<?php echo base_url() ?>template/app/js/jquery.min.js"></script>
@@ -83,8 +84,10 @@
                         <script src="<?php echo base_url() ?>template/app/validation/prettify.js"></script>
                 <!-- timepicker -->
                         <script src="<?php echo base_url() ?>template/app/js/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
-                         <script src="<?php echo base_url() ?>template/app/validate/js/bootstrap-alert.js"></script>
-                         <script src="<?php echo base_url() ?>template/app/validate/js/jquery.bootstrap-growl.js"></script>
+                        <script src="<?php echo base_url() ?>template/app/validate/js/bootstrap-alert.js"></script>
+                        <script src="<?php echo base_url() ?>template/app/validate/js/jquery.bootstrap-growl.js"></script>
+                        <script src="<?php echo base_url() ?>template/app/js/lib/bootbox/bootbox.min.js"></script>
+                      
         <!--[if lte IE 9]>
                 <script src="<?php echo base_url() ?>template/app/js/ie/jquery.placeholder.js"></script>
                 <script>

@@ -29,7 +29,7 @@
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/style.css">
         <!-- ebro theme -->
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/theme/color_1.css" id="theme">
-                
+                <link href="<?php echo base_url() ?>template/app/css/bootstrap/bootstrap.css" rel="stylesheet">
         <!--[if lt IE 9]>
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/ie.css">
                 <script src="<?php echo base_url() ?>template/app/js/ie/html5shiv.js"></script>
@@ -64,5 +64,5 @@
         <script src="<?php echo base_url() ?>template/data_table/js/jquery.dataTables.min.js" type="text/javascript"></script>
 	<script type="text/javascript" language="javascript" src="<?php echo base_url() ?>template/data_table/js/jquery.js"></script>
 	<script type="text/javascript" language="javascript" src="<?php echo base_url() ?>template/data_table/js/jquery.dataTables.js"></script>
-		
+
          

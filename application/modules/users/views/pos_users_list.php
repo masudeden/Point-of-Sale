@@ -21,7 +21,7 @@
  
 </style>	
 
-<nav id="top_navigation">
+<nav id="top_navigation"><button class="btn btn-default bootbox_confirm">Confirm</button>
 				<div class="container">
 					<ul id="icon_nav_h" class="top_ico_nav clearfix">
 						<li>
@@ -77,6 +77,7 @@
 					</ul>
 				</div>
 			</nav>
+
 			<!-- mobile navigation -->
 			<nav id="mobile_navigation"></nav>
 			
@@ -91,6 +92,7 @@
                                                 <div class="row">
 							<div class="col-sm-12">
                                                             <button class="btn btn-success" type="submit" name="add_new" value="add_new"><?php echo $this->lang->line('addnew') ?></button>
+                                                            
                                                          </div>
                                                     <div class="col-sm-12"><br>
 								<div class="panel panel-default">
@@ -126,6 +128,8 @@
                                                     </div>
 					</div>
 				</div>
+                            jibi <a id="demo_confirm" href="#" class="btn"  data-toggle="confirmation-popout" >delete</a>
+        
 			</section>
                         
 			<div id="footer_space"></div>

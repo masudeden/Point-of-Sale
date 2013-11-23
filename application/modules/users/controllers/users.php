@@ -342,7 +342,7 @@ $r=0;
                 $this->form_validation->set_rules('state',$this->lang->line('state'),"required");
                 $this->form_validation->set_rules('zip',$this->lang->line('zip'),"required");
                 $this->form_validation->set_rules('dob',$this->lang->line('date_of'),"required");                 
-               // $this->form_validation->set_rules('depa',$this->lang->line('user_groups'),"required");              
+               $this->form_validation->set_rules('department',$this->lang->line('user_groups'),"required");              
                 $this->form_validation->set_rules('pos_users_id','pos_users_id',"required");
                 $this->form_validation->set_rules('country','Country',"required");
            $id=  $this->input->post('guid');	  
@@ -359,7 +359,7 @@ $r=0;
                           $state=$this->input->post('state');
                           $zip=$this->input->post('zip');
                           $country=$this->input->post('country');
-                          $user_groups=urldecode($this->input->post('depa'));
+                          $user_groups=urldecode($this->input->post('department'));
                           $yourdatetime =$this->input->post('dob');
                           $image_name=$this->input->post('image_name');
                           $age=  $this->input->post('age');
@@ -383,10 +383,9 @@ $r=0;
            redirect('users');
        }
 }
-function update_user_branch($id,$depapartment){
-   
+function update_user_branch($id,$depapartment){   
      $this->load->model('branch');
-     
+     $this->branch->delete_user_branch($id);
               
            $new_depa=array();
            $branch=array();        

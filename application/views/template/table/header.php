@@ -1,5 +1,7 @@
 	<script type="text/javascript" charset="utf-8">
+            
 			$(document).ready( function () {
+                         
            $('#dt_table_tools').dataTable({
                                       "bProcessing": true,
 				      "bServerSide": true,
@@ -38,7 +40,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							return '<a href="<?php echo base_url() ?>index.php/users/edit/'+oObj.aData[0]+'" ><i class="icon-edit"></i></a><a href="<?php echo base_url() ?>index.php/users/delete/'+oObj.aData[0]+'"><i class=" icon-remove-circle"></i> </a>';
+                   							return '<a href="<?php echo base_url() ?>index.php/users/edit/'+oObj.aData[0]+'" ><i class="icon-edit"></i></a><a class="btn" data-toggle="confirmation-popout" data-placement="top">Delete</a>';
 								},
 								
 								
@@ -52,6 +54,7 @@
 						
                                     
                                     );
+                                    
 			} );
                        
 		</script>
@@ -60,8 +63,8 @@
 <script type="text/javascript">
    
          $(function() {
-               <?php if($msg!==""){ ?>
-                var jibi=$.bootstrapGrowl("<?php echo $this->lang->line($msg) ?>", { type: "<?php echo $type ?>" });
+               <?php if(isset($msg)){ ?>
+             $.bootstrapGrowl("<?php echo $this->lang->line($msg) ?>", { type: "<?php echo $type ?>" });
                
                <?php }  ?>
                
@@ -69,3 +72,4 @@
 
 
     </script>
+  
