@@ -11,7 +11,7 @@ class Pos_users_model extends CI_Model{
             $this->db->where('user_active',0);        
             $this->db->where('branch_id ',$branch);         
             $this->db->from('users_x_branchs');
-            return $this->db->count_all_results();
+            return $this->db->count_all_results()-1;
         
     }
      public function get_pos_users_details($limit,$start,$id,$branch) {
@@ -28,6 +28,16 @@ class Pos_users_model extends CI_Model{
             return $data;
            }
           return false;  
+   }
+   function deactive_pos_users($id){
+       $value=array('active'=>1); 
+       $this->db->where('guid',$id);
+       $this->db->update('users',$value);
+   }
+   function active_pos_users($id){
+       $value=array('active'=>0); 
+       $this->db->where('guid',$id);
+       $this->db->update('users',$value);
    }
    function get_user_details_for_user($id){
             $this->db->select()->from('users')->where('id <>',$id)->where('user_type <>',2);

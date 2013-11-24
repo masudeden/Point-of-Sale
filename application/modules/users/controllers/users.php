@@ -728,20 +728,39 @@ $r=0;
                 }
         }
       
-        function to_deactivate_user($id){  
+        function to_deactivate_user(){  
+            $id=  $this->input->post('guid');
                 $this->load->model('pos_users_model');
                 $this->pos_users_model->deactivate_user($id,$_SESSION['Bid']);   
-                redirect('users');
+               // redirect('users');
+               echo 'TRUE';
         }
         function to_activate_user($id){
                 $this->load->model('pos_users_model');
                 $this->pos_users_model->activate_user($id,$_SESSION['Bid']);   
                 redirect('users');
         }
-        function delete_pos_users_details_in_admin($id){
+        function delete(){
+            if($_SESSION['users_per']['delete']==1){  
+                $id=  $this->input->post('guid');
                 $this->load->model('pos_users_model');
-                $this->pos_users_model->delete_user_for_admin($id,$_SESSION['Bid']);   
-                redirect('users');
+                $this->pos_users_model->delete_pos_users($id,$_SESSION['Uid'],$_SESSION['Bid']);   
+                echo 'TRUE';
+            }else{
+                redirect('home');
+            }
+        }
+        function deactive(){
+            $id=  $this->input->post('guid');
+            $this->load->model('pos_users_model');
+            $this->pos_users_model->deactive_pos_users($id);   
+            echo 'TRUE';
+        }
+        function active(){
+            $id=  $this->input->post('guid');
+            $this->load->model('pos_users_model');
+            $this->pos_users_model->active_pos_users($id);   
+            echo 'TRUE';
         }
         
        

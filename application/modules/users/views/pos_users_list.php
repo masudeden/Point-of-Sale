@@ -21,7 +21,7 @@
  
 </style>	
 
-<nav id="top_navigation"><button class="btn btn-default bootbox_confirm">Confirm</button>
+<nav id="top_navigation">
 				<div class="container">
 					<ul id="icon_nav_h" class="top_ico_nav clearfix">
 						<li>
@@ -128,7 +128,7 @@
                                                     </div>
 					</div>
 				</div>
-                            jibi <a id="demo_confirm" href="#" class="btn"  data-toggle="confirmation-popout" >delete</a>
+                           
         
 			</section>
                         

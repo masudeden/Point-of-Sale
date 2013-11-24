@@ -23,13 +23,14 @@
         
         <!-- aditional stylesheets -->
         <!-- vector map -->
-                        <link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/jvectormap/jquery-jvectormap-1.2.2.css">
+             <link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/jvectormap/jquery-jvectormap-1.2.2.css">
+             <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/hint-css/hint.css">
 
         <!-- ebro styles -->
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/style.css">
         <!-- ebro theme -->
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/theme/color_1.css" id="theme">
-                <link href="<?php echo base_url() ?>template/app/css/bootstrap/bootstrap.css" rel="stylesheet">
+               
         <!--[if lt IE 9]>
                 <link rel="stylesheet" href="<?php echo base_url() ?>template/app/css/ie.css">
                 <script src="<?php echo base_url() ?>template/app/js/ie/html5shiv.js"></script>
@@ -56,7 +57,6 @@
          <link rel="stylesheet" href="<?php echo base_url() ?>template/app/validate/css/wizard.css">
          
          
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>template/data_table/css/bootstrap.min.css">
         <link  rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/dataTables/media/DT_bootstrap.css">
 	<link rel="stylesheet" href="<?php echo base_url() ?>template/app/js/lib/dataTables/extras/TableTools/media/css/TableTools.css">     
 

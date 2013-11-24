@@ -74,11 +74,12 @@ class Core_model extends CI_Model{
     }
       function posnic_data_table($start,$end,$table2,$table1,$join_where,$branch,$uid,$order,$like){
         
-        $this->db->select(' users.*, users_x_branchs.user_active as user_active , users_x_branchs.emp_id as emp_id')->from($table1 );  
+        $this->db->select(' users.*, users.active  as user_active , users_x_branchs.emp_id as emp_id')->from($table1 );  
         $this->db->limit($start,$end);  
         $this->db->order_by($order);
         $this->db->where('users.guid <>',$uid);
         $this->db->where('users.user_type <>',2 );
+        $this->db->where('users_x_branchs.user_active ',0 );
         
         $this->db->or_like($like);
         $join_where=$join_where."AND  $table1.delete_status=0 AND users.user_type!=2 and users_x_branchs.branch_id ='".$branch."'";
