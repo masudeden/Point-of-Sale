@@ -142,7 +142,6 @@
                              dataType: 'json',               
                              success: function(data)        
                              {    
-                                 console.log()
                                  $("#user_list").hide();
                                  $('#edit_user_form').show('slow');
                                  $('#delete').attr("disabled", "disabled");
@@ -168,20 +167,19 @@
                                  $('#parsley_reg #department').val(data[1]);
                              } 
                            });
-                           var data_v;
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/users/selected_user_group/"+guid,                      
                              data: "", 
                              dataType: 'json',               
                              complete: function(data)        
                              {    
-                                
-                             //  console.log(data[0]['responseText']);
-                               console.log(data['responseText']);
+                              
                                $('#selected_departmenet').html(data['responseText']);
                              } 
                             
                            });
+                            $("#myDiv_depart option").remove();
+                              
                          
                         <?php }else{?>
                                 bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records') ?>");

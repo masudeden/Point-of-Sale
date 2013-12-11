@@ -235,7 +235,7 @@ function get_user_groups_count($branch){
        $this->db->update('user_groups_x_branchs',$data);
    }
    function get_modules_permission($bid){
-         $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
+        $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
         $sql=$this->db->get();
         $data=array();
         foreach ($sql->result() as $row){
@@ -246,6 +246,10 @@ function get_user_groups_count($branch){
             }
         }
         return $data;
+   }
+   function get_user_groups_based_on_branch($bid){
+       echo "<option></optin>";
+      
    }
 }
 ?>

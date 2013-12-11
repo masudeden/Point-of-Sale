@@ -343,13 +343,14 @@ $r=0;
                 $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
                 $this->form_validation->set_rules('email', $this->lang->line('email'), 'valid_email|required');                
                 $this->form_validation->set_rules('address',$this->lang->line('address'),"required");
-               $this->form_validation->set_rules('city',$this->lang->line('city'),"required");
+                $this->form_validation->set_rules('city',$this->lang->line('city'),"required");
                 $this->form_validation->set_rules('state',$this->lang->line('state'),"required");
                 $this->form_validation->set_rules('zip',$this->lang->line('zip'),"required");
                 $this->form_validation->set_rules('dob',$this->lang->line('date_of'),"required");                 
                 $this->form_validation->set_rules('department',$this->lang->line('user_groups'),"required");              
                 $this->form_validation->set_rules('pos_users_id','pos_users_id',"required");
                 $this->form_validation->set_rules('guid','guid',"required");
+                $this->form_validation->set_rules('country','country',"required");
           echo $id=  $this->input->post('guid');	  
 	    if ( $this->form_validation->run() !== false ) {
 			  $this->load->model('pos_users_model');
@@ -369,14 +370,15 @@ $r=0;
                           $image_name=$this->input->post('image_name');
                           $age=  $this->input->post('age');
                           $sex= $this->input->post('sex');                          
+                          $blood= $this->input->post('blood');                          
                           $dob= strtotime($yourdatetime);  
                          
                              if($this->pos_users_model->user_update_checking($email,$phone,$id)==FALSE){
                            
                                            $file_name='';
-                            $this->pos_users_model->update_pos_users($file_name,$age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password);
-                            //$this->update_user_user_groups($id,$user_groups);                         
-                           // $this->update_user_branch($id,$user_groups);  
+                            $this->pos_users_model->update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password);
+                            $this->update_user_user_groups($id,$user_groups);                         
+                            $this->update_user_branch($id,$user_groups);  
                           
                          echo "done";
                              }else{
@@ -834,7 +836,27 @@ $r=0;
                 }                 
               }
         }
-    }   
+    }  
+    function selected_user_branch($id){
+     $this->load->model('pos_users_model');
+        $this->load->model('branch');
+        $this->load->model('user_groups');
+        $data=  $this->pos_users_model->edit_pos_users($id); 
+        $deapart="";
+        foreach ($data as $b_row){
+            $selected_branch=$this->branch->get_selected_branch($id);
+            $selected_depart=$this->user_groups->get_user_depart($id);
+              foreach ($selected_depart as $s_b_row) {
+                foreach ($selected_branch as $b_row){
+                   if($b_row->branch_id==$s_b_row->branch_id ){
+                        $deapart=$deapart.' '.$b_row->branch_id.'.'.$s_b_row->depart_id;          
+                        echo "<option value='$s_b_row->branch_id.$s_b_row->depart_id'>$s_b_row->depart_name</option>";
+                    } 
+
+                }                 
+              }
+        }
+    }
 
 
 }

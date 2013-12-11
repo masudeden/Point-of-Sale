@@ -98,8 +98,9 @@ class Pos_users_model extends CI_Model{
     }    
     }
    }
-   function update_pos_users($file_name,$age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password){
+   function update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password){
        $data=array(
+           'blood'=>$blood,
            'image'=>$file_name,
            'age'=>$age,
            'sex'=>$sex,
