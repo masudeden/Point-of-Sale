@@ -61,8 +61,11 @@
                         </nav>
                         <!-- mobile navigation -->
                         <nav id="mobile_navigation"></nav>
+                        <a href="<?php  echo base_url();  ?>index.php/users/get_pos_users_details" class="btn btn-success" style="margin-left: 12.9%;"><i  class="icon icon-backward"></i> <?php echo $this->lang->line('back') ?></a>
                         <section id="wizard" class="container clearfix main_section ">
                         
+                           
+                           
                                     <?php foreach ($row as $erow) {?>
 											
                                                                                           <?php   $form =array('id'=>'wizard-demo-2',
@@ -524,7 +527,7 @@ var arrLU="";
 
     <?php if(validation_errors()!=""){
         ?>
-<div class="col-sm-3 label label-warning">
+<div class="col-sm-6 label label-warning">
  <?php   echo validation_errors()?>
 </div>
 <?php
@@ -723,4 +726,3 @@ var arrLU="";
 
 
 </form>
-<?php echo validation_errors(); ?>

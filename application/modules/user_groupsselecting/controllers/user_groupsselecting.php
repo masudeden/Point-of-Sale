@@ -45,11 +45,11 @@ class User_groupsselecting extends CI_Controller{
              
                  for($j=0;$j<count($selected_depa);$j++){
             $depa=$this->user_groups->get_user_seleted_depa($selected_depa[$j]);
-            echo "<option value=$jibi.$selected_depa[$j]>  $depa  </option>";            
+            echo "<option value=$jibi.$selected_depa[$j] >  $depa  </option>";            
                  }             
         }else{
         for($i=0;$i< count($data);$i++){          
-       echo "<option value=$jibi.$id[$i]>$data[$i]   </option>";           
+       echo "<option value=$jibi.$id[$i]  >$data[$i]   </option>";           
         }
         }
     }

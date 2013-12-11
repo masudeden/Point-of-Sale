@@ -7,11 +7,12 @@ class Pos_users_model extends CI_Model{
     
     function pos_users_count($id,$branch){       
             $this->db->where('emp_id <>',$id);
+            $this->db->where('admin <>','101');
             $this->db->where('user_delete ',0);
             $this->db->where('user_active',0);        
             $this->db->where('branch_id ',$branch);         
             $this->db->from('users_x_branchs');
-            return $this->db->count_all_results()-1;
+            return $this->db->count_all_results();
         
     }
      public function get_pos_users_details($limit,$start,$id,$branch) {
@@ -74,6 +75,21 @@ class Pos_users_model extends CI_Model{
         $sql=$this->db->get();       
         return $sql->result();
    }
+   function edit_pos_users_ajax($id){
+      $this->db->select()->from('users');
+		$this->db->where('guid',$id);
+		$data=array();
+		 $sql=$this->db->get();
+		 foreach($sql->result() as $row){
+			$data[]=$row;
+			}
+		 foreach($sql->result() as $row){
+			$data[]=date('n.j.Y', strtotime('+0 year, +0 days',$row->dob));
+			}
+                        
+                        
+		 return $data;
+   }
    function get_file_name($upload_data){
        echo $upload_data['0'];
        foreach ($upload_data as $item => $value){    
@@ -82,8 +98,9 @@ class Pos_users_model extends CI_Model{
     }    
     }
    }
-   function update_pos_users($age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$image_name){
+   function update_pos_users($file_name,$age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password){
        $data=array(
+           'image'=>$file_name,
            'age'=>$age,
            'sex'=>$sex,
            'user_id' =>$emp_id,	          	
@@ -95,9 +112,9 @@ class Pos_users_model extends CI_Model{
            'zip'=>$zip,	
            'country'=>$country,	
            'email'=>$email,	
-           'phone'=>$phone, 	
-           'image'=>$image_name,	
-           'dob'=>$dob 	                              
+           'phone'=>$phone, 		
+           'dob'=>$dob,
+           'password'=>$password
        );
 
        $this->db->where('guid',$id);
@@ -115,12 +132,13 @@ class Pos_users_model extends CI_Model{
        $this->db->where('branch_id',$branch);
        $this->db->update('users_x_branchs',$value);
    }
-   function adda_new_pos_users($dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,$image_name){
+   function adda_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,$image_name){
             
        $pass=md5($password);
        $data=array(
            'created_by'=>$created_by,
            'sex' =>$sex,
+           'blood'=>$blood,
            'age'=>$age,
            'user_id' =>$emp_id,	
            'password' =>$pass, 
@@ -156,6 +174,18 @@ class Pos_users_model extends CI_Model{
        }else{
                return FALSE;
        }
+       }
+       function user_update_checking($email,$phone,$idd){
+       $this->db->select()->from('users');
+       $this->db->or_where('email',$email)->or_where('phone',$phone)->where('guid <>',$idd);
+       $sql=$this->db->get();
+       if($sql->num_rows()>1){
+      return TRUE;
+          
+       }else{
+      return FALSE;
+       }
+      
        }
        function activate_user($id,$branch){                
                 $value=array('user_active'=>0);

@@ -4,7 +4,9 @@
 	a:hover,a:focus {color:#056495}
 	a,button,.btn {outline:none !important;-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none}
 	a,a:hover,a:focus {text-decoration:none}
-
+        .switcher_open{
+            display: none;
+        }
 /* bootstrap framework adjustments */
 	textarea:hover, input[type="text"]:hover, input[type="password"]:hover, input[type="datetime"]:hover, input[type="datetime-local"]:hover, input[type="date"]:hover, input[type="month"]:hover, input[type="time"]:hover, input[type="week"]:hover, input[type="number"]:hover, input[type="email"]:hover, input[type="url"]:hover, input[type="search"]:hover, input[type="tel"]:hover, input[type="color"]:hover, .uneditable-input:hover,textarea:focus, input[type="text"]:focus, input[type="password"]:focus, input[type="datetime"]:focus, input[type="datetime-local"]:focus, input[type="date"]:focus, input[type="month"]:focus, input[type="time"]:focus, input[type="week"]:focus, input[type="number"]:focus, input[type="email"]:focus, input[type="url"]:focus, input[type="search"]:focus, input[type="tel"]:focus, input[type="color"]:focus, .uneditable-input:focus,.btn-primary:hover, .btn-warning:hover, .btn-danger:hover, .btn-success:hover, .btn-info:hover, .btn-inverse:hover,.btn-default:hover,.form-control:hover,.form-control:focus,.has-success .form-control:focus,.has-warning .form-control:focus,.has-error .form-control:focus {-webkit-box-shadow: none;-moz-box-shadow: none;box-shadow: none;}
 	textarea, input[type="text"], input[type="submit"] {-webkit-appearance: none}
@@ -21,7 +23,7 @@
 	.form-control + .input-group-btn > .btn {margin-left:-1px}
 	.form-control + .input-group-btn > .btn + .btn {margin-left:-5px}
 	
-	.row + .row {margin-top:24px}
+	.row + .row {margin-top:6px}
 
 	.label, .badge {padding:0 4px;font-size:11px;line-height:14px;border:1px solid #777}
 	.label-danger, .badge-danger {background:#cb1111;border:1px solid #9f0c0c}
@@ -170,7 +172,7 @@
 /* navigation */
 	body.side_fixed {padding-left:40px;-webkit-transition: padding-left 200ms ease-out;-moz-transition: padding-left 200ms ease-out;-o-transition: padding-left 200ms ease-out;transition: padding-left 200ms ease-out;}
 	#side_fixed_nav {display:none;position:fixed;background:#002828;width:42px;left:0;top:0;height:100%;overflow:hidden;padding:0;-webkit-transition: width 200ms ease-out;-moz-transition: width 200ms ease-out;-o-transition: width 200ms ease-out;transition: width 200ms ease-out;z-index:102}
-	#text_nav_side_fixed {margin:0;padding:0;width:220px}
+	#text_nav_side_fixed {margin:0;padding:0;width:160px}
 	#text_nav_side_fixed li {list-style:none}
 	#text_nav_side_fixed a {line-height:36px;color:#fff;color:rgba(255, 255, 255, 0.6);font-size:14px;display:block;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;position:relative}
 	#text_nav_side_fixed > li > a {padding-right:28px}
@@ -190,12 +192,12 @@
 	#text_nav_side_fixed .link_active a {position:relative;color:rgba(255, 255, 255, 0.8)}
 	#text_nav_side_fixed .link_active a:after {position:absolute;right:0;top:8px;border:8px solid rgba(255,255,255,0);border-right-color:#fff;content:'';width:0;height:0}
 	
-	body.side_fixed_open {padding-left:220px}
-	body.side_fixed_open #side_fixed_nav {width:220px}
+	body.side_fixed_open {padding-left:160px}
+	body.side_fixed_open #side_fixed_nav {width:160px}
 	body.side_fixed_open #text_nav_side_fixed ul {height:auto}
 	body.side_fixed #side_fixed_nav {display:block}
 
-	.side_nav_actions {width:220px;overflow:hidden}
+	.side_nav_actions {width:160px;overflow:hidden}
 	.side_nav_actions #side_fixed_nav_toggle {display:block;font-size:14px;margin:10px;padding:17px 13px 22px;float:left;margin:0;color:#fff}
 	.side_nav_actions #toogle_nav_visible {float:right;margin:17px 10px 0 0;border-color:#333}
 	
@@ -808,7 +810,7 @@
 	.sepV_c { margin-right: 18px }
 	.overflow_visible {overflow:visible}
 	.animated {-webkit-transition: height 0.2s !important;-moz-transition: height 0.2s !important;transition: height 0.2s !important}
-	.form_sep + .form_sep {margin-top:10px;padding-top:10px;border-top:1px dashed #e3e3e3}
+	.form_sep + .form_sep {margin-top:10px;}
 	.form_sep:before,.form_sep:after {content:"";display:table;}
 	.form_sep:after {clear:both;}
 	.req:after {content:"*";font-size:14px;color:#cc0000;padding-left:4px}

@@ -185,9 +185,10 @@ $lang['company']='Comapany';
  $lang['branchs']='Branchs';
  $lang['purchase_oder']='Purchase Order';
  $lang['purchase_invoice']='Purchase Invoice';
- $lang['customers_payment_type']='Customers Payment Type';
+ $lang['customers_payment_type']='Payment Type';
 
- $lang['users']='Users';;
+ $lang['users']='Users';
+ $lang['blood_group']='Blood Group';
 
 $lang['back_to_home']='Back To Home';
 $lang['edit']='Edit';
@@ -252,7 +253,21 @@ $lang['isactivated']=" Is Activated";
 $lang['new_user_added_successfully']="New User Added Successfully";
 $lang['this user is alreay added']="This User Alraedy Added";
 $lang['U have No Permission to Add New User']="U have No Permission to Add New User";
-
+$lang['is_deleted']='Is Deleted';
+$lang['You Have NO permission To Delete This Records']='You Have NO permission To Delete This Records';
+$lang['You Have NO permission To Edit This Records']='You Have NO permission To Edit This Records';
+$lang['this user is updated Succesfully']='This User Is Updated Succesfully';
+$lang['back']='Back';
+$lang['clear']=' Clear';
+$lang['addnewuser']='Add New User';
+$lang['acivatewuser']='Add New User';
+$lang['department']='User Groups';
+$lang['selected_department']='Selected User Groups';
+$lang['Select Atleast One User']='Select Atleast One User';
+$lang['deactivated']='Deactivated';
+$lang['activated']='Deactivated';
+$lang['deleted']='Deleted';
+$lang['reload']='Reload';
  
  
 

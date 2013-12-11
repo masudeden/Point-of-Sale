@@ -165,10 +165,10 @@ class Home extends CI_Controller
         redirect('user_groupsci');
     }
     function logout(){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
+       
            session_destroy();
            redirect('userlogin');
-        }
+        
     }
 }
 ?>
