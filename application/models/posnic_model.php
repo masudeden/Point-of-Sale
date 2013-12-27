@@ -246,10 +246,8 @@ class posnic_model extends CI_model{
                return $data;
     }
     function posnic_data_table($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where){
-        
-          $this->db->select()->from($table1);  
-        $this->db->limit('3','0'); 
-        $this->db->order_by($order);
+        $this->db->select()->from($table1);  
+        $this->db->limit($end,'0'); 
         if($where!=null){
         $this->db->where($where);
         }

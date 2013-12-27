@@ -268,7 +268,31 @@ $lang['deactivated']='Deactivated';
 $lang['activated']='Deactivated';
 $lang['deleted']='Deleted';
 $lang['reload']='Reload';
- 
+ $lang['paymenent_type']='Payment Type';
+$lang['code']='Item Code';
+ $lang['barcode']='Item Barcode';
+ $lang['item_name'] 	='Item Name';
+ $lang['description']='Item Description';
+ $lang['cost_price']='Cost';
+ $lang['unit_price']='Unit Price';
+ $lang['discount_amount']='Discount persentage';
+ $lang['start_date']='Starting Date';
+ $lang['end_date']='Ending Date';
+ $lang['tax1']='Tax1';
+ $lang['tax2']='Tax2';
+ $lang['tax']='Tax';
+ $lang['quantity']='Quantity';
+ $lang['location'] 	='Location';
+ $lang['selling_price']='Selling Price';
+ $lang['cate_name']='Category Name';
+ $lang['receiving_item']='Stock Items';
+ $lang['current_stock']='Available Stocks';
+ $lang['supplier']="Supplier";
+ $lang['brands']='Brands';
+ $lang['tax_area']='Tax Area';
+ $lang['tax_Inclusive']='Tax Inclusive';
+ $lang['mrf_price']='M R F';
+ $lang['landing_cost']='Landing Cost';
  
 
 

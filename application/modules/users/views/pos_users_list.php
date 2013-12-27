@@ -101,7 +101,7 @@ function reload_update_user(){
 <section class="container clearfix main_section">
         <div id="main_content_outer" class="clearfix">
             <div id="main_content">
-                        <?php $form =array('name'=>'posnic');
+                        <?php $form =array('name'=>'posnic'); 
                     echo form_open('users/posnic_users',$form) ?>
                         <div class="row">
                             <div class="col-sm-12" id="user_list"><br>

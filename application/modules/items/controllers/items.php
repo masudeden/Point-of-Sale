@@ -8,20 +8,26 @@ class Items extends CI_Controller{
     function index(){     
             $this->get_items();
     }
-    function get_items(){
-                $config["base_url"] = base_url()."index.php/items/get_items";
-	        $config["total_rows"] =$this->posnic->posnic_count(); 
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->posnic->posnic_count();                 
-	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
-	        $data["links"] = $this->pagination->create_links();
-                $data['brands'] =  $this->posnic->posnic_module('brands');
-                $data['suppliers'] = $this->posnic->posnic_module('suppliers');
-                $data['items_category']= $this->posnic->posnic_module('items_category');
-                $this->load->view('item_list',$data);
+    function get_items(){                  
+        if($_SESSION['users_per']['access']==1){
+         $this->load->model('user_groups');
+                    $this->load->model('branch');
+                     if($_SESSION['admin']==2){ 
+        $data['branch']=$this->branch->get_user_for_branch_admin();
+                     }
+                     else{
+        $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
+                     }
+        $data['depa']= $this->user_groups->get_user_groups();  
+        $this->load->view('app/header'); 
+        $this->load->view('table/header');         
+        $this->load->view('branch',$this->posnic->branchs());
+        $this->load->view('item_list',$data);
+        $this->load->view('app/navigation',$this->posnic->modules());
+        $this->load->view('app/footer');
+        }else{
+            redirect('home');
+        }
     }
     function item_magement(){
        if($this->input->post('add')){
@@ -232,6 +238,71 @@ class Items extends CI_Controller{
                             $this->edit_items($guid);
                         }
         }
+    }
+    function items_list(){
+        $aColumns = array( 'guid','code','code',  'name','description','phone', 'company_name',  'active', 'guid','guid', );	
+	$start = "";
+        $end="";
+	if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+		$start = $this->input->get_post('iDisplayStart');
+		$end=	 $this->input->get_post('iDisplayLength');              
+	}	
+	$order="";
+	if ( isset( $_GET['iSortCol_0'] ) )
+	{	
+		for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+		{
+			if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+			{
+				$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+			}
+		}
+		
+                $order = substr_replace( $order, "", -1 );
+                
+	}
+	
+	$like = array();
+	
+        if ( $_GET['sSearch'] != "" )
+	{
+	$like =array('name'=>  $this->input->get_post('sSearch'),
+            'code'=>  $this->input->get_post('sSearch'),
+            'name'=>  $this->input->get_post('sSearch'),
+            'description'=>  $this->input->get_post('sSearch'));
+            
+        }
+        $this->load->model('core_model');
+        $join_where='items.supplier_id=suppliers.guid ';
+      
+       // $rResult1 = $this->core_model->posnic_data_table($end,$start,'items','suppliers',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
+        $rResult1 = $this->posnic->posnic_data_table($end,$start,'items','suppliers',$join_where,$order,$like,'');
+      
+	$iFilteredTotal =5;// $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
+	$iTotal =5;// $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
+	$output1 = array(
+		"sEcho" => intval($_GET['sEcho']),
+		"iTotalRecords" => $iTotal,
+		"iTotalDisplayRecords" => $iFilteredTotal,
+		"aaData" => array()
+	);
+	foreach ($rResult1 as $aRow )
+	{
+		$row = array();
+		for ( $i=0 ; $i<count($aColumns) ; $i++ )
+		{
+			if ( $aColumns[$i] == "id" )
+			{
+				$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+			}
+			else if ( $aColumns[$i] != ' ' )
+			{
+				$row[] = $aRow[$aColumns[$i]];
+			}
+		}
+	$output1['aaData'][] = $row;
+	}
+       echo json_encode($output1);
     }
    
     

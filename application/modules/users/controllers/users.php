@@ -138,16 +138,12 @@ class Users extends CI_Controller{
             
         }
         $this->load->model('core_model');
-       // $rResult1 = $this->core_model->user_fetch_array($sWhere1,$end,$start,$sOrder11);
         $join_where='users_x_branchs.emp_id=users.guid ';
       
-         $rResult1 = $this->core_model->posnic_data_table($end,$start,'users','users_x_branchs',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
-       // $rResult1 = $this->posnic->posnic_data_table($end,$start,'users','users_x_branchs',$join_where,$order,$like,$where);
+        $rResult1 = $this->core_model->posnic_data_table($end,$start,'users','users_x_branchs',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
         $this->load->model('pos_users_model');
-	$iFilteredTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);;
-	
-	$iTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);;
-	
+	$iFilteredTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
+	$iTotal = $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
 	$output1 = array(
 		"sEcho" => intval($_GET['sEcho']),
 		"iTotalRecords" => $iTotal,
@@ -165,15 +161,11 @@ class Users extends CI_Controller{
 			}
 			else if ( $aColumns[$i] != ' ' )
 			{
-				/* General output */
 				$row[] = $aRow[$aColumns[$i]];
 			}
-			
 		}
-            
 	$output1['aaData'][] = $row;
 	}
-	
        echo json_encode($output1);
     }
     function get_pos_users_details(){         
@@ -380,17 +372,16 @@ $r=0;
                             $this->update_user_user_groups($id,$user_groups);                         
                             $this->update_user_branch($id,$user_groups);  
                           
-                         echo "done";
+                         
                              }else{
-                                 
-                                 echo "2 failed" ;
+                               
                              }   
     }else{
-                  echo "failed"       ;
+                  
         }
        }else{
-           echo "You Have No Permission To Edit Users";
-          /// $this->get_pos_users_details();
+           
+         
        }
        if(isset($_POST['Cancel'])){
            redirect('users');
