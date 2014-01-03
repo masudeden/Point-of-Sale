@@ -178,8 +178,13 @@ class Posnic{
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
     }
-     function check_unique($data){
+    function check_unique($data){
           $module=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+          return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
+    }
+    function check_record_unique($data,$table){
+          $module=$table;
           $CI=  get_instance();
           return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
     }
@@ -189,6 +194,15 @@ class Posnic{
     }
     function posnic_update($value,$where){
           $module=$_SESSION['posnic_module'];
+          $CI=  get_instance();
+           if($_SESSION[$module.'_per']['edit']==1){
+               $CI->posnic_model->update($module,$value,$where);
+           }else{
+             redirect($module);
+           }
+    }
+    function posnic_update_record($value,$where,$table){
+          $module=$table;
           $CI=  get_instance();
            if($_SESSION[$module.'_per']['edit']==1){
                $CI->posnic_model->update($module,$value,$where);
@@ -214,6 +228,14 @@ class Posnic{
            }else{
                echo redirect($module);
            }
+    }
+    function posnic_add_record($value,$table){
+          $module=$table;
+          $CI=  get_instance();
+          $branch=array('branch_id'=>$_SESSION['Bid']);
+          return $CI->posnic_model->add($module,$value,$branch,$_SESSION['Uid']);
+               
+          
     }
     function posnic_add($value){
           $module=$_SESSION['posnic_module'];
@@ -319,10 +341,35 @@ class Posnic{
          $branch=$_SESSION['Bid'];
          return $CI->posnic_model->posnic_join_like($table1,$table2,$like,$where,$branch);
     }
-    function posnic_data_table($end,$start,$table1,$table2,$join_where,$order,$like,$where){
+    function posnic_data_table_with_join($end,$start,$table1,$table2,$join_where,$order,$like,$where){
          $CI=  get_instance();  
          $branch=$_SESSION['Bid'];
-         return $CI->posnic_model->posnic_data_table($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where);
+         return $CI->posnic_model->posnic_data_table_with_join($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where);
+    }
+    function data_table_count($table){
+         $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->data_table_count($table,$branch);
+    }
+    function posnic_module_active($id,$table){
+          $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->posnic_module_active($id,$table,$branch);
+    }
+    function posnic_module_deactive($id,$table){
+         $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->posnic_module_deactive($id,$table,$branch);
+    }
+    function get_module_details_for_update($guid,$table){
+         $CI=  get_instance();  
+         return $CI->posnic_model->get_module_details_for_update($guid,$table);
+    }
+            
+    function posnic_data_table($end,$start,$order,$like,$table){
+         $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->posnic_data_table($end,$start,$order,$like,$table,$branch);;
     }
     function branchs(){
         $CI=  get_instance();

@@ -14,7 +14,7 @@
 		//* tooltips_popovers
 		ebro_tooltips_popovers.init();
 		//* main search autocomplete
-		ebro_autocomplete.init();
+		
 		
         //* ebro style switcher
         ebro_styleSwitcher.init();
@@ -300,7 +300,7 @@
 			$('.main_search .typeahead').typeahead({
 				name: 'ebro-countries',
 				valueKey: 'name',
-				prefetch: 'js/lib/typeahead.js/example.json',
+				prefetch: '',
 				template: [
 					'<p class="sg_main"><b>{{name}}</b> <small class="text-muted">{{tld}}</small></p>',
 					'<p class="sg_desc">{{subregion}}</p>'

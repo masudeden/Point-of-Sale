@@ -17,11 +17,37 @@
         -ms-animation: fadein 2s !important; /* Internet Explorer */
          -o-animation: fadein 2s !important;
             animation: fadein 2s !important;
-            border-radius: 10px 10px 10px 10px !important;
-            padding-left: 25px !important;
+            border-radius: 10px 0px 10px 0px !important;
+            padding-left: 45px !important;
             text-shadow: 1px 0px  #999999 !important;
             text-transform: uppercase !important;
             border-right: solid 4px #006600 !important;;
             border-left: solid 4px #006600 !important;;
+ }
+ .alert-warning{
+      font-size: 13px !important;
+      font-weight:500 !important; 
+       -webkit-animation: fadein 2s !important; /* Safari and Chrome */
+       -moz-animation: fadein 2s !important; /* Firefox */
+        -ms-animation: fadein 2s !important; /* Internet Explorer */
+         -o-animation: fadein 2s !important;
+            animation: fadein 2s !important;
+            border-radius: 0px 0px 20px 0px !important;
+            padding-left: 45px !important;
+            text-shadow: 1px 0px  #ffffff !important;
+            text-transform: uppercase !important;
+            border-right: solid 4px #000 !important;;
+            border-left: solid 4px #006600 !important;;
+     color: #ffffff !important;
+       background: rgb(62,124,62) !important;
+background: -moz-radial-gradient(center, ellipse cover,  rgba(62,124,62,1) 0%, rgba(72,172,46,1) 100%) !important;
+background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,rgba(62,124,62,1)), color-stop(100%,rgba(72,172,46,1))) !important;
+background: -webkit-radial-gradient(center, ellipse cover,  rgba(62,124,62,1) 0%,rgba(72,172,46,1) 100%) !important;
+background: -o-radial-gradient(center, ellipse cover,  rgba(62,124,62,1) 0%,rgba(72,172,46,1) 100%) !important;
+background: -ms-radial-gradient(center, ellipse cover,  rgba(62,124,62,1) 0%,rgba(72,172,46,1) 100%) !important;
+background: radial-gradient(ellipse at center,  rgba(62,124,62,1) 0%,rgba(72,172,46,1) 100%) !important;
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3e7c3e', endColorstr='#48ac2e',GradientType=1 ) !important;
+
+
  }
  

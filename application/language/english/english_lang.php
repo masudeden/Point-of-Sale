@@ -295,15 +295,23 @@ $lang['code']='Item Code';
  $lang['landing_cost']='Landing Cost';
  
  // error messages
- $lang['You Have NO Permission To Add User']='You Have NO Permission To Add User';
- $lang['You Have NO Permission To Edit User']='You Have NO Permission To Edit User';
+ $lang['You Have NO Permission To Add User']='You Have NO Permission To Add Record';
+ $lang['You Have NO Permission To Edit User']='You Have NO Permission To Edit Record';
  $lang['You Have NO Permission To Add Record']='You Have NO Permission To Add Record';
  $lang['Please Enter All Required Fields']='Please Enter All Required Fields';
  $lang['This Record Already Added']='This Record Already Added';
  $lang['New Record Added']='This Record Already Added';
- 
+ $lang['You Have NO Permission To Edit']='You Have NO Permission To Edit ';
+ $lang['You Have NO Permission To Add']='You Have NO Permission To Add ';
+ $lang['Are you Sure To Delete']='Are you Sure To Delete ';
+ $lang['Select Atleast One']='Select Atleast One ';
+ // Brands
 
-
+  $lang['brands_name']='Brands Name';
+  $lang['updated']='Updated';
+  $lang['brand']='Brand';
+  $lang['is_already_added']='Is Already Added';
+  
 
 
 ?>﻿

@@ -10,52 +10,107 @@ class Brands extends CI_Controller
         $this->get_brands(); 
     }
      function get_brands(){
-        $config["base_url"] = base_url()."index.php/brands/get_brands";
-	        $config["total_rows"] =$this->posnic->posnic_count(); 
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->posnic->posnic_count();                 
-	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
-	        $data["links"] = $this->pagination->create_links();  
-                $this->load->view('brands_list',$data);
+        $this->load->view('template/app/header'); 
+        $this->load->view('template/brands/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $data['active']='brands';
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
     }
-    function edit_brands($guid){
-         $where=array('guid'=>$guid);
-            if($_SESSION['Posnic_Edit']==="Edit"){
-                  $data['row']=$this->posnic->posnic_result($where);
-                   $this->load->view('edit_brands',$data);
-            }else{
-                echo "you have no permission to edit data";
-                $this->get_customers_payment_type();
-            }
-        
+    function brands_data_table(){
+        $aColumns = array( 'guid','name','name','name','name','active' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('name'=>  $this->input->get_post('sSearch'));
+				
+			}
+					   
+			 $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'brands');
+		   
+		$iFilteredTotal =$this->posnic->data_table_count('brands');
+		
+		$iTotal =$this->posnic->data_table_count('brands');
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
     }
+   
+   
     function update_brands(){
-         
-           if($this->input->post('save')){
-                    if($_SESSION['Posnic_Edit']==="Edit"){
-                    $this->form_validation->set_rules("name",$this->lang->line('tax_type'),'required'); 
-                    $id=  $this->input->post('id');
-                    $name=$this->input->post('name');                
-                    $data=array('guid !='=>$id,'name'=>$name);
-                if($this->posnic->check_unique($data)){
+           if($_SESSION['brands_per']['edit']==1){
+           if($this->input->post('brands_name')){
+                $this->form_validation->set_rules("brands_name",$this->lang->line('brands_name'),'required'); 
+                if ( $this->form_validation->run() !== false ) {  
+                      $id=  $this->input->post('guid');
+                      $name=$this->input->post('brands_name');                
+                      $where=array('guid !='=>$id,'name'=>$name);
+                if($this->posnic->check_record_unique($where,'brands')){
                     $value=array('name'=>$name);
-                    $where=array('guid'=>$id);
-                    $this->posnic->posnic_update($value,$where);
-                    $this->get_brands();
-            }else{
-                    echo "this payment type is already added in this branch";
-                    $this->edit_brands($id);
-            }
-            }else{
-                    echo "you have no permission to edit data";
-                    $this->get_brands();  
-            }      
-           }	             
-           if($this->input->post('cancel')){
-               redirect('brands/get_brands');
+                    $update_where=array('guid'=>$id);
+                    $this->posnic->posnic_update_record($value,$update_where,'brands');
+                    echo 'TRUE';
+                }else{
+                        echo "ALREADY";
+                }
+                }else{
+                    echo "FALSE";
+                }
+                }else{
+                    echo "FALSE";
+                }	             
+           }else{
+               echo "NOOP";
            }
     }
     function inactive_brands($guid){
@@ -66,21 +121,44 @@ class Brands extends CI_Controller
               redirect('brands');
           }
     }
-    function active_brands($guid){
-          if($_SESSION['Posnic_User']=='admin'){
-              $this->posnic->posnic_active($guid);
-              redirect('brands');
-          }else{
-               redirect('brands');
-          }
+    function active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'brands'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
     }
-    function delete_brands_ad($guid){
-      if($_SESSION['Posnic_User']=='admin'){
+    function deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'brands'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function edit_brands($guid){
+        if($_SESSION['brands_per']['edit']==1){
+        $data=  $this->posnic->get_module_details_for_update($guid,'brands');
+        echo json_encode($data);
+        }else{
+            echo 'FALSE';
+        }
+    }
+            
+    
+    function delete(){
+        if($_SESSION['brands_per']['delete']==1){
+            if($this->input->post('guid')){
+             $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid);
-             redirect('brands');
-          }else{
-            redirect('brands');
-          }
+             echo 'TRUE';
+            }
+           }else{
+            echo 'FALSE';
+        }
     }
     function restore($guid){
           if($_SESSION['Posnic_User']=='admin'){
@@ -149,31 +227,27 @@ class Brands extends CI_Controller
         
     }
     function add_brands(){
-          
-           if($this->input->post('save')){
-                if($_SESSION['Posnic_Add']==="Add"){
-                $this->form_validation->set_rules("name",$this->lang->line('tax_type'),'required');                
-                  if ( $this->form_validation->run() !== false ) {			                          
-                           $name=$this->input->post('name');
-                           $data=array('name'=>$name);
-                            if($this->posnic->check_unique($data)){
-                                    $value=array('name'=>$name);
-                                    $this->posnic->posnic_add($value);
-                                    redirect('brands/get_brands');  
-                            }else{
-                                echo "this brand is already added";
-                                $this->load->view('add_brand');
-                                }                    
-                          }else{
-                                $this->load->view('add_brand');
-                          }                          
-                  }else{
-                       echo "You have no permmission to add new brands";
-                       $this->get_brands();
-                  }
-           }
-           if($this->input->post('cancel')){
-                redirect('brands/get_brands');  
+            if($_SESSION['brands_per']['add']==1){
+           if($this->input->post('brands_name')){
+                $this->form_validation->set_rules("brands_name",$this->lang->line('brands_name'),'required'); 
+                if ( $this->form_validation->run() !== false ) { 
+                      $name=$this->input->post('brands_name');                
+                      $where=array('name'=>$name);
+                if($this->posnic->check_record_unique($where,'brands')){
+                    $value=array('name'=>$name);
+                    $this->posnic->posnic_add_record($value,'brands');
+                    echo 'TRUE';
+                }else{
+                        echo "ALREADY";
+                }
+                }else{
+                    echo "FALSE";
+                }
+                }else{
+                       echo "FALSE";
+                }	             
+           }else{
+               echo "NOOP";
            }
          
     }

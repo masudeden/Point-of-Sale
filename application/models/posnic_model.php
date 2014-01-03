@@ -245,7 +245,7 @@ class posnic_model extends CI_model{
                }
                return $data;
     }
-    function posnic_data_table($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where){
+    function posnic_data_table_with_join($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where){
         $this->db->select()->from($table1);  
         $this->db->limit($end,'0'); 
         if($where!=null){
@@ -254,11 +254,45 @@ class posnic_model extends CI_model{
         //$this->db->where('users.guid <>',2);
         $this->db->or_like($like);
         $join_where=$join_where."AND $table2.branch_id ='".$branch." ' AND $table2.delete_status=0";
-          $this->db->join($table2, "$join_where".'','left');
+        $this->db->join($table2, "$join_where".'','left');
         
           $query=$this->db->get();
              return $query->result_array();
             
+    }
+    function data_table_count($table,$branch){
+        $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0);
+        $sql=  $this->db->get();
+        return  $sql->num_rows();
+    }
+    function posnic_module_active($id,$table,$branch){
+        $this->db->where('guid',$id);
+        $this->db->update($table,array('active'=>0));
+        $report = array();
+        $report['error'] = $this->db->_error_number();
+        $report['message'] = $this->db->_error_message();
+        return $report;
+    }
+    function posnic_module_deactive($id,$table,$branch){
+        $this->db->where('guid',$id);
+        $this->db->update($table,array('active'=>1));
+        $report = array();
+        $report['error'] = $this->db->_error_number();
+        $report['message'] = $this->db->_error_message();
+        return $report;
+    }
+    function get_module_details_for_update($guid,$table){
+        $this->db->select()->from($table)->where('guid',$guid);
+        $sql=  $this->db->get();
+        return $sql->result();
+    }
+    function posnic_data_table($end,$start,$order,$like,$table,$branch){
+         $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0);  
+         $this->db->limit($end,$start); 
+         $this->db->order_by($order);
+         $this->db->or_like($like);     
+         $query=$this->db->get();
+         return $query->result_array();
     }
     function add_module($module,$value,$branch){
        $this->db->insert($module,$value);
