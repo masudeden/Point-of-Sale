@@ -265,7 +265,7 @@ $lang['department']='User Groups';
 $lang['selected_department']='Selected User Groups';
 $lang['Select Atleast One User']='Select Atleast One User';
 $lang['deactivated']='Deactivated';
-$lang['activated']='Deactivated';
+$lang['activated']='Activated';
 $lang['deleted']='Deleted';
 $lang['reload']='Reload';
  $lang['paymenent_type']='Payment Type';
@@ -293,6 +293,14 @@ $lang['code']='Item Code';
  $lang['tax_Inclusive']='Tax Inclusive';
  $lang['mrf_price']='M R F';
  $lang['landing_cost']='Landing Cost';
+ 
+ // error messages
+ $lang['You Have NO Permission To Add User']='You Have NO Permission To Add User';
+ $lang['You Have NO Permission To Edit User']='You Have NO Permission To Edit User';
+ $lang['You Have NO Permission To Add Record']='You Have NO Permission To Add Record';
+ $lang['Please Enter All Required Fields']='Please Enter All Required Fields';
+ $lang['This Record Already Added']='This Record Already Added';
+ $lang['New Record Added']='This Record Already Added';
  
 
 

@@ -167,8 +167,8 @@ class Pos_users_model extends CI_Model{
        function get(){
          return TRUE;
        }
-       function user_checking($email,$emp_id,$dob){
-       $this->db->select()->from('users')->where('email',$email)->or_where('user_id',$emp_id);
+       function user_checking($email,$emp_id,$dob,$phone){
+       $this->db->select()->from('users')->or_where('email',$email)->or_where('user_id',$emp_id)->or_where('phone',$phone);
        $sql=$this->db->get();
        if($sql->num_rows()>0){
                return TRUE;

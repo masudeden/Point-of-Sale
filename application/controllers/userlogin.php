@@ -32,8 +32,7 @@ function employee()
 function testlogin(){
     echo mysql_real_escape_string($_POST['username']);;
 }
-        function login(){
-    
+ function login(){
     $this->load->library('form_validation');
    
     if($this->input->post('login')){

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); if($_SESSION['Setting']['Branch']==1){
 ?>
-<script type="text/javascript" src="<?php echo base_url(); ?>js/jquery.min.js"></script>
+
 <script>
     function change_branch(){
         var posnic = document.getElementById("branch").value;

@@ -23,23 +23,32 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_user').click(function() { 
-              
+                <?php if($_SESSION['users_per']['add']==1){ ?>
                 var inputs = $('#posnic_user_2').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/users/add_pos_users_details')?>",
                             data: inputs,
                             type:'POST',
-                            success: function(response) {
-                          if(response){
-                                       bootbox.alert('New User Added ');                                                                            
-                                       $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#posnic_user_2").trigger('reset');
+                            complete: function(response) {
+                          if(response['responseText']=='true'){
+                             bootbox.alert("<?php echo $this->lang->line('New Record Added ')?>");;                                                                            
+                             $("#dt_table_tools").dataTable().fnDraw();
+                             $("#posnic_user_2").trigger('reset');
+                          }else if(response['responseText']=='already'){
+                             bootbox.alert("<?php echo $this->lang->line('This Record Already Added')?>");      
+                          }else if(response['responseText']=='noop'){
+                              bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");   
+                          }else{
+                               bootbox.alert("<?php echo $this->lang->line('Please Enter All Required Fields')?>");  
                           }
+                          
                        }
-                 });
+                });<?php }else{ ?>
+                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
+                    <?php }?>
         });
          $('#update_users').click(function() { 
-              
+                <?php if($_SESSION['users_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/users/upadate_pos_users_details')?>",
@@ -54,9 +63,13 @@
                           }
                        }
                  });
+                 <?php }else{ ?>
+                  bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records')?>");  
+                    <?php }?>
         });
      });
 function posnic_add_new(){
+    <?php if($_SESSION['users_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_user_form').show('slow');
       $('#delete').attr("disabled", "disabled");
@@ -64,6 +77,9 @@ function posnic_add_new(){
       $('#active').attr("disabled", "disabled");
       $('#deactive').attr("disabled", "disabled");
       $('#users_lists').removeAttr("disabled");
+      <?php }else{ ?>
+                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add User')?>");  
+                    <?php }?>
 }
 function posnic_users_lists(){
       $('#edit_user_form').hide('hide');

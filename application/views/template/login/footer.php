@@ -56,7 +56,7 @@
 					
 					// Send
 					$.ajax({
-						url: '<?php echo base_url() ?>/index.php/userlogin/login',
+						url: '<?php echo base_url() ?>index.php/userlogin/login',
 						data:data,
 						type: 'POST',
 						success: function(response,textStatus, XMLHttpRequest)

@@ -181,7 +181,7 @@ class Users extends CI_Controller{
                      }
         $data['depa']= $this->user_groups->get_user_groups();  
         $this->load->view('template/app/header'); 
-        $this->load->view('template/table/header');         
+        $this->load->view('template/user/header');         
         $this->load->view('template/branch',$this->posnic->branchs());
         $this->load->view('pos_users_list',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());
@@ -374,13 +374,13 @@ $r=0;
                           
                          
                              }else{
-                               
+                               echo "already";
                              }   
     }else{
-                  
+           echo "validation";       
         }
        }else{
-           
+           echo "noop";
          
        }
        if(isset($_POST['Cancel'])){
@@ -639,7 +639,7 @@ $r=0;
                           $dob= strtotime($yourdatetime);
                           $created_by=$_SESSION['Uid'];
                           $this->load->model('pos_users_model');
-                          if($this->pos_users_model->user_checking($email,$emp_id,$dob)==FALSE){  
+                          if($this->pos_users_model->user_checking($email,$emp_id,$dob,$phone)==FALSE){  
                                  $config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '10000';
@@ -663,23 +663,18 @@ $r=0;
                           $id= $this->pos_users_model->adda_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,$file_name);
                           $this->add_user_branchs($id,$user_groups);
                           $this->add_user_user_groups($id,$user_groups);                           
-                    redirect('users/new_users');
+                   echo 'true';
                           }
                           else{
-                              $data['msg']='this user is alreay added';
-                              $data['type']='danger';
-                                       
-                             $this->user_error($data);                       
+                              echo 'already';
+                                                  
                           }
             }else{
-                   $data['msg']='';
-                   $data['type']='';
-                         $this->user_error($data);
+                  echo "val_error";
               }    
              }                
         }else{
-               echo "U have No Permission to Add New User";
-                $this->get_pos_users_details();
+               echo "noop";
            }
         }
     function add_user_user_groups($id,$depapartment){
