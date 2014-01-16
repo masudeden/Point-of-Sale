@@ -257,6 +257,7 @@ $lang['is_deleted']='Is Deleted';
 $lang['You Have NO permission To Delete This Records']='You Have NO permission To Delete This Records';
 $lang['You Have NO permission To Edit This Records']='You Have NO permission To Edit This Records';
 $lang['this user is updated Succesfully']='This User Is Updated Succesfully';
+$lang['You Have NO Permission To Delete']='You Have NO Permission To Delete';
 $lang['back']='Back';
 $lang['clear']=' Clear';
 $lang['addnewuser']='Add New User';

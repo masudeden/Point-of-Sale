@@ -44,7 +44,7 @@
                                     }
                        }
                 });<?php }else{ ?>
-                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
+                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('items_category');?>', { type: "error" });         
                     <?php }?>
         });
          $('#update_items_category').click(function() { 
@@ -70,7 +70,7 @@
                        }
                  });
                  <?php }else{ ?>
-                  bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records')?>");  
+                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('items_category');?>', { type: "error" });         
                     <?php }?>
         });
      });
@@ -84,7 +84,7 @@ function posnic_add_new(){
       $('#deactive').attr("disabled", "disabled");
       $('#items_category_lists').removeAttr("disabled");
       <?php }else{ ?>
-                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add User')?>");  
+                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('items_category');?>', { type: "error" });         
                     <?php }?>
 }
 function posnic_items_category_lists(){

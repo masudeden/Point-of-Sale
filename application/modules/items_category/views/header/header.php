@@ -97,7 +97,7 @@
 
                         }
     }); <?php }else{?>
-           bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Delete This Records') ?>");
+             $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('items_category');?>', { type: "error" });         
    <?php }
 ?>
                         }

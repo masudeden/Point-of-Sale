@@ -120,7 +120,7 @@
                        }
                  });
                  <?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item_code');?>', { type: "error" });                           
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('item_code');?>', { type: "error" });                           
                     <?php }?>
         });
      });
