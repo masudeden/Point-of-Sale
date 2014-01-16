@@ -23,16 +23,7 @@
                                       "sAjaxSource": "<?php echo base_url() ?>index.php/item_code/data_table",
                                        aoColumns: [  
                                     
-         { "bVisible": false} , {	"sName": "ID",
-                   						"bSearchable": false,
-                   						"bSortable": false,
-                                                                
-                   						"fnRender": function (oObj) {
-                   							return "<input type=checkbox value='"+oObj.aData[0]+"' >";
-								},
-								
-								
-							},
+         { "bVisible": false} , 
         
         null, null,  null, null,  null,  null, 
 
@@ -41,7 +32,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[5]==0){
+                   							if(oObj.aData[8]==0){
                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
@@ -56,7 +47,7 @@
                                                                 
                    						"fnRender": function (oObj) {
                                                                
-                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[2]+'","'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('set_code') ?>"><i class="glyphicon glyphicon-barcode"></i></span></a>';
+                                                                        return '<a href=javascript:set_item_code("'+oObj.aData[9]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('set_code') ?>"><i class="glyphicon glyphicon-barcode"></i></span></a>';
                                                                 
                                                                 },
 								
@@ -73,84 +64,31 @@
                                     );
                                    
 			}
-    function user_function(item_code,guid){
-    <?php if($_SESSION['item_code_per']['delete']==1){ ?>
-             bootbox.confirm("Are you Sure To Delete This Items ("+item_code+")", function(result) {
-             if(result){
-            $.ajax({
-                url: '<?php echo base_url() ?>/index.php/item_code/delete',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                success: function(response)
-                {
-                    if(response){
-                          bootbox.alert('User '+item_code+' Is Deleted');
-                        $("#dt_table_tools").dataTable().fnDraw();
-                    }}
-            });
-        
 
-                        }
-    }); <?php }else{?>
-           bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Delete This Records') ?>");
-   <?php }
-?>
-                        }
-            function posnic_deactive(user,guid){
-                $.ajax({
-                url: '<?php echo base_url() ?>index.php/item_code/deactive',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                success: function(response)
-                {
-                    if(response){
-                         $.bootstrapGrowl(user+'<?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
-                        $("#dt_table_tools").dataTable().fnDraw();
-                    }
-                }
-            });
-            }
-            function posnic_active(user,guid){
-                           $.ajax({
-                url: '<?php echo base_url() ?>index.php/item_code/active',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                success: function(response)
-                {
-                    if(response){
-                         $.bootstrapGrowl(user+'<?php echo $this->lang->line('isactivated');?>', { type: "success" });
-                        $("#dt_table_tools").dataTable().fnDraw();
-                    }
-                }
-            });
-            }
-           function edit_function(guid){
+           
+          
+           function set_item_code(guid){
                        $("#parsley_reg").trigger('reset');
                         <?php if($_SESSION['item_code_per']['edit']==1){ ?>
+                                                               
                             $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/item_code/edit_item_code/"+guid,                      
+                              url: "<?php echo base_url() ?>index.php/items/edit_items/"+guid,                     
                              data: "", 
                              dataType: 'json',               
                              success: function(data)        
                              {    
                                  $("#user_list").hide();
                                  $('#edit_item_form').show('slow');
-                                 $('#delete').attr("disabled", "disabled");
-                                 $('#posnic_add_item_code').attr("disabled", "disabled");
-                                 $('#active').attr("disabled", "disabled");
-                                 $('#deactive').attr("disabled", "disabled");
-                                 $('#item_code_lists').removeAttr("disabled");
-                                 $('#parsley_reg #guid').val(data[0]['guid']);
-                                 $('#parsley_reg #item_code_name').val(data[0]['name']);
+                                 $('#posnic_add_items').attr("disabled", "disabled");    
+                                 $('#items_lists').removeAttr("disabled");
+                                 $('#edit_item_form #guid').val(guid);
+                                 $('#edit_item_form #sku').val(data[0]['code']);
+                                 $('#edit_item_form #item_name').val(data[0]['name']);
+                                 $('#edit_item_form #brand').val(data[0]['b_name']);
+                                 $('#edit_item_form #category').val(data[0]['c_name']);
+                                 $('#edit_item_form #location').val(data[0]['location']);
+                                 $('#edit_item_form #ean_upc_code').val(data[0]['upc_ean_code']);
+                                 
                                
                              } 
                            });
@@ -159,7 +97,7 @@
                               
                          
                         <?php }else{?>
-                                bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records') ?>");
+                                $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item_code');?>', { type: "error" });                           
                         <?php }?>
                        }
 		</script>

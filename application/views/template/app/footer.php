@@ -54,7 +54,7 @@
                 <!-- 2col multiselect -->
                         <script src="<?php echo base_url() ?>template/app/js/lib/multi-select/js/jquery.multi-select.js"></script>
                 <!-- select2 -->
-                        <script src="<?php echo base_url() ?>template/app/js/lib/select2/select2.min.js"></script>
+                        
                 <!-- datepicker -->
                         <script src="<?php echo base_url() ?>template/app/js/lib/datepicker/js/bootstrap-datepicker.js"></script>
                 <!-- iCheck -->

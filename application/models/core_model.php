@@ -88,8 +88,8 @@ class Core_model extends CI_Model{
         return $query->result_array();
             
     }
-    function items_data_table($end,$start,$order,$like){
-                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name')->from('items');
+    function items_data_table($end,$start,$order,$like,$branch){
+                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name')->from('items')->where('items.branch_id',$branch);
                 $this->db->join('items_category', 'items.category_id=items_category.guid','left');
                 $this->db->join('brands', 'items.brand_id=brands.guid','left');
                // $this->db->join('supplier', 'stock.supplier=supplier.id','left');
@@ -99,6 +99,14 @@ class Core_model extends CI_Model{
                 $this->db->like($like);     
                 $query=$this->db->get();
                 return $query->result_array(); 
+    }
+    function get_items_details_for_update($branch,$guid){
+                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name')->from('items')->where('items.branch_id',$branch)->where('items.guid',$guid);
+                $this->db->join('items_category', 'items.category_id=items_category.guid','left');
+                $this->db->join('brands', 'items.brand_id=brands.guid','left');
+                
+                $query=$this->db->get();
+                return $query->result_array();  
     }
                                     
 }

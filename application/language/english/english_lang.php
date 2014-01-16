@@ -329,6 +329,9 @@ $lang['code']='Item Code';
   $lang['status']='Status';
   $lang['action']='Action';
   $lang['set_code']='Set Code';
+  $lang['search']='Search';
+  $lang['add_code']='Set Code';
   $lang['ean_upc_code']='EAN / UPC Code';
+  $lang['set_or_reset']='Set / Reset';
 
 ?>﻿

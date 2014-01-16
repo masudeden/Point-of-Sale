@@ -21,56 +21,106 @@
  
 </style>	
 <script type="text/javascript">
-     $(document).ready( function () {
-         $('#add_new_item').click(function() { 
-                <?php if($_SESSION['items_per']['add']==1){ ?>
+        $(document).ready( function () {
+                   $('#search_item').change(function() {
+                   var guid = $('#search_item').select2('data').id;
+                   $.ajax({                                      
+                              url: "<?php echo base_url() ?>index.php/items/edit_items/"+guid,                     
+                             data: "", 
+                             dataType: 'json',               
+                             success: function(data)        
+                             {    
+                                 $('#add_item_form #guid').val(guid);
+                                 $('#add_item_form #sku').val(data[0]['code']);
+                                 $('#add_item_form #brand').val(data[0]['b_name']);
+                                 $('#add_item_form #category').val(data[0]['c_name']);
+                                 $('#add_item_form #location').val(data[0]['location']);
+                                 $('#add_item_form #ean_upc_code').val(data[0]['upc_ean_code']);                               
+                             } 
+                           });
+          });
+         $('#search_item').select2({
+                placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('item') ?>",
+                ajax: {
+                     url: '<?php echo base_url() ?>/index.php/item_code/get_items_details',
+                     data: function(term, page) {
+                            return {types: ["exercise"],
+                                limit: -1,
+                                term: term
+                            };
+                     },
+                    type:'POST',
+                    dataType: 'json',
+                    quietMillis: 100,
+                    data: function (term) {
+                        return {
+                            term: term
+                        };
+                    },
+                    results: function (data) {
+                      var results = [];
+                      $.each(data, function(index, item){
+                        results.push({
+                          id: item.guid,
+                          text: item.name
+                        });
+                      });
+                      return {
+                          results: results
+                      };
+                    }
+                }
+            });
+
+         $('#set_new_code').click(function() { 
+                <?php if($_SESSION['item_code_per']['add']==1){ ?>
                 var inputs = $('#add_item').serialize();
                       $.ajax ({
-                            url: "<?php echo base_url('index.php/items/add_items')?>",
+                            url: "<?php echo base_url('index.php/item_code/set_item_code')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                 if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('item').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('item_code').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#add_item").trigger('reset');
                                        posnic_items_lists();
                                     }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('item').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('item_code').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item_code');?>', { type: "error" });                           
                                     }
                        }
                 });<?php }else{ ?>
-                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
+                  $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item_code');?>', { type: "error" });                           
                     <?php }?>
         });
          $('#update_items').click(function() { 
                 <?php if($_SESSION['items_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
-                      $.ajax ({
-                            url: "<?php echo base_url('index.php/items/update_items')?>",
+                       $.ajax ({
+                            url: "<?php echo base_url('index.php/item_code/set_item_code')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
-                                  if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('item').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
+                                if(response['responseText']=='TRUE'){
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('item_code').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#parsley_reg").trigger('reset');
+                                       $("#add_item").trigger('reset');
                                        posnic_items_lists();
                                     }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('item').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('item_code').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('item');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item_code');?>', { type: "error" });                           
                                     }
                        }
                  });
                  <?php }else{ ?>
-                  bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records')?>");  
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item_code');?>', { type: "error" });                           
                     <?php }?>
         });
      });
@@ -78,13 +128,10 @@ function posnic_add_new(){
     <?php if($_SESSION['items_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_item_form').show('slow');
-      $('#delete').attr("disabled", "disabled");
-      $('#posnic_add_items').attr("disabled", "disabled");
-      $('#active').attr("disabled", "disabled");
-      $('#deactive').attr("disabled", "disabled");
+      $('#posnic_add_items').attr("disabled", "disabled");    
       $('#items_lists').removeAttr("disabled");
       <?php }else{ ?>
-                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add User')?>");  
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item_code');?>', { type: "error" });                           
                     <?php }?>
 }
 function posnic_items_lists(){
@@ -109,10 +156,7 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_items" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
-                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
-                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
-                        <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
+                        <a href="javascript:posnic_add_new()" id="posnic_add_items" class="btn btn-warning" ><i class="glyphicon glyphicon-barcode"></i> <?php echo $this->lang->line('add_code') ?></a>  
                         <a href="javascript:posnic_items_lists()" class="btn btn-success" id="items_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('items') ?></a>
                 </div>
             </div>
@@ -134,16 +178,15 @@ function reload_update_user(){
                                     <table id="dt_table_tools" class="table-striped table-condensed" style="width: 100%"><thead>
                                         <tr>
                                           <th>Id</th>
-                                          <th >Select</th>
                                           <th ><?php echo $this->lang->line('ean_upc_code'); ?></th>
-                                          <th >S K U</th>
-                                          <th >Name</th>
-                                          <th >Location</th>
-                                          <th >Brand Name</th>
-                                          <th >Category </th>
+                                          <th ><?php echo $this->lang->line('sku'); ?></th>
+                                          <th ><?php echo $this->lang->line('name'); ?></th>
+                                          <th ><?php echo $this->lang->line('location'); ?></th>
+                                          <th ><?php echo $this->lang->line('brand'); ?></th>
+                                          <th ><?php echo $this->lang->line('category'); ?> </th>
                                           
-                                          <th>Status</th>
-                                          <th>Action</th>
+                                          <th><?php echo $this->lang->line('status'); ?></th>
+                                          <th><?php echo $this->lang->line('action'); ?></th>
                                          </tr>
                                       </thead>
                                       <tbody></tbody>
@@ -163,94 +206,46 @@ function reload_update_user(){
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                  <div class="row">
-                     <div class="col-lg-12">
+                     <div class="col-lg-2"></div>
+                     <div class="col-lg-8">
                           <div class="panel panel-default">
                                <div class="panel-heading">
-                                     <h4 class="panel-title"><?php echo $this->lang->line('item_details') ?></h4>  
-                                   
+                                     <h4 class="panel-title"><?php echo $this->lang->line('ean_upc_code') ?></h4>  
+                                     <input type="hidden" name="guid" id="guid">
                                </div>
                               <br>
                               <div class="row">
-                                       <div class="col col-lg-3" >
+                                       <div class="col col-lg-12" >
                                            <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-4">
+                                                    <div class="form_sep" id="select_item">
+                                                         <label for="items_category_name" class="req"><?php echo $this->lang->line('item') ?></label>                                                                                                       
+                                                           
+                                                            <?php $sku=array('name'=>'sku',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'search_item',
+                                                                                    'value'=>set_value('sku'));
+                                                           echo form_input($sku)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-3">
                                                     <div class="form_sep">
-                                                         <label for="sku" class="req"><?php echo $this->lang->line('sku') ?></label>                                                                                                       
+                                                         <label for="sku" ><?php echo $this->lang->line('sku') ?></label>                                                                                                       
                                                            <?php $sku=array('name'=>'sku',
                                                                                     'class'=>'required form-control',
+                                                                                    'disabled'=>'disabled',
                                                                                     'id'=>'sku',
                                                                                     'value'=>set_value('sku'));
                                                            echo form_input($sku)?> 
                                                     </div>
                                                    </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                              <div class="col col-lg-3">
                                                     <div class="form_sep">
-                                                         <label for="bar_code" class="req"><?php echo $this->lang->line('bar_code') ?></label>                                                                                                       
-                                                           <?php $bar_code=array('name'=>'bar_code',
-                                                                                    'class'=>'required form-control',
-                                                                                    'id'=>'bar_code',
-                                                                                    'value'=>set_value('bar_code'));
-                                                           echo form_input($bar_code)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="name" class="req"><?php echo $this->lang->line('name') ?></label>                                                                                                       
-                                                           <?php $name=array('name'=>'name',
-                                                                                    'class'=>'required form-control',
-                                                                                    'id'=>'name',
-                                                                                    'value'=>set_value('name'));
-                                                           echo form_input($name)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="brand" class="req"><?php echo $this->lang->line('brand') ?></label>                                                                                                       
-                                                             <select id="brand" name="brand" class="form-control required"></select>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                              </div>
-                              <div class="row">
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="location" class="req"><?php echo $this->lang->line('location') ?></label>                                                                                                       
+                                                         <label for="location" ><?php echo $this->lang->line('location') ?></label>                                                                                                       
                                                            <?php $location=array('name'=>'location',
                                                                                     'class'=>'required form-control',
+                                                                                    'disabled'=>'disabled',
                                                                                     'id'=>'location',
                                                                                     'value'=>set_value('location'));
                                                            echo form_input($location)?> 
@@ -259,155 +254,48 @@ function reload_update_user(){
                                                <div class="col col-lg-1"></div>
                                                </div>
                                         </div>                              
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="category" class="req"><?php echo $this->lang->line('category') ?></label>                                                                                                       
-                                                            <select id="category" name="category" class="form-control required"></select>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="name" class="req"><?php echo $this->lang->line('name') ?></label>                                                                                                       
-                                                           <?php $name=array('name'=>'name',
-                                                                                    'class'=>'required form-control',
-                                                                                    'id'=>'name',
-                                                                                    'value'=>set_value('name'));
-                                                           echo form_input($name)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
                               </div>
                               <div class="row">
-                                       <div class="col col-lg-4" >
+                                       <div class="col col-lg-12" >
                                            <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="cost" class="req"><?php echo $this->lang->line('cost') ?></label>                                                                                                       
-                                                           <?php $cost=array('name'=>'cost',
-                                                                                    'class'=>'required form-control',
-                                                                                    'id'=>'cost',
-                                                                                    'value'=>set_value('cost'));
-                                                           echo form_input($cost)?> 
-                                                    </div>
-                                                   </div>
                                                <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                               <div class="col col-lg-4">
                                                     <div class="form_sep">
-                                                         <label for="mrp" class="req"><?php echo $this->lang->line('mrp') ?></label>                                                                                                       
-                                                           <?php $mrp=array('name'=>'mrp',
+                                                         <label for="brand" ><?php echo $this->lang->line('brand') ?></label>                                                                                                       
+                                                           <?php $brand=array('name'=>'brand',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'mrp',
-                                                                                    'value'=>set_value('mrp'));
-                                                           echo form_input($mrp)?> 
+                                                                                    'id'=>'brand',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('brand'));
+                                                           echo form_input($brand)?> 
                                                     </div>
                                                    </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                               <div class="col col-lg-3">
                                                     <div class="form_sep">
-                                                         <label for="selling_price" class="req"><?php echo $this->lang->line('selling_price') ?></label>                                                                                                       
-                                                           <?php $selling_price=array('name'=>'selling_price',
+                                                         <label for="category" ><?php echo $this->lang->line('category') ?></label>                                                                                                       
+                                                           <?php $category=array('name'=>'category',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'selling_price',
-                                                                                    'value'=>set_value('selling_price'));
-                                                           echo form_input($selling_price)?> 
+                                                                                    'id'=>'category',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('category'));
+                                                           echo form_input($category)?> 
                                                     </div>
                                                    </div>
+                                               <div class="col col-lg-3">
+                                                    <div class="form_sep">
+                                                         <label for="ean_upc_code" class="req"><?php echo $this->lang->line('ean_upc_code') ?></label>                                                                                                       
+                                                           <?php $ean_upc_code=array('name'=>'ean_upc_code',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'ean_upc_code',
+                                                                                    'value'=>set_value('ean_upc_code'));
+                                                           echo form_input($ean_upc_code)?> 
+                                                    </div>
+                                               </div>
                                                <div class="col col-lg-1"></div>
                                                </div>
                                         </div>                              
                               </div>
-                              <div class="row">
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="discount_per" class="req"><?php echo $this->lang->line('discount_per') ?></label>                                                                                                       
-                                                           <?php $discount_per=array('name'=>'discount_per',
-                                                                                    'class'=>'required form-control',
-                                                                                    'id'=>'discount_per',
-                                                                                    'value'=>set_value('discount_per'));
-                                                           echo form_input($discount_per)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="starting_date" class="req"><?php echo $this->lang->line('starting_date') ?></label>                                                                                                       
-                                                          <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                       <?php $starting_date=array('name'=>'starting_date',
-                                                                                    'class'=>'required form-control',
-                                                                                    'id'=>'starting_date',
-                                                                                    'value'=>set_value('starting_date'));
-                                                           echo form_input($starting_date)?> 
-                                                              <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-4" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="ending_date" class="req"><?php echo $this->lang->line('ending_date') ?></label>                                                                                                       
-                                                         <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                          <?php $ending_date=array('name'=>'ending_date',
-                                                                                    'class'=>'required form-control',
-                                                                                    'id'=>'ending_date',
-                                                                                    'value'=>set_value('ending_date'));
-                                                           echo form_input($ending_date)?> 
-                                                         <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                              </div>
+                                 
                               <br><br>
                           </div>
                      </div>
@@ -415,8 +303,8 @@ function reload_update_user(){
                     <div class="row">
                                 <div class="col-lg-4"></div>
                                   <div class="col col-lg-4 text-center"><br><br>
-                                      <button id="add_new_item"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
-                                      <a href="javascript:clear_add_items()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
+                                      <button id="set_new_code"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_items_category()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
                                   </div>
                               </div>
                 </div>
@@ -431,28 +319,92 @@ function reload_update_user(){
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                 <div class="row">
-                     <div class="col-lg-4"></div>
-                     <div class="col-lg-4">
+                     <div class="col-lg-2"></div>
+                     <div class="col-lg-8">
                           <div class="panel panel-default">
                                <div class="panel-heading">
-                                     <h4 class="panel-title">Brand Details</h4>  
-                                     <input type="hidden" name="guid" id="guid" >
+                                       <h4 class="panel-title"><?php echo $this->lang->line('ean_upc_code') ?></h4>  
+                                     <input type="hidden" name="guid" id="guid">
                                </div>
                               <br>
+                               <div class="row">
+                                       <div class="col col-lg-12" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-4">
+                                                    <div class="form_sep" id="select_item">
+                                                         <label for="items_category_name" class="req"><?php echo $this->lang->line('item') ?></label>                                                                                                       
+                                                           
+                                                            <?php $name=array('name'=>'name',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'item_name',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('name'));
+                                                           echo form_input($name)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-3">
+                                                    <div class="form_sep">
+                                                         <label for="sku" ><?php echo $this->lang->line('sku') ?></label>                                                                                                       
+                                                           <?php $sku=array('name'=>'sku',
+                                                                                    'class'=>'required form-control',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'id'=>'sku',
+                                                                                    'value'=>set_value('sku'));
+                                                           echo form_input($sku)?> 
+                                                    </div>
+                                                   </div>
+                                              <div class="col col-lg-3">
+                                                    <div class="form_sep">
+                                                         <label for="location" ><?php echo $this->lang->line('location') ?></label>                                                                                                       
+                                                           <?php $location=array('name'=>'location',
+                                                                                    'class'=>'required form-control',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'id'=>'location',
+                                                                                    'value'=>set_value('location'));
+                                                           echo form_input($location)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                              </div>
                               <div class="row">
                                        <div class="col col-lg-12" >
                                            <div class="row">
                                                <div class="col col-lg-1"></div>
-                                               <div class="col col-lg-10">
+                                               <div class="col col-lg-4">
                                                     <div class="form_sep">
-                                                         <label for="items_name" class="req"><?php echo $this->lang->line('items_name') ?></label>                                                                                                       
-                                                           <?php $items_name=array('name'=>'items_name',
+                                                         <label for="brand" ><?php echo $this->lang->line('brand') ?></label>                                                                                                       
+                                                           <?php $brand=array('name'=>'brand',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'items_name',
-                                                                                    'value'=>set_value('items_name'));
-                                                           echo form_input($items_name)?> 
+                                                                                    'id'=>'brand',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('brand'));
+                                                           echo form_input($brand)?> 
                                                     </div>
                                                    </div>
+                                               <div class="col col-lg-3">
+                                                    <div class="form_sep">
+                                                         <label for="category" ><?php echo $this->lang->line('category') ?></label>                                                                                                       
+                                                           <?php $category=array('name'=>'category',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'category',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('category'));
+                                                           echo form_input($category)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-3">
+                                                    <div class="form_sep">
+                                                         <label for="ean_upc_code" class="req"><?php echo $this->lang->line('ean_upc_code') ?></label>                                                                                                       
+                                                           <?php $ean_upc_code=array('name'=>'ean_upc_code',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'ean_upc_code',
+                                                                                    'value'=>set_value('ean_upc_code'));
+                                                           echo form_input($ean_upc_code)?> 
+                                                    </div>
+                                               </div>
                                                <div class="col col-lg-1"></div>
                                                </div>
                                         </div>                              
@@ -463,7 +415,7 @@ function reload_update_user(){
                    <div class="row">
                         <div class="col-lg-4"></div>
                       <div class="col col-lg-4 text-center"><br><br>
-                          <button id="update_items"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
+                          <button id="update_items"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('set_or_reset') ?></button>
                           <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
                       </div>
                   </div>
@@ -476,135 +428,9 @@ function reload_update_user(){
            </div>
 		</div>
 	
-                <script type="text/javascript">
-                    function posnic_group_active(){
-                     var flag=0;
-                     var field=document.forms.posnic;
-                      for (i = 0; i < field.length; i++){
-                          if(field[i].checked==true){
-                              flag=flag+1;
-
-                          }
-
-                      }
-                      if (flag<1) {
-                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('item');?>', { type: "warning" });
-                      
-                      }else{
-                            var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
-                          if(posnic[i].checked==true){                             
-                              $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/items/active',
-                                type: "POST",
-                                data: {
-                                    guid:posnic[i].value
-
-                                },
-                                success: function(response)
-                                {
-                                    if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('activated');?>', { type: "success" });
-                                        $("#dt_table_tools").dataTable().fnDraw();
-                                    }
-                                }
-                            });
-
-                          }
-
-                      }
-                  
-
-                      }    
-                      }
-                    function posnic_delete(){
-                     var flag=0;
-                     var field=document.forms.posnic;
-                      for (i = 0; i < field.length; i++){
-                          if(field[i].checked==true){
-                              flag=flag+1;
-
-                          }
-
-                      }
-                      if (flag<1) {
-                        
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('item');?>', { type: "warning" });
-                      }else{
-                            bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')."".$this->lang->line('Are you Sure To Delete') ?>", function(result) {
-             if(result){
-              
-             
-                        var posnic=document.forms.posnic;
-                        for (i = 0; i < posnic.length; i++){
-                          if(posnic[i].checked==true){                             
-                              $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/items/delete',
-                                type: "POST",
-                                data: {
-                                    guid:posnic[i].value
-
-                                },
-                                success: function(response)
-                                {
-                                    if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('deleted');?>', { type: "success" });
-                                        $("#dt_table_tools").dataTable().fnDraw();
-                                    }
-                                }
-                            });
-
-                          }
-
-                      }    
-                      }
-                      });
-                      }    
-                      }
-                    
-                    
-                    
-                    function posnic_group_deactive(){
-                     var flag=0;
-                     var field=document.forms.posnic;
-                      for (i = 0; i < field.length; i++){
-                          if(field[i].checked==true){
-                              flag=flag+1;
-
-                          }
-
-                      }
-                      if (flag<1) {
-                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('item');?>', { type: "warning" });
-                      
-                      }else{
-                            var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
-                          if(posnic[i].checked==true){                             
-                                 $.ajax({
-                                    url: '<?php echo base_url() ?>/index.php/items/deactive',
-                                    type: "POST",
-                                    data: {
-                                        guid: posnic[i].value
-
-                                    },
-                                    success: function(response)
-                                    {
-                                        if(response){
-                                             $.bootstrapGrowl('<?php echo $this->lang->line('deactivated');?>', { type: "danger" });
-                                            $("#dt_table_tools").dataTable().fnDraw();
-                                        }
-                                    }
-                                });
-
-                          }
-
-                      }
-                  
-
-                      }    
-                      }
-                    
+                <script type="text/javascript">                
+                    $(document).ready(function() {
+                    $('#add_item').validate();});
                 </script>
         
 

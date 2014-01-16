@@ -17,7 +17,7 @@ class Item_code extends CI_Controller{
         $this->load->view('template/app/footer');
     }
         function data_table(){
-        $aColumns = array( 'guid','name','ean_upc_code', 'code','name','location','b_name','c_name','guid','active' );	
+        $aColumns = array( 'name','upc_ean_code', 'code','name','location','b_name','c_name','guid','active','guid' );	
 	$start = "";
 			$end="";
 		
@@ -44,11 +44,11 @@ class Item_code extends CI_Controller{
 		
 			if ( $_GET['sSearch'] != "" )
 		{
-		$like =array('name'=>  $this->input->get_post('sSearch'));
+		$like =array('upc_ean_code'=>  $this->input->get_post('sSearch'),'items.name'=>  $this->input->get_post('sSearch'),'code'=>  $this->input->get_post('sSearch'));
 				
 			}
 			$this->load->model('core_model')		   ;
-			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like);
+			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$_SESSION['Bid']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('items');
 		
@@ -108,26 +108,24 @@ class Item_code extends CI_Controller{
             }
     }
    
-    function add_code(){
-             if($this->input->post('save')){  
+    function set_item_code(){
+             if($this->input->post('guid')){  
                    if($_SESSION['Posnic_Add']==="Add"){
                $guid=  $this->input->post('guid');
-               $this->form_validation->set_rules("code",$this->lang->line('code'),'required');                                             
+               $this->form_validation->set_rules("ean_upc_code",$this->lang->line('ean_upc_code'),'required');                                             
               if ($this->form_validation->run() !== false ) {  
-                  $value=array('upc_ean_code'=>  $this->input->post('code'));
+                  $value=array('upc_ean_code'=>  $this->input->post('ean_upc_code'));
                      $where=array('guid'=>$guid);
                      $this->posnic->posnic_module_update('items',$value,$where);
-                     redirect('item_code');
+                    echo 'TRUE';
                     
               }else{
-                  $this->set_item($guid);
+                 echo 'FALSE';
               }
                 }else{
-                    redirect('item_code');
+                   echo 'NOOP';
                 }
-             }if($this->input->post('cancel')){
-             redirect('item_code');
-         }
+             }
     }
     function edit_item($id){
          if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
@@ -139,6 +137,16 @@ class Item_code extends CI_Controller{
                 $this->load->view('template/footer');
           }
     }
+    function get_items_details(){
+        $search= $this->input->post('term');
+        if($search!=""){
+        $like=array('code'=>$search,'barcode'=>$search,'name'=>$search,'upc_ean_code'=>$search);
+       $data= $this->posnic->posnic_or_like('items',$like);
+      //  echo '[{"name":"Organisation 1","ID":2},{"name":"Organisation 2","ID":1}]';
+       echo json_encode($data);
+        }
+    }
+            
     function update_code(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
             if($this->input->post('cancel')){

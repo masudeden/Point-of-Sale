@@ -3,11 +3,12 @@ class Posnic{
  private $CI;
 
     public function __construct()
-    {
-       $this->CI =& get_instance();
-
-       $this->CI->load->helper('url');
-       $this->CI->load->library('session');
+    { 
+        $this->CI =& get_instance();
+        $this->CI->load->library('session');
+        
+         $this->CI->load->helper('url');
+      
                 $this->CI->load->helper('form');
                 $this->CI->load->helper('url');
                 $this->CI->load->library('unit_test');
@@ -331,6 +332,12 @@ class Posnic{
          $branch=$_SESSION['Bid'];
          return $CI->posnic_model->posnic_like_data($table,$where,$name,$branch);
     }
+    function posnic_or_like($table,$like){
+          $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->posnic_or_like($table,$like,$branch);
+    }
+            
     function posnic_module_like($table,$where){
          $CI=  get_instance();  
          $branch=$_SESSION['Bid'];

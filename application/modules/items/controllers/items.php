@@ -49,7 +49,7 @@ class Items extends CI_Controller{
 				
 			}
 			$this->load->model('core_model')		   ;
-			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like);
+			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$_SESSION['Bid']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('items');
 		
@@ -229,7 +229,8 @@ class Items extends CI_Controller{
   
     function edit_items($guid){
         if($_SESSION['brands_per']['edit']==1){
-        $data=  $this->posnic->get_module_details_for_update($guid,'brands');
+        $this->load->model('core_model')		   ;
+	$data = $this->core_model->get_items_details_for_update($_SESSION['Bid'],$guid);
         echo json_encode($data);
         }else{
             echo 'FALSE';

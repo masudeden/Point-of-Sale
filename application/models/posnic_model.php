@@ -207,7 +207,11 @@ class posnic_model extends CI_model{
     }
     return $data;
     }
-    
+    function posnic_or_like($table,$like,$branch){
+        $this->db->select()->from($table)->or_like($like)->where('branch_id',$branch)->where('delete_status',0);
+        $sql=$this->db->get();
+        return $sql->result();
+    }
     function module_result_admin($table,$bid){
         $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
