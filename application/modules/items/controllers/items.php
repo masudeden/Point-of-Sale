@@ -9,25 +9,80 @@ class Items extends CI_Controller{
             $this->get_items();
     }
     function get_items(){                  
-        if($_SESSION['users_per']['access']==1){
-         $this->load->model('user_groups');
-                    $this->load->model('branch');
-                     if($_SESSION['admin']==2){ 
-        $data['branch']=$this->branch->get_user_for_branch_admin();
-                     }
-                     else{
-        $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
-                     }
-        $data['depa']= $this->user_groups->get_user_groups();  
-        $this->load->view('app/header'); 
-        $this->load->view('table/header');         
-        $this->load->view('branch',$this->posnic->branchs());
-        $this->load->view('item_list',$data);
-        $this->load->view('app/navigation',$this->posnic->modules());
-        $this->load->view('app/footer');
-        }else{
-            redirect('home');
-        }
+        $this->load->view('template/app/header'); 
+        $this->load->view('header/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $data['active']='brands';
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
+    }
+        function data_table(){
+        $aColumns = array( 'guid','name','code','name','location','b_name','c_name','guid','active' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('name'=>  $this->input->get_post('sSearch'));
+				
+			}
+			$this->load->model('core_model')		   ;
+			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like);
+		   
+		$iFilteredTotal =$this->posnic->data_table_count('items');
+		
+		$iTotal =$this->posnic->data_table_count('items');
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
     }
     function item_magement(){
        if($this->input->post('add')){
@@ -173,16 +228,11 @@ class Items extends CI_Controller{
     
   
     function edit_items($guid){
-        if($_SESSION['Posnic_Edit']==="Edit"){
-                    $where=array('guid'=>$guid);
-                    $data['irow']=$this->posnic->posnic_result($where);
-                    $data['brands']=$this->posnic->posnic_module('brands');
-                    $data['taxes']= $this->posnic->posnic_module('taxes');
-                    $data['tax_type']=  $this->posnic->posnic_module('tax_types');
-                    $data['area']= $this->posnic->posnic_module('taxes_area');
-                    $data['crow']=$this->posnic->posnic_module('items_category');
-                    $data['srow']=$this->posnic->posnic_module('suppliers');
-                    $this->load->view('edit_item',$data);
+        if($_SESSION['brands_per']['edit']==1){
+        $data=  $this->posnic->get_module_details_for_update($guid,'brands');
+        echo json_encode($data);
+        }else{
+            echo 'FALSE';
         }
     }
     function update_item(){

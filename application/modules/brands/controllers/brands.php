@@ -11,7 +11,7 @@ class Brands extends CI_Controller
     }
      function get_brands(){
         $this->load->view('template/app/header'); 
-        $this->load->view('template/brands/header');         
+        $this->load->view('header/header');         
         $this->load->view('template/branch',$this->posnic->branchs());
         $data['active']='brands';
         $this->load->view('index',$data);

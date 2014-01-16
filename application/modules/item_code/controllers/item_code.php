@@ -7,17 +7,81 @@ class Item_code extends CI_Controller{
     function index(){     
               $this->get_items();
     }
-    function get_items(){
-                $config["base_url"] = base_url()."index.php/item_code/get_items";
-	        $config["total_rows"] =$this->posnic->posnic_module_count('items'); 
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->posnic->posnic_module_count('items');                 
-	        $data["row"] = $this->posnic->posnic_module_limit_result('items',$config["per_page"], $page);           
-	        $data["links"] = $this->pagination->create_links(); 
-                $this->load->view('code_list',$data);
+    function get_items(){                  
+        $this->load->view('template/app/header'); 
+        $this->load->view('header/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $data['active']='brands';
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
+    }
+        function data_table(){
+        $aColumns = array( 'guid','name','ean_upc_code', 'code','name','location','b_name','c_name','guid','active' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('name'=>  $this->input->get_post('sSearch'));
+				
+			}
+			$this->load->model('core_model')		   ;
+			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like);
+		   
+		$iFilteredTotal =$this->posnic->data_table_count('items');
+		
+		$iTotal =$this->posnic->data_table_count('items');
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
     }
     function set_item($guid){
          if($_SESSION['Posnic_Add']==="Add"){

@@ -8,7 +8,7 @@
 
     options = $.extend({}, $.bootstrapGrowl.default_options, options);
     $alert = $("<div>");
-    $alert.attr("class", "bootstrap-growl alert");
+    $alert.attr("class", "bootstrap-growl alert ");
     if (options.type) {
       $alert.addClass("alert-" + options.type);
     }

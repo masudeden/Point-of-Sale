@@ -312,6 +312,23 @@ $lang['code']='Item Code';
   $lang['brand']='Brand';
   $lang['is_already_added']='Is Already Added';
   
-
+  $lang['added']='Added';
+  
+// items
+  $lang['sku']='S K U';
+  $lang['bar_code']='Bar Code';
+  $lang['name']='Name';
+  $lang['item_details']='Item Details';
+  $lang['cost']='Cost';
+  $lang['mrp']='M R P';
+  $lang['selling_price']='Selling Price';
+  $lang['discount_per']='Discount persentage';
+  $lang['starting_date']='Starting Date';
+  $lang['ending_date']='Ending Date';
+  $lang['select']='Select';
+  $lang['status']='Status';
+  $lang['action']='Action';
+  $lang['set_code']='Set Code';
+  $lang['ean_upc_code']='EAN / UPC Code';
 
 ?>﻿
