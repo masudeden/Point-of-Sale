@@ -148,8 +148,8 @@ function clear_add_items(){
       $("#posnic_user_2").trigger('reset');
 }
 function reload_update_user(){
-    var id=$('#guid').val();
-    edit_function(id);
+    var id=$('#parsley_reg #guid').val();
+    set_item_code(id);
 }
 </script>
 <nav id="top_navigation">
