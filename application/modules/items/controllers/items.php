@@ -18,7 +18,7 @@ class Items extends CI_Controller{
         $this->load->view('template/app/footer');
     }
         function data_table(){
-        $aColumns = array( 'guid','name','code','name','location','b_name','c_name','guid','active' );	
+        $aColumns = array( 'guid','name','code','name','location','b_name','c_name','d_name','guid','active' );	
 	$start = "";
 			$end="";
 		
@@ -158,67 +158,57 @@ class Items extends CI_Controller{
     }       
     function add_new_item(){
         
-        if($this->input->post('cancel')){
-            redirect('items');
-        }
-        if($this->input->post('save')){
-              if($_SESSION['Posnic_Add']==="Add"){
-                  $this->form_validation->set_rules("code",$this->lang->line('code'),"required");
-                            $this->form_validation->set_rules("item_name",$this->lang->line('item_name'),"required");
-                            $this->form_validation->set_rules("cost_price",$this->lang->line('cost_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');                           
-                            $this->form_validation->set_rules('discount_amount', $this->lang->line('discount_amount'),'max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
-                            $this->form_validation->set_rules('tax', $this->lang->line('tax'),'required');
-                            $this->form_validation->set_rules('area', $this->lang->line('tax_area'),'required');
-                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            $this->form_validation->set_rules('mrp_price', $this->lang->line('mrf_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            
+        if($this->input->post('cost')){
+              if($_SESSION['items_per']['add']===1){
+                  
+                            $this->form_validation->set_rules("name",$this->lang->line('name'),"required");
+                            $this->form_validation->set_rules("sku",$this->lang->line('sku'),'required');                           
+                            $this->form_validation->set_rules('cost', $this->lang->line('cost'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                            $this->form_validation->set_rules('mrp', $this->lang->line('mrp'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                          
+                            $this->form_validation->set_rules('taxes', $this->lang->line('taxes'),'required');
+                            $this->form_validation->set_rules('taxes_area', $this->lang->line('taxes_area'),'required');
+                            $this->form_validation->set_rules('supplier', $this->lang->line('supplier'),'required');
+                            $this->form_validation->set_rules('brand', $this->lang->line('brand'),'required');
+                            $this->form_validation->set_rules('category', $this->lang->line('category'),'required');
+                            $this->form_validation->set_rules('item_department', $this->lang->line('item_department'),'required');                            
                           if ( $this->form_validation->run() !== false ) {
-                                   $data=array('code'=>$this->input->post('code'),
+                                   $data=array('code'=>$this->input->post('sku'),
                                     'barcode'=>$this->input->post('barcode'),
-                                    'name'=>$this->input->post('item_name'),
+                                    'name'=>$this->input->post('name'),
                                     'description'=>$this->input->post('description'),
-                                    'cost_price'=>$this->input->post('cost_price'),
-                                    'selling_price'=>$this->input->post('selling_price'),
-                                   
-                                    'mrp'=>$this->input->post('mrp_price'),
-                                    'discount_amount'=>$this->input->post('discount_amount'),
-                                    'start_date'=>strtotime($this->input->post('start_date')),
-                                    'end_date'=>strtotime($this->input->post('end_date')),
-                                    'tax_Inclusive'=>$this->input->post('tax_in'),
+                                    'cost_price'=>$this->input->post('cost'),
+                                    'selling_price'=>$this->input->post('selling_price'),                                   
+                                    'mrp'=>$this->input->post('mrp'),
+                                    'discount_amount'=>$this->input->post('discount_per'),
+                                    'start_date'=>$this->input->post('starting_date'),
+                                    'end_date'=>$this->input->post('ending_date'),
+                                    'tax_Inclusive'=>$this->input->post('tax_Inclusive'),
                                     'location'=>$this->input->post('location'),
                                     'category_id'=>$this->input->post('category'),
                                     'supplier_id'=>$this->input->post('supplier'),
-                                    'tax_id'=>$this->input->post('tax'),
-                                    'tax_area_id'=>$this->input->post('area'),
+                                    'tax_id'=>$this->input->post('taxes'),
+                                    'tax_area_id'=>$this->input->post('taxes_area'),
+                                    'depart_id'=>$this->input->post('item_department'),
                                     'brand_id'=>$this->input->post('brand'));
-                                      $value=array('code'=>$this->input->post('code'),
+                                      $value=array('code'=>$this->input->post('sku'),
                                          'barcode'=>$this->input->post('barcode'),
-                                          'name'=>$this->input->post('item_name'),
+                                          'name'=>$this->input->post('name'),
                                          );
-                                 if($this->posnic->check_unique($value)){                                    
-                                     $id=$this->posnic->posnic_add($data);
+                                 if($this->posnic->check_unique($value,'items')){ 
+                                     echo 'TRUE';
+                                     $id=$this->posnic->posnic_add_record($data,'items');
                                      $this->load->model('core_model');
                                      $this->core_model->item_setting($id,$_SESSION['Bid']);
                                      $this->core_model->suppliers_x_items($id,$_SESSION['Bid'],$this->input->post('mrp_price'),$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost_price'));
-                                     $this->get_items();
+                               
                                      }else{
-                                        echo " this item is  already added in this branch";
-                                        $data['brands']=$this->posnic->posnic_module('brands');
-                                        $data['taxes']=$this->posnic->posnic_module('taxes');
-                                        $data['area']=  $this->posnic->posnic_module('taxes_area');
-                                        $data['tax_type']=  $this->posnic->posnic_module('tax_types');
-                                        $data['crow']=$this->posnic->posnic_module('items_category');
-                                        $data['srow']=$this->posnic->posnic_module('suppliers');                   
-                                        $this->load->view('add_item',$data);
+                                        echo "ALREADY";
+                                       
                                     }
                         }else{
-                            $data['brands']=$this->posnic->posnic_module('brands');
-                            $data['taxes']=$this->posnic->posnic_module('taxes');
-                            $data['tax_type']=  $this->posnic->posnic_module('tax_types');
-                            $data['area']=  $this->posnic->posnic_module('taxes_area');
-                            $data['crow']=$this->posnic->posnic_module('items_category');
-                            $data['srow']=$this->posnic->posnic_module('suppliers');                   
-                            $this->load->view('add_item',$data);
+                           echo "FALSE";
                         }
         
              } 
@@ -355,7 +345,55 @@ class Items extends CI_Controller{
 	}
        echo json_encode($output1);
     }
-   
+    function get_department(){
+         $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('department_name'=>$search);
+            $data= $this->posnic->posnic_or_like('items_department',$like);      
+            echo json_encode($data);
+        }
+    }
+    function get_category(){
+         $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('category_name'=>$search);
+            $data= $this->posnic->posnic_or_like('items_category',$like);      
+            echo json_encode($data);
+        }
+    }
+    function get_brand(){
+         $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('name'=>$search);
+            $data= $this->posnic->posnic_or_like('brands',$like);      
+            echo json_encode($data);
+        }
+    }
+    function get_supplier(){
+         $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('company_name '=>$search,'first_name '=>$search,'phone '=>$search,'email'=>$search);
+            $data= $this->posnic->posnic_or_like('suppliers',$like);      
+            echo json_encode($data);
+        }
+    }
+    function get_taxes_area(){
+         $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('name'=>$search);
+            $data= $this->posnic->posnic_or_like('taxes_area',$like);      
+            echo json_encode($data);
+        }
+    }
+    function get_taxes(){
+         $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('tax_types.type'=>$search);
+            $this->load->model('core_model');
+            $data= $this->core_model->get_taxes($_SESSION['Bid'],$like);      
+            echo json_encode($data);
+        }
+    }
     
 }
 ?>

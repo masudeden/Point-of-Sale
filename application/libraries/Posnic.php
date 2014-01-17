@@ -179,10 +179,10 @@ class Posnic{
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
     }
-    function check_unique($data){
+    function check_unique($data,$table){
           $module=$_SESSION['posnic_module'];
           $CI=  get_instance();
-          return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid']);
+          return $CI->posnic_model->check_unique_data($data,$module,$_SESSION['Bid'],$table);
     }
     function check_record_unique($data,$table){
           $module=$table;

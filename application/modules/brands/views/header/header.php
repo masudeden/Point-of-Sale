@@ -89,7 +89,7 @@
                 success: function(response)
                 {
                     if(response){
-                          bootbox.alert('User '+brands+' Is Deleted');
+                           $.bootstrapGrowl('<?php echo $this->lang->line('brand') ?> '+user+' <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });
@@ -97,7 +97,7 @@
 
                         }
     }); <?php }else{?>
-           bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Delete This Records') ?>");
+           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('brand');?>', { type: "error" });                       
    <?php }
 ?>
                         }
@@ -161,7 +161,7 @@
                               
                          
                         <?php }else{?>
-                                bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records') ?>");
+                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('brand');?>', { type: "error" });                       
                         <?php }?>
                        }
 		</script>

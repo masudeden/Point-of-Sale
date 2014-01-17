@@ -85,8 +85,8 @@ class posnic_model extends CI_model{
         $sql=$this->db->get();
         return $sql->result();
     }
-    function check_unique_data($data,$module,$bid){
-        $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',0);
+    function check_unique_data($data,$module,$bid,$table){
+        $this->db->select()->from($table)->where($data)->where('branch_id',$bid)->where('delete_status',0);
         $sql=  $this->db->get();
         if($sql->num_rows()>0){
             return FALSE;
@@ -208,7 +208,7 @@ class posnic_model extends CI_model{
     return $data;
     }
     function posnic_or_like($table,$like,$branch){
-        $this->db->select()->from($table)->or_like($like)->where('branch_id',$branch)->where('delete_status',0);
+        $this->db->select()->from($table)->or_like($like)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',0);
         $sql=$this->db->get();
         return $sql->result();
     }

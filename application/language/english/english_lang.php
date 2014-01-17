@@ -316,7 +316,11 @@ $lang['code']='Item Code';
   $lang['added']='Added';
   
 // items
+  $lang['unit_of_meassure']='Units of Measure';
   $lang['sku']='S K U';
+  $lang['yes']='Yes';
+  $lang['no']='No';
+  $lang['item_department']='Department';
   $lang['bar_code']='Bar Code';
   $lang['name']='Name';
   $lang['item_details']='Item Details';

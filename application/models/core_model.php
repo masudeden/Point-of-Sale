@@ -89,9 +89,10 @@ class Core_model extends CI_Model{
             
     }
     function items_data_table($end,$start,$order,$like,$branch){
-                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name')->from('items')->where('items.branch_id',$branch);
+                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch);
                 $this->db->join('items_category', 'items.category_id=items_category.guid','left');
                 $this->db->join('brands', 'items.brand_id=brands.guid','left');
+                $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
                // $this->db->join('supplier', 'stock.supplier=supplier.id','left');
                 $this->db->limit($end,$start); 
                //$this->db->order_by($order);
@@ -101,10 +102,22 @@ class Core_model extends CI_Model{
                 return $query->result_array(); 
     }
     function get_items_details_for_update($branch,$guid){
-                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name')->from('items')->where('items.branch_id',$branch)->where('items.guid',$guid);
+                $this->db->select('items.* ,taxes_area.name as area_name,suppliers.first_name as s_first_name,suppliers.last_name as s_last_name,suppliers.phone as s_phone,suppliers.email as s_email,suppliers.company_name as company_name,suppliers.guid as s_guid,items_department.department_name,items_department.guid as d_guid,taxes.guid as tax_guid,tax_types.type as type,taxes.value as value, items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name')->from('items')->where('items.branch_id',$branch)->where('items.guid',$guid);
                 $this->db->join('items_category', 'items.category_id=items_category.guid','left');
                 $this->db->join('brands', 'items.brand_id=brands.guid','left');
+                $this->db->join('suppliers', 'items.supplier_id=suppliers.guid','left');
+                $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
+                $this->db->join('taxes_area', 'items.tax_area_id=taxes_area.guid','left');
+                $this->db->join('taxes', 'items.tax_id=taxes.guid','left');
+                $this->db->join('tax_types', 'taxes.type=tax_types.guid','left');
                 
+                $query=$this->db->get();
+                return $query->result_array();  
+    }
+    function get_taxes($branch,$like){
+         $this->db->select('taxes.* ,taxes.guid as guid,tax_types.type as name,tax_types.guid as t_guid')->from('taxes')->where('taxes.branch_id',$branch)->where('taxes.active_status',0)->where('taxes.delete_status',0);
+                $this->db->join('tax_types', 'taxes.type=tax_types.guid','left');
+                $this->db->like($like);
                 $query=$this->db->get();
                 return $query->result_array();  
     }

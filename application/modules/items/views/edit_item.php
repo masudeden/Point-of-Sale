@@ -1,55 +1,700 @@
-<?php  if($_SESSION['items_per']['add']==1){
-    ?>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<strong style="font-size: 19px;">Clients</strong>
+With over 10 years of immense experience, we have offered our product range to many of customers and gained their gratification. We are excel at providing qualitative products in customized designs which made us earn a large number of customers across India.
 
-<script>
-$(function() {
-$( "#date_start_picker" ).datepicker();
-$( "#date_end_picker" ).datepicker();
-});
+Some of our top - notch clients are listed below :
+<div class="row">
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">1
 
-</script>
-        <?php 
-     echo form_open('items/update_item');
-     echo "<table>";
-     foreach ($irow as $it_row){
-         echo form_hidden('guid',$it_row->guid);
-     echo "<tr><td>"; echo form_label($this->lang->line('code'));echo "</td><td>";echo form_input('code',$it_row->code,'id="code" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('barcode'));echo "</td><td>";echo form_input('barcode',$it_row->barcode,'id="barcode" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('item_name'));echo "</td><td>";echo form_input('item_name',$it_row->name,'id="address1" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('description'));echo "</td><td>";echo form_input('description',$it_row->description,'id="description" autofocusm ');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('cost_price'));echo "</td><td>";echo form_input('cost_price',$it_row->cost_price,'id="cost_price" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('mrf_price'));echo "</td><td>";echo form_input('mrf_price',$it_row->mrp,'id="mrf_price" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('selling_price'));echo "</td><td>";echo form_input('selling_price',$it_row->selling_price,'id="salling_price" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('discount_amount'));echo "</td><td>";echo form_input('discount_amount',$it_row->discount_amount,'id="discount_amount" autofocus');echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('start_date'));echo "</td><td>";?><input type="text" name="start_date" id="date_start_picker" value="<?php echo date('n/j/Y', strtotime('+0 year, +0 days',$it_row->start_date ));   ?>"/><?php echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('end_date'));echo "</td><td>";?><input type="text" name="end_date" id="date_end_picker" value="<?php echo date('n/j/Y', strtotime('+0 year, +0 days',$it_row->end_date ));   ?>"><?php echo "</td></tr>";
-     echo "<tr><td>"; echo form_label($this->lang->line('location'));echo "</td><td>";echo form_input('location',$it_row->location,'id="location" autofocus');echo "</td></tr>";
-     if($_SESSION['items_category']=='On'){
-     echo "<tr><td>"; echo form_label($this->lang->line('cate_name'));echo "</td><td>"; ?><select name="category" style="width:150"><?php  foreach ($crow as $irow){ if($it_row->category_id ==$irow->guid ){ ?>          <option name="<?php echo $irow->guid  ?> " value="<?php echo $irow->guid  ?>" selected="selected"> <?php echo $irow->category_name  ?> </option><?php      }else{?>   <option name="<?php echo $irow->guid  ?> " value="<?php echo $irow->guid  ?>"> <?php echo $irow->category_name  ?> </option><?php } } echo "</select>";?>  <?php  echo "</td></tr>";
-     }
-     if($_SESSION['suppliers']=='On'){
-     echo "<tr><td>"; echo form_label($this->lang->line('supplier'));echo "</td><td>"; echo "<select name=supplier>"; echo"<option value=none>None</option>"; foreach ($srow as $s_row){  ?><option value="<?php echo $s_row->guid ?>" <?php if($s_row->guid===$it_row->supplier_id){ ?>selected<?php  } ?> ><?php echo $s_row->company_name ?></option> <?php } echo "</select>"; echo "</td></tr>";
-      }
-     if($_SESSION['brands']=='On'){
-     echo "<tr><td>"; echo form_label($this->lang->line('brands'));echo "</td><td>";?><select name='brand'><?php foreach ($brands as $ibrand){ if($ibrand->guid==$it_row->brand_id ){ ?><option value="<?php echo $ibrand->guid ?>" selected ><?php echo $ibrand->name?></option> <?php }else{ ?><option value="<?php echo $ibrand->guid ?>"><?php echo $ibrand->name?></option> <?php }} ?></select><?php echo "</td></tr>";
-     }
-     if($_SESSION['taxes_area']=='On'){
-     echo "<tr><td>"; echo form_label($this->lang->line('tax_area'));echo "</td><td>"; ?><select name='area'><?php foreach ($area as $tarea){ if($tarea->guid==$it_row->tax_area_id ) { ?><option value="<?php echo $tarea->guid ?>" selected ><?php echo $tarea->name ?></option> <?php }else { ?><option value="<?php echo $tarea->guid ?>"><?php echo $tarea->name ?></option> <?php }} ?></select><?php echo "</td></tr>";
-     }
-     if($_SESSION['taxes']=='On'){
-     echo "<tr><td>"; echo form_label($this->lang->line('tax'));echo "</td><td>";?><select name=tax><?php foreach ($taxes as $ttax){  foreach ($tax_type as $type){  if($ttax->type==$type->guid){ if($ttax->guid==$it_row->tax_id) { ?><option value="<?php echo $ttax->guid ?>" selected ><?php echo $ttax->value."%-".$type->type ?> </option><?php }else{ ?><option value="<?php echo $ttax->guid ?>"><?php echo $ttax->value."%-".$type->type ?></option> <?php }} } } ?></select><?php echo "</td></tr>";
-     }
-     echo "<tr><td>"; echo form_submit('save',$this->lang->line('save'));echo "</td><td>";echo form_submit('cancel',$this->lang->line('cancel')); echo "</td></tr>";
-     }
-     echo "</table>";
-     echo form_close();
- }else{
-     redirect('home');
- }
- echo validation_errors();
-?>
-
-
+SATYAM GE SOFTWARE SERVICES ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">2
+GODREJ &amp; BOYCE MFG CO .</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">3
+GODREJ &amp; BOYCE MFG CO LTD.</h2>
+<div class="portfolio-tag">Mumbai</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">4
+BHARTI TELENET LTD.</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">5
+FUTHURAA FURNITURES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">6
+GE INDIA TECHNOLOGY CENTER</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">7
+K. MOHAN &amp; COMPANY</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">8
+LUCENT TECHNOLOGIES LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">9
+MANIPAL ACADAMY OF HIGHER EDUCATION</h2>
+<div class="portfolio-tag">Manipal</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">10
+NATSEM INDIA DESIGN CENTER</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">11
+NETWORK SOLUTIONS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">12
+NOVELL SOFTWARE SERVICES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">13
+PHILIPS SOFTWARE SERVICES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">14
+PRATHIK ART INTERIORS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">15
+SYNERGY PUNCHING PRIVATE LIMITED</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">16
+V3 ENGINEERS (P) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">17
+WAS MAR CONSULTANTS</h2>
+<div class="portfolio-tag">Mumbai</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">18
+ADEEP LOCKS AND ROLOFORMS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">19
+APW PRESIDENTS SYSTEMS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">20
+BHAWAR INTERIORS</h2>
+<div class="portfolio-tag">Mumbai</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">21
+BIOCON INDIA LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">22
+C.G.CORELL</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">23
+CLINGINE INTERNATIONAL LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">24
+DESIGN CONCERNS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">25
+DESIGN INDIMENSIONS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">26
+ELYSEES DESIGENIERS &amp; INTERIORS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">27
+GARNIER SEATINGS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">28
+GE MEDICAL X - RAYS ( SOUTH ASIA ) ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">29
+INTERSPACE ARCHITECHS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">30
+KEUWANEE SCIENTIFIC CORPOA</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">31
+KHODAY BREWERIES LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">32
+LIQUID METAL FURNITURES ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">33
+MEDICAL RELIEF SOCIETY OF SOUHT CANARA</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">34
+METLIFE ENTERPRIESES</h2>
+<div class="portfolio-tag">Hyderabad</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">35
+OPTO CIRCUITS ( I ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">36
+POLALI INDUSTRIES</h2>
+<div class="portfolio-tag">Mangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">37
+PRESUINTES INDIA ( P ) LTD</h2>
+<div class="portfolio-tag">Tumkur</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">38
+SABARI DESIGNS ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">39
+SCHONES OFFICE SYSTEMS ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">40
+SHAPPORJI &amp; POLLANJI</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">41
+SYNGENE INTERNATIONAL ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">42
+TOUCHTEL LIMITED</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">43
+AMD ( P ) LIMITED</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">44
+ERGHO OFFICE SYSTEMS ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">45
+FEATHERLITES PRODUCTS LIMITED</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">46
+KRITICONS LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">47
+KUMAR &amp; CO</h2>
+<div class="portfolio-tag">Pune</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">48
+LABWAY SCIENTIFIC INDIA ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">49
+MINIMARKITING</h2>
+<div class="portfolio-tag">Hyderabad</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">50
+RETAIL FIXTURES &amp; FURNITURES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">51
+SPACE AND SCAPES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">52
+TECHO INTERIORS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">53
+TRADE SIGN</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">54
+TRANSTEEL SEATING TECHNOLOGIES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">55
+BLOW PLAST</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">56
+HEWELLET PACKERD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">57
+AEROSPACE SYTEMS ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">58
+APOTEX RESEARCH ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">59
+BI SPACE DESIGNS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">60
+CARL BECHEM LABORATORY INDIA ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">61
+CIR - Q - TECK - TAKO</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">62
+COGNIZANT TECHNOLOGY SOLUTIONS ( P ) LTD</h2>
+<div class="portfolio-tag">Chennai</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">63
+BLAJI PANEL CRAFT</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">64
+ROSHINI ENGINEERING WORKS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">65
+HAYWORTH</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">66
+INNVITROGEN BIO SERVICES ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">67
+INTEGRATED RENOVETORS INC</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">68
+PARUL ASSOCIATES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">69
+P . G . INTERIORS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">70
+REALISIM TSL TECHNOLOGIES LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">71
+SABARI DESIGNS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">72
+BALAJI INTERIORS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">73
+MODAYIL PROPERTIES ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">74
+OM SAI INTEX ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">75
+PESIT</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">76
+TANYA DESIGNS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">77
+TRENDS INTERIORS &amp; DESIGNERS ( P ) LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">78
+BEA SYSTEMS CUSTOMER SUPPORT &amp; RESEARCH CENTRE PVT LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">79
+BIGTEC PVT LTD</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">81
+HUES N DESIGN</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">82
+ADITI TECHNOLOGIES AT KIRLOSKAR BUSINESS PARK</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">83
+BEA SYSTEMS</h2>
+<div class="portfolio-tag">New Delhi</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">84
+CERNER FACILITY AT MANYATA</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">85
+BEA SYSTEMS</h2>
+<div class="portfolio-tag">Mumbai</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">86
+ADITI TECHNOLOGIES AT MANYATA</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">87
+LARSEN &amp; TOBRO - BANGALORE INTL AIRPORT</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">88
+LARSEN &amp; TOBRO - JIPMER LABORATORY</h2>
+<div class="portfolio-tag">Pondichery</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">89
+ORYX / ILFS</h2>
+<div class="portfolio-tag">New Delhi</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">90
+UTI INFRASTRUCTURE</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">91
+ORYX / ILFS</h2>
+<div class="portfolio-tag">Hyderabad</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">92
+LARSEN &amp; TOBRO - JIPMER HOSP FURNITURE</h2>
+<div class="portfolio-tag">Pondichery</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">93
+CAMO SOFTWARE</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">94
+INDIAN INSTITUTE OF HARDWARE TECHNOLOGY</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">95
+ROBERT BOSCH ENGG &amp; BUSINESS SOLUTIONS</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">96
+SOA MATRIX</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">97
+PRASANNA TECHNOLOGIES</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">98
+INSTITUTE OF NEPHRO UROLOGY</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">99
+INDIRA GANDHI INSTITUTE OF CHILD HEALTH</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+<div class="three columns portfolio-item mb20" style="height: 92px;">
+<div class="portfolio-context my_height">
+<h2 class="portfolio-title">100
+CENTRAL EXCISE LARGE TAX PAYER UNIT</h2>
+<div class="portfolio-tag">Bangalore</div>
+</div>
+</div>
+</div>

@@ -34,14 +34,14 @@
 								
 							},
         
-        null, null,  null, null,  null, 
+        null, null,  null, null,  null,null, 
 
  							{	"sName": "ID",
                    						"bSearchable": false,
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[5]==0){
+                   							if(oObj.aData[9]==0){
                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
@@ -152,7 +152,42 @@
                                  $('#deactive').attr("disabled", "disabled");
                                  $('#items_lists').removeAttr("disabled");
                                  $('#parsley_reg #guid').val(data[0]['guid']);
-                                 $('#parsley_reg #items_name').val(data[0]['name']);
+                                 $('#parsley_reg #name').val(data[0]['name']);
+                                 $('#parsley_reg #sku').val(data[0]['code']);
+                                 $('#parsley_reg #barcode').val(data[0]['barcode']);
+                                 $('#parsley_reg #description').val(data[0]['description']);
+                                 $('#parsley_reg #cost').val(data[0]['cost_price']);
+                                 $('#parsley_reg #selling_price').val(data[0]['selling_price']);
+                                 $('#parsley_reg #mrp').val(data[0]['mrp']);
+                                 $('#parsley_reg #discount_per').val(data[0]['discount_amount']);
+                                 $('#parsley_reg #starting_date').val(data[0]['start_date']);
+                                 $('#parsley_reg #ending_date').val(data[0]['end_date']);
+                                 $('#parsley_reg #tax_Inclusive').val(data[0]['tax_Inclusive']);
+                                 $('#parsley_reg #location').val(data[0]['location']);
+                                 $('#parsley_reg #category').val(data[0]['category_id']);
+                                 //$('#parsley_reg #search_category').val(data[0]['c_guid']);
+                                
+                                $("#parsley_reg #search_category").select2('data', {id:data[0]['c_guid'],text: data[0]['c_name']});
+                                $('#parsley_reg #category').val(data[0]['c_guid']);
+                                
+                                $("#parsley_reg #search_brand").select2('data', {id:data[0]['b_guid'],text: data[0]['b_name']});
+                                $('#parsley_reg #brand').val(data[0]['b_guid']);
+                                
+                                $("#parsley_reg #search_department").select2('data', {id:data[0]['d_guid'],text: data[0]['department_name']});
+                                $('#parsley_reg #department').val(data[0]['d_guid']);
+                                
+                                $("#parsley_reg #search_supplier").select2('data', {id:data[0]['supplier_id'],text: data[0]['company_name'],first: data[0]['s_first_name'],phone: data[0]['s_phone'],email: data[0]['s_email']});
+                                $('#parsley_reg #supplier').val(data[0]['s_guid']);
+                                
+                                $("#parsley_reg #search_taxes_area").select2('data', {id:data[0]['tax_area_id'],text: data[0]['area_name']});
+                                $('#parsley_reg #taxes_area').val(data[0]['tax_area_id']);
+                                
+                                $("#parsley_reg #search_taxes").select2('data', {id:data[0]['tax_id'],text: data[0]['type'],value:data[0]['value']});
+                                $('#parsley_reg #taxes').val(data[0]['tax_id']);
+                                
+//                                 $('#parsley_reg #tax_Inclusive').val(data[0]['tax_Inclusive']);
+//                                 $('#parsley_reg #tax_Inclusive').val(data[0]['tax_Inclusive']);
+                                 
                                
                              } 
                            });
