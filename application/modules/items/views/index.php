@@ -22,6 +22,9 @@
 </style>	
 <script type="text/javascript">
      $(document).ready( function () {
+          var d = new Date(); 
+         
+     alert((d.getTime()-d.getMilliseconds())/1000);
          $('#parsley_reg #search_department').change(function() {
                    var guid = $('#parsley_reg #search_department').select2('data').id;
                 $('#parsley_reg #item_department').val(guid);
@@ -812,7 +815,7 @@ function reload_update_user(){
                                                     <div class="form_sep">
                                                          <label for="unit_of_meassure" class="req"><?php echo $this->lang->line('unit_of_meassure') ?></label>                                                                                                       
                                                            <?php $unit_of_meassure=array('name'=>'unit_of_meassure',
-                                                                                    'class'=>'required form-control',
+                                                                                    'class'=>' form-control',
                                                                                     'id'=>'unit_of_meassure',
                                                                                     'value'=>set_value('unit_of_meassure'));
                                                            echo form_input($unit_of_meassure)?> 
@@ -1211,7 +1214,7 @@ function reload_update_user(){
                                                     <div class="form_sep">
                                                          <label for="unit_of_meassure" class="req"><?php echo $this->lang->line('unit_of_meassure') ?></label>                                                                                                       
                                                            <?php $unit_of_meassure=array('name'=>'unit_of_meassure',
-                                                                                    'class'=>'required form-control',
+                                                                                    'class'=>' form-control',
                                                                                     'id'=>'unit_of_meassure',
                                                                                     'value'=>set_value('unit_of_meassure'));
                                                            echo form_input($unit_of_meassure)?> 

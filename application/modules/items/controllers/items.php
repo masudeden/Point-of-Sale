@@ -128,14 +128,24 @@ class Items extends CI_Controller{
                  redirect('items'); 
             }
     }
-    function deactive_items($guid){
-              $this->posnic->posnic_deactive($guid);
-              redirect('items');
-        }
-        function active_items($guid){         
-              $this->posnic->posnic_active($guid);
-              redirect('items');
-        }
+    function active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'items'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'items'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
     function restore_items($guid){
          if($_SESSION['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
@@ -226,58 +236,62 @@ class Items extends CI_Controller{
             echo 'FALSE';
         }
     }
-    function update_item(){
-        if($this->input->post('cancel')){
-                redirect('items');
-            }
-        if($_SESSION['Posnic_Edit']==="Edit"){
+    function update_items(){
+       
+        if($_SESSION['items_per']['edit']==1){
              $guid=$this->input->post('guid');
-                           $this->form_validation->set_rules("item_name",$this->lang->line('item_name'),"required");
-                            $this->form_validation->set_rules("cost_price",$this->lang->line('cost_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');                           
-                            $this->form_validation->set_rules('discount_amount', $this->lang->line('discount_amount'),'max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
-                            $this->form_validation->set_rules('tax', $this->lang->line('tax'),'required');
-                            $this->form_validation->set_rules('area', $this->lang->line('tax_area'),'required');
-                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            $this->form_validation->set_rules('mrf_price', $this->lang->line('mrf_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                           
-                        if ( $this->form_validation->run() !== false ) {
-                                     $data=array('code'=>$this->input->post('code'),
+                          $this->form_validation->set_rules("name",$this->lang->line('name'),"required");
+                            $this->form_validation->set_rules("sku",$this->lang->line('sku'),'required');                           
+                            $this->form_validation->set_rules('cost', $this->lang->line('cost'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                            $this->form_validation->set_rules('mrp', $this->lang->line('mrp'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                          
+                            $this->form_validation->set_rules('taxes', $this->lang->line('taxes'),'required');
+                            $this->form_validation->set_rules('taxes_area', $this->lang->line('taxes_area'),'required');
+                            $this->form_validation->set_rules('supplier', $this->lang->line('supplier'),'required');
+                            $this->form_validation->set_rules('brand', $this->lang->line('brand'),'required');
+                            $this->form_validation->set_rules('category', $this->lang->line('category'),'required');
+                            $this->form_validation->set_rules('item_department', $this->lang->line('item_department'),'required');                            
+                          if ( $this->form_validation->run() !== false ) {
+                                    $data=array('code'=>$this->input->post('sku'),
                                     'barcode'=>$this->input->post('barcode'),
-                                    'name'=>$this->input->post('item_name'),
+                                    'name'=>$this->input->post('name'),
                                     'description'=>$this->input->post('description'),
-                                    'cost_price'=>$this->input->post('cost_price'),
-                                    'selling_price'=>$this->input->post('selling_price'),
-                                    
-                                    'mrp'=>$this->input->post('mrf_price'),
-                                    'discount_amount'=>$this->input->post('discount_amount'),
-                                    'start_date'=>strtotime($this->input->post('start_date')),
-                                    'end_date'=>strtotime($this->input->post('end_date')),
-                                    'tax_Inclusive'=>$this->input->post('tax_in'),
+                                    'cost_price'=>$this->input->post('cost'),
+                                    'selling_price'=>$this->input->post('selling_price'),                                   
+                                    'mrp'=>$this->input->post('mrp'),
+                                    'discount_amount'=>$this->input->post('discount_per'),
+                                    'start_date'=>$this->input->post('starting_date'),
+                                    'end_date'=>$this->input->post('ending_date'),
+                                    'tax_Inclusive'=>$this->input->post('tax_Inclusive'),
                                     'location'=>$this->input->post('location'),
                                     'category_id'=>$this->input->post('category'),
                                     'supplier_id'=>$this->input->post('supplier'),
-                                    'tax_id'=>$this->input->post('tax'),
-                                    'tax_area_id'=>$this->input->post('area'),
+                                    'tax_id'=>$this->input->post('taxes'),
+                                    'tax_area_id'=>$this->input->post('taxes_area'),
+                                    'depart_id'=>$this->input->post('item_department'),
                                     'brand_id'=>$this->input->post('brand'));
                                     
-                                    $value=array('guid !='=>$this->input->post('guid'),'code'=>$this->input->post('code'),
+                                    $value=array('guid !='=>$this->input->post('guid'),'code'=>$this->input->post('sku'),
                                          'barcode'=>$this->input->post('barcode'),
-                                          'name'=>$this->input->post('item_name'),
+                                          'name'=>$this->input->post('name'),
                                          );
-                                 if($this->posnic->check_unique($value)){ 
-                                      $where=array('guid'=>$guid);
-                                      $this->posnic->posnic_update($data,$where);
-                                      redirect('items');
+                                 if($this->posnic->check_unique($value,'items')){ 
+                                     echo 'TRUE';
+                                     $where=array('guid'=>$guid);
+                                     $this->posnic->posnic_module_update('items',$data,$where);
+                                    
                                  }else{
                                      
-                                        echo " this item is  already added in this branch";
-                                        $this->edit_items($guid);
+                                       echo 'ALREADY';
                                     }            
                
             
                         }else{
-                            $this->edit_items($guid);
+                           echo 'FALSE';
                         }
+        }else{
+            echo 'NOOP';
         }
     }
     function items_list(){

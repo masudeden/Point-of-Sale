@@ -85,8 +85,8 @@ class posnic_model extends CI_model{
         $sql=$this->db->get();
         return $sql->result();
     }
-    function check_unique_data($data,$module,$bid,$table){
-        $this->db->select()->from($table)->where($data)->where('branch_id',$bid)->where('delete_status',0);
+    function check_unique_data($data,$module,$bid){
+        $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',0);
         $sql=  $this->db->get();
         if($sql->num_rows()>0){
             return FALSE;
