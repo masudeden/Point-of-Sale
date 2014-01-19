@@ -196,39 +196,27 @@ class Posnic{
     function posnic_update($value,$where){
           $module=$_SESSION['posnic_module'];
           $CI=  get_instance();
-           if($_SESSION[$module.'_per']['edit']==1){
                $CI->posnic_model->update($module,$value,$where);
-           }else{
-             redirect($module);
-           }
+          
     }
     function posnic_update_record($value,$where,$table){
           $module=$table;
           $CI=  get_instance();
-           if($_SESSION[$module.'_per']['edit']==1){
                $CI->posnic_model->update($module,$value,$where);
-           }else{
-             redirect($module);
-           }
+          
     }
     function posnic_module_update($module,$value,$where){
           $mod=$_SESSION['posnic_module'];
           $CI=  get_instance();
-           if($_SESSION[$mod.'_per']['edit']==1){
                $CI->posnic_model->update($module,$value,$where);
-           }else{
-               echo redirect($module);
-           }
+          
     }
     function posnic_module_add($module,$value){
           $mod=$_SESSION['posnic_module'];
           $CI=  get_instance();
           $branch=array('branch_id'=>$_SESSION['Bid']);
-           if($_SESSION[$mod.'_per']['add']==1){
                $CI->posnic_model->add_module($module,$value,$branch);
-           }else{
-               echo redirect($module);
-           }
+          
     }
     function posnic_add_record($value,$table){
           $module=$table;
@@ -242,12 +230,9 @@ class Posnic{
           $module=$_SESSION['posnic_module'];
           $CI=  get_instance();
           $branch=array('branch_id'=>$_SESSION['Bid']);
-           if($_SESSION[$module.'_per']['add']==1){
                return $CI->posnic_model->add($module,$value,$branch,$_SESSION['Uid']);
                
-           }else{
-               echo redirect($module);
-           }
+           
     }
     function posnic_deactive_where($where){
         $CI=  get_instance();        

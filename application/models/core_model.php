@@ -114,6 +114,11 @@ class Core_model extends CI_Model{
                 $query=$this->db->get();
                 return $query->result_array();  
     }
+    function get_items_setting_details($branch,$guid){
+                $this->db->select()->from('items_setting')->where('branch_id',$branch)->where('item_id',$guid);               
+                $query=$this->db->get();
+                return $query->result_array();  
+    }
     function get_taxes($branch,$like){
          $this->db->select('taxes.* ,taxes.guid as guid,tax_types.type as name,tax_types.guid as t_guid')->from('taxes')->where('taxes.branch_id',$branch)->where('taxes.active_status',0)->where('taxes.delete_status',0);
                 $this->db->join('tax_types', 'taxes.type=tax_types.guid','left');

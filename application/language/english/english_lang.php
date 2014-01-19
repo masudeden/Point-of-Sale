@@ -318,8 +318,24 @@ $lang['code']='Item Code';
 // items
   $lang['unit_of_meassure']='Units of Measure';
   $lang['sku']='S K U';
+  $lang['setting']='Setting';
   $lang['yes']='Yes';
+  $lang['min_quty']='Minimum Quantity';
+  $lang['max_quty']='Maximum Quantity';
   $lang['no']='No';
+  $lang['sale_or_non_sale']='Sales / Non Sales';
+  $lang['salereturn_or_non_salereturn']='Sale Return / Non Sales Return';
+  $lang['purchase_or_non_purchase']='Purchase / Non Purchase';
+  $lang['purchasereturn_or_non_purchasereturn']='Purchase Return / Non Purchase Return';
+  $lang['non_sales']='Non Sales';
+  
+  $lang['sales_return']='Sales Return';
+  $lang['non_sales_return']='Non Sales Return';
+  
+  $lang['non_purchase']='Non Purchase';
+  $lang['non_purchase_return']='Non Purchase Return';
+  
+  
   $lang['item_department']='Department';
   $lang['items_department']='Items Department';
   $lang['department_name']='Department Name';
@@ -340,5 +356,10 @@ $lang['code']='Item Code';
   $lang['add_code']='Set Code';
   $lang['ean_upc_code']='EAN / UPC Code';
   $lang['set_or_reset']='Set / Reset';
-
+  $lang['min_qty']='Min Qty';
+  $lang['max_qty']='Max Qty';
+  $lang['salses_return']='Sales Return';
+  $lang['purchase']='Purchase';
+  $lang['purchase_return']='Purchase Return';
+  $lang['allow_negative']='Allow Negative';
 ?>﻿

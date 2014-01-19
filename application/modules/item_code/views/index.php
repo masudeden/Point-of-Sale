@@ -98,7 +98,7 @@
                     <?php }?>
         });
          $('#update_items').click(function() { 
-                <?php if($_SESSION['items_per']['edit']==1){ ?>
+                <?php if($_SESSION['item_code_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                        $.ajax ({
                             url: "<?php echo base_url('index.php/item_code/set_item_code')?>",
@@ -125,7 +125,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['items_per']['add']==1){ ?>
+    <?php if($_SESSION['item_code_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_item_form').show('slow');
       $('#posnic_add_items').attr("disabled", "disabled");    
