@@ -65,11 +65,8 @@ class Posnic{
     function  posnic_module_result($value,$module){
          $CI=  get_instance();
          $mod=$_SESSION['posnic_module'];
-        if($_SESSION[$mod.'_per']['read']==1){
                 return $CI->posnic_model->get_data_as_result_user($module,$value,$_SESSION['Bid']); 
-        }else{
-                echo 'You have no permission';
-        }       
+            
     }
   
     function posnic_count(){
@@ -175,7 +172,7 @@ class Posnic{
              return $CI->posnic_model->module_result_one_field_where($field,$table,$where,$_SESSION['Bid']);
         }
     }
-            function posnic_two($value1,$value2,$table,$where){
+   function posnic_two($value1,$value2,$table,$where){
          $CI=  get_instance();
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$_SESSION['Bid']);
     }
@@ -338,6 +335,11 @@ class Posnic{
          $branch=$_SESSION['Bid'];
          return $CI->posnic_model->posnic_data_table_with_join($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where);
     }
+    function data_table_with_multi_table($end,$start,$table,$join_table,$select,$join_where,$order,$like,$where){
+         $CI=  get_instance();  
+         $branch=$_SESSION['Bid'];
+         return $CI->posnic_model->data_table_with_multi_table($end,$start,$table,$join_table,$select,$join_where,$order,$like,$where,$branch);
+    }
     function data_table_count($table){
          $CI=  get_instance();  
          $branch=$_SESSION['Bid'];
@@ -386,6 +388,12 @@ class Posnic{
         $data['row']=  $CI->modules_model->get_modules($_SESSION['Bid']);
         $data['active']=$_SESSION['active_module'];
         return $data;
+    }
+    function posnic_all_module_data($table){
+         $CI=  get_instance();
+         $CI->load->model('modules_model')  ;        
+         $data =$CI->posnic_model->get_aa_data_as_result_admin($table,$_SESSION['Bid']);
+         return $data;
     }
 }
        

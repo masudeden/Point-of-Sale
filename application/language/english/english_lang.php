@@ -363,4 +363,9 @@ $lang['code']='Item Code';
   $lang['purchase']='Purchase';
   $lang['purchase_return']='Purchase Return';
   $lang['allow_negative']='Allow Negative';
+  
+  //taxes
+  $lang['tax_value']='Tax Value';
+  $lang['none']='0';
+  $lang['taxes_type']='Tax Type';
 ?>﻿

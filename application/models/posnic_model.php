@@ -18,8 +18,13 @@ class posnic_model extends CI_model{
         $sql=  $this->db->get();
         return $sql->result_array();
   }
-    function get_data_as_result_admin($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('branch_id',$bid);
+ function get_data_as_result_admin($table,$where,$bid){
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
+        $sql=  $this->db->get();
+        return $sql->result();
+  }
+ function get_aa_data_as_result_admin($table,$bid){
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid)->where('active',0)->where('active_status',0);
         $sql=  $this->db->get();
         return $sql->result();
   }
@@ -251,7 +256,7 @@ class posnic_model extends CI_model{
     }
     function posnic_data_table_with_join($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where){
         $this->db->select()->from($table1);  
-        $this->db->limit($end,'0'); 
+        $this->db->limit($end,$start); 
         if($where!=null){
         $this->db->where($where);
         }
@@ -259,6 +264,21 @@ class posnic_model extends CI_model{
         $this->db->or_like($like);
         $join_where=$join_where."AND $table2.branch_id ='".$branch." ' AND $table2.delete_status=0";
         $this->db->join($table2, "$join_where".'','left');
+        
+          $query=$this->db->get();
+             return $query->result_array();
+            
+    }
+    function data_table_with_multi_table($end,$start,$table,$join_table,$select,$join_where,$order,$like,$where,$branch){
+        $this->db->select($select)->from($table);  
+        $this->db->limit($end,$start); 
+        if($where!=null){
+        $this->db->where($where);
+        }
+        //$this->db->where('users.guid <>',2);
+        $this->db->or_like($like);
+        $join_where=$join_where."AND $table.branch_id ='".$branch." ' AND $table.delete_status=0";
+        $this->db->join($join_table, "$join_where".'','left');
         
           $query=$this->db->get();
              return $query->result_array();
