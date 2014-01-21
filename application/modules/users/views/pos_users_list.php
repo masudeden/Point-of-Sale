@@ -54,14 +54,21 @@
                             url: "<?php echo base_url('index.php/users/upadate_pos_users_details')?>",
                             data: inputs,
                             type:'POST',
-                            success: function(response) {
-                          if(response){
-                                       bootbox.alert('Users Updated');                                                                            
+                              complete: function(response) {
+                                if(response['responseText']=='TRUE'){
+                                     $.bootstrapGrowl('<?php echo $this->lang->line('user').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                    
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#parsley_reg").trigger('reset');
                                        posnic_users_lists();
+                                }else  if(response['responseText']=='ALREADY'){
+                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('item_code').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                    }else  if(response['responseText']=='FALSE'){
+                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                                    }else{
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('item_code');?>', { type: "error" });                           
+                                    }
                           }
-                       }
+                       
                  });
                  <?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records')?>");  

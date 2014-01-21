@@ -343,7 +343,7 @@ $r=0;
                 $this->form_validation->set_rules('pos_users_id','pos_users_id',"required");
                 $this->form_validation->set_rules('guid','guid',"required");
                 $this->form_validation->set_rules('country','country',"required");
-          echo $id=  $this->input->post('guid');	  
+               $id=  $this->input->post('guid');	  
 	    if ( $this->form_validation->run() !== false ) {
 			  $this->load->model('pos_users_model');
                           $first_name=$this->input->post('first_name');
@@ -371,16 +371,16 @@ $r=0;
                             $this->pos_users_model->update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password);
                             $this->update_user_user_groups($id,$user_groups);                         
                             $this->update_user_branch($id,$user_groups);  
-                          
+                          echo 'TRUE';
                          
                              }else{
-                               echo "already";
+                               echo "ALREADY";
                              }   
     }else{
-           echo "validation";       
+           echo "FALSE";       
         }
        }else{
-           echo "noop";
+           echo "NOOP";
          
        }
        if(isset($_POST['Cancel'])){

@@ -304,6 +304,7 @@ $lang['code']='Item Code';
  $lang['New Record Added']='This Record Already Added';
  $lang['You Have NO Permission To Edit']='You Have NO Permission To Edit ';
  $lang['You Have NO Permission To Add']='You Have NO Permission To Add ';
+ $lang['You Have NO Permission To Set']='You Have NO Permission To Set ';
  $lang['Are you Sure To Delete']='Are you Sure To Delete ';
  $lang['Select Atleast One']='Select Atleast One ';
  // Brands

@@ -8,7 +8,7 @@
 		//* chained select
 		ebro_chained.init();
 		//* masked inputs
-		ebro_maskedInputs.init();
+		//ebro_maskedInputs.init();
 		//* password strength meter
 		ebro_password_meter.init();
 		//* datepicker
@@ -203,18 +203,18 @@
 	}
 	
 	//* masked inputs
-	ebro_maskedInputs = {
-		init: function() {
-			$("#mask_date").inputmask("dd/mm/yyyy",{ "placeholder": "dd/mm/yyyy", showMaskOnHover: false });
-			$("#mask_phone").inputmask("mask", {"mask": "(999) 999-9999"});
-			$("#mask_plate").inputmask({"mask": "[9-]AAA-999"});
-			$("#mask_numeric").inputmask('€ 999.999,99', { numericInput: false });
-			$("#mask_mac").inputmask({"mask": "**:**:**:**:**:**"});
-			$("#mask_callback").inputmask("mm/dd/yyyy",{ "placeholder": "mm/dd/yyyy", "oncomplete": function(){ alert('Date entered: '+$(this).val()); } });
-			$('[data-inputmask]').inputmask();
-		}
-	};
-	
+//	ebro_maskedInputs = {
+//		init: function() {
+//			$("#mask_date").inputmask("dd/mm/yyyy",{ "placeholder": "dd/mm/yyyy", showMaskOnHover: false });
+//			$("#mask_phone").inputmask("mask", {"mask": "(999) 999-9999"});
+//			$("#mask_plate").inputmask({"mask": "[9-]AAA-999"});
+//			$("#mask_numeric").inputmask('€ 999.999,99', { numericInput: false });
+//			$("#mask_mac").inputmask({"mask": "**:**:**:**:**:**"});
+//			$("#mask_callback").inputmask("mm/dd/yyyy",{ "placeholder": "mm/dd/yyyy", "oncomplete": function(){ alert('Date entered: '+$(this).val()); } });
+//			$('[data-inputmask]').inputmask();
+//		}
+//	};
+//	
 	//* password strength meter
 	ebro_password_meter = {
 		init: function() {
