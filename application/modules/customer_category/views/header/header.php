@@ -2,10 +2,10 @@
 <script type="text/javascript" charset="utf-8">
           $(document).ready( function () {
            
-                    $('#add_customers_payment_type_form').hide();
-                    $('#edit_customers_payment_type_form').hide();
+                    $('#add_customer_category_form').hide();
+                    $('#edit_customer_category_form').hide();
                               posnic_table();
-                                add_customers_payment_type.onsubmit=function()
+                                add_customer_category.onsubmit=function()
                                 { 
                                   return false;
                                 } 
@@ -20,7 +20,7 @@
            $('#dt_table_tools').dataTable({
                                       "bProcessing": true,
 				      "bServerSide": true,
-                                      "sAjaxSource": "<?php echo base_url() ?>index.php/customers_payment_type/customers_payment_type_data_table",
+                                      "sAjaxSource": "<?php echo base_url() ?>index.php/customer_category/customer_category_data_table",
                                        aoColumns: [  
                                     
          { "bVisible": false} , {	"sName": "ID",
@@ -76,11 +76,11 @@
                                    
 			}
     function user_function(guid){
-    <?php if($_SESSION['customers_payment_type_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete This')." ".$this->lang->line('customers_payment_type') ?>", function(result) {
+    <?php if($_SESSION['customer_category_per']['delete']==1){ ?>
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete This')." ".$this->lang->line('customer_category') ?>", function(result) {
              if(result){
             $.ajax({
-                url: '<?php echo base_url() ?>/index.php/customers_payment_type/delete',
+                url: '<?php echo base_url() ?>/index.php/customer_category/delete',
                 type: "POST",
                 data: {
                     guid: guid
@@ -89,7 +89,7 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl('<?php echo $this->lang->line('customers_payment_type') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                           $.bootstrapGrowl('<?php echo $this->lang->line('customer_category') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });
@@ -97,13 +97,13 @@
 
                         }
     }); <?php }else{?>
-           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('customers_payment_type');?>', { type: "error" });                       
+           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('customer_category');?>', { type: "error" });                       
    <?php }
 ?>
                         }
             function posnic_deactive(guid){
                 $.ajax({
-                url: '<?php echo base_url() ?>index.php/customers_payment_type/deactive',
+                url: '<?php echo base_url() ?>index.php/customer_category/deactive',
                 type: "POST",
                 data: {
                     guid: guid
@@ -120,7 +120,7 @@
             }
             function posnic_active(guid){
                            $.ajax({
-                url: '<?php echo base_url() ?>index.php/customers_payment_type/active',
+                url: '<?php echo base_url() ?>index.php/customer_category/active',
                 type: "POST",
                 data: {
                     guid: guid
@@ -137,22 +137,22 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['customers_payment_type_per']['edit']==1){ ?>
+                        <?php if($_SESSION['customer_category_per']['edit']==1){ ?>
                             $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/customers_payment_type/edit_customers_payment_type/"+guid,                      
+                             url: "<?php echo base_url() ?>index.php/customer_category/edit_customer_category/"+guid,                      
                              data: "", 
                              dataType: 'json',               
                              success: function(data)        
                              {    
                                  $("#user_list").hide();
-                                 $('#edit_customers_payment_type_form').show('slow');
+                                 $('#edit_customer_category_form').show('slow');
                                  $('#delete').attr("disabled", "disabled");
-                                 $('#posnic_add_customers_payment_type').attr("disabled", "disabled");
+                                 $('#posnic_add_customer_category').attr("disabled", "disabled");
                                  $('#active').attr("disabled", "disabled");
                                  $('#deactive').attr("disabled", "disabled");
-                                 $('#customers_payment_type_lists').removeAttr("disabled");
+                                 $('#customer_category_lists').removeAttr("disabled");
                                  $('#parsley_reg #guid').val(data[0]['guid']);
-                                 $('#parsley_reg #customers_payment_type').val(data[0]['type']);
+                                 $('#parsley_reg #customer_category').val(data[0]['category_name']);
                                
                              } 
                            });
@@ -161,7 +161,7 @@
                               
                          
                         <?php }else{?>
-                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customers_payment_type');?>', { type: "error" });                       
+                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customer_category');?>', { type: "error" });                       
                         <?php }?>
                        }
 		</script>

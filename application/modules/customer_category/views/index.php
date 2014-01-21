@@ -22,82 +22,82 @@
 </style>	
 <script type="text/javascript">
      $(document).ready( function () {
-         $('#add_new_customers_payment_type').click(function() { 
-                <?php if($_SESSION['customers_payment_type_per']['add']==1){ ?>
-                var inputs = $('#add_customers_payment_type').serialize();
+         $('#add_new_customer_category').click(function() { 
+                <?php if($_SESSION['customer_category_per']['add']==1){ ?>
+                var inputs = $('#add_customer_category').serialize();
                       $.ajax ({
-                            url: "<?php echo base_url('index.php/customers_payment_type/add_customers_payment_type')?>",
+                            url: "<?php echo base_url('index.php/customer_category/add_customer_category')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                 if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('customers_payment_type').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('customer_category').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#add_customers_payment_type").trigger('reset');
-                                       posnic_customers_payment_type_lists();
+                                       $("#add_customer_category").trigger('reset');
+                                       posnic_customer_category_lists();
                                     }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#customers_payment_type').val()+' <?php echo $this->lang->line('customers_payment_type').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#customer_category').val()+' <?php echo $this->lang->line('customer_category').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customers_payment_type');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customer_category');?>', { type: "error" });                           
                                     }
                        }
                 });<?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customers_payment_type');?>', { type: "error" });                       
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customer_category');?>', { type: "error" });                       
                     <?php }?>
         });
-         $('#update_customers_payment_type').click(function() { 
-                <?php if($_SESSION['customers_payment_type_per']['edit']==1){ ?>
+         $('#update_customer_category').click(function() { 
+                <?php if($_SESSION['customer_category_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
-                            url: "<?php echo base_url('index.php/customers_payment_type/update_customers_payment_type')?>",
+                            url: "<?php echo base_url('index.php/customer_category/update_customer_category')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                   if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('customers_payment_type').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('customer_category').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#parsley_reg").trigger('reset');
-                                       posnic_customers_payment_type_lists();
+                                       posnic_customer_category_lists();
                                     }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#customers_payment_type').val()+' <?php echo $this->lang->line('customers_payment_type').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#customer_category').val()+' <?php echo $this->lang->line('customer_category').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customers_payment_type');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customer_category');?>', { type: "error" });                           
                                     }
                        }
                  });
                  <?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customers_payment_type');?>', { type: "error" });                        
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customer_category');?>', { type: "error" });                        
                     <?php }?>
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['customers_payment_type_per']['add']==1){ ?>
+    <?php if($_SESSION['customer_category_per']['add']==1){ ?>
       $("#user_list").hide();
-      $('#add_customers_payment_type_form').show('slow');
+      $('#add_customer_category_form').show('slow');
       $('#delete').attr("disabled", "disabled");
-      $('#posnic_add_customers_payment_type').attr("disabled", "disabled");
+      $('#posnic_add_customer_category').attr("disabled", "disabled");
       $('#active').attr("disabled", "disabled");
       $('#deactive').attr("disabled", "disabled");
-      $('#customers_payment_type_lists').removeAttr("disabled");
+      $('#customer_category_lists').removeAttr("disabled");
       <?php }else{ ?>
-                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customers_payment_type');?>', { type: "error" });                         
+                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customer_category');?>', { type: "error" });                         
                     <?php }?>
 }
-function posnic_customers_payment_type_lists(){
-      $('#edit_customers_payment_type_form').hide('hide');
-      $('#add_customers_payment_type_form').hide('hide');      
+function posnic_customer_category_lists(){
+      $('#edit_customer_category_form').hide('hide');
+      $('#add_customer_category_form').hide('hide');      
       $("#user_list").show('slow');
       $('#delete').removeAttr("disabled");
       $('#active').removeAttr("disabled");
       $('#deactive').removeAttr("disabled");
-      $('#posnic_add_customers_payment_type').removeAttr("disabled");
-      $('#customers_payment_type_lists').attr("disabled",'disabled');
+      $('#posnic_add_customer_category').removeAttr("disabled");
+      $('#customer_category_lists').attr("disabled",'disabled');
 }
-function clear_add_customers_payment_type(){
+function clear_add_customer_category(){
       $("#posnic_user_2").trigger('reset');
 }
 function reload_update_user(){
@@ -109,11 +109,11 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_customers_payment_type" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
+                        <a href="javascript:posnic_add_new()" id="posnic_add_customer_category" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
                         <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
                         <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
-                        <a href="javascript:posnic_customers_payment_type_lists()" class="btn btn-success" id="customers_payment_type_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('customers_payment_type') ?></a>
+                        <a href="javascript:posnic_customer_category_lists()" class="btn btn-success" id="customer_category_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('customer_category') ?></a>
                 </div>
             </div>
     </div>
@@ -124,18 +124,18 @@ function reload_update_user(){
         <div id="main_content_outer" class="clearfix">
             <div id="main_content">
                         <?php $form =array('name'=>'posnic'); 
-                    echo form_open('customers_payment_type/customers_payment_type_manage',$form) ?>
+                    echo form_open('customer_category/customer_category_manage',$form) ?>
                         <div class="row">
                             <div class="col-sm-12" id="user_list"><br>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                            <h4 class="panel-title"><?php echo $this->lang->line('customers_payment_type') ?></h4>                                                                               
+                                            <h4 class="panel-title"><?php echo $this->lang->line('customer_category') ?></h4>                                                                               
                                     </div>
                                     <table id="dt_table_tools" class="table-striped table-condensed" style="width: 100%"><thead>
                                         <tr>
                                           <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
-                                          <th ><?php echo $this->lang->line('customers_payment_type') ?></th>
+                                          <th ><?php echo $this->lang->line('customer_category') ?></th>
                                           
                                           <th><?php echo $this->lang->line('status') ?></th>
                                           <th><?php echo $this->lang->line('action') ?></th>
@@ -151,11 +151,11 @@ function reload_update_user(){
              </div>
         </div>
 </section>    
-<section id="add_customers_payment_type_form" class="container clearfix main_section">
-     <?php   $form =array('id'=>'add_customers_payment_type',
+<section id="add_customer_category_form" class="container clearfix main_section">
+     <?php   $form =array('id'=>'add_customer_category',
                           'runat'=>'server',
                           'class'=>'form-horizontal');
-       echo form_open_multipart('customers_payment_type/add_pos_customers_payment_type_details/',$form);?>
+       echo form_open_multipart('customer_category/add_pos_customer_category_details/',$form);?>
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                  <div class="row">
@@ -163,7 +163,7 @@ function reload_update_user(){
                      <div class="col-lg-4">
                           <div class="panel panel-default">
                                <div class="panel-heading">
-                                     <h4 class="panel-title"><?php echo $this->lang->line('customers_payment_type') ?></h4>   
+                                     <h4 class="panel-title"><?php echo $this->lang->line('customer_category') ?></h4>   
                                    
                                </div>
                               <br>
@@ -173,12 +173,12 @@ function reload_update_user(){
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="customers_payment_type" class="req"><?php echo $this->lang->line('customers_payment_type') ?></label>                                                                                                       
-                                                           <?php $customers_payment_type=array('name'=>'customers_payment_type',
+                                                         <label for="customer_category" class="req"><?php echo $this->lang->line('customer_category') ?></label>                                                                                                       
+                                                           <?php $customer_category=array('name'=>'customer_category',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'customers_payment_type',
-                                                                                    'value'=>set_value('customers_payment_type'));
-                                                           echo form_input($customers_payment_type)?> 
+                                                                                    'id'=>'customer_category',
+                                                                                    'value'=>set_value('customer_category'));
+                                                           echo form_input($customer_category)?> 
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -191,19 +191,19 @@ function reload_update_user(){
                     <div class="row">
                                 <div class="col-lg-4"></div>
                                   <div class="col col-lg-4 text-center"><br><br>
-                                      <button id="add_new_customers_payment_type"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
-                                      <a href="javascript:clear_add_customers_payment_type()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
+                                      <button id="add_new_customer_category"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_customer_category()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
                                   </div>
                               </div>
                 </div>
           </div>
     <?php echo form_close();?>
 </section>    
-<section id="edit_customers_payment_type_form" class="container clearfix main_section">
+<section id="edit_customer_category_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',
                           'runat'=>'server',
                           'class'=>'form-horizontal');
-       echo form_open_multipart('customers_payment_type/upadate_pos_customers_payment_type_details/',$form);?>
+       echo form_open_multipart('customer_category/upadate_pos_customer_category_details/',$form);?>
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                 <div class="row">
@@ -211,7 +211,7 @@ function reload_update_user(){
                      <div class="col-lg-4">
                           <div class="panel panel-default">
                                <div class="panel-heading">
-                                    <h4 class="panel-title"><?php echo $this->lang->line('customers_payment_type') ?></h4>  
+                                    <h4 class="panel-title"><?php echo $this->lang->line('customer_category') ?></h4>  
                                      <input type="hidden" name="guid" id="guid" >
                                </div>
                               <br>
@@ -221,12 +221,12 @@ function reload_update_user(){
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="customers_payment_type" class="req"><?php echo $this->lang->line('customers_payment_type') ?></label>                                                                                                       
-                                                           <?php $customers_payment_type=array('name'=>'customers_payment_type',
+                                                         <label for="customer_category" class="req"><?php echo $this->lang->line('customer_category') ?></label>                                                                                                       
+                                                           <?php $customer_category=array('name'=>'customer_category',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'customers_payment_type',
-                                                                                    'value'=>set_value('customers_payment_type'));
-                                                           echo form_input($customers_payment_type)?> 
+                                                                                    'id'=>'customer_category',
+                                                                                    'value'=>set_value('customer_category'));
+                                                           echo form_input($customer_category)?> 
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -239,7 +239,7 @@ function reload_update_user(){
                    <div class="row">
                         <div class="col-lg-4"></div>
                       <div class="col col-lg-4 text-center"><br><br>
-                          <button id="update_customers_payment_type"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
+                          <button id="update_customer_category"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
                           <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
                       </div>
                   </div>
@@ -264,14 +264,15 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customers_payment_type');?>', { type: "warning" });
+                        
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customer_category');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
+                      for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/customers_payment_type/active',
+                                url: '<?php echo base_url() ?>/index.php/customer_category/active',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -305,7 +306,7 @@ function reload_update_user(){
                       }
                       if (flag<1) {
                         
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customers_payment_type');?>', { type: "warning" });
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customer_category');?>', { type: "warning" });
                       }else{
                             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')."".$this->lang->line('Are you Sure To Delete') ?>", function(result) {
              if(result){
@@ -315,7 +316,7 @@ function reload_update_user(){
                         for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/customers_payment_type/delete',
+                                url: '<?php echo base_url() ?>/index.php/customer_category/delete',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -351,14 +352,15 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customers_payment_type');?>', { type: "warning" });
+                        
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customer_category');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
+                      for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                                  $.ajax({
-                                    url: '<?php echo base_url() ?>/index.php/customers_payment_type/deactive',
+                                    url: '<?php echo base_url() ?>/index.php/customer_category/deactive',
                                     type: "POST",
                                     data: {
                                         guid: posnic[i].value
