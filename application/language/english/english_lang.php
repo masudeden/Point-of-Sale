@@ -368,4 +368,5 @@ $lang['code']='Item Code';
   $lang['tax_value']='Tax Value';
   $lang['none']='0';
   $lang['taxes_type']='Tax Type';
+  $lang['Are you Sure To Delete This']='Are you Sure To Delete This ';
 ?>﻿

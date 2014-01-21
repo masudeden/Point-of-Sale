@@ -1,180 +1,209 @@
-<?php 
-class Customers_payment_type extends CI_Controller{
-        function __construct() {
-                parent::__construct();
-                $this->load->library('posnic');            
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Customers_payment_type extends CI_Controller
+{
+    function __construct() {
+        parent::__construct();
+          $this->load->library('posnic');              
     }
-    function index(){  
-                    $this->get_customers_payment_type(); 
+    function index(){
+        $this->get(); 
     }
-    function get_customers_payment_type(){
-      
-                $config["base_url"] = base_url()."index.php/customers_payment_type/get_customers_payment_type";
-	        $config["total_rows"] =$this->posnic->posnic_count(); 
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->posnic->posnic_count();                 
-	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
-	        $data["links"] = $this->pagination->create_links();  
-                $this->load->view('payment_type',$data);
-           
-        }
-        function edit_payment($guid){
-            $where=array('guid'=>$guid);
-            if($_SESSION['Posnic_Edit']==="Edit"){
-                  $data['row']=$this->posnic->posnic_result($where);
-                  $this->load->view('edit_payment',$data);
-            }else{
-                echo "you have no permission to edit data";
-                $this->get_customers_payment_type();
-            }
-          
-        }
-        function update(){
-            if($this->input->post('update')){
-            if($_SESSION['Posnic_Edit']==="Edit"){
-                $id=  $this->input->post('id');
-                $this->form_validation->set_rules("type",$this->lang->line('paymenent_type'),'required'); 
-                if ( $this->form_validation->run() !== false ) {
-                $type=  $this->input->post('type');
+     function get(){
+        $this->load->view('template/app/header'); 
+        $this->load->view('header/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $data['active']='customers_payment_type';
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
+    }
+    function customers_payment_type_data_table(){
+        $aColumns = array( 'guid','type','type','type','type','active' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('type'=>  $this->input->get_post('sSearch'));
+				
+			}
+					   
+			 $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'customers_payment_type');
+		   
+		$iFilteredTotal =$this->posnic->data_table_count('customers_payment_type');
+		
+		$iTotal =$this->posnic->data_table_count('customers_payment_type');
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
                 
-                $data=array('guid !='=>$id,'type'=>$type);
-                if($this->posnic->check_unique($data)){
-                    $value=array('type'=>$type);
-                    $where=array('guid'=>$id);
-                    $this->posnic->posnic_update($value,$where);
-                    $this->get_customers_payment_type();
-            }else{
-                echo "this payment type is already added in this branch";
-                $this->edit_payment($id);
-            }
+		
+		   echo json_encode($output1);
+    }
+   
+   
+    function update_customers_payment_type(){
+           if($_SESSION['customers_payment_type_per']['edit']==1){
+           if($this->input->post('customers_payment_type')){
+                $this->form_validation->set_rules('customers_payment_type',$this->lang->line('customers_payment_type'),'required'); 
+                if ( $this->form_validation->run() !== false ) {  
+                      $id=  $this->input->post('guid');
+                      $name=$this->input->post('customers_payment_type');                
+                      $where=array('guid !='=>$id,'type'=>$name);
+                if($this->posnic->check_record_unique($where,'customers_payment_type')){
+                    $value=array('type'=>$name);
+                    $update_where=array('guid'=>$id);
+                    $this->posnic->posnic_update_record($value,$update_where,'customers_payment_type');
+                    echo 'TRUE';
                 }else{
-                     $this->get_customers_payment_type();
+                        echo "ALREADY";
                 }
-            }else{
-                echo "you have no permission to edit data";
-                $this->get_customers_payment_type();
-            }}
-            else{
-   redirect('customers_payment_type');
-            }
-        }
-        function add(){
-            if($this->input->post('save')){
-            if($_SESSION['Posnic_Add']==="Add"){
-               
-                $this->form_validation->set_rules("type",$this->lang->line('paymenent_type'),'required'); 
-                if ( $this->form_validation->run() !== false ) {
-                $type=  $this->input->post('type');
-                
-                $data=array('type'=>$type);
-                if($this->posnic->check_unique($data)){
-                    $value=array('type'=>$type);
-                    $this->posnic->posnic_add($value);
-                    $this->get_customers_payment_type();
-            }else{
-                echo "this payment type is already added in this branch";
-                $this->edit_payment($id);
-                }}
-                else{
-                    $this->get_customers_payment_type();
+                }else{
+                    echo "FALSE";
                 }
-            }else{
-                echo "you have no permission to edit data";
-                $this->get_customers_payment_type();
-            }}
-           if($this->input->post('cancel')){
-   redirect('customers_payment_type');
+                }else{
+                    echo "FALSE";
+                }	             
+           }else{
+               echo "NOOP";
            }
-            }
-        
-        function deactive_payment($guid){
-          
+    }
+    function inactive_customers_payment_type($guid){
+        if($_SESSION['Posnic_User']=='admin'){
               $this->posnic->posnic_deactive($guid);
               redirect('customers_payment_type');
-         
+          }else{
+              redirect('customers_payment_type');
+          }
+    }
+    function active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'customers_payment_type'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'customers_payment_type'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function edit_customers_payment_type($guid){
+        if($_SESSION['customers_payment_type_per']['edit']==1){
+        $data=  $this->posnic->get_module_details_for_update($guid,'customers_payment_type');
+        echo json_encode($data);
+        }else{
+            echo 'FALSE';
         }
-        function active_payment($guid){
-         
-              $this->posnic->posnic_active($guid);
-               redirect('customers_payment_type');
+    }
+            
+    
+    function delete(){
+        if($_SESSION['customers_payment_type_per']['delete']==1){
+            if($this->input->post('guid')){
+             $guid=  $this->input->post('guid');
+              $this->posnic->posnic_delete($guid,'customers_payment_type');
+             echo 'TRUE';
+            }
+           }else{
+            echo 'FALSE';
         }
-        function restore_payment($guid){
+    }
+    function restore($guid){
           if($_SESSION['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('customers_payment_type');
           }else{
               redirect('customers_payment_type');
           }
-        }
-        function admin_delete($guid){
-          if($_SESSION['Posnic_Delete']==="Delete"){
-              $this->posnic->posnic_delete($guid);
-              redirect('customers_payment_type');
-            }else{
-              redirect('customers_payment_type');
-            }
-        }
-        function payment_type(){
-              if($this->input->post('cancel')){
-                  redirect('home');
-                  
-              }
-            if($this->input->post('add')){
-               if($_SESSION['Posnic_Add']==="Add"){
-                   $this->load->view('add_payment');
-               }
-            else{
-                echo "you have no Permissions to add  new record";
-                $this->get_customers_payment_type();
-            }
-            }
-            if($this->input->post('active')){
-                   $data=  $this->input->post('posnic');
-                   if($data!=""){
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_active($guid);
-                     }
-                   }
-              redirect('Customers_payment_type');
-              
-        }
-            if($this->input->post('deactive')){
-                   $data=  $this->input->post('posnic');
-                   if($data!=""){
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_deactive($guid);
-                    }
-                   }
-              redirect('Customers_payment_type');
-              
-        }
-            if($this->input->post('delete')){
-               if($_SESSION['Posnic_Delete']==="Delete"){
-                   $data=  $this->input->post('posnic');
-                   if($data!=""){
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_delete($guid);
-                     }
-                    }
-              redirect('Customers_payment_type');
-               }
-            else{
-                   redirect('Customers_payment_type');
-            }
-        }
-        }
-        function user_delete($guid){
-          if($_SESSION['Posnic_Delete']==="Delete"){
-              $this->posnic->posnic_delete($guid);
-               }
-            else{
-                echo "you have no Permissions to add  new record";
-                $this->get_customers_payment_type();
-            }  
-        }
+    }        
     
+    function add_customers_payment_type(){
+            if($_SESSION['customers_payment_type_per']['add']==1){
+           if($this->input->post('customers_payment_type')){
+                $this->form_validation->set_rules("customers_payment_type",$this->lang->line('customers_payment_type'),'required'); 
+                if ( $this->form_validation->run() !== false ) { 
+                      $name=$this->input->post('customers_payment_type');                
+                      $where=array('type'=>$name);
+                if($this->posnic->check_record_unique($where,'customers_payment_type')){
+                    $value=array('type'=>$name);
+                    $this->posnic->posnic_add_record($value,'customers_payment_type');
+                    echo 'TRUE';
+                }else{
+                        echo "ALREADY";
+                }
+                }else{
+                    echo "FALSE";
+                }
+                }else{
+                       echo "FALSE";
+                }	             
+           }else{
+               echo "NOOP";
+           }
+         
+    }
+    function delete_customers_payment_type($guid){
+           if($_SESSION['Posnic_Delete']==="Delete"){
+              $this->posnic->posnic_delete($guid);
+               }
+            else{
+                echo "you have no Permissions to add  new record";
+                $this->get_customers_payment_type();
+            } 
+        
+    }
+   
 }
 ?>
