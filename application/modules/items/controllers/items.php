@@ -157,15 +157,17 @@ class Items extends CI_Controller{
           }
     }
     function delete($guid){
-        if($_SESSION['Posnic_Delete']==="Delete"){
-              $this->posnic->posnic_delete($guid);
+         if($_SESSION['brands_per']['delete']==1){
+            if($this->input->post('guid')){
+             $guid=  $this->input->post('guid');             
+              $this->posnic->posnic_delete($guid,'items');
               $this->load->model('core_model');
               $this->core_model->delete_item_setting($guid,$_SESSION['Bid']);
-                redirect('items');
-            }else{
-                redirect('items');
+              echo 'TRUE';
+               // redirect('items');
             }
-    }       
+    }
+    }
     function add_new_item(){
         
         if($this->input->post('cost')){

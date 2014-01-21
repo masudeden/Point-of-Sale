@@ -267,19 +267,10 @@ class Posnic{
         $CI->posnic_model->restore($guid,$module,$branch);
     }
     }
-    function posnic_delete($guid){
+    function posnic_delete($guid,$table){
         $CI=  get_instance();        
-        $module=$_SESSION['posnic_module'];
         $branch=$_SESSION['Bid'];  
-         if( $_SESSION[$module.'_per']['delete']==1){
-            if($_SESSION['admin']==2){
-           
-        $CI->posnic_model->admin_delete($guid,$module,$branch,$_SESSION['Uid']);
-            
-        }else{
-             $CI->posnic_model->user_delete($guid,$module,$branch,$_SESSION['Uid']);
-        }
-       }
+             $CI->posnic_model->user_delete($guid,$table,$branch,$_SESSION['Uid']);
     }
     function posnic_module_delete($guid,$module1){
         $CI=  get_instance();

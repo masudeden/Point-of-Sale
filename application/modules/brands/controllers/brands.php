@@ -153,7 +153,7 @@ class Brands extends CI_Controller
         if($_SESSION['brands_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
-              $this->posnic->posnic_delete($guid);
+              $this->posnic->posnic_delete($guid,'brands');
              echo 'TRUE';
             }
            }else{

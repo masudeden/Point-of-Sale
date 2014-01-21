@@ -153,7 +153,7 @@ class Items_department extends CI_Controller
         if($_SESSION['items_department_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
-              $this->posnic->posnic_delete($guid);
+              $this->posnic->posnic_delete($guid,'items_department');
              echo 'TRUE';
             }
            }else{

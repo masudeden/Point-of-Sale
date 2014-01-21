@@ -89,7 +89,7 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl('<?php echo $this->lang->line('taxes') ?> '+user+' <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                           $.bootstrapGrowl('<?php echo $this->lang->line('taxes') ?> '+taxes+' <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });

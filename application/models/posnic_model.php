@@ -91,7 +91,7 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function check_unique_data($data,$module,$bid){
-        $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',0);
+        $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',0)->where('active_status',0);
         $sql=  $this->db->get();
         if($sql->num_rows()>0){
             return FALSE;
@@ -270,7 +270,7 @@ class posnic_model extends CI_model{
             
     }
     function data_table_with_multi_table($end,$start,$table,$join_table,$select,$join_where,$order,$like,$where,$branch){
-        $this->db->select($select)->from($table);  
+        $this->db->select($select)->from($table)->where($table.'.active_status',0)->where($table.'.delete_status',0);  
         $this->db->limit($end,$start); 
         if($where!=null){
         $this->db->where($where);
@@ -285,7 +285,7 @@ class posnic_model extends CI_model{
             
     }
     function data_table_count($table,$branch){
-        $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0);
+        $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',0);
         $sql=  $this->db->get();
         return  $sql->num_rows();
     }
@@ -311,7 +311,7 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function posnic_data_table($end,$start,$order,$like,$table,$branch){
-         $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0);  
+         $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',0);  
          $this->db->limit($end,$start); 
          $this->db->order_by($order);
          $this->db->or_like($like);     

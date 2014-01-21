@@ -20,7 +20,7 @@
            $('#dt_table_tools').dataTable({
                                       "bProcessing": true,
 				      "bServerSide": true,
-                                      "sAjaxSource": "<?php echo base_url() ?>index.php/brands/brands_data_table",
+                                      "sAjaxSource": "<?php echo base_url() ?>index.php/tax_types/tax_types_data_table",
                                        aoColumns: [  
                                     
          { "bVisible": false} , {	"sName": "ID",
@@ -75,12 +75,12 @@
                                     );
                                    
 			}
-    function user_function(brands,guid){
-    <?php if($_SESSION['brands_per']['delete']==1){ ?>
-             bootbox.confirm("Are you Sure To Delete This brands ("+brands+")", function(result) {
+    function user_function(tax_types,guid){
+    <?php if($_SESSION['tax_types_per']['delete']==1){ ?>
+             bootbox.confirm("Are you Sure To Delete This tax_types ("+tax_types+")", function(result) {
              if(result){
             $.ajax({
-                url: '<?php echo base_url() ?>/index.php/brands/delete',
+                url: '<?php echo base_url() ?>/index.php/tax_types/delete',
                 type: "POST",
                 data: {
                     guid: guid
@@ -89,7 +89,7 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl('<?php echo $this->lang->line('brand') ?> '+brands+' <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                           $.bootstrapGrowl('<?php echo $this->lang->line('brand') ?> '+tax_types+' <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });
@@ -103,7 +103,7 @@
                         }
             function posnic_deactive(user,guid){
                 $.ajax({
-                url: '<?php echo base_url() ?>index.php/brands/deactive',
+                url: '<?php echo base_url() ?>index.php/tax_types/deactive',
                 type: "POST",
                 data: {
                     guid: guid
@@ -120,7 +120,7 @@
             }
             function posnic_active(user,guid){
                            $.ajax({
-                url: '<?php echo base_url() ?>index.php/brands/active',
+                url: '<?php echo base_url() ?>index.php/tax_types/active',
                 type: "POST",
                 data: {
                     guid: guid
@@ -137,9 +137,9 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['brands_per']['edit']==1){ ?>
+                        <?php if($_SESSION['tax_types_per']['edit']==1){ ?>
                             $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/brands/edit_brands/"+guid,                      
+                             url: "<?php echo base_url() ?>index.php/tax_types/edit_tax_types/"+guid,                      
                              data: "", 
                              dataType: 'json',               
                              success: function(data)        
@@ -147,12 +147,12 @@
                                  $("#user_list").hide();
                                  $('#edit_brand_form').show('slow');
                                  $('#delete').attr("disabled", "disabled");
-                                 $('#posnic_add_brands').attr("disabled", "disabled");
+                                 $('#posnic_add_tax_types').attr("disabled", "disabled");
                                  $('#active').attr("disabled", "disabled");
                                  $('#deactive').attr("disabled", "disabled");
-                                 $('#brands_lists').removeAttr("disabled");
+                                 $('#tax_types_lists').removeAttr("disabled");
                                  $('#parsley_reg #guid').val(data[0]['guid']);
-                                 $('#parsley_reg #brands_name').val(data[0]['name']);
+                                 $('#parsley_reg #tax_types').val(data[0]['type']);
                                
                              } 
                            });

@@ -153,7 +153,7 @@ class Taxes extends CI_Controller
    
     function active(){
             $id=  $this->input->post('guid');
-            $report= $this->posnic->posnic_module_active($id,'brands'); 
+            $report= $this->posnic->posnic_module_active($id,'taxes'); 
             if (!$report['error']) {
                 echo 'TRUE';
               } else {
@@ -162,7 +162,7 @@ class Taxes extends CI_Controller
     }
     function deactive(){
             $id=  $this->input->post('guid');
-            $report= $this->posnic->posnic_module_deactive($id,'brands'); 
+            $report= $this->posnic->posnic_module_deactive($id,'taxes'); 
             if (!$report['error']) {
                 echo 'TRUE';
               } else {
@@ -171,7 +171,7 @@ class Taxes extends CI_Controller
     }
     function edit_brands($guid){
         if($_SESSION['brands_per']['edit']==1){
-        $data=  $this->posnic->get_module_details_for_update($guid,'brands');
+        $data=  $this->posnic->get_module_details_for_update($guid,'taxes');
         echo json_encode($data);
         }else{
             echo 'FALSE';
@@ -180,10 +180,10 @@ class Taxes extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['brands_per']['delete']==1){
+        if($_SESSION['taxes_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
-              $this->posnic->posnic_delete($guid);
+              $this->posnic->posnic_delete($guid,'taxes');
              echo 'TRUE';
             }
            }else{
