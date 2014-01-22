@@ -369,4 +369,27 @@ $lang['code']='Item Code';
   $lang['none']='0';
   $lang['taxes_type']='Tax Type';
   $lang['Are you Sure To Delete This']='Are you Sure To Delete This ';
+  
+  
+  //customer
+  $lang['date_of']='Date OF Birth';
+$lang['company']='Comapany';
+$lang['website']='Website';
+$lang['comments']='Comments';
+$lang['account_no']='Account Number';
+$lang['add_new_customer']='Add New Customer';
+$lang['delete_customer']='Delete Customer';
+$lang['customer_cate']='Customer Category';
+$lang['payment']='Payment';
+$lang['Credit Days']='Credit Days';
+ $lang['Credit Limit']='Credit Limit';
+ $lang['Monthly Credit Balance']='Monthly Credit Balance';
+ $lang['tax_no']='Tax Reg No';
+ $lang['birthday']='Birth Date';
+ $lang['Marragedate']='Marriage Date';
+ $lang['bank_name']='Bank Name';
+ $lang['bank_location']='Bank Location';
+ $lang['cst']='CST No.';
+ $lang['gst']='GST No.';
+ $lang['title_of_customer']='Title';
 ?>﻿
