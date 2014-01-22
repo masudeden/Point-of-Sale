@@ -135,8 +135,13 @@ function reload_update_user(){
                                         <tr>
                                          <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
-                                          <th ><?php echo $this->lang->line('brand')." ".$this->lang->line('name') ?></th>
+                                          <th ><?php echo $this->lang->line('name') ?></th>
                                           
+                                          <th><?php echo $this->lang->line('company') ?></th>
+                                          <th><?php echo $this->lang->line('phone') ?></th>
+                                          <th><?php echo $this->lang->line('email') ?></th>
+                                          <th><?php echo $this->lang->line('category') ?></th>
+                                          <th><?php echo $this->lang->line('payment') ?></th>
                                           <th><?php echo $this->lang->line('status') ?></th>
                                           <th><?php echo $this->lang->line('action') ?></th>
                                          </tr>

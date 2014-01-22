@@ -34,7 +34,7 @@
 								
 							},
         
-        null, 
+        null, null, null, null, null, null, 
 
  							{	"sName": "ID",
                    						"bSearchable": false,
