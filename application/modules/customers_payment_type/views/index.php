@@ -268,7 +268,7 @@ function reload_update_user(){
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
+                      for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
                                 url: '<?php echo base_url() ?>/index.php/customers_payment_type/active',
@@ -355,7 +355,7 @@ function reload_update_user(){
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
+                      for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                                  $.ajax({
                                     url: '<?php echo base_url() ?>/index.php/customers_payment_type/deactive',
