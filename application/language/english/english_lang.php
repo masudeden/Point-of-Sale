@@ -372,24 +372,33 @@ $lang['code']='Item Code';
   
   
   //customer
+  $lang['customer_details']='Customer Details';
   $lang['date_of']='Date OF Birth';
 $lang['company']='Comapany';
 $lang['website']='Website';
 $lang['comments']='Comments';
 $lang['account_no']='Account Number';
+$lang['bank_details']='Bank Details';
+$lang['tax_details']='Tax Details';
 $lang['add_new_customer']='Add New Customer';
 $lang['delete_customer']='Delete Customer';
-$lang['customer_cate']='Customer Category';
+$lang['customer_category']='Customer Category';
 $lang['payment']='Payment';
-$lang['Credit Days']='Credit Days';
- $lang['Credit Limit']='Credit Limit';
- $lang['Monthly Credit Balance']='Monthly Credit Balance';
+$lang['credit_days']='Credit Days';
+ $lang['credit_limit']='Credit Limit';
+ $lang['monthly_credit_balance']='Monthly Credit Balance';
  $lang['tax_no']='Tax Reg No';
  $lang['birthday']='Birth Date';
- $lang['Marragedate']='Marriage Date';
+ $lang['marragedate']='Marriage Date';
  $lang['bank_name']='Bank Name';
  $lang['bank_location']='Bank Location';
  $lang['cst']='CST No.';
  $lang['gst']='GST No.';
  $lang['title_of_customer']='Title';
+ $lang['mr']='Mr';
+ $lang['mis']='Mis';
+ $lang['mrs']='Mrs';
+ $lang['dr']='Dr';
+ $lang['ms']='M/S';
+ $lang['payment_details']='Payment Details';
 ?>﻿

@@ -4,13 +4,13 @@ class Userlogin extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-
+        session_start();
         $this->load->helper('url');
         $this->load->library('unit_test');
         $this->load->helper(array('form', 'url'));
         $this->load->helper('form');
         $this->load->library('form_validation');
-        session_start();
+        
         $this->load->library('poslanguage');                 
         $this->poslanguage->set_language();     
     }

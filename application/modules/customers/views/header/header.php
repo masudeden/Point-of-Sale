@@ -2,10 +2,12 @@
 <script type="text/javascript" charset="utf-8">
           $(document).ready( function () {
            
-                    $('#add_brand_form').hide();
+                    $('#add_customer_details_form').hide();
                     $('#edit_brand_form').hide();
+                  $('#add_customer_form').validate();
+                  
                               posnic_table();
-                                add_brand.onsubmit=function()
+                                add_customer_form.onsubmit=function()
                                 { 
                                   return false;
                                 } 
@@ -41,7 +43,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[5]==0){
+                   							if(oObj.aData[9]==0){
                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
@@ -55,10 +57,10 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[5]==0){
-                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[2]+'","'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                if(oObj.aData[9]==0){
+                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
 								}else{
-                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[2]+'","'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -75,9 +77,9 @@
                                     );
                                    
 			}
-    function user_function(customers,guid){
+    function user_function(guid){
     <?php if($_SESSION['customers_per']['delete']==1){ ?>
-             bootbox.confirm("Are you Sure To Delete This customers ("+customers+")", function(result) {
+             bootbox.confirm("Are you Sure To Delete This customers ", function(result) {
              if(result){
             $.ajax({
                 url: '<?php echo base_url() ?>/index.php/customers/delete',
@@ -89,7 +91,7 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl('<?php echo $this->lang->line('brand') ?> '+customers+' <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                           $.bootstrapGrowl('<?php echo $this->lang->line('brand') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });
@@ -101,7 +103,7 @@
    <?php }
 ?>
                         }
-            function posnic_deactive(user,guid){
+            function posnic_deactive(guid){
                 $.ajax({
                 url: '<?php echo base_url() ?>index.php/customers/deactive',
                 type: "POST",
@@ -118,7 +120,7 @@
                 }
             });
             }
-            function posnic_active(user,guid){
+            function posnic_active(guid){
                            $.ajax({
                 url: '<?php echo base_url() ?>index.php/customers/active',
                 type: "POST",
@@ -129,7 +131,7 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl(user+'<?php echo $this->lang->line('isactivated');?>', { type: "success" });
+                         $.bootstrapGrowl('<?php echo $this->lang->line('isactivated');?>', { type: "success" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }

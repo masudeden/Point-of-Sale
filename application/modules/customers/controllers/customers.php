@@ -85,63 +85,53 @@ class Customers extends CI_Controller
 		
 		   echo json_encode($output1);
     }
-    function customers_magement(){
-     if($this->input->post('cancel')){
-                redirect('home');
-       }   
-       if($this->input->post('add')){
-           if($_SESSION['Posnic_Add']==="Add"){
-                    $data['row']=$this->posnic->posnic_module('customer_category');
-                    $data['pay']=$this->posnic->posnic_module('customers_payment_type');
-                    $this->load->view('add_customer',$data);
-           }else{
-                    redirect('customers');
-           }
-       }
-       if($this->input->post('active')){
-           $data=  $this->input->post('posnic'); 
-                    foreach( $data as $key => $guid){
-                        $this->posnic->posnic_active($guid);
-                    }
-                     redirect('customers');
-       }
-       if($this->input->post('deactive')){
-           $data=  $this->input->post('posnic'); 
-                    foreach( $data as $key => $guid){
-                          $this->posnic->posnic_deactive($guid);
-                    }
-                    redirect('customers');
-       }
-       if($this->input->post('delete')){
-           if($_SESSION['Posnic_Delete']==="Delete"){
-           $data=  $this->input->post('posnic'); 
-                    foreach( $data as $key => $guid){
-                          $this->posnic->posnic_delete($guid);
-                    }
-                    redirect('customers');
-       }
-       }else{
-           redirect('customers');
-       }
-       
+  function active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'customers'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
     }
-            
-  
-    function add_new_customer(){
-            if($this->input->post('cancel')){
-                $this->get_customers();
+    function deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'customers'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+   function delete(){
+        if($_SESSION['customers_per']['delete']==1){
+            if($this->input->post('guid')){
+             $guid=  $this->input->post('guid');
+              $this->posnic->posnic_delete($guid,'customers');
+             echo 'TRUE';
             }
-            if($this->input->post('save')){
-                  if($_SESSION['Posnic_Add']==="Add"){
+           }else{
+            echo 'FALSE';
+        }
+    }
+    function add_customers(){
+                  if($_SESSION['customers_per']['add']=="1"){
+                       if($this->input->post('country')){
                     $this->load->library('form_validation');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
-                            $this->form_validation->set_rules("cate_id",$this->lang->line('customer_cate'),"required"); 
-                            $this->form_validation->set_rules("payment",$this->lang->line('payment'),"required"); 
                             $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
+                            $this->form_validation->set_rules("category",$this->lang->line('category'),"required"); 
+                            $this->form_validation->set_rules("address",$this->lang->line('address'),"required"); 
+                            $this->form_validation->set_rules("payment_type",$this->lang->line('payment_type'),"required"); 
+                            $this->form_validation->set_rules("city",$this->lang->line('city'),"required"); 
+                            $this->form_validation->set_rules("state",$this->lang->line('state'),"required"); 
+                            $this->form_validation->set_rules("zip",$this->lang->line('zip'),"required"); 
+                            $this->form_validation->set_rules("country",$this->lang->line('country'),"required"); 
+                            $this->form_validation->set_rules("address",$this->lang->line('address'),"required"); 
                             $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'max_length[12]|regex_match[/^[0-9]+$/]|xss_clean');
-                            $this->form_validation->set_rules('Credit_Days', $this->lang->line('Credit Days'), 'max_length[10]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            $this->form_validation->set_rules('Credit_Limit', $this->lang->line('Credit Limit'), 'max_length[10]|regex_match[/^[0-9 .]+$/]|xss_clean');
-                            $this->form_validation->set_rules('Monthly_Credit_Balance', $this->lang->line('MonthlyCreditBalance'), 'max_length[10]|regex_match[/^[0-9 .]+$/]|xss_clean');
+                            $this->form_validation->set_rules('credit_days', $this->lang->line('credit_days'), 'max_length[10]|regex_match[/^[0-9 .]+$/]|xss_clean');
+                            $this->form_validation->set_rules('credit_limit', $this->lang->line('credit_limit'), 'max_length[10]|regex_match[/^[0-9 .]+$/]|xss_clean');
+                            $this->form_validation->set_rules('balance', $this->lang->line('balance'), 'max_length[10]|regex_match[/^[0-9 .]+$/]|xss_clean');
                             $this->form_validation->set_rules('email', $this->lang->line('email'), 'required|valid_email');                             	  
                         if ( $this->form_validation->run() !== false ) {
                             $values=array(
@@ -156,50 +146,62 @@ class Customers extends CI_Controller
                                     'comments'=>$this->input->post('comments'),
                                     'website'=>$this->input->post('website'),
                                     'account_number'=>$this->input->post('account'),
-                                    'address1'=>$this->input->post('address1'),
-                                    'address2'=>$this->input->post('address2'),
+                                    'address'=>$this->input->post('address'),
                                     'company_name'=>$this->input->post('company'),                                    
-                                    'cst'=>$this->input->post('cst'),
-                                    'gst'=>$this->input->post('gst'),
-                                    'payment'=>$this->input->post('payment'),
-                                    'credit_limit'=>$this->input->post('Credit_Limit'),
-                                    'cdays'=>$this->input->post('Credit_Days'),
-                                    'month_credit_bal'=>$this->input->post('Monthly_Credit_Balance'),
-                                    'bday'=>strtotime($this->input->post('birthday')),
-                                    'mday'=>strtotime($this->input->post('Marragedate')),
-                                    'title'=>$this->input->post('tittle'),
-                                    'category_id'=>$this->input->post('cate_id'),
+                                    
+                                    'payment'=>$this->input->post('payment_type'),
+                                    'credit_limit'=>$this->input->post('credit_limit'),
+                                    'cdays'=>$this->input->post('credit_days'),
+                                    'month_credit_bal'=>$this->input->post('balance'),
+                                    'bday'=>strtotime($this->input->post('dob')),
+                                    'mday'=>strtotime($this->input->post('marragedate')),
+                                    'title'=>$this->input->post('title'),
+                                    'category_id'=>$this->input->post('category'),
+                                
                                     'bank_name'=>$this->input->post('bank_name'),
                                     'bank_location'=>$this->input->post('bank_location'),
+                                    'account_number'=>$this->input->post('account_no'),
+                                    'cst'=>$this->input->post('cst'),
+                                    'gst'=>$this->input->post('gst'),
                                     'tax_no'=>  $this->input->post('tax_no'));
                                     
                                     
                                     
-                                   $data=array('phone'=>$this->input->post('first_name'),'email'=>$this->input->post('email'));
-                                    if($this->posnic->check_unique($data)){
-                                        $this->posnic->posnic_add($values); 
-                                        redirect('customers');
-                                    
-                                   }else{
-                                       
-                                        echo "this user is already added";
-                                        $data['row']=$this->posnic->posnic_module('customer_category');
-                                        $data['pay']=$this->posnic->posnic_module('customers_payment_type');
-                                        $this->load->view('add_customer',$data);
-                                   }
-                                    
-                                    
-                        }else{
-                                $data['row']=$this->posnic->posnic_module('customer_category');
-                                $data['pay']=$this->posnic->posnic_module('customers_payment_type');
-                                $this->load->view('add_customer',$data);
-                        }
-                    
+                                   $where=array('phone'=>$this->input->post('first_name'),'email'=>$this->input->post('email'));
+                                 if($this->posnic->check_record_unique($where,'customers')){
+                   
+                    $this->posnic->posnic_add_record($values,'customers');
+                    echo 'TRUE';
                 }else{
-                    redirect('customers');
+                        echo "ALREADY";
                 }
-            }
+                }else{
+                    echo "FALSE";
+                }
+                }else{
+                       echo "FALSE";
+                }	             
+           }else{
+               echo "NOOP";
+           }
     }
+    function get_category(){
+          $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('category_name'=>$search);
+            $data= $this->posnic->posnic_or_like('customer_category',$like);      
+            echo json_encode($data);
+        }
+    }
+    function get_payment(){
+          $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('type'=>$search);
+            $data= $this->posnic->posnic_or_like('customers_payment_type',$like);      
+            echo json_encode($data);
+        }
+    }
+            
     function edit_customers($guid){
              if($_SESSION['Posnic_Edit']==="Edit"){
                   $where=array('guid'=>$guid);
@@ -302,18 +304,7 @@ class Customers extends CI_Controller
                  redirect('home');
              }
     }
-    function delete($guid){
-       if($_SESSION['Posnic_Delete']==="Delete"){
-                 $this->posnic->posnic_delete($guid);
-        
-                 redirect('customers');
-                 
-             }else{
-                 redirect('home');
-             }
-    }
-    
-    
+  
 }
 
 ?>
