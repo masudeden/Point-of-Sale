@@ -22,9 +22,11 @@
 </style>	
 <script type="text/javascript">
      $(document).ready( function () {
-          var d = new Date(); 
-         
-     alert((d.getTime()-d.getMilliseconds())/1000);
+          var d = '12/1/2014'; 
+          var currentEpoch;
+         currentEpoch=(d/1000);
+     alert(d/1000);
+     alert(new Date(currentEpoch *1000));
          $('#parsley_reg #search_department').change(function() {
                    var guid = $('#parsley_reg #search_department').select2('data').id;
                 $('#parsley_reg #item_department').val(guid);

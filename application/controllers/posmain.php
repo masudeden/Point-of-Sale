@@ -1,20 +1,17 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 class Posmain extends CI_Controller{
     function __construct() {
         parent::__construct();
+          session_start();
         $this->load->helper('form');
-        $this->load->helper('url');
-        
+        $this->load->helper('url');        
         $this->load->library('unit_test');
-        session_start();        
-        $this->load->library('session');
-        $this->load->helper(array('form', 'url'));
         $this->load->library('poslanguage');                 
         $this->poslanguage->set_language();
         
     }
     function index()
+    
     { if(!isset($_SESSION['Uid'])){
             $this->load->view('template/header');
             $this->load->view('login');
@@ -89,6 +86,10 @@ class Posmain extends CI_Controller{
         }}
         
         
+    }
+    function get_date_in_strtotime(){
+        $date=$this->input->post('date');
+         echo date('n/j/Y', strtotime('+0 year, +0 days',$date));
     }
     
 }

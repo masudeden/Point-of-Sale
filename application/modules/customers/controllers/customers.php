@@ -122,7 +122,7 @@ class Customers extends CI_Controller
                             $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
                             $this->form_validation->set_rules("category",$this->lang->line('category'),"required"); 
                             $this->form_validation->set_rules("address",$this->lang->line('address'),"required"); 
-                            $this->form_validation->set_rules("payment_type",$this->lang->line('payment_type'),"required"); 
+                            $this->form_validation->set_rules("payment",$this->lang->line('payment'),"required"); 
                             $this->form_validation->set_rules("city",$this->lang->line('city'),"required"); 
                             $this->form_validation->set_rules("state",$this->lang->line('state'),"required"); 
                             $this->form_validation->set_rules("zip",$this->lang->line('zip'),"required"); 
@@ -149,7 +149,7 @@ class Customers extends CI_Controller
                                     'address'=>$this->input->post('address'),
                                     'company_name'=>$this->input->post('company'),                                    
                                     
-                                    'payment'=>$this->input->post('payment_type'),
+                                    'payment'=>$this->input->post('payment'),
                                     'credit_limit'=>$this->input->post('credit_limit'),
                                     'cdays'=>$this->input->post('credit_days'),
                                     'month_credit_bal'=>$this->input->post('balance'),
@@ -203,16 +203,12 @@ class Customers extends CI_Controller
     }
             
     function edit_customers($guid){
-             if($_SESSION['Posnic_Edit']==="Edit"){
-                  $where=array('guid'=>$guid);
-                  $data['irow']=$this->posnic->posnic_result($where);
-                  $data['row']=$this->posnic->posnic_module('customer_category');
-                  $data['pay']=$this->posnic->posnic_module('customers_payment_type');
-                  $data['spay']= $this->posnic->posnic_module('customers_payment_type');
-                 
-                  $this->load->view('customers/edit_customer',$data);
+           if($_SESSION['customers_per']['edit']=="1"){
+                  $this->load->model('customer')		   ;
+		  $data = $this->customer->edit_customer($guid);
+                  echo json_encode($data);
              }else{
-                 redirect('customer');
+                echo 'Noop';
              }
        
     }

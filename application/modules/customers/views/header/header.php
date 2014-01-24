@@ -58,9 +58,9 @@
                                                                 
                    						"fnRender": function (oObj) {
                                                                 if(oObj.aData[9]==0){
-                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
 								}else{
-                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -138,6 +138,7 @@
             });
             }
            function edit_function(guid){
+           $('#myModal').modal('show');
                        $("#parsley_reg").trigger('reset');
                         <?php if($_SESSION['customers_per']['edit']==1){ ?>
                             $.ajax({                                      
@@ -154,8 +155,42 @@
                                  $('#deactive').attr("disabled", "disabled");
                                  $('#customers_lists').removeAttr("disabled");
                                  $('#parsley_reg #guid').val(data[0]['guid']);
-                                 $('#parsley_reg #customers_name').val(data[0]['name']);
-                               
+                                 $('#parsley_reg #first_name').val(data[0]['first_name']);
+                                 $('#parsley_reg #last_name').val(data[0]['last_name']);
+                                 $('#parsley_reg #title').val(data[0]['title']);
+                             //   alert(strtotime('18-12-2011'));
+                                 
+                                $.ajax({                                      
+                             url: "<?php echo base_url() ?>index.php/posmain/get_date_in_strtotime",                      
+                             type: "POST",
+                             data: {
+                              date:data[0]['bday']
+                             }, 
+                             dataType: 'json',               
+                            complete: function(response) {
+                                   $('#parsley_reg #dob').val(response['responseText']); 
+                             }});
+                              
+                                 $('#parsley_reg #marragedate').val(data[0]['mday']);
+                                 $('#parsley_reg #address').val(data[0]['address']);
+                                 $('#parsley_reg #city').val(data[0]['city']);
+                                 $('#parsley_reg #state').val(data[0]['state']);
+                                 $('#parsley_reg #zip').val(data[0]['zip']);
+                                 $('#parsley_reg #country').val(data[0]['country']);
+                                 $('#parsley_reg #company').val(data[0]['company_name']);
+                                 $('#parsley_reg #website').val(data[0]['website']);
+                                 $('#parsley_reg #credit_days').val(data[0]['cdays']);
+                                 $('#parsley_reg #credit_limit').val(data[0]['credit_limit']);
+                                 $('#parsley_reg #balance').val(data[0]['month_credit_bal']);
+                                 $('#parsley_reg #bank_name').val(data[0]['bank_name']);
+                                 $('#parsley_reg #bank_location').val(data[0]['bank_location']);
+                                 $('#parsley_reg #account_number').val(data[0]['account_number']);
+                                 $('#parsley_reg #cst').val(data[0]['cst']);
+                                 $('#parsley_reg #gst').val(data[0]['gst']);
+                                 $('#parsley_reg #tax_no').val(data[0]['tax_no']);
+                                 $('#parsley_reg #email').val(data[0]['email']);
+                                 $('#parsley_reg #phone').val(data[0]['phone']);
+                                $('#myModal').modal('hide');
                              } 
                            });
                          
