@@ -300,6 +300,13 @@ class Customers extends CI_Controller
                  redirect('home');
              }
     }
+     function get_date_in_strtotime(){
+        $dob=$this->input->post('dob');
+        $mdate=$this->input->post('mdate');
+         $data['dob']= date('j.n.Y', strtotime('+0 year, +0 days',$dob));
+         $data['mdate']= date('j.n.Y', strtotime('+0 year, +0 days',$mdate));
+         echo json_encode($data);
+    }
   
 }
 

@@ -232,6 +232,13 @@ function reload_update_user(){
              </div>
         </div>
 </section>    
+<div class="modal fade" id="loading">
+    <div class="modal-dialog" style="width: 146px;margin-top: 20%">
+                
+        <img src="<?php echo base_url('loader.gif') ?>" style="margin: auto">
+                    
+        </div>
+</div>
 <section id="add_customer_details_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'add_customer_form',
                           'runat'=>'server',
@@ -271,7 +278,7 @@ function reload_update_user(){
                                                                                     'value'=>set_value('customer_category'));
                                                                      echo form_input($customer_category)?>
                                                   </div>
-                                                    <input  type="text" name="category" id='category'>
+                                                    <input  type="hidden" name="category" id='category'>
                                                    </div>
                                            </div>
                                             </div>  
@@ -474,7 +481,7 @@ function reload_update_user(){
                                                                                     'id'=>'payment_type',
                                                                                     'value'=>set_value('payment_type'));
                                                                      echo form_input($payment_type)?>
-                                                        <input type="text" name="payment" id='payment'>
+                                                        <input type="hidden" name="payment" id='payment'>
                                                   </div>
                                                    </div>
                                                <div class="col col-sm-4">
@@ -636,13 +643,7 @@ function reload_update_user(){
                 
     <?php echo form_close();?>
 </section> 
-<div class="modal fade" id="myModal">
-    <div class="modal-dialog" style="width: 146px;margin-top: 20%">
-                
-        <img src="<?php echo base_url('loader.gif') ?>" style="margin: auto">
-                    
-        </div>
-</div>
+
 <section id="edit_brand_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',
                           'runat'=>'server',
@@ -659,7 +660,6 @@ function reload_update_user(){
                                      <h4 class="panel-title"><?php echo $this->lang->line('personal_details') ?></h4>                                                                               
                                </div>
                               <div class="row">
-                                  <input type="text" name="dob1" id="dob1">
                                   <div class="col-sm-4" style="padding-left: 40px;">
                                        <div class="row">     <div class="step_info">
                                               <label for="title_of_customer" class="req"><?php echo $this->lang->line('title_of_customer') ?></label>													
@@ -682,7 +682,7 @@ function reload_update_user(){
                                                                                     'value'=>set_value('customer_category'));
                                                                      echo form_input($customer_category)?>
                                                   </div>
-                                                    <input  type="text" name="category" id='category'>
+                                                    <input  type="hidden" name="category" id='category'>
                                                    </div>
                                            </div>
                                             </div>  
@@ -885,7 +885,7 @@ function reload_update_user(){
                                                                                     'id'=>'payment_type',
                                                                                     'value'=>set_value('payment_type'));
                                                                      echo form_input($payment_type)?>
-                                                        <input type="text" name="payment" id='payment'>
+                                                        <input type="hidden" name="payment" id='payment'>
                                                   </div>
                                                    </div>
                                                <div class="col col-sm-4">
@@ -1031,7 +1031,7 @@ function reload_update_user(){
                          
                           <div class="row">
                         <div class="col-lg-4"></div>
-                      <div class="col col-lg-4 text-center"><br><br>
+                      <div class="col col-lg-12 text-center"><br><br>
                           <button id="update_customers"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
                           <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
                       </div>

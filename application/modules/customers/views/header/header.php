@@ -138,7 +138,7 @@
             });
             }
            function edit_function(guid){
-           $('#myModal').modal('show');
+           $('#loading').modal('show');
                        $("#parsley_reg").trigger('reset');
                         <?php if($_SESSION['customers_per']['edit']==1){ ?>
                             $.ajax({                                      
@@ -161,17 +161,19 @@
                              //   alert(strtotime('18-12-2011'));
                                  
                                 $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/posmain/get_date_in_strtotime",                      
+                             url: "<?php echo base_url() ?>index.php/customers/get_date_in_strtotime",                      
                              type: "POST",
                              data: {
-                              date:data[0]['bday']
+                              dob:data[0]['bday'],
+                              mdate:data[0]['mday']
                              }, 
                              dataType: 'json',               
-                            complete: function(response) {
-                                   $('#parsley_reg #dob').val(response['responseText']); 
+                             success: function(data)        
+                             {
+                                   $('#parsley_reg #dob').val(data['dob']); 
+                                   $('#parsley_reg #marragedate').val(data['mdate']); 
                              }});
                               
-                                 $('#parsley_reg #marragedate').val(data[0]['mday']);
                                  $('#parsley_reg #address').val(data[0]['address']);
                                  $('#parsley_reg #city').val(data[0]['city']);
                                  $('#parsley_reg #state').val(data[0]['state']);
@@ -190,7 +192,7 @@
                                  $('#parsley_reg #tax_no').val(data[0]['tax_no']);
                                  $('#parsley_reg #email').val(data[0]['email']);
                                  $('#parsley_reg #phone').val(data[0]['phone']);
-                                $('#myModal').modal('hide');
+                                $('#loading').modal('hide');
                              } 
                            });
                          
