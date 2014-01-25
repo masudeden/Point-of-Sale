@@ -5,22 +5,113 @@ class Suppliers extends CI_Controller{
                 $this->load->library('posnic'); 
     }
     function index(){     
-        
-            $this->get_suppliers();
-        
+          $this->get(); 
+    }
+     function get(){
+        $this->load->view('template/app/header'); 
+        $this->load->view('header/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $data['active']='suppliers';
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
+    }
+    function suppliers_data_table(){
+        $aColumns = array( 'guid','first_name','first_name','company_name','phone','email','email','active' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('first_name'=>  $this->input->get_post('sSearch'));
+				
+			}
+					   
+			 $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'suppliers');
+		   
+		$iFilteredTotal =$this->posnic->data_table_count('suppliers');
+		
+		$iTotal =$this->posnic->data_table_count('suppliers');
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
     }
     
-    function get_suppliers(){// Read all suppliers
-        $config["base_url"] = base_url()."index.php/suppliers/get_suppliers";
-	        $config["total_rows"] =$this->posnic->posnic_count(); 
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->posnic->posnic_count();
-	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
-	        $data["links"] = $this->pagination->create_links(); 
-                $this->load->view('supplier_list',$data);     
+     function active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'suppliers'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'suppliers'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+   function delete(){
+        if($_SESSION['suppliers_per']['delete']==1){
+            if($this->input->post('guid')){
+             $guid=  $this->input->post('guid');
+              $this->posnic->posnic_delete($guid,'suppliers');
+             echo 'TRUE';
+            }
+           }else{
+            echo 'FALSE';
+        }
     }
     function add_new_supplier(){
             if($this->input->post('cancel')){
