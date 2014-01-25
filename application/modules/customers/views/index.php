@@ -97,6 +97,81 @@
                 }
             });
         
+          $('#parsley_reg #customer_category').change(function() {
+                   var guid = $('#parsley_reg #customer_category').select2('data').id;
+                   alert(guid);
+                $('#parsley_reg #category').val(guid);
+          });
+          $('#parsley_reg #customer_category').select2({
+                placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
+                ajax: {
+                     url: '<?php echo base_url() ?>index.php/customers/get_category',
+                     data: function(term, page) {
+                            return {types: ["exercise"],
+                                limit: -1,
+                                term: term
+                            };
+                     },
+                    type:'POST',
+                    dataType: 'json',
+                    quietMillis: 100,
+                    data: function (term) {
+                        return {
+                            term: term
+                        };
+                    },
+                    results: function (data) {
+                      var results = [];
+                      $.each(data, function(index, item){
+                        results.push({
+                          id: item.guid,
+                          text: item.category_name
+                        });
+                      });
+                      return {
+                          results: results
+                      };
+                    }
+                }
+            });
+        
+          $('#parsley_reg #payment_type').change(function() {
+                   var guid = $('#parsley_reg #payment_type').select2('data').id;
+                $('#parsley_reg #payment').val(guid);
+          });
+          $('#parsley_reg #payment_type').select2({
+                placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
+                ajax: {
+                     url: '<?php echo base_url() ?>index.php/customers/get_payment',
+                     data: function(term, page) {
+                            return {types: ["exercise"],
+                                limit: -1,
+                                term: term
+                            };
+                     },
+                    type:'POST',
+                    dataType: 'json',
+                    quietMillis: 100,
+                    data: function (term) {
+                        return {
+                            term: term
+                        };
+                    },
+                    results: function (data) {
+                      var results = [];
+                      $.each(data, function(index, item){
+                        results.push({
+                          id: item.guid,
+                          text: item.type
+                        });
+                      });
+                      return {
+                          results: results
+                      };
+                    }
+                }
+            });
+        
         
         
         $('#add_new_customer').click(function() { 
@@ -683,6 +758,7 @@ function reload_update_user(){
                                                                      echo form_input($customer_category)?>
                                                   </div>
                                                     <input  type="hidden" name="category" id='category'>
+                                                    <input  type="hidden" name="guid" id='guid'>
                                                    </div>
                                            </div>
                                             </div>  

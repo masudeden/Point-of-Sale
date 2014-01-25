@@ -114,7 +114,7 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl(user+'<?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
+                         $.bootstrapGrowl('<?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }
@@ -186,12 +186,19 @@
                                  $('#parsley_reg #balance').val(data[0]['month_credit_bal']);
                                  $('#parsley_reg #bank_name').val(data[0]['bank_name']);
                                  $('#parsley_reg #bank_location').val(data[0]['bank_location']);
-                                 $('#parsley_reg #account_number').val(data[0]['account_number']);
+                                 $('#parsley_reg #account_no').val(data[0]['account_number']);
                                  $('#parsley_reg #cst').val(data[0]['cst']);
                                  $('#parsley_reg #gst').val(data[0]['gst']);
                                  $('#parsley_reg #tax_no').val(data[0]['tax_no']);
                                  $('#parsley_reg #email').val(data[0]['email']);
                                  $('#parsley_reg #phone').val(data[0]['phone']);
+                                 
+                                 $("#parsley_reg #customer_category").select2('data', {id:data[0]['category_id'],text: data[0]['c_name']});
+                                $('#parsley_reg #category').val(data[0]['category_id']);
+                                 
+                                 $("#parsley_reg #payment_type").select2('data', {id:data[0]['payment'],text: data[0]['type']});
+                                $('#parsley_reg #payment').val(data[0]['payment']);
+                                
                                 $('#loading').modal('hide');
                              } 
                            });
