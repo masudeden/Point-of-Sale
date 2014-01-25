@@ -417,7 +417,7 @@ function reload_update_user(){
                          <div class="row">
                              <div class="panel panel-default">
                                <div class="panel-heading">
-                                      <h4 class="panel-title"><?php echo $this->lang->line('payment_details') ?></h4>                                                                                  
+                                      <h4 class="panel-title"><?php echo $this->lang->line('contact_details') ?></h4>                                                                                  
                                </div>
                               <div class="row">
                                  
@@ -822,7 +822,7 @@ function reload_update_user(){
                          <div class="row">
                              <div class="panel panel-default">
                                <div class="panel-heading">
-                                      <h4 class="panel-title"><?php echo $this->lang->line('payment_details') ?></h4>                                                                                  
+                                      <h4 class="panel-title"><?php echo $this->lang->line('contact_details') ?></h4>                                                                                  
                                </div>
                               <div class="row">
                                  

@@ -400,4 +400,7 @@ $lang['credit_days']='Credit Days';
  $lang['dr']='Dr';
  $lang['ms']='M/S';
  $lang['payment_details']='Payment Details';
+ 
+ // suppliers
+ $lang['add_new_conatct']='Add New Conatct'
 ?>﻿

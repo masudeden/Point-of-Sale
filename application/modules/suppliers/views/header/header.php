@@ -2,12 +2,12 @@
 <script type="text/javascript" charset="utf-8">
           $(document).ready( function () {
            
-                    $('#add_customer_details_form').hide();
+                    $('#add_supplier_details_form').hide();
                     $('#edit_brand_form').hide();
-                  $('#add_customer_form').validate();
+                  $('#add_supplier_form').validate();
                   
                               posnic_table();
-                                add_customer_form.onsubmit=function()
+                                add_supplier_form.onsubmit=function()
                                 { 
                                   return false;
                                 } 
@@ -193,7 +193,7 @@
                                  $('#parsley_reg #email').val(data[0]['email']);
                                  $('#parsley_reg #phone').val(data[0]['phone']);
                                  
-                                 $("#parsley_reg #customer_category").select2('data', {id:data[0]['category_id'],text: data[0]['c_name']});
+                                 $("#parsley_reg #supplier_category").select2('data', {id:data[0]['category_id'],text: data[0]['c_name']});
                                 $('#parsley_reg #category').val(data[0]['category_id']);
                                  
                                  $("#parsley_reg #payment_type").select2('data', {id:data[0]['payment'],text: data[0]['type']});

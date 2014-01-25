@@ -22,12 +22,12 @@
 </style>	
 <script type="text/javascript">
      $(document).ready( function () {
-          $('#add_customer_details_form #customer_category').change(function() {
-                   var guid = $('#add_customer_details_form #customer_category').select2('data').id;
+          $('#add_supplier_details_form #supplier_category').change(function() {
+                   var guid = $('#add_supplier_details_form #supplier_category').select2('data').id;
                    alert(guid);
-                $('#add_customer_details_form #category').val(guid);
+                $('#add_supplier_details_form #category').val(guid);
           });
-          $('#add_customer_details_form #customer_category').select2({
+          $('#add_supplier_details_form #supplier_category').select2({
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
                 ajax: {
                      url: '<?php echo base_url() ?>index.php/suppliers/get_category',
@@ -60,11 +60,11 @@
                 }
             });
         
-          $('#add_customer_details_form #payment_type').change(function() {
-                   var guid = $('#add_customer_details_form #payment_type').select2('data').id;
-                $('#add_customer_details_form #payment').val(guid);
+          $('#add_supplier_details_form #payment_type').change(function() {
+                   var guid = $('#add_supplier_details_form #payment_type').select2('data').id;
+                $('#add_supplier_details_form #payment').val(guid);
           });
-          $('#add_customer_details_form #payment_type').select2({
+          $('#add_supplier_details_form #payment_type').select2({
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
                 ajax: {
                      url: '<?php echo base_url() ?>index.php/suppliers/get_payment',
@@ -97,12 +97,12 @@
                 }
             });
         
-          $('#parsley_reg #customer_category').change(function() {
-                   var guid = $('#parsley_reg #customer_category').select2('data').id;
+          $('#parsley_reg #supplier_category').change(function() {
+                   var guid = $('#parsley_reg #supplier_category').select2('data').id;
                    alert(guid);
                 $('#parsley_reg #category').val(guid);
           });
-          $('#parsley_reg #customer_category').select2({
+          $('#parsley_reg #supplier_category').select2({
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
                 ajax: {
                      url: '<?php echo base_url() ?>index.php/suppliers/get_category',
@@ -174,9 +174,9 @@
         
         
         
-        $('#add_new_customer').click(function() { 
+        $('#add_new_supplier').click(function() { 
                 <?php if($_SESSION['suppliers_per']['add']==1){ ?>
-                var inputs = $('#add_customer_form').serialize();
+                var inputs = $('#add_supplier_form').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/suppliers/add_suppliers')?>",
                             data: inputs,
@@ -185,7 +185,7 @@
                                 if(response['responseText']=='TRUE'){
                                       $.bootstrapGrowl('<?php echo $this->lang->line('brand').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#add_customer_details").trigger('reset');
+                                       $("#add_supplier_details").trigger('reset');
                                        posnic_suppliers_lists();
                                     }else  if(response['responseText']=='ALREADY'){
                                            $.bootstrapGrowl($('#suppliers_name').val()+' <?php echo $this->lang->line('brand').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
@@ -229,7 +229,7 @@
 function posnic_add_new(){
     <?php if($_SESSION['suppliers_per']['add']==1){ ?>
       $("#user_list").hide();
-      $('#add_customer_details_form').show('slow');
+      $('#add_supplier_details_form').show('slow');
       $('#delete').attr("disabled", "disabled");
       $('#posnic_add_suppliers').attr("disabled", "disabled");
       $('#active').attr("disabled", "disabled");
@@ -241,7 +241,7 @@ function posnic_add_new(){
 }
 function posnic_suppliers_lists(){
       $('#edit_brand_form').hide('hide');
-      $('#add_customer_details_form').hide('hide');      
+      $('#add_supplier_details_form').hide('hide');      
       $("#user_list").show('slow');
       $('#delete').removeAttr("disabled");
       $('#active').removeAttr("disabled");
@@ -312,8 +312,8 @@ function reload_update_user(){
                     
         </div>
 </div>
-<section id="add_customer_details_form" class="container clearfix main_section">
-     <?php   $form =array('id'=>'add_customer_form',
+<section id="add_supplier_details_form" class="container clearfix main_section">
+     <?php   $form =array('id'=>'add_supplier_form',
                           'runat'=>'server',
                           'class'=>'form-horizontal');
        echo form_open_multipart('suppliers/add_pos_suppliers_details/',$form);?>
@@ -328,37 +328,19 @@ function reload_update_user(){
                                      <h4 class="panel-title"><?php echo $this->lang->line('personal_details') ?></h4>                                                                               
                                </div>
                               <div class="row">
-                                 
-                                  <div class="col-sm-4" style="padding-left: 40px;">
-                                       <div class="row">     <div class="step_info">
-                                              <label for="title_of_customer" class="req"><?php echo $this->lang->line('title_of_customer') ?></label>													
-                                              <select name='title' class="form-control">
-                                                  <option value="1"><?php echo $this->lang->line('mr') ?></option>
-                                                  <option value="2"><?php echo $this->lang->line('mis') ?></option>
-                                                  <option value="3"><?php echo $this->lang->line('mrs') ?></option>
-                                                  <option value="4"><?php echo $this->lang->line('ms') ?></option>
-                                                  <option value="5"><?php echo $this->lang->line('dr') ?></option>
-                                              </select>
-                                                   
-                                            </div> 
-                                           <div class="row" style="padding-top: 5px">
-                                                <div class="col col-sm-12">
-                                                   <div class="form_sep">
-                                                        <label for="customer_category" class="req"><?php echo $this->lang->line('customer_category') ?></label>													
-                                                                  <?php $customer_category=array('name'=>'customer_category',
-                                                                                    'class'=>'required  form-control',
-                                                                                    'id'=>'customer_category',
-                                                                                    'value'=>set_value('customer_category'));
-                                                                     echo form_input($customer_category)?>
-                                                  </div>
-                                                    <input  type="hidden" name="category" id='category'>
-                                                   </div>
-                                           </div>
-                                            </div>  
-                                       </div>
-                                       <div class="col col-sm-8" style="padding-right: 25px;">
+                                       <div class="col col-sm-12" style="padding-left: 25px; padding-right: 25px">
                                            <div class="row">
-                                               <div class="col col-sm-6">
+                                                <div class="col col-sm-4">
+                                                       <div class="form_sep">
+                                                                <label for="company" ><?php echo $this->lang->line('company') ?></label>													
+                                                                         <?php $company=array('name'=>'company',
+                                                                                            'class'=>'  form-control ',
+                                                                                            'id'=>'company',
+                                                                                            'value'=>set_value('company'));
+                                                                             echo form_input($company)?>
+                                                        </div> 
+                                                   </div>
+                                               <div class="col col-sm-4">
                                                    <div class="form_sep">
                                                         <label for="first_name" class="req"><?php echo $this->lang->line('first_name') ?></label>													
                                                                   <?php $first_name=array('name'=>'first_name',
@@ -368,54 +350,28 @@ function reload_update_user(){
                                                                      echo form_input($first_name)?>
                                                   </div>
                                                    </div>
-                                               <div class="col col-sm-6">
-                                                    <div class="form_sep">
-                                                            <label for="last_name" class="req"><?php echo $this->lang->line('last_name') ?></label>													
-                                                                     <?php $last_name=array('name'=>'last_name',
-                                                                                        'class'=>'required  form-control',
-                                                                                        'id'=>'last_name',
-                                                                                        'value'=>set_value('last_name'));
-                                                                         echo form_input($last_name)?>
-                                                       </div>
-                                                   </div>
-                                               </div>
-                                           <div class="row">
-                                                  <div class="col col-sm-6">
-                                                      <div class="form_sep">
-                                                                 <label for="dob" ><?php echo $this->lang->line('date_of') ?></label>
-                                                                <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                           <?php $dob=array('name'=>'dob',
+                                               <div class="col col-sm-4">
+                                                     <div class="form_sep">
+                                                            
+                                                                <label for="website" ><?php echo $this->lang->line('website') ?></label>
+
+                                                                 <?php $website=array('name'=>'website',
                                                                                             'class'=>' form-control',
-                                                                                            'id'=>'dob',
-                                                                                            'value'=>set_value('dob'));
-                                                                             echo form_input($dob)?>
-                                                                <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                    </div>
+                                                                                            'id'=>'website',
+                                                                                            'value'=>set_value('website'));
+                                                                             echo form_input($website)?>
+                                                        </div> 
                                                    </div>
-                                                   <div class="col col-sm-6">
-                                                       <div class="form_sep">
-                                                                        <label for="marragedate" ><?php echo $this->lang->line('marragedate') ?></label>													
-                                                                               <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                           <?php $marragedate=array('name'=>'marragedate',
-                                                                                            'class'=>' form-control',
-                                                                                            'id'=>'marragedate',
-                                                                                            'value'=>set_value('marragedate'));
-                                                                             echo form_input($marragedate)?>
-                                                                <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                                </div>  
-                                                     </div>
                                                </div>
                                      <br>
                                         </div>                              
                               </div>
                           </div>
                           </div>
-                         <div class="row">
+                         <div class="row" id="contact_details">
                              <div class="panel panel-default">
                                <div class="panel-heading">
-                                      <h4 class="panel-title"><?php echo $this->lang->line('payment_details') ?></h4>                                                                                  
+                                      <h4 class="panel-title"><?php echo $this->lang->line('contact_details') ?></h4>                                                                                  
                                </div>
                               <div class="row">
                                  
@@ -429,7 +385,7 @@ function reload_update_user(){
                                                                     'value'       =>  set_value('address'),
                                                                     'rows'        => '7',
                                                                     'cols'        => '10',
-                                                                    'class'       =>'form-control required'
+                                                                    'class'       =>'form-control '
 
                                                                   ); echo form_textarea($address);
                                                     ?>
@@ -441,7 +397,7 @@ function reload_update_user(){
                                                    <div class="form_sep">
                                                         <label for="city" class="req"><?php echo $this->lang->line('city') ?></label>													
                                                                   <?php $city=array('name'=>'city',
-                                                                                    'class'=>'required  form-control',
+                                                                                    'class'=>'  form-control',
                                                                                     'id'=>'city',
                                                                                     'value'=>set_value('city'));
                                                                      echo form_input($city)?>
@@ -451,7 +407,7 @@ function reload_update_user(){
                                                     <div class="form_sep">
                                                             <label for="state" class="req"><?php echo $this->lang->line('state') ?></label>													
                                                                      <?php $state=array('name'=>'state',
-                                                                                        'class'=>'required  form-control',
+                                                                                        'class'=>'  form-control',
                                                                                         'id'=>'state',
                                                                                         'value'=>set_value('state'));
                                                                          echo form_input($state)?>
@@ -464,7 +420,7 @@ function reload_update_user(){
                                                             <label for="zip" class="req"><?php echo $this->lang->line('zip') ?></label>
 
                                                                        <?php $zip=array('name'=>'zip',
-                                                                                        'class'=>'required  form-control',
+                                                                                        'class'=>'  form-control',
                                                                                         'id'=>'zip',
                                                                                         'value'=>set_value('zip'));
                                                                          echo form_input($zip)?>
@@ -474,7 +430,7 @@ function reload_update_user(){
                                                        <div class="form_sep">
                                                                         <label for="country" class="req"><?php echo $this->lang->line('country') ?></label>													
                                                                                <?php $country=array('name'=>'country',
-                                                                                                    'class'=>'required  form-control',
+                                                                                                    'class'=>'  form-control',
                                                                                                     'id'=>'country',
                                                                                                     'value'=>set_value('country'));
                                                                                      echo form_input($country)?>
@@ -505,35 +461,17 @@ function reload_update_user(){
                                                         </div> 
                                                    </div>
                                                </div>
-                                           <div class="row">
-                                                  <div class="col col-sm-6">
-                                                       <div class="form_sep">
-                                                                <label for="company" ><?php echo $this->lang->line('company') ?></label>													
-                                                                         <?php $company=array('name'=>'company',
-                                                                                            'class'=>'  form-control ',
-                                                                                            'id'=>'company',
-                                                                                            'value'=>set_value('company'));
-                                                                             echo form_input($company)?>
-                                                        </div> 
-                                                   </div>
-                                                   <div class="col col-sm-6">
-                                                       <div class="form_sep">
-                                                            
-                                                                <label for="website" ><?php echo $this->lang->line('website') ?></label>
-
-                                                                 <?php $website=array('name'=>'website',
-                                                                                            'class'=>' form-control',
-                                                                                            'id'=>'website',
-                                                                                            'value'=>set_value('website'));
-                                                                             echo form_input($website)?>
-                                                        </div> 
-                                                   </div>
-                                               </div>
+                                          
                                            <br>
-                                        </div>                              
+                                         
+                                        </div>
+                                 
                               </div>
                           </div>
                          </div>
+                         <div class="row">
+                             <input type="button" id="add_new_conatct" onclick="new_conatct()" class="btn btn-info" value="<?php echo $this->lang->line('add_new_conatct') ?>">
+                                  </div>
                      </div>
                      <div  class="col-lg-6" style="padding:0px 25px;">
                          <div class="row">
@@ -546,17 +484,7 @@ function reload_update_user(){
                                  
                                        <div class="col col-sm-12" style="padding-left: 25px;padding-right: 25px;">
                                            <div class="row">
-                                               <div class="col col-sm-4">
-                                                   <div class="form_sep">
-                                                        <label for="payment_type" ><?php echo $this->lang->line('suppliers_payment_type') ?></label>													
-                                                                  <?php $payment_type=array('name'=>'payment_type',
-                                                                                    'class'=>'required  form-control',
-                                                                                    'id'=>'payment_type',
-                                                                                    'value'=>set_value('payment_type'));
-                                                                     echo form_input($payment_type)?>
-                                                        <input type="hidden" name="payment" id='payment'>
-                                                  </div>
-                                                   </div>
+                                              
                                                <div class="col col-sm-4">
                                                    <div class="form_sep">
                                                         <label for="credit_days" ><?php echo $this->lang->line('credit_days') ?></label>													
@@ -577,9 +505,7 @@ function reload_update_user(){
                                                                          echo form_input($credit_limit)?>
                                                        </div>
                                                    </div>
-                                               </div>
-                                           <div class="row">
-                                                  <div class="col col-sm-4">
+                                               <div class="col col-sm-4">
                                                       <div class="form_sep">
                                                             <label for="balance" ><?php echo $this->lang->line('monthly_credit_balance') ?></label>
 
@@ -590,7 +516,6 @@ function reload_update_user(){
                                                                          echo form_input($balance)?>
                                                     </div>
                                                    </div>
-                                                  
                                                </div>
                                            
                                            <br>
@@ -702,7 +627,7 @@ function reload_update_user(){
                          <div  class="row">
                           
                                   <div class="col col-lg-6 text-center"><br><br>
-                                      <button id="add_new_customer"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <button id="add_new_supplier"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
                                       <a href="javascript:clear_add_users()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
                                   </div>
                               </div>
@@ -716,7 +641,16 @@ function reload_update_user(){
                 
     <?php echo form_close();?>
 </section> 
+<script type="text/javascript">
+   function new_conatct(){
+       if(!$('#add_supplier_form').valid()){
+       $('#contact_details').append('<p>jibi</p>');
+       }
+   
 
+        }
+   
+</script>
 <section id="edit_brand_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',
                           'runat'=>'server',
@@ -735,7 +669,7 @@ function reload_update_user(){
                               <div class="row">
                                   <div class="col-sm-4" style="padding-left: 40px;">
                                        <div class="row">     <div class="step_info">
-                                              <label for="title_of_customer" class="req"><?php echo $this->lang->line('title_of_customer') ?></label>													
+                                              <label for="title_of_supplier" class="req"><?php echo $this->lang->line('title_of_supplier') ?></label>													
                                               <select name='title' class="form-control">
                                                   <option value="1"><?php echo $this->lang->line('mr') ?></option>
                                                   <option value="2"><?php echo $this->lang->line('mis') ?></option>
@@ -748,12 +682,12 @@ function reload_update_user(){
                                            <div class="row" style="padding-top: 5px">
                                                 <div class="col col-sm-12">
                                                    <div class="form_sep">
-                                                        <label for="customer_category" class="req"><?php echo $this->lang->line('customer_category') ?></label>													
-                                                                  <?php $customer_category=array('name'=>'customer_category',
+                                                        <label for="supplier_category" class="req"><?php echo $this->lang->line('supplier_category') ?></label>													
+                                                                  <?php $supplier_category=array('name'=>'supplier_category',
                                                                                     'class'=>'required  form-control',
-                                                                                    'id'=>'customer_category',
-                                                                                    'value'=>set_value('customer_category'));
-                                                                     echo form_input($customer_category)?>
+                                                                                    'id'=>'supplier_category',
+                                                                                    'value'=>set_value('supplier_category'));
+                                                                     echo form_input($supplier_category)?>
                                                   </div>
                                                     <input  type="hidden" name="category" id='category'>
                                                     <input  type="hidden" name="guid" id='guid'>
@@ -820,7 +754,7 @@ function reload_update_user(){
                          <div class="row">
                              <div class="panel panel-default">
                                <div class="panel-heading">
-                                      <h4 class="panel-title"><?php echo $this->lang->line('payment_details') ?></h4>                                                                                  
+                                      <h4 class="panel-title"><?php echo $this->lang->line('contact_details') ?></h4>                                                                                  
                                </div>
                               <div class="row">
                                  
