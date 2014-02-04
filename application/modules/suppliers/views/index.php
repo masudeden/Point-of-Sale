@@ -647,6 +647,10 @@ function reload_update_user(){
        $('#contact_details').append('<p>jibi</p>');
        }
    
+   
+   
+   
+   
 
         }
    
