@@ -175,6 +175,7 @@
         
         
         $('#add_new_supplier').click(function() { 
+        if($('#add_supplier_form').valid()){
                 <?php if($_SESSION['suppliers_per']['add']==1){ ?>
                 var inputs = $('#add_supplier_form').serialize();
                       $.ajax ({
@@ -182,6 +183,7 @@
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
+                        console.log(response['responseText']);
                                 if(response['responseText']=='TRUE'){
                                       $.bootstrapGrowl('<?php echo $this->lang->line('brand').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
@@ -192,12 +194,15 @@
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('supplier');?>', { type: "error" });                           
                                     }
                        }
                 });<?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                       
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('supplier');?>', { type: "error" });                       
                     <?php }?>
+                        }else{
+                              $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                        }
         });
          $('#update_suppliers').click(function() { 
                 <?php if($_SESSION['suppliers_per']['edit']==1){ ?>
@@ -330,16 +335,7 @@ function reload_update_user(){
                               <div class="row">
                                        <div class="col col-sm-12" style="padding-left: 25px; padding-right: 25px">
                                            <div class="row">
-                                                <div class="col col-sm-4">
-                                                       <div class="form_sep">
-                                                                <label for="company" ><?php echo $this->lang->line('company') ?></label>													
-                                                                         <?php $company=array('name'=>'company',
-                                                                                            'class'=>'  form-control ',
-                                                                                            'id'=>'company',
-                                                                                            'value'=>set_value('company'));
-                                                                             echo form_input($company)?>
-                                                        </div> 
-                                                   </div>
+                                               
                                                <div class="col col-sm-4">
                                                    <div class="form_sep">
                                                         <label for="first_name" class="req"><?php echo $this->lang->line('first_name') ?></label>													
@@ -349,7 +345,19 @@ function reload_update_user(){
                                                                                     'value'=>set_value('first_name'));
                                                                      echo form_input($first_name)?>
                                                   </div>
+                                                 
+                                                     <div class="form_sep">
+                                                            
+                                                                <label for="last_name" ><?php echo $this->lang->line('last_name') ?></label>
+
+                                                                 <?php $last_name=array('name'=>'last_name',
+                                                                                            'class'=>' form-control',
+                                                                                            'id'=>'last_name',
+                                                                                            'value'=>set_value('last_name'));
+                                                                             echo form_input($last_name)?>
+                                                        </div> 
                                                    </div>
+                                             
                                                <div class="col col-sm-4">
                                                      <div class="form_sep">
                                                             
@@ -361,8 +369,23 @@ function reload_update_user(){
                                                                                             'value'=>set_value('website'));
                                                                              echo form_input($website)?>
                                                         </div> 
+                                                  
+                                                       <div class="form_sep">
+                                                                <label for="company" ><?php echo $this->lang->line('company') ?></label>													
+                                                                         <?php $company=array('name'=>'company',
+                                                                                            'class'=>'  form-control ',
+                                                                                            'id'=>'company',
+                                                                                            'value'=>set_value('company'));
+                                                                             echo form_input($company)?>
+                                                        </div> 
                                                    </div>
+                                               <div class="col col-lg-4">
+                                                    <label for="website" ><?php echo $this->lang->line('comments') ?></label>
+                                               
+                                                   <?php $comment=array('name'=>'comment','rows'=>3,'id'=>'comment','class'=>'form-control');
+                                                   echo form_textarea($comment) ?>
                                                </div>
+                                           </div>
                                      <br>
                                         </div>                              
                               </div>
@@ -645,8 +668,10 @@ function reload_update_user(){
 <script type="text/javascript">
    function new_conatct(){
        $('#add_supplier_form #cotact_number').val()
-       if(!$('#add_supplier_form').valid()){
-        var cno=$('#add_supplier_form #cotact_number').val();
+       if($('#add_supplier_form').valid()){
+           var cno=$('#add_supplier_form #cotact_number').val();
+          
+        
        $('#add_supplier_form #contact_details').append('<div class="panel panel-default" id="con_'+cno+'"> <div class="panel-heading">  <h4 class="panel-title"><?php echo $this->lang->line('contact_details')." - ";  ?>'+$('#add_supplier_form #cotact_number').val()+'</h4>  <a href=javascript:remove_contact_div("con_'+cno+'") class="pull-right btn btn-danger" style="margin-top: -31px;"><i class="icon  icon-remove"></i></a></div><div class="row"> <div class="col-sm-4" style="padding-left: 25px;"> <div class="step_info"> <label for="address" class="req"><?php echo $this->lang->line('address') ?></label> <?php  $address = array(  'name'  => 'address[]',  'id' => 'address',  'value' =>  set_value('address'),  'rows'  => '7',  'cols'  => '10',  'class' =>'form-control '); echo form_textarea($address); ?>  </div></div><div class="col col-sm-8" style="padding-right: 25px;"><div class="row"><div class="col col-sm-6"><div class="form_sep"><label for="city" class="req"><?php echo $this->lang->line('city') ?></label><?php $city=array('name'=>'city[]','class'=>'  form-control','id'=>'city','value'=>set_value('city'));echo form_input($city)?></div></div><div class="col col-sm-6"><div class="form_sep"><label for="state" class="req"><?php echo $this->lang->line('state') ?></label><?php $state=array('name'=>'state[]','class'=>'  form-control','id'=>'state','value'=>set_value('state'));echo form_input($state)?></div></div></div><div class="row"><div class="col col-sm-6"><div class="form_sep"><label for="zip" class="req"><?php echo $this->lang->line('zip') ?></label><?php $zip=array('name'=>'zip[]','class'=>'  form-control','id'=>'zip','value'=>set_value('zip'));echo form_input($zip)?></div></div><div class="col col-sm-6"><div class="form_sep"><label for="country" class="req"><?php echo $this->lang->line('country') ?></label>													<?php $country=array('name'=>'country[]','class'=>'  form-control','id'=>'country','value'=>set_value('country'));echo form_input($country)?></div>  </div></div><div class="row"><div class="col col-sm-6"><div class="form_sep"><label for="email" class="req"><?php echo $this->lang->line('email') ?></label><?php $email=array('name'=>'email[]','class'=>'required  form-control email','id'=>'email','value'=>set_value('email'));echo form_input($email)?></div> </div><div class="col col-sm-6"><div class="form_sep"><label for="phone" class="req"><?php echo $this->lang->line('phone') ?></label><?php $phone=array('name'=>'phone[]','class'=>'required  form-control number','id'=>'phone','value'=>set_value('phone'));echo form_input($phone)?></div> </div></div><br></div></div></div>');
        $('#add_supplier_form #cotact_number').val(parseFloat($('#add_supplier_form #cotact_number').val())+ +1);
        }

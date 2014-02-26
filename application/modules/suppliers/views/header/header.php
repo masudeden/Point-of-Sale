@@ -30,7 +30,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							return "<input type=checkbox value='"+oObj.aData[0]+"' >";
+                   							return "<input type=checkbox value='"+oObj.aData[0]+"' ><input type='hidden' id='supplier_name_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
 								},
 								
 								
@@ -79,7 +79,7 @@
 			}
     function user_function(guid){
     <?php if($_SESSION['suppliers_per']['delete']==1){ ?>
-             bootbox.confirm("Are you Sure To Delete This suppliers ", function(result) {
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('supplier') ?> "+$('#supplier_name_'+guid).val(), function(result) {
              if(result){
             $.ajax({
                 url: '<?php echo base_url() ?>/index.php/suppliers/delete',
@@ -91,7 +91,7 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl('<?php echo $this->lang->line('brand') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                           $.bootstrapGrowl($('#supplier_name_'+guid).val()+ ' <?php echo $this->lang->line('brand') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });
@@ -114,7 +114,7 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl('<?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
+                         $.bootstrapGrowl($('#supplier_name_'+guid).val()+ ' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }
@@ -131,7 +131,7 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl('<?php echo $this->lang->line('isactivated');?>', { type: "success" });
+                         $.bootstrapGrowl($('#supplier_name_'+guid).val()+ ' <?php echo $this->lang->line('isactivated');?>', { type: "success" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }

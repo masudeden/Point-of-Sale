@@ -114,48 +114,50 @@ class Suppliers extends CI_Controller{
         }
     }
     function add_suppliers(){
-            if($this->input->post('cancel')){
-                $this->get_suppliers();
-            }
-          if($this->input->post('save')){
-               if($_SESSION['Posnic_Add']==="Add"){
+            if($_SESSION['customers_per']['add']=="1"){
                     $this->load->library('form_validation');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
-                            $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
-                            $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');
-                            $this->form_validation->set_rules('email', $this->lang->line('email'), 'required|valid_email');                             	  
+                           // $this->form_validation->set_rules("last_name",$this->lang->line('last_name'),"required"); 
+                            	  
                         if ( $this->form_validation->run() !== false ) {
                             $value=array('first_name'=>$this->input->post('first_name'),
-                                   'last_name'=>$this->input->post('last_name'),
-                                    'email'=>$this->input->post('email'),
-                                    'phone'=>$this->input->post('phone'),
-                                    'city'=>$this->input->post('city'),
-                                    'state'=>$this->input->post('state'),
-                                    'country'=>$this->input->post('country'),
-                                    'zip'=>$this->input->post('zip'),
-                                    'comments'=>$this->input->post('comments'),
-                                    'website'=>$this->input->post('website'),
-                                    'account_number'=>$this->input->post('account'),
-                                    'address1'=>$this->input->post('address1'),
-                                    'address2'=>$this->input->post('address2'),
-                                    'company_name '=>$this->input->post('company'));
-                                   
-                                   $phone=$this->input->post('phone');
-                                   $data=array('phone'=>$phone,'email'=>$this->input->post('email'));
-                                    if($this->posnic->check_unique($data)){
-                                        $this->posnic->posnic_add($value); 
-                                        redirect('suppliers');
-                                        }else{
-                                            echo "this suplier is already added";
-                                            $this->edit_supplier_details($id);
-                                    }   
+                                   'last_name'=>$this->input->post('last_name'),                                   
+                                    'comments'=>$this->input->post('comment'),
+                                    'website'=>$this->input->post('website'), 
+                                    'company_name '=>$this->input->post('company'),
+                                    'account_number'=>$this->input->post('account_no'),
+                                    'credit_days '=>$this->input->post('credit_days'),
+                                    'credit_limit '=>$this->input->post('credit_limit'),
+                                    'monthly_credit_bal '=>$this->input->post('balance'),
+                                    'bank_name '=>$this->input->post('bank_name'),
+                                    'bank_location '=>$this->input->post('bank_location'),
+                                    'cst_no '=>$this->input->post('cst'),
+                                    'gst_no '=>$this->input->post('gst'),
+                                    'tex_reg_no '=>$this->input->post('tax_no'),
+                                    
+                                    );
+                            $guid=$this->posnic->posnic_add_record($value,'suppliers');
+                            $this->load->model('supplier');
+                            $address=  $this->input->post('address');
+                            $city=  $this->input->post('city');
+                            $state=  $this->input->post('state');
+                            $country=  $this->input->post('country');
+                            $zip=  $this->input->post('zip');
+                            $email=  $this->input->post('email');
+                            $phone=  $this->input->post('phone');
+                            for($i=0;$i<count($phone);$i++){
+                            $this->supplier->add_contact($guid,$address[$i],$city[$i],$state[$i],$country[$i],$zip[$i],$email[$i],$phone[$i]);
+                            }
+                            $this->supplier->update_suplier_contact($guid,$address[0],$city[0],$state[0],$country[0],$zip[0],$phone[0],$email[0]);
+                            
+                        echo 'TRUE'   ;
                                    }else{
-                                       $this->load->view('add_supplier') ;
+                                        echo 'FALSE';
                                    }    
                         }else{
-                            $this-> edit_supplier_details($id);
+                            echo 'NOOP';
                         }
-                }
+                
         }
     
     function update_supplier(){        
@@ -273,13 +275,12 @@ class Suppliers extends CI_Controller{
             redirect('home');
         }
     }
-    function edit_supplier($guid){
-      if($_SESSION['Posnic_Edit']==="Edit"){
-                  $where=array('guid'=>$guid);
-                  $data['row']=$this->posnic->posnic_result($where);
-                  $this->load->view('edit_supplier',$data);
-        }else{
-            redirect('suppliers');
+    function edit_suppliers($guid){
+      if($_SESSION['suppliers_per']['edit']==1){
+                  
+                  $this->load->model('supplier');
+                  $data=$this->supplier->edit_supplier($guid);
+                  echo json_encode($data);
         }
     }
     
