@@ -113,7 +113,7 @@ class Suppliers extends CI_Controller{
             echo 'FALSE';
         }
     }
-    function add_new_supplier(){
+    function add_suppliers(){
             if($this->input->post('cancel')){
                 $this->get_suppliers();
             }
