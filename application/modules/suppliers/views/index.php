@@ -24,7 +24,7 @@
      $(document).ready( function () {
           $('#add_supplier_details_form #supplier_category').change(function() {
                    var guid = $('#add_supplier_details_form #supplier_category').select2('data').id;
-                   alert(guid);
+                 
                 $('#add_supplier_details_form #category').val(guid);
           });
           $('#add_supplier_details_form #supplier_category').select2({
@@ -64,7 +64,7 @@
         
           $('#parsley_reg #supplier_category').change(function() {
                    var guid = $('#parsley_reg #supplier_category').select2('data').id;
-                   alert(guid);
+                  
                 $('#parsley_reg #category').val(guid);
           });
           $('#parsley_reg #supplier_category').select2({
@@ -220,6 +220,7 @@ function reload_update_user(){
                                           <th ><?php echo $this->lang->line('name') ?></th>
                                           
                                           <th><?php echo $this->lang->line('company') ?></th>
+                                          <th><?php echo $this->lang->line('suppliers_category') ?></th>
                                           <th><?php echo $this->lang->line('phone') ?></th>
                                           <th><?php echo $this->lang->line('email') ?></th>
                                           <th><?php echo $this->lang->line('status') ?></th>
@@ -305,10 +306,16 @@ function reload_update_user(){
                                                         </div> 
                                                    </div>
                                                <div class="col col-lg-4">
-                                                    <label for="website" ><?php echo $this->lang->line('comments') ?></label>
-                                               
-                                                   <?php $comment=array('name'=>'comment','rows'=>3,'id'=>'comment','class'=>'form-control');
-                                                   echo form_textarea($comment) ?>
+                                                    <div class="form_sep">
+                                                        <label for="supplier_category" class="req"><?php echo $this->lang->line('suppliers_category') ?></label>													
+                                                                  <?php $supplier_category=array('name'=>'supplier_category',
+                                                                                    'class'=>'required  form-control',
+                                                                                    'id'=>'supplier_category',
+                                                                                    'value'=>set_value('supplier_category'));
+                                                                     echo form_input($supplier_category)?>
+                                                  </div>
+                                                    <input  type="hidden" name="category" id='category'>
+                                                   
                                                </div>
                                            </div>
                                      <br>
@@ -572,15 +579,43 @@ function reload_update_user(){
                               </div>
                           </div>
                          </div>
-                         
-                         
-                         <div  class="row">
-                          
-                                  <div class="col col-lg-6 text-center"><br><br>
-                                      <button id="add_new_supplier"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
-                                      <a href="javascript:clear_add_users()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
-                                  </div>
+                         <div class="row">
+                             <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"></h4>                                                                                 
+                               </div>
+                             <div class="row">
+                                 
+                                 
+                                       <div class="col col-sm-12" style="padding-left: 25px;padding-right: 25px;">
+                                           
+                                           
+                                           <div class="row">
+                                                  
+                                                  <div class="col col-sm-7">
+                                                       <div class="form_sep">
+                                                      <label for="website" ><?php echo $this->lang->line('comments') ?></label>
+                                               
+                                                   <?php $comment=array('name'=>'comment','rows'=>3,'id'=>'comment','class'=>'form-control');
+                                                   echo form_textarea($comment) ?> 
+                                                        </div> 
+                                                   </div>
+                                                   
+                                               <div class="col col-sm-5">
+                                                       <div class="form_sep">
+                                                           <label><br></label>
+                                                              <button id="add_new_supplier"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_users()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>  
+                                                        </div> 
+                                                   </div>
+                                               </div><br>
+                                        </div>                              
                               </div>
+                          </div>
+                         </div>
+                         
+                         
+                         
                          
                 
                   
@@ -673,10 +708,15 @@ function reload_update_user(){
                                                         </div> 
                                                    </div>
                                                <div class="col col-lg-4">
-                                                    <label for="website" ><?php echo $this->lang->line('comments') ?></label>
-                                               
-                                                   <?php $comment=array('name'=>'comment','rows'=>3,'id'=>'comment','class'=>'form-control');
-                                                   echo form_textarea($comment) ?>
+                                                    <div class="form_sep">
+                                                        <label for="supplier_category" class="req"><?php echo $this->lang->line('suppliers_category') ?></label>													
+                                                                  <?php $supplier_category=array('name'=>'supplier_category',
+                                                                                    'class'=>'required  form-control',
+                                                                                    'id'=>'supplier_category',
+                                                                                    'value'=>set_value('supplier_category'));
+                                                                     echo form_input($supplier_category)?>
+                                                  </div>
+                                                    <input  type="hidden" name="category" id='category'>
                                                </div>
                                            </div>
                                      <br>
@@ -943,14 +983,41 @@ function reload_update_user(){
                           </div>
                          </div>
                          
-                         
-                         <div  class="row">
-                          
-                                  <div class="col col-lg-6 text-center"><br><br>
-                                      <button id="update_suppliers"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
+                         <div class="row">
+                             <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"></h4>                                                                                 
+                               </div>
+                             <div class="row">
+                                 
+                                 
+                                       <div class="col col-sm-12" style="padding-left: 25px;padding-right: 25px;">
+                                           
+                                           
+                                           <div class="row">
+                                                  
+                                                  <div class="col col-sm-7">
+                                                       <div class="form_sep">
+                                                      <label for="website" ><?php echo $this->lang->line('comments') ?></label>
+                                               
+                                                   <?php $comment=array('name'=>'comment','rows'=>3,'id'=>'comment','class'=>'form-control');
+                                                   echo form_textarea($comment) ?> 
+                                                        </div> 
+                                                   </div>
+                                                   
+                                               <div class="col col-sm-5">
+                                                       <div class="form_sep">
+                                                           <label><br></label>
+                                                            <button id="update_suppliers"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
                                       <a href="javascript:clear_add_users()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
-                                  </div>
+                                  </div> 
+                                                   </div>
+                                               </div><br>
+                                        </div>                              
                               </div>
+                          </div>
+                         </div>
+                        
                          
                 
                   
