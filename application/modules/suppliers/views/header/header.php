@@ -3,7 +3,7 @@
           $(document).ready( function () {
            
                     $('#add_supplier_details_form').hide();
-                    $('#edit_brand_form').hide();
+                    $('#edit_supplier_form').hide();
                   $('#add_supplier_form').validate();
                   
                               posnic_table();
@@ -139,6 +139,8 @@
             }
            function edit_function(guid){
            $('#loading').modal('show');
+                       $("#parsley_reg #contact_details").remove();
+                       $("#parsley_reg #cover_div").append(' <div id="contact_details"></div>');
                        $("#parsley_reg").trigger('reset');
                         <?php if($_SESSION['suppliers_per']['edit']==1){ ?>
                             $.ajax({                                      
@@ -148,7 +150,7 @@
                              success: function(data)        
                              {    
                                  $("#user_list").hide();
-                                 $('#edit_brand_form').show('slow');
+                                 $('#edit_supplier_form').show('slow');
                                  $('#delete').attr("disabled", "disabled");
                                  $('#posnic_add_suppliers').attr("disabled", "disabled");
                                  $('#active').attr("disabled", "disabled");
@@ -160,45 +162,41 @@
                                  $('#parsley_reg #title').val(data[0]['title']);
                              //   alert(strtotime('18-12-2011'));
                                  
-                                $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/suppliers/get_date_in_strtotime",                      
-                             type: "POST",
-                             data: {
-                              dob:data[0]['bday'],
-                              mdate:data[0]['mday']
-                             }, 
-                             dataType: 'json',               
-                             success: function(data)        
-                             {
-                                   $('#parsley_reg #dob').val(data['dob']); 
-                                   $('#parsley_reg #marragedate').val(data['mdate']); 
-                             }});
+                             
                               
-                                 $('#parsley_reg #address').val(data[0]['address']);
+                                 $('#parsley_reg #address').val(data[0]['address1']);
+                                 $('#parsley_reg #comment').val(data[0]['comments']);
                                  $('#parsley_reg #city').val(data[0]['city']);
                                  $('#parsley_reg #state').val(data[0]['state']);
                                  $('#parsley_reg #zip').val(data[0]['zip']);
                                  $('#parsley_reg #country').val(data[0]['country']);
                                  $('#parsley_reg #company').val(data[0]['company_name']);
                                  $('#parsley_reg #website').val(data[0]['website']);
-                                 $('#parsley_reg #credit_days').val(data[0]['cdays']);
+                                 $('#parsley_reg #credit_days').val(data[0]['credit_days']);
                                  $('#parsley_reg #credit_limit').val(data[0]['credit_limit']);
-                                 $('#parsley_reg #balance').val(data[0]['month_credit_bal']);
+                                 $('#parsley_reg #balance').val(data[0]['monthly_credit_bal']);
                                  $('#parsley_reg #bank_name').val(data[0]['bank_name']);
                                  $('#parsley_reg #bank_location').val(data[0]['bank_location']);
                                  $('#parsley_reg #account_no').val(data[0]['account_number']);
-                                 $('#parsley_reg #cst').val(data[0]['cst']);
-                                 $('#parsley_reg #gst').val(data[0]['gst']);
-                                 $('#parsley_reg #tax_no').val(data[0]['tax_no']);
+                                 $('#parsley_reg #cst').val(data[0]['cst_no']);
+                                 $('#parsley_reg #gst').val(data[0]['gst_no']);
+                                 $('#parsley_reg #tax_no').val(data[0]['tex_reg_no']);
                                  $('#parsley_reg #email').val(data[0]['email']);
                                  $('#parsley_reg #phone').val(data[0]['phone']);
-                                 
-                                 $("#parsley_reg #supplier_category").select2('data', {id:data[0]['category_id'],text: data[0]['c_name']});
-                                $('#parsley_reg #category').val(data[0]['category_id']);
-                                 
-                                 $("#parsley_reg #payment_type").select2('data', {id:data[0]['payment'],text: data[0]['type']});
-                                $('#parsley_reg #payment').val(data[0]['payment']);
+                                var co=0;
+                                for(var i=0;i<data.length;i++){
+                                  $('#parsley_reg #contact_details').append('<div class="panel panel-default" id="con_'+i+'"> <div class="panel-heading">  <h4 class="panel-title"><?php echo $this->lang->line('contact_details')." - ";  ?>'+parseFloat(i+1)+'</h4>  <a href=javascript:remove_contact_update_div("con_'+i+'") class="pull-right btn btn-danger" style="margin-top: -31px;"><i class="icon  icon-remove"></i></a></div><div class="row"> <div class="col-sm-4" style="padding-left: 25px;"> <div class="step_info"> <label for="address" class="req"><?php echo $this->lang->line('address') ?></label> <?php  $address = array(  'name'  => 'address[]',  'id' => 'address',  'value' =>  set_value('address'),  'rows'  => '7',  'cols'  => '10',  'class' =>'form-control '); echo form_textarea($address); ?>  </div></div><div class="col col-sm-8" style="padding-right: 25px;"><div class="row"><div class="col col-sm-6"><div class="form_sep"><label for="city" class="req"><?php echo $this->lang->line('city') ?></label><?php $city=array('name'=>'city[]','class'=>'  form-control','id'=>'city','value'=>set_value('city'));echo form_input($city)?></div></div><div class="col col-sm-6"><div class="form_sep"><label for="state" class="req"><?php echo $this->lang->line('state') ?></label><?php $state=array('name'=>'state[]','class'=>'  form-control','id'=>'state','value'=>set_value('state'));echo form_input($state)?></div></div></div><div class="row"><div class="col col-sm-6"><div class="form_sep"><label for="zip" class="req"><?php echo $this->lang->line('zip') ?></label><?php $zip=array('name'=>'zip[]','class'=>'  form-control','id'=>'zip','value'=>set_value('zip'));echo form_input($zip)?></div></div><div class="col col-sm-6"><div class="form_sep"><label for="country" class="req"><?php echo $this->lang->line('country') ?></label>													<?php $country=array('name'=>'country[]','class'=>'  form-control','id'=>'country','value'=>set_value('country'));echo form_input($country)?></div>  </div></div><div class="row"><div class="col col-sm-6"><div class="form_sep"><label for="email" class="req"><?php echo $this->lang->line('email') ?></label><?php $email=array('name'=>'email[]','class'=>'required  form-control email','id'=>'email','value'=>set_value('email'));echo form_input($email)?></div> </div><div class="col col-sm-6"><div class="form_sep"><label for="phone" class="req"><?php echo $this->lang->line('phone') ?></label><?php $phone=array('name'=>'phone[]','class'=>'required  form-control number','id'=>'phone','value'=>set_value('phone'));echo form_input($phone)?></div> </div></div><br></div></div></div>');   
+                                 $('#parsley_reg #contact_details #con_'+i+' #address').val(data[i]['c_address']);
+                                 $('#parsley_reg #contact_details #con_'+i+' #city').val(data[i]['c_city']);
+                                 $('#parsley_reg #contact_details #con_'+i+' #state').val(data[i]['c_state']);
+                                 $('#parsley_reg #contact_details #con_'+i+' #country').val(data[i]['c_country']);
+                                 $('#parsley_reg #contact_details #con_'+i+' #zip').val(data[i]['c_zip']);
+                                 $('#parsley_reg #contact_details #con_'+i+' #email').val(data[i]['c_email']);
+                                 $('#parsley_reg #contact_details #con_'+i+' #phone').val(data[i]['c_phone']);
+                                co=i;
+                                }
                                 
+                             $('#parsley_reg #cotact_number').val(parseFloat(co+2));
                                 $('#loading').modal('hide');
                              } 
                            });

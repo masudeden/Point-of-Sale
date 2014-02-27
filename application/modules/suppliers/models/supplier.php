@@ -31,5 +31,9 @@ class Supplier extends CI_Model{
         $this->db->where('guid',$guid);
         $this->db->update('suppliers',array('address1'=>$address,'city'=>$city,'state'=>$state,'zip'=>$zip,'country'=>$country,'email'=>$email,'phone'=>$phone));
     }
+    function delete_conatct($guid){
+        $this->db->where('supplier',$guid);
+        $this->db->delete('supplier_contacts');
+    }
 }
 ?>
