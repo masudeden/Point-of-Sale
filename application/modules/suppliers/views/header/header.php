@@ -196,7 +196,7 @@
                                 co=i;
                                 }
                                   $("#parsley_reg #supplier_category").select2('data', {id:data[0]['category'],text: data[0]['c_name']});
-                                $('#parsley_reg #category').val(data[0]['category_id']);
+                                $('#parsley_reg #category').val(data[0]['category']);
                              $('#parsley_reg #cotact_number').val(parseFloat(co+2));
                                 $('#loading').modal('hide');
                              } 

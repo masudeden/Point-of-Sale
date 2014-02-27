@@ -12,6 +12,7 @@ class Suppliers_x_items extends CI_Controller{
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());
         $this->load->view('template/app/footer');
+     //   $this->get_items();
     }
     function get_items(){
                 $config["base_url"] = base_url()."index.php/suppliers_x_items/get_items";
@@ -28,7 +29,7 @@ class Suppliers_x_items extends CI_Controller{
     }
     // supplier data table
       function suppliers_data_table(){
-        $aColumns = array( 'guid','first_name','first_name','company_name','phone','email','email','active' );	
+        $aColumns = array( 'guid','first_name','first_name','company_name','c_name','phone','email','email','active' );	
 	$start = "";
 			$end="";
 		
@@ -59,11 +60,13 @@ class Suppliers_x_items extends CI_Controller{
 				
 			}
 					   
-			 $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'suppliers');
+			$this->load->model('supplier')	   ;
+                        
+			 $rResult1 = $this->supplier->get($end,$start,$like,$_SESSION['Bid']);
 		   
-		$iFilteredTotal =$this->posnic->data_table_count('suppliers');
+		$iFilteredTotal =$this->supplier->count($_SESSION['Bid']);
 		
-		$iTotal =$this->posnic->data_table_count('suppliers');
+		$iTotal =$this->supplier->count($_SESSION['Bid']);
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),

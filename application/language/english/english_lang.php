@@ -406,5 +406,8 @@ $lang['credit_days']='Credit Days';
          
  // supplier category
          
-  $lang['suppliers_category']='Suppliers Category'   ;    
+  $lang['suppliers_category']='Suppliers Category'   ; 
+  //suppliers vs items
+  $lang['add_items']='Add Items';
+  $lang['details']='Details';
 ?>﻿
