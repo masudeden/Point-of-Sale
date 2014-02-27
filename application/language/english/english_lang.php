@@ -402,5 +402,9 @@ $lang['credit_days']='Credit Days';
  $lang['payment_details']='Payment Details';
  
  // suppliers
- $lang['add_new_conatct']='Add New Conatct'
+ $lang['add_new_conatct']='Add New Conatct';
+         
+ // supplier category
+         
+  $lang['suppliers_category']='Suppliers Category'   ;    
 ?>﻿

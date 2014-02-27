@@ -5,8 +5,13 @@ class Suppliers_x_items extends CI_Controller{
                 $this->load->library('posnic');               
     }
     function index(){     
-              $this->get_items();
-             //$this->load->view('annan1');
+        $this->load->view('template/app/header'); 
+        $this->load->view('header/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $data['active']='suppliers_x_items';
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
     }
     function get_items(){
                 $config["base_url"] = base_url()."index.php/suppliers_x_items/get_items";
@@ -20,6 +25,74 @@ class Suppliers_x_items extends CI_Controller{
 	        $data['sup']=  $this->posnic->module_result();
                 $data["links"] = $this->pagination->create_links();
                 $this->load->view('supplier_list',$data);
+    }
+    // supplier data table
+      function suppliers_data_table(){
+        $aColumns = array( 'guid','first_name','first_name','company_name','phone','email','email','active' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('first_name'=>  $this->input->get_post('sSearch'));
+				
+			}
+					   
+			 $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'suppliers');
+		   
+		$iFilteredTotal =$this->posnic->data_table_count('suppliers');
+		
+		$iTotal =$this->posnic->data_table_count('suppliers');
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
     }
     function supplier_magement(){
         if($this->input->post('cancel')){
