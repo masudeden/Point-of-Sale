@@ -4,6 +4,7 @@
            
                     $('#add_item_form').hide();
                     $('#edit_item_form').hide();
+                    $('#add_items_image').hide();
                               posnic_table();
                                 add_item.onsubmit=function()
                                 { 
@@ -56,9 +57,9 @@
                                                                 
                    						"fnRender": function (oObj) {
                                                                 if(oObj.aData[9]==0){
-                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[2]+'","'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[2]+'","'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-success hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>&nbsp<a href=javascript:add_image_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('add_image')?>"><i class="icon-upload"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>";
 								}else{
-                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[2]+'","'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[2]+'","'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>&nbsp<a href=javascript:add_image_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('add_image')?>"><i class="icon-upload"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -199,8 +200,44 @@
                                 bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records') ?>");
                         <?php }?>
                        }
+           function add_image_function(guid){
+                       $("#add_image_form").trigger('reset');
+                        <?php if($_SESSION['items_per']['edit']==1){ ?>
+                            $.ajax({                                      
+                             url: "<?php echo base_url() ?>index.php/items/edit_items/"+guid,                      
+                             data: "", 
+                             dataType: 'json',               
+                             success: function(data)        
+                             {    
+                                 $("#user_list").hide();
+                                 $('#delete').attr("disabled", "disabled");
+                                 $('#posnic_add_items').attr("disabled", "disabled");
+                                 $('#active').attr("disabled", "disabled");
+                                 $('#deactive').attr("disabled", "disabled");
+                                 $('#add_items_image').show('slow');
+                                 $('#items_lists').removeAttr("disabled");
+                                 $('#add_image_form #guid').val(data[0]['guid']);
+                                 $('#add_image_form #name').val(data[0]['name']);
+                                 $('#add_image_form #sku').val(data[0]['code']);
+                                  $('#add_image_form #preview_image #items_preview_image').remove();
+                                  $('#add_image_form #preview_image #saved_image').remove();
+                               if(data[0]['image']!=""){
+                              $('#add_image_form #preview_image').append('<label id="saved_image"><?php echo $this->lang->line('saved_image') ?></label><img id="items_preview_image" style="width:90%;height:90%" src="<?php echo base_url('uploads/items') ?>/'+data[0]['image']+'"></img>');
+                               }
+                                 
+                               
+                             } 
+                           });
+                         
+                        
+                              
+                         
+                        <?php }else{?>
+                                bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records') ?>");
+                        <?php }?>
+                       }
 		</script>
                 <script type="text/javascript" charset="utf-8" language="javascript" src="<?php echo base_url() ?>template/data_table/js/DT_bootstrap.js"></script>
 
-
+        <script type="text/javascript" src="<?php echo base_url('template/form_post/jquery.form.js') ?>"></script>
   

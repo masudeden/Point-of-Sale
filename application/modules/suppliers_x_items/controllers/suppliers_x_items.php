@@ -28,6 +28,7 @@ class Suppliers_x_items extends CI_Controller{
                 $this->load->view('supplier_list',$data);
     }
     // supplier data table
+    // supplier data table
       function suppliers_data_table(){
         $aColumns = array( 'guid','first_name','first_name','company_name','c_name','phone','email','email','active' );	
 	$start = "";
@@ -97,6 +98,78 @@ class Suppliers_x_items extends CI_Controller{
 		
 		   echo json_encode($output1);
     }
+    // supplier  vs item data table
+      function suppliers_x_items_table($guid){
+        $aColumns = array( 'guid','i_name','i_name','i_code','quty','cost','price','mrp','active','active','guid','guid' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('items.name'=>  $this->input->get_post('sSearch'),
+                  
+                    );
+				
+			}
+					   
+			$this->load->model('supplier')	   ;
+                        
+			 $rResult1 = $this->supplier->supplier_vs_items($end,$start,$like,$_SESSION['Bid'],$guid);
+		   
+		$iFilteredTotal =$this->supplier->supplier_vs_items_count($_SESSION['Bid'],$guid);
+		
+		$iTotal =$this->supplier->supplier_vs_items_count($_SESSION['Bid'],$guid);
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
+    }
     function supplier_magement(){
         if($this->input->post('cancel')){
             redirect('home');
@@ -119,16 +192,39 @@ class Suppliers_x_items extends CI_Controller{
             }
     }
             
-    function add_items($guid){
-         $data['supplier_id']=$guid;
-         $where=array('supplier_id'=>$guid);
-         $where_sup=array('guid'=>$guid);
-         $data['sup']=$this->posnic->posnic_module_where('suppliers',$where_sup);         
-         $data['row']=$this->posnic->posnic_module_where('suppliers_x_items',$where);
-         $data['items']=$this->posnic->posnic_module('items');
-         //$data['item_row']=$this->posnic->posnic_module('items');
-         $this->load->view('add_items',$data);
-         
+    function add_items(){
+        if($_SESSION['customers_per']['add']==1){
+              if($this->input->post('supplier')){
+                 $this->form_validation->set_rules('item', 'item', 'required');
+                        $this->form_validation->set_rules('cost', 'cost', 'required');
+                        $this->form_validation->set_rules('price', 'price', 'required');
+                        $this->form_validation->set_rules('quty', 'items', 'required');
+                        $this->form_validation->set_rules('supplier', 'supplier', 'required');
+                        $this->form_validation->set_rules('mrp', 'items', 'required'); 
+                            if ( $this->form_validation->run() !== false ) {
+                                
+                                
+                                $where=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>0);
+                                 if($this->posnic->check_record_unique($where,'suppliers_x_items')){
+                   $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
+                                     
+                                     
+                                     
+                                          $this->posnic->posnic_add_record($values,'suppliers_x_items');
+                                        echo 'TRUE';
+                                    }else{
+                                            echo "ALREADY";
+                                    }
+                            }else{
+                                echo 'FALSE';
+                            }
+                }else{
+                    echo 'FALSE';
+                }
+
+            }else{
+                 echo 'FALSE';
+            }
     }
     
   
@@ -249,7 +345,37 @@ class Suppliers_x_items extends CI_Controller{
               $this->posnic->posnic_active_where($where);
               redirect('suppliers_x_items');
      }
-   
+     function search_items(){
+                 $search= $this->input->post('term');
+         if($search!=""){
+             $this->load->model('supplier');
+            $data= $this->supplier->search_items($search,$_SESSION['Bid']);      
+            echo json_encode($data);
+     }
+     }
+       function item_active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'suppliers_x_items'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function item_deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'suppliers_x_items'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function get_suppliers_x_items($guid){
+        $this->load->model('supplier');
+        $data=  $this->supplier->get_suppliers_x_items($guid);
+        echo json_encode($data);
+    }
     
 }
 ?>

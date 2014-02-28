@@ -7,7 +7,7 @@ class Supplier extends CI_Model{
     function get($end,$start,$like,$branch){
                 $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name as c_name')->from('suppliers')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',0)->where('suppliers.delete_status',0);
                 $this->db->join('suppliers_category', 'suppliers.category=suppliers_category.guid','left');
-               
+                $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
                 $query=$this->db->get();
                 return $query->result_array(); 

@@ -13,6 +13,18 @@ class Supplier extends CI_Model{
                 return $query->result_array(); 
         
     }
+    function supplier_vs_items($end,$start,$like,$branch,$suplier){
+        
+                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',0)->where('suppliers.active',0)->where('suppliers.delete_status',0);
+                $this->db->join('items', 'items.guid=suppliers_x_items.item_id','left');
+                $this->db->join('suppliers', 'suppliers.guid=suppliers_x_items.supplier_id','left');
+                $this->db->where('suppliers_x_items.supplier_id',$suplier);
+               $this->db->limit($end,$start);   
+                $this->db->like($like);     
+                $query=$this->db->get();
+                return $query->result_array(); 
+        
+    }
     function edit_supplier($guid){
                 $this->db->select('suppliers.* ,suppliers_category.category_name as c_name,supplier_contacts.guid as c_guid,supplier_contacts.address as c_address,supplier_contacts.city as c_city,supplier_contacts.state as c_state,supplier_contacts.country as c_country,supplier_contacts.zip as c_zip ,supplier_contacts.email as c_email,supplier_contacts.phone as c_phone')->from('suppliers')->where('suppliers.guid',$guid);
                 $this->db->join('supplier_contacts', 'supplier_contacts.supplier=suppliers.guid','left');
@@ -40,5 +52,38 @@ class Supplier extends CI_Model{
         $sql=  $this->db->get();
         return $sql->num_rows();
     }
+    function supplier_vs_items_count($branch,$guid){
+        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',0)->where('active',0)->where('delete_status',0);
+        $sql=  $this->db->get();
+        return $sql->num_rows();
+    }
+    function search_items($search,$branch){
+          $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch)->where('items.active_status',0)->where('items.delete_status',0);
+                $this->db->join('items_category', 'items.category_id=items_category.guid','left');
+                $this->db->join('brands', 'items.brand_id=brands.guid','left');
+                $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
+               // $this->db->join('supplier', 'stock.supplier=supplier.id','left');
+                $like=array('items.name'=>$search,'items.code'=>$search,'items.barcode'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
+                $this->db->or_like($like);     
+                $query=$this->db->get();
+                return $query->result();
+    }
+    function get_suppliers_x_items($guid){
+        $this->db->select()->from('suppliers_x_items')->where('guid',$guid);
+        $sql=  $this->db->get();
+        $data=array();
+        $item_id;
+        foreach ($sql->result() as $row){
+            $item_id=$row->item_id;
+            $data[]=$row;
+        }
+        $this->db->select()->from('items')->where('guid',$item_id);
+        $item=  $this->db->get();
+        foreach ($item->result() as $row){
+            $data[]=$row;
+        }
+        return $data;
+    }
+    
 }
 ?>

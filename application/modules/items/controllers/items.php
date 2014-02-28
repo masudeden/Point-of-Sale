@@ -410,6 +410,33 @@ class Items extends CI_Controller{
             echo json_encode($data);
         }
     }
+    function add_item_image(){
+        
+         $config['upload_path'] = './uploads/items';
+		$config['allowed_types'] = 'gif|jpg|png';
+		$config['max_size']	= '202100';
+		$config['max_width']  = '11024';
+		$config['max_height']  = '3768';
+//            	$this->load->model('products_details');	
+              $guid=  $this->input->post('guid');
+//		$max=$this->products_details->max_id($guid);
+//               
+              $config['file_name']=$guid;
+              //  $config['overwrite'] = TRUE;
+		$this->load->library('upload', $config);
+
+		if ( ! $this->upload->do_upload())
+		{
+                        echo $this->upload->display_errors();
+		}
+		else
+		{       $upload_data = $this->upload->data();
+                     $file_name =$upload_data['file_name'];
+                    $data=array('image'=>$file_name);
+                                $where=array('guid'=>$guid);
+                                     $this->posnic->posnic_module_update('items',$data,$where);
+		}
+    }
     
 }
 ?>

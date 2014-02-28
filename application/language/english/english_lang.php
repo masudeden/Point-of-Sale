@@ -404,10 +404,20 @@ $lang['credit_days']='Credit Days';
  // suppliers
  $lang['add_new_conatct']='Add New Conatct';
          
- // supplier category
+ // supplier categorya
          
   $lang['suppliers_category']='Suppliers Category'   ; 
   //suppliers vs items
   $lang['add_items']='Add Items';
   $lang['details']='Details';
+  $lang['sl_no']='SL Nothis';
+  $lang['image']='Image';
+  $lang['add_image']='Add Image';
+  $lang['saved_image']='Saved Image';
+  $lang['price']='Price';
+  $lang['this item already added']='This Item Already Added To';
+  $lang['Please_Select_An_Item']='Please Select An Item';
+  $lang['Set 0 To Unlimit']='Set 0 To Unlimit';
+  $lang['Selling Price Must Less Than MRP price']='Selling Price Must Less Than MRP price';
+  $lang['Cost Must Less Than Sell price']='Cost Must Less Than Sell price';
 ?>﻿

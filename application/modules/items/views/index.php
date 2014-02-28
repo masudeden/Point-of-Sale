@@ -18,7 +18,9 @@
     padding:1px 1px 1px 3px;
     transition: none 0s ease 0s;
     }
- 
+ table td + td + td + td + td + td + td + td + td {
+ width: 100px !important;
+}
 </style>	
 <script type="text/javascript">
      $(document).ready( function () {
@@ -590,6 +592,7 @@ function posnic_add_new(){
 }
 function posnic_items_lists(){
       $('#edit_item_form').hide('hide');
+      $('#add_items_image').hide('hide');
       $('#add_item_form').hide('hide');      
       $("#user_list").show('slow');
       $('#delete').removeAttr("disabled");
@@ -644,7 +647,7 @@ function reload_update_user(){
                                           <th ><?php echo $this->lang->line('item_department') ?></th>
                                           
                                           <th><?php echo $this->lang->line('status') ?></th>
-                                          <th><?php echo $this->lang->line('action') ?></th>
+                                          <th ><?php echo $this->lang->line('action') ?></th>
                                          </tr>
                                       </thead>
                                       <tbody></tbody>
@@ -656,6 +659,129 @@ function reload_update_user(){
              </div>
         </div>
 </section>    
+<section id="add_items_image" class="container clearfix main_section">
+       <form id="add_image_form" action="<?php echo base_url() ?>index.php/items/add_item_image" method="post" enctype="multipart/form-data">
+        <div id="main_content_outer" class="clearfix">
+           <div id="main_content">
+                 <div class="row">
+                     <div class="col col-lg-3"></div>
+                     <div class="col col-lg-6">
+                         <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"><?php echo $this->lang->line('item_details') ?></h4>  
+                                   
+                               </div>
+                         <div class="row">
+                             <div class="col col-lg-2"> </div>
+                             <div class="col col-lg-4">
+                                 <div class="form_sep">
+                                                         <label for="name" ><?php echo $this->lang->line('name') ?></label>                                                                                                       
+                                                           <?php $name=array('name'=>'name',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'name',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('mrp'));
+                                                           echo form_input($name)?> 
+                                                    </div>
+                             </div>
+                             <div class="col col-lg-4">
+                                                    <div class="form_sep">
+                                                         <label for="sku" ><?php echo $this->lang->line('sku') ?></label>                                                                                                       
+                                                           <?php $sku=array('name'=>'sku',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'sku',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('sku'));
+                                                           echo form_input($sku)?> 
+                                                    </div>
+                                                   </div>
+                             
+                         </div>
+                         <div class="row">
+                             <div class="col col-lg-4"> 
+                                 <div  id="preview_image" style="width: 95%;height: 95%;margin-left: 25px;;margin-top: 25px;"></div>
+                             </div>
+                             <div class="col col-lg-1"></div>
+                             <div class="col col-lg-6">
+                          
+                              <br>
+
+                              <div class="step_info" style="margin: auto">
+                                                <label for="firstname" ><?php echo $this->lang->line('image') ?></label>                     
+                                                <div class="fileupload fileupload-new " data-provides="fileupload">
+                                                     <div class="fileupload-new img-thumbnail" style="width: 178px; height: 120px;"><img src="img/no_img_180.png" alt=""></div>
+                                                       <div  class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
+                                                       <div>
+                                                            <span class="btn btn-default btn-file"><span class="fileupload-new"><?php echo $this->lang->line('select_image') ?></span><span class="fileupload-exists"><?php echo $this->lang->line('change') ?></span>
+                                                            <input type="file" name="userfile" /></span>
+                                                            <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload"><?php echo $this->lang->line('remove') ?></a>
+                                                       </div>
+                                                 </div>
+                                            </div>
+                          </div></div>
+                          </div>
+                         <input type="hidden" name="guid" id="guid" value="78678687b6879698">
+                     </div>
+                 </div>
+               <div class="row">
+                     <div class="col col-lg-4"></div>
+                     <div class="col col-lg-4">
+                         <input type="submit" name="add_item" class="form-control btn btn-success" value="Upload">
+                     </div>
+               </div>
+           </div>
+        </div>
+       </form>
+</section>
+<script type="text/javascript">
+    
+$(document).ready(function()
+{
+
+	var options = { 
+    beforeSend: function() 
+    {
+    	$("#progress").show();
+    	//clear everything
+    	$("#bar").width('0%');
+    	$("#message").html("");
+		$("#percent").html("0%");
+    },
+    uploadProgress: function(event, position, total, percentComplete) 
+    {
+    	$("#bar").width(percentComplete+'%');
+    	$("#percent").html(percentComplete+'%');
+
+    
+    },
+    success: function() 
+    {
+        $("#bar").width('100%');
+    	$("#percent").html('100%');
+         posnic_items_lists();
+
+    },
+	complete: function(response) { 
+
+	 
+                  
+	},
+	error: function()
+	{
+		$("#message").html("<font color='red'> ERROR: unable to upload files</font>");
+
+	}
+   
+}; 
+
+    
+     $("#add_image_form").ajaxForm(options);
+
+});
+function check(){
+       alert('jib')  ;
+     }
+</script>
 <section id="add_item_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'add_item',
                           'runat'=>'server',
