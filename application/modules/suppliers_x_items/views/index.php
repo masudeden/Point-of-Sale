@@ -18,7 +18,11 @@
     padding:1px 1px 1px 3px;
     transition: none 0s ease 0s;
     }
-    .select2-drop{
+  
+   .supplier_select{
+        width: 200px !important;
+    }
+   .item_select{
         width: 600px !important;
     }
  
@@ -53,6 +57,7 @@
     return  "<p >"+sup.text+"<img src='<?php echo base_url() ?>/uploads/items/"+sup.image+"' style='float:right;height:59px'></img></p><p style='float:left;width:130px;  margin-left: 10px'> "+sup.value+"</p><p style='float:left;width:130px;  margin-left: 10px'> "+sup.category+"</p> <p style='width:130px;  margin-left: 218px'> "+sup.brand+"</p><p style='width:120px;  margin-left: 380px;margin-top: -28px;'> "+sup.department+"</p>";
             }
           $('#parsley_reg #items').select2({
+              dropdownCssClass : 'item_select',
                  formatResult: format_item,
                 formatSelection: format_item,
                 
@@ -96,7 +101,63 @@
                     }
                 }
             });
-        
+         function format_supplier(sup) {
+            if (!sup.id) return sup.text;
+    return  "<p >"+sup.text+"    <br>"+sup.company+"   "+sup.phone+"</p> ";
+            }
+        $('#parsley_reg #first_name').change(function() {
+                   var guid = $('#parsley_reg #first_name').select2('data').id;
+
+                 $('#parsley_reg #first_name').val($('#parsley_reg #first_name').select2('data').text);
+                 $('#parsley_reg #company').val($('#parsley_reg #first_name').select2('data').company);
+                 $('#parsley_reg #email').val($('#parsley_reg #first_name').select2('data').email);
+                 $('#parsley_reg #phone').val($('#parsley_reg #first_name').select2('data').phone);
+                 $('#parsley_reg #category').val($('#parsley_reg #first_name').select2('data').category_name);
+                 $('#edit_brand_form #supplier_guid').val(guid);
+                  posnic_item_table(guid);
+                
+          });
+          $('#parsley_reg #first_name').select2({
+              dropdownCssClass : 'supplier_select',
+               formatResult: format_supplier,
+                formatSelection: format_supplier,
+                
+                escapeMarkup: function(m) { return m; },
+                placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
+                ajax: {
+                     url: '<?php echo base_url() ?>index.php/suppliers_x_items/search_suppliers',
+                     data: function(term, page) {
+                            return {types: ["exercise"],
+                                limit: -1,
+                                term: term
+                            };
+                     },
+                    type:'POST',
+                    dataType: 'json',
+                    quietMillis: 100,
+                    data: function (term) {
+                        return {
+                            term: term
+                        };
+                    },
+                    results: function (data) {
+                      var results = [];
+                      $.each(data, function(index, item){
+                        results.push({
+                          id: item.guid,
+                          text: item.first_name,
+                          company: item.company_name,
+                          email: item.email,
+                          category_name: item.category_name,
+                          phone: item.phone
+                        });
+                      });
+                      return {
+                          results: results
+                      };
+                    }
+                }
+            });
         
         
         
@@ -104,10 +165,15 @@
   
         
      });
+     function refresh_item_table(){
+     window.setTimeout(100000);
+       $("#selected_item_table").dataTable().fnDraw();
+     }
 function posnic_add_new(){
+$("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
     <?php if($_SESSION['suppliers_x_items_per']['add']==1){ ?>
       $("#user_list").hide();
-      $('#add_customer_details_form').show('slow');
+    $('#edit_brand_form').show('slow');
       $('#delete').attr("disabled", "disabled");
       $('#posnic_add_suppliers').attr("disabled", "disabled");
       $('#active').attr("disabled", "disabled");
@@ -424,15 +490,15 @@ function clear_inputs(){
                                </div>
                               <div class="row">
                                  
-                                       <div class="col col-sm-12" style="padding-right: 25px;padding-left: 25px">
+                                       <div id="" class="col col-sm-12" style="padding-right: 25px;padding-left: 25px">
                                            <div class="row">
                                                <div class="col col-sm-12" style="margin-top: 10px">
-                                                   <div class="form_sep">
+                                                   <div class="form_sep supplier_select_2">
                                                         <label for="first_name" ><?php echo $this->lang->line('first_name') ?></label>													
                                                                   <?php $first_name=array('name'=>'first_name',
                                                                                     'class'=>'required  form-control',
                                                                                     'id'=>'first_name',
-                                                                                    'disabled'=>'disabled',
+                                                                                   
                                                                                     'value'=>set_value('first_name'));
                                                                      echo form_input($first_name)?>
                                                         

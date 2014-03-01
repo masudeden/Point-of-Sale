@@ -73,11 +73,16 @@
                                    
 			}
            function posnic_item_table(guid){
+           var supplier=$('#edit_brand_form #supplier_guid').val();
+           if($('#edit_brand_form #supplier_guid').val()==""){
+               supplier=guid;
+           }
+           
            $('#selected_item_table').dataTable({
                                       "bProcessing": true,
                                       "bDestroy": true ,
 				      "bServerSide": true,
-                                      "sAjaxSource": "<?php echo base_url() ?>index.php/suppliers_x_items/suppliers_x_items_table/"+$('#edit_brand_form #supplier_guid').val(),
+                                      "sAjaxSource": "<?php echo base_url() ?>index.php/suppliers_x_items/suppliers_x_items_table/"+supplier,
                                        aoColumns: [  
                                     
          { "bVisible": false} , {	"sName": "ID",

@@ -419,6 +419,15 @@ class Suppliers_x_items extends CI_Controller{
             echo 'FALSE';
         }
     }
+    function search_suppliers(){
+           $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);
+            $this->load->model('supplier');
+            $data= $this->supplier->supplier_like($like,$_SESSION['Bid']);      
+            echo json_encode($data);
+        }
+    }
     
 }
 ?>
