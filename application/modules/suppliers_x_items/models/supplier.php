@@ -15,7 +15,7 @@ class Supplier extends CI_Model{
     }
     function supplier_vs_items($end,$start,$like,$branch,$suplier){
         
-                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',0)->where('suppliers.active',0)->where('suppliers.delete_status',0);
+                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',0)->where('suppliers.active',0)->where('suppliers.delete_status',0)->where('suppliers_x_items.active_status',0)->where('suppliers_x_items.delete_status',0);
                 $this->db->join('items', 'items.guid=suppliers_x_items.item_id','left');
                 $this->db->join('suppliers', 'suppliers.guid=suppliers_x_items.supplier_id','left');
                 $this->db->where('suppliers_x_items.supplier_id',$suplier);
@@ -53,7 +53,7 @@ class Supplier extends CI_Model{
         return $sql->num_rows();
     }
     function supplier_vs_items_count($branch,$guid){
-        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',0)->where('active',0)->where('delete_status',0);
+        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',0)->where('delete_status',0);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }

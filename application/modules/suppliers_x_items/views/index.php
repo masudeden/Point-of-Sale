@@ -35,7 +35,7 @@
          
         
           $('#parsley_reg #items').change(function() {
-              if(document.getElementById('item_'+$('#parsley_reg #items').select2('data').id)){
+              if(document.getElementById('item_id_'+$('#parsley_reg #items').select2('data').id) && $('#parsley_reg #diabled_item').val()!=$('#parsley_reg #items').select2('data').id){
                      $.bootstrapGrowl('<?php echo $this->lang->line('this item already added');?> '+$('#parsley_reg #first_name').val(), { type: "warning" });  
               }else{
                    var guid = $('#parsley_reg #items').select2('data').id;
@@ -55,6 +55,7 @@
           $('#parsley_reg #items').select2({
                  formatResult: format_item,
                 formatSelection: format_item,
+                
                 escapeMarkup: function(m) { return m; },
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('items') ?>",
                 ajax: {
@@ -100,60 +101,11 @@
         
         
         
-        $('#add_new_customer').click(function() { 
-                <?php if($_SESSION['suppliers_per']['add']==1){ ?>
-                var inputs = $('#add_customer_form').serialize();
-                      $.ajax ({
-                            url: "<?php echo base_url('index.php/suppliers/add_suppliers')?>",
-                            data: inputs,
-                            type:'POST',
-                            complete: function(response) {
-                                if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('brand').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
-                                       $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#add_customer_details").trigger('reset');
-                                       posnic_suppliers_lists();
-                                    }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#suppliers_name').val()+' <?php echo $this->lang->line('brand').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
-                                    }else  if(response['responseText']=='FALSE'){
-                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
-                                    }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                           
-                                    }
-                       }
-                });<?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                       
-                    <?php }?>
-        });
-         $('#update_suppliers').click(function() { 
-                <?php if($_SESSION['suppliers_per']['edit']==1){ ?>
-                var inputs = $('#parsley_reg').serialize();
-                      $.ajax ({
-                            url: "<?php echo base_url('index.php/suppliers/update_suppliers')?>",
-                            data: inputs,
-                            type:'POST',
-                            complete: function(response) {
-                                  if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('brand').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
-                                       $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#parsley_reg").trigger('reset');
-                                       posnic_suppliers_lists();
-                                    }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#suppliers_name').val()+' <?php echo $this->lang->line('brand').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
-                                    }else  if(response['responseText']=='FALSE'){
-                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
-                                    }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('brand');?>', { type: "error" });                           
-                                    }
-                       }
-                 });
-                 <?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('brand');?>', { type: "error" });                        
-                    <?php }?>
-        });
+  
+        
      });
 function posnic_add_new(){
-    <?php if($_SESSION['suppliers_per']['add']==1){ ?>
+    <?php if($_SESSION['suppliers_x_items_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_customer_details_form').show('slow');
       $('#delete').attr("disabled", "disabled");
@@ -346,9 +298,48 @@ function add_new_price(e){
     function copy_items(){
  if( $('#parsley_reg #item_id').val()!="" &&  $('#parsley_reg #cost').val()!="" && $('#parsley_reg #price').val()!="" && $('#parsley_reg #mrp').val()!="" && $('#parsley_reg #quantity').val()!=""){
    if($('#parsley_reg #cost').val()<$('#parsley_reg #price').val()) { 
-   if(parseFloat($('#parsley_reg #mrp').val())>=parseFloat($('#parsley_reg #price').val())) { 
-if(document.getElementById($('#parsley_reg #item_'+$('#parsley_reg #item_id').val()).val())){
-alert('update');
+   if(parseFloat($('#parsley_reg #mrp').val())>=parseFloat($('#parsley_reg #price').val())) {
+       console.log(document.getElementById('item_id_'+$('#parsley_reg #item_id').val()));
+if(document.getElementById('item_id_'+$('#parsley_reg #item_id').val())){
+
+  var  guid=$('#parsley_reg #seleted_row_id').val();
+  var  name=$('#parsley_reg #item_name').val();
+  var  sku=$('#parsley_reg #sku').val();
+  var  quty=$('#parsley_reg #quantity').val();
+  var  cost=$('#parsley_reg #cost').val();
+  var  price=$('#parsley_reg #price').val();
+  var  mrp=$('#parsley_reg #mrp').val();
+  var  items_id=$('#parsley_reg #item_id').val();
+  var  supplier=$('#parsley_reg #supplier_guid').val();
+  
+    $.ajax ({
+                            url: "<?php echo base_url('index.php/suppliers_x_items/update_items')?>",
+                            data: {
+                        guid:guid,
+                        supplier:supplier,
+                        item:items_id,
+                        quty:quty,
+                        cost:cost,
+                        price:price,
+                        mrp:mrp
+                            },
+                            type:'POST',
+                            complete: function(response) {
+                                  if(response['responseText']=='TRUE'){
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('items').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
+                                      $("#selected_item_table").dataTable().fnDraw();
+                                     clear_inputs();
+                                      $('#parsley_reg #diabled_item').val('');
+                                      $('#parsley_reg #seleted_row_id').val('');
+                                    }else  if(response['responseText']=='ALREADY'){
+                                           $.bootstrapGrowl(' <?php echo $this->lang->line('items').' '.$this->lang->line('is_already_added');?>'+$('#parsley_reg #first_name').val(), { type: "warning" });                           
+                                    }else  if(response['responseText']=='FALSE'){
+                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                                    }else{
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('brand');?>', { type: "error" });                           
+                                    }
+                       }
+                 });
 }else{
    
 
@@ -376,7 +367,7 @@ alert('update');
                                   if(response['responseText']=='TRUE'){
                                       $.bootstrapGrowl('<?php echo $this->lang->line('items').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                      $("#selected_item_table").dataTable().fnDraw();
-                                     
+                                     clear_inputs();
                                      
                                     }else  if(response['responseText']=='ALREADY'){
                                            $.bootstrapGrowl(' <?php echo $this->lang->line('items').' '.$this->lang->line('is_already_added');?>'+$('#parsley_reg #first_name').val(), { type: "warning" });                           
@@ -387,32 +378,6 @@ alert('update');
                                     }
                        }
                  });
-  
-  
-  
-  
-  
-//    $('#parsley_reg #selected_items').append('<tr id="'+items_id+'"><td>1\n\
-//<input type="hidden" value="'+name+'" name="item_name[]" id="item_name">\n\
-//<input type="hidden" value="'+sku+'" name="item_code[]" id="item_code">\n\
-//<input type="hidden" value="'+quty+'" name="item_quty[]" id="item_quty">\n\
-//<input type="hidden" value="'+cost+'" name="item_cost[]" id="item_cost">\n\
-//<input type="hidden" value="'+price+'" name="item_price[]" id="item_price">\n\
-//<input type="hidden" value="'+mrp+'" name="item_mrp[]" id="item_mrp">\n\
-//<input type="hidden" value="'+items_id+'" name="item_guid[]" id="item_guid">\n\
-//</td>\n\
-//<td>'+sku+'</td>\n\
-//<td>'+name+'</td>\n\
-//<td>'+quty+'</td>\n\
-//<td>'+cost+'</td>\n\
-//<td>'+price+'</td>\n\
-//<td>'+mrp+'</td>\n\
-//<td><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><?php echo $this->lang->line('active') ?></span></td>\n\
-//<td>'+'<a href=javascript:posnic_active("'+items_id+'") ><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a></td></tr>")
-//   
-     
-
-  
       }  
         }else{
        
@@ -437,12 +402,14 @@ function clear_inputs(){
   $('#parsley_reg #price').val('');
   $('#parsley_reg #mrp').val('');
   $('#parsley_reg #item_id').val('')
+    $("#parsley_reg #items").select2('data', {id:'',text: 'Search Item'});
 }
 </script>
 
 <section id="edit_brand_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',
                           'runat'=>'server',
+                          'name'=>'items_form',
                           'class'=>'form-horizontal');
        echo form_open_multipart('suppliers/upadate_pos_suppliers_details/',$form);?>
         <div id="main_content_outer" class="clearfix">
@@ -540,17 +507,21 @@ function clear_inputs(){
                                  
                                        <div class="col col-sm-2" style="padding-left: 25px">
                                        
-                                           
-                                                     <div class="form_sep">
-                                                        <label for="items" class="req"><?php echo $this->lang->line('items') ?></label>													
+                                             <label for="items" class="req"><?php echo $this->lang->line('items') ?></label>	
+                                                     <div class="form_sep" id='display_none_div'>
+                                                      												
                                                                   <?php $items=array('name'=>'items',
                                                                                     'class'=>'form-control',
                                                                                     'id'=>'items',
                                                                                     'value'=>set_value('items'));
                                                                      echo form_input($items)?>
                                                   </div>
-                                           <input type="hidden" name="item_id" id="item_id">
+                                         
+                                                 <input type="hidden" id='diabled_item' class="form-control">
+                                                 
+                                                 <input type="hidden" name="item_id" id="item_id">
                                            <input type="hidden" name="item_name" id="item_name">
+                                           <input type="hidden" name="seleted_row_id" id="seleted_row_id">
                                                   </div>
                                                 <div class="col col-sm-10" style="padding-right: 25px;">
                                                   <table><tr><td>
@@ -626,14 +597,14 @@ function clear_inputs(){
                                                     </div>
                                                </td>
                                                <td>  
-                                                    <label for="mrp" ><?php echo $this->lang->line('add') ?></label>
-                                                   <a class="btn btn-success"><i class="icon icon-save"></i></a>
+                                                    <label for="mrp" ><?php echo $this->lang->line('save') ?></label>
+                                                    <a class="btn btn-success" href="javascript:copy_items()"><i class="icon icon-save"></i></a>
                                                   
                                                   </td>
                                                <td>  
                                                     <label for="mrp" ><?php echo $this->lang->line('clear') ?></label>
                                                   
-                                                   <a class="btn btn-warning pull-right"><i class="icon icon-refresh"></i></a>
+                                                   <a class="btn btn-warning pull-right" href="javascript:clear_inputs()"><i class="icon icon-refresh"></i></a>
                                                  </td>
                                                </tr>
                                                
@@ -646,6 +617,19 @@ function clear_inputs(){
                           </div>
                           </div>
                         <div class="row" style="margin-top: 5px"><input type="hidden" value="0" id='sl_number'>
+                         <nav id="top_navigation">
+    <div class="container">
+            <div class="row">
+                <div class="col col-lg-7">
+                      
+                        <a href="javascript:posnic_group_item_deactive()" id="1active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
+                        <a href="javascript:posnic_group_item_active()" class="btn btn-success" id="1deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
+                        <a href="javascript:posnic_item_delete()" class="btn btn-danger" id="1delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
+                        
+                </div>
+            </div>
+    </div>
+</nav>
                             <div class="image_items">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -727,9 +711,49 @@ function clear_inputs(){
 
                       }    
                       }
-                    function posnic_delete(){
+                    function posnic_group_item_active(){
                      var flag=0;
-                     var field=document.forms.posnic;
+                     var field=document.forms.items_form;
+                      for (i = 0; i < field.length; i++){
+                          if(field[i].checked==true){
+                              flag=flag+1;
+
+                          }
+
+                      }
+                      if (flag<1) {
+                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
+                      
+                      }else{
+                            var posnic=document.forms.items_form;
+                      for (i = 0; i < posnic.length-1; i++){
+                          if(posnic[i].checked==true){                             
+                              $.ajax({
+                                url: '<?php echo base_url() ?>index.php/suppliers_x_items/item_active',
+                                type: "POST",
+                                data: {
+                                    guid:posnic[i].value
+
+                                },
+                                success: function(response)
+                                {
+                                    if(response){
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('activated');?>', { type: "success" });
+                                        $("#selected_item_table").dataTable().fnDraw();
+                                    }
+                                }
+                            });
+
+                          }
+
+                      }
+                  
+
+                      }    
+                      }
+                    function posnic_item_delete(){
+                     var flag=0;
+                     var field=document.forms.items_form;
                       for (i = 0; i < field.length; i++){
                           if(field[i].checked==true){
                               flag=flag+1;
@@ -739,17 +763,17 @@ function clear_inputs(){
                       }
                       if (flag<1) {
                         
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('items');?>', { type: "warning" });
                       }else{
                             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')."".$this->lang->line('Are you Sure To Delete') ?>", function(result) {
              if(result){
               
              
-                        var posnic=document.forms.posnic;
+                        var posnic=document.forms.items_form;
                         for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/suppliers/delete',
+                                url: '<?php echo base_url() ?>/index.php/suppliers_x_items/item_delete',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -758,8 +782,8 @@ function clear_inputs(){
                                 success: function(response)
                                 {
                                     if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('deleted');?>', { type: "success" });
-                                        $("#dt_table_tools").dataTable().fnDraw();
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('items')." ".$this->lang->line('deleted');?>', { type: "error" });
+                                        $("#selected_item_table").dataTable().fnDraw();
                                     }
                                 }
                             });
@@ -803,6 +827,46 @@ function clear_inputs(){
                                         if(response){
                                              $.bootstrapGrowl('<?php echo $this->lang->line('deactivated');?>', { type: "danger" });
                                             $("#dt_table_tools").dataTable().fnDraw();
+                                        }
+                                    }
+                                });
+
+                          }
+
+                      }
+                  
+
+                      }    
+                      }
+                    function posnic_group_item_deactive(){
+                     var flag=0;
+                     var field=document.forms.items_form;
+                      for (i = 0; i < field.length; i++){
+                          if(field[i].checked==true){
+                              flag=flag+1;
+
+                          }
+
+                      }
+                      if (flag<1) {
+                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
+                      
+                      }else{
+                            var posnic=document.forms.items_form;
+                      for (i = 0; i < posnic.length-1; i++){
+                          if(posnic[i].checked==true){                             
+                                 $.ajax({
+                                    url: '<?php echo base_url() ?>index.php/suppliers_x_items/item_deactive',
+                                    type: "POST",
+                                    data: {
+                                        guid: posnic[i].value
+
+                                    },
+                                    success: function(response)
+                                    {
+                                        if(response){
+                                             $.bootstrapGrowl('<?php echo $this->lang->line('deactivated');?>', { type: "danger" });
+                                            $("#selected_item_table").dataTable().fnDraw();
                                         }
                                     }
                                 });

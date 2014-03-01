@@ -85,7 +85,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							return "<input type=checkbox value='"+oObj.aData[0]+"' ><input type='hidden' id='item_name_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
+                   							return "<input type=checkbox value='"+oObj.aData[0]+"'  ><input type='hidden' id='item_name_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'><input type='hidden' id='item_id_"+oObj.aData[10]+"' value='"+oObj.aData[1]+"'>";
 								},
 								
 								
@@ -133,11 +133,11 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['suppliers_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('supplier') ?> "+$('#supplier_name_'+guid).val(), function(result) {
+    <?php if($_SESSION['suppliers_x_items_per']['delete']==1){ ?>
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#item_name_'+guid).val(), function(result) {
              if(result){
             $.ajax({
-                url: '<?php echo base_url() ?>/index.php/suppliers/delete',
+                url: '<?php echo base_url() ?>/index.php/suppliers_x_items/item_delete',
                 type: "POST",
                 data: {
                     guid: guid
@@ -146,8 +146,8 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl($('#supplier_name_'+guid).val()+ ' <?php echo $this->lang->line('brand') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
-                        $("#dt_table_tools").dataTable().fnDraw();
+                           $.bootstrapGrowl($('#item_name_'+guid).val()+ ' <?php echo $this->lang->line('items') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                        $("#selected_item_table").dataTable().fnDraw();
                     }}
             });
         
@@ -232,7 +232,7 @@
            $('#edit_brand_form').show();
                       
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['suppliers_per']['add']==1){ ?>
+                        <?php if($_SESSION['suppliers_x_items_per']['add']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/suppliers/edit_suppliers/"+guid,                      
                              data: "", 
@@ -269,7 +269,7 @@
         
            $('#loading').modal('show');
         
-                        <?php if($_SESSION['suppliers_per']['edit']==1){ ?>
+                        <?php if($_SESSION['suppliers_x_items_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/suppliers_x_items/get_suppliers_x_items/"+guid,                      
                              data: "", 
@@ -278,12 +278,16 @@
                              {    
                                
                                 
+                                 $('#parsley_reg #seleted_row_id').val(data[0]['guid']);
+                                 $('#parsley_reg #item_id').val(data[1]['guid']);
                                  $('#parsley_reg #quantity').val(data[0]['quty']);
                                  $('#parsley_reg #cost').val(data[0]['cost']);
                                  $('#parsley_reg #price').val(data[0]['price']);
                                  $('#parsley_reg #sku').val(data[1]['code']);
+                                 $('#parsley_reg #diabled_item').val(data[1]['guid']);
                                  $('#parsley_reg #mrp').val(data[0]['mrp']);
-                                   $("#parsley_reg #supplier_category").select2('data', {id:data[0]['category'],text: data[0]['c_name']});
+                                   $("#parsley_reg #items").select2('data', {id:data[0]['item_id'],text: data[1]['name']});
+                                   $('#parsley_reg #diabled_item').val(data[1]['guid']);
                                 $('#loading').modal('hide');
                              } 
                            });

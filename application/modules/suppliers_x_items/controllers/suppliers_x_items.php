@@ -100,7 +100,7 @@ class Suppliers_x_items extends CI_Controller{
     }
     // supplier  vs item data table
       function suppliers_x_items_table($guid){
-        $aColumns = array( 'guid','i_name','i_name','i_code','quty','cost','price','mrp','active','active','guid','guid' );	
+        $aColumns = array( 'guid','i_name','i_name','i_code','quty','cost','price','mrp','active','active','i_guid','guid' );	
 	$start = "";
 			$end="";
 		
@@ -211,6 +211,38 @@ class Suppliers_x_items extends CI_Controller{
                                      
                                      
                                           $this->posnic->posnic_add_record($values,'suppliers_x_items');
+                                        echo 'TRUE';
+                                    }else{
+                                            echo "ALREADY";
+                                    }
+                            }else{
+                                echo 'FALSE';
+                            }
+                }else{
+                    echo 'FALSE';
+                }
+
+            }else{
+                 echo 'FALSE';
+            }
+    }
+    function update_items(){
+        if($_SESSION['customers_per']['edit']==1){
+              if($this->input->post('guid')){
+                 $this->form_validation->set_rules('item', 'item', 'required');
+                        $this->form_validation->set_rules('cost', 'cost', 'required');
+                        $this->form_validation->set_rules('price', 'price', 'required');
+                        $this->form_validation->set_rules('quty', 'items', 'required');
+                        $this->form_validation->set_rules('supplier', 'supplier', 'required');
+                        $this->form_validation->set_rules('mrp', 'items', 'required'); 
+                            if ( $this->form_validation->run() !== false ) {
+                                $guid=  $this->input->post('guid');
+                                
+                                $where=array('guid !='=>$guid,'supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>0);
+                                 if($this->posnic->check_record_unique($where,'suppliers_x_items')){
+                                     $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
+                                     $update_where=array('guid'=>$guid);
+                                     $this->posnic->posnic_update_record($values,$update_where,'suppliers_x_items');
                                         echo 'TRUE';
                                     }else{
                                             echo "ALREADY";
@@ -375,6 +407,17 @@ class Suppliers_x_items extends CI_Controller{
         $this->load->model('supplier');
         $data=  $this->supplier->get_suppliers_x_items($guid);
         echo json_encode($data);
+    }
+    function item_delete(){
+      if($_SESSION['suppliers_x_items_per']['delete']==1){
+            if($this->input->post('guid')){
+             $guid=  $this->input->post('guid');
+              $this->posnic->posnic_delete($guid,'suppliers_x_items');
+             echo 'TRUE';
+            }
+           }else{
+            echo 'FALSE';
+        }
     }
     
 }
