@@ -5,13 +5,89 @@ class Purchase_order extends CI_Controller{
                 $this->load->library('posnic');               
     }
     function index(){     
-              //$this->get_items();
-              $this->get_list();
-              //$this->annan();
-             //$this->load->view('annan1');
+           //   $this->get_list();
+        $this->load->view('template/app/header'); 
+        $this->load->view('header/header');         
+        $this->load->view('template/branch',$this->posnic->branchs());
+        $data['active']='purchase_order';
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
     }
-    function add_order(){
-        $this->load->view('add_items');
+    // purchase order data table
+    function data_table(){
+        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active','active' );	
+	$start = "";
+			$end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('first_name'=>  $this->input->get_post('sSearch'));
+				
+			}
+					   
+			$this->load->model('purchase')	   ;
+                        
+			 $rResult1 = $this->purchase->get($end,$start,$like,$_SESSION['Bid']);
+		   
+		$iFilteredTotal =$this->purchase->count($_SESSION['Bid']);
+		
+		$iTotal =$this->purchase->count($_SESSION['Bid']);
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i]== 'po_date' )
+				{
+					/* General output */
+					$row[] = date('d-m-Y',$aRow[$aColumns[$i]]);
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
     }
     function annan(){
                 $this->load->model('core_model');
@@ -166,7 +242,8 @@ class Purchase_order extends CI_Controller{
     }
     
         }
-        function update_order(){if(isset($_POST['save'])){
+        function update_order(){
+            if(isset($_POST['save'])){
         if($_SESSION['Posnic_Edit']==="Edit"){
         
             
@@ -245,5 +322,12 @@ class Purchase_order extends CI_Controller{
         else{
             redirect('purchase_order/get_list');
         }}
+        
+        
+function convert_date($date){
+    $new=array();
+   $new[]= date('n.j.Y', strtotime('+0 year, +0 days',$date));
+   echo json_encode($new);
+}
 }
 ?>

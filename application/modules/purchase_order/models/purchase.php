@@ -1,12 +1,14 @@
 <?php
 
-class Supplier extends CI_Model{
+class Purchase extends CI_Model{
     function __construct() {
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name as c_name')->from('suppliers')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',0)->where('suppliers.active',0)->where('suppliers.delete_status',0);
-                $this->db->join('suppliers_category', 'suppliers.category=suppliers_category.guid','left');
+                $this->db->select('purchase_order.* ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
+              // $this->db->select("date('Y-m-d',purchase_order.po_date) as poo_date");
+                $this->db->from('purchase_order')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0);
+                $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
                 $query=$this->db->get();

@@ -420,4 +420,20 @@ $lang['credit_days']='Credit Days';
   $lang['Set 0 To Unlimit']='Set 0 To Unlimit';
   $lang['Selling Price Must Less Than MRP price']='Selling Price Must Less Than MRP price';
   $lang['Cost Must Less Than Sell price']='Cost Must Less Than Sell price';
+  
+  
+  // purchase order
+  
+  $lang['order_number']='Order Number';
+  $lang['order_date']='Order Date';
+  $lang['number_of_items']='No Of Items';
+  $lang['total_amount']='Total Amount';
+  $lang['expiry_date']='Expiry Date';
+  $lang['freight']='Freight';
+  $lang['round_off_amount']='Round off Amount';
+  
+  
+  // sales types
+  
+  $lang['sales_types']='Sales Types';
 ?>﻿

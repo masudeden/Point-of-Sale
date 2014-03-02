@@ -278,7 +278,7 @@
 	#wrapper_all {min-height:100%;height:auto}
 	#main_content_outer {width:100%;float:left}
 	#main_content {margin:0 0 0 240px;min-height:1px}
-	.main_section {margin-top:16px}
+	.main_section {margin-top:1px}
 	
 	/* sidebar */
 	#sidebar {width:220px;float:left;margin:0 0 0 -100%;position:relative}
