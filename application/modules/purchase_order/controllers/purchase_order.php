@@ -346,7 +346,7 @@ function order_number(){
 function search_items($guid){
        $search= $this->input->post('term');
          if($search!=""){
-           
+            
             $this->load->model('purchase');
             $data= $this->purchase->serach_items($search,$_SESSION['Bid'],$guid);      
             echo json_encode($data);

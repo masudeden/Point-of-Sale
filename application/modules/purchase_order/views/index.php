@@ -564,8 +564,8 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
       '<input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">'+mrp,
       '<input type="hidden" name="items_date[]" value="'+date+'" id="items_date">'+date,
       '<input type="hidden" name="items_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_total">'+parseFloat(quty)*parseFloat(cost),
-      '<a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+$('#selected_item_table #new_item_row_id_'+items_id +' td:nth-child(1)').html()+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
-
+      '<a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item(1); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
+console.log($('#selected_item_table #new_item_row_id_'+items_id +' td:nth-child(1)').html());
 var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
 theNode.setAttribute('id','new_item_row_id_'+items_id)
     $.bootstrapGrowl('<?php echo $this->lang->line('new')." ".$this->lang->line('item') ?> '+name+' <?php echo $this->lang->line('added');?> ', { type: "success" });  
@@ -592,8 +592,9 @@ function edit_order_item(guid){
 
 }
 function delete_order_item(guid){
-      $("#selected_item_table").dataTable().fnDeleteRow(guid);
-        $("#selected_item_table").dataTable().fnDraw();
+     var anSelected =  $("#selected_item_table").dataTable();
+       anSelected.fnDeleteRow(guid);
+
 }
 function clear_inputs(){
   $('#parsley_reg #item_name').val('');
@@ -651,7 +652,7 @@ function clear_inputs(){
                                                                                         'disabled'=>'disabled',
                                                                                         'value'=>set_value('company'));
                                                                          echo form_input($last_name)?>
-                                                    </div><input type="hidden" name='supplier_guid' id='supplier_guid'>
+                                                    </div><input type="text" value="e91054c7db987e18f232ffa506f49394" name='supplier_guid' id='supplier_guid'>
                                                </div>
                                               
                                                <div class="col col-sm-2" >
@@ -948,9 +949,7 @@ function clear_inputs(){
                                     <th><?php echo $this->lang->line('action') ?></th>
                                     </tr>
                                     </thead>
-                                    <tbody id="new_order_items" >
-                                    
-                                    </tbody >
+                                    <tbody id="new_order_items" ></tbody >
                                 </table>
                                 </div>
                                 
