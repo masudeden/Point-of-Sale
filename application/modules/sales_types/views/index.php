@@ -22,82 +22,82 @@
 </style>	
 <script type="text/javascript">
      $(document).ready( function () {
-         $('#add_new_customer_category').click(function() { 
-                <?php if($_SESSION['customer_category_per']['add']==1){ ?>
-                var inputs = $('#add_customer_category').serialize();
+         $('#add_new_brand').click(function() { 
+                <?php if($_SESSION['brands_per']['add']==1){ ?>
+                var inputs = $('#add_brand').serialize();
                       $.ajax ({
-                            url: "<?php echo base_url('index.php/customer_category/add_customer_category')?>",
+                            url: "<?php echo base_url('index.php/brands/add_brands')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                 if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('customer_category').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('brand').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#add_customer_category").trigger('reset');
-                                       posnic_customer_category_lists();
+                                       $("#add_brand").trigger('reset');
+                                       posnic_brands_lists();
                                     }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#customer_category').val()+' <?php echo $this->lang->line('customer_category').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#brands_name').val()+' <?php echo $this->lang->line('brand').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customer_category');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                           
                                     }
                        }
                 });<?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customer_category');?>', { type: "error" });                       
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                       
                     <?php }?>
         });
-         $('#update_customer_category').click(function() { 
-                <?php if($_SESSION['customer_category_per']['edit']==1){ ?>
+         $('#update_brands').click(function() { 
+                <?php if($_SESSION['brands_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
-                            url: "<?php echo base_url('index.php/customer_category/update_customer_category')?>",
+                            url: "<?php echo base_url('index.php/brands/update_brands')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                   if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('customer_category').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('brand').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#parsley_reg").trigger('reset');
-                                       posnic_customer_category_lists();
+                                       posnic_brands_lists();
                                     }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#customer_category').val()+' <?php echo $this->lang->line('customer_category').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#brands_name').val()+' <?php echo $this->lang->line('brand').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customer_category');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('brand');?>', { type: "error" });                           
                                     }
                        }
                  });
                  <?php }else{ ?>
-                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('customer_category');?>', { type: "error" });                        
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('brand');?>', { type: "error" });                        
                     <?php }?>
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['customer_category_per']['add']==1){ ?>
+    <?php if($_SESSION['brands_per']['add']==1){ ?>
       $("#user_list").hide();
-      $('#add_customer_category_form').show('slow');
+      $('#add_brand_form').show('slow');
       $('#delete').attr("disabled", "disabled");
-      $('#posnic_add_customer_category').attr("disabled", "disabled");
+      $('#posnic_add_brands').attr("disabled", "disabled");
       $('#active').attr("disabled", "disabled");
       $('#deactive').attr("disabled", "disabled");
-      $('#customer_category_lists').removeAttr("disabled");
+      $('#brands_lists').removeAttr("disabled");
       <?php }else{ ?>
-                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('customer_category');?>', { type: "error" });                         
+                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                         
                     <?php }?>
 }
-function posnic_customer_category_lists(){
-      $('#edit_customer_category_form').hide('hide');
-      $('#add_customer_category_form').hide('hide');      
+function posnic_brands_lists(){
+      $('#edit_brand_form').hide('hide');
+      $('#add_brand_form').hide('hide');      
       $("#user_list").show('slow');
       $('#delete').removeAttr("disabled");
       $('#active').removeAttr("disabled");
       $('#deactive').removeAttr("disabled");
-      $('#posnic_add_customer_category').removeAttr("disabled");
-      $('#customer_category_lists').attr("disabled",'disabled');
+      $('#posnic_add_brands').removeAttr("disabled");
+      $('#brands_lists').attr("disabled",'disabled');
 }
-function clear_add_customer_category(){
+function clear_add_brands(){
       $("#posnic_user_2").trigger('reset');
 }
 function reload_update_user(){
@@ -109,11 +109,11 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_customer_category" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
+                        <a href="javascript:posnic_add_new()" id="posnic_add_brands" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
                         <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
                         <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
-                        <a href="javascript:posnic_customer_category_lists()" class="btn btn-success" id="customer_category_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('customer_category') ?></a>
+                        <a href="javascript:posnic_brands_lists()" class="btn btn-success" id="brands_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('brands') ?></a>
                 </div>
             </div>
     </div>
@@ -124,22 +124,21 @@ function reload_update_user(){
         <div id="main_content_outer" class="clearfix">
             <div id="main_content">
                         <?php $form =array('name'=>'posnic'); 
-                    echo form_open('customer_category/customer_category_manage',$form) ?>
+                    echo form_open('brands/brands_manage',$form) ?>
                         <div class="row">
                             <div class="col-sm-12" id="user_list"><br>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                            <h4 class="panel-title"><?php echo $this->lang->line('customer_category') ?></h4>                                                                               
+                                            <h4 class="panel-title"><?php echo $this->lang->line('brands') ?></h4>                                                                               
                                     </div>
                                     <table id="dt_table_tools" class="table-striped table-condensed" style="width: 100%"><thead>
                                         <tr>
-                                          <th>Id</th>
+                                         <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
-                                          <th ><?php echo $this->lang->line('customer_category') ?></th>
+                                          <th ><?php echo $this->lang->line('brand')." ".$this->lang->line('name') ?></th>
                                           
                                           <th><?php echo $this->lang->line('status') ?></th>
                                           <th><?php echo $this->lang->line('action') ?></th>
-                                          
                                          </tr>
                                       </thead>
                                       <tbody></tbody>
@@ -151,11 +150,11 @@ function reload_update_user(){
              </div>
         </div>
 </section>    
-<section id="add_customer_category_form" class="container clearfix main_section">
-     <?php   $form =array('id'=>'add_customer_category',
+<section id="add_brand_form" class="container clearfix main_section">
+     <?php   $form =array('id'=>'add_brand',
                           'runat'=>'server',
                           'class'=>'form-horizontal');
-       echo form_open_multipart('customer_category/add_pos_customer_category_details/',$form);?>
+       echo form_open_multipart('brands/add_pos_brands_details/',$form);?>
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                  <div class="row">
@@ -163,7 +162,7 @@ function reload_update_user(){
                      <div class="col-lg-4">
                           <div class="panel panel-default">
                                <div class="panel-heading">
-                                     <h4 class="panel-title"><?php echo $this->lang->line('customer_category') ?></h4>   
+                                     <h4 class="panel-title"><?php echo $this->lang->line('brand') ?></h4>   
                                    
                                </div>
                               <br>
@@ -173,12 +172,12 @@ function reload_update_user(){
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="customer_category" class="req"><?php echo $this->lang->line('customer_category') ?></label>                                                                                                       
-                                                           <?php $customer_category=array('name'=>'customer_category',
+                                                         <label for="brands_name" class="req"><?php echo $this->lang->line('brands_name') ?></label>                                                                                                       
+                                                           <?php $brands_name=array('name'=>'brands_name',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'customer_category',
-                                                                                    'value'=>set_value('customer_category'));
-                                                           echo form_input($customer_category)?> 
+                                                                                    'id'=>'brands_name',
+                                                                                    'value'=>set_value('brands_name'));
+                                                           echo form_input($brands_name)?> 
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -191,19 +190,19 @@ function reload_update_user(){
                     <div class="row">
                                 <div class="col-lg-4"></div>
                                   <div class="col col-lg-4 text-center"><br><br>
-                                      <button id="add_new_customer_category"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
-                                      <a href="javascript:clear_add_customer_category()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
+                                      <button id="add_new_brand"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_brands()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
                                   </div>
                               </div>
                 </div>
           </div>
     <?php echo form_close();?>
 </section>    
-<section id="edit_customer_category_form" class="container clearfix main_section">
+<section id="edit_brand_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',
                           'runat'=>'server',
                           'class'=>'form-horizontal');
-       echo form_open_multipart('customer_category/upadate_pos_customer_category_details/',$form);?>
+       echo form_open_multipart('brands/upadate_pos_brands_details/',$form);?>
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                 <div class="row">
@@ -211,7 +210,7 @@ function reload_update_user(){
                      <div class="col-lg-4">
                           <div class="panel panel-default">
                                <div class="panel-heading">
-                                    <h4 class="panel-title"><?php echo $this->lang->line('customer_category') ?></h4>  
+                                    <h4 class="panel-title"><?php echo $this->lang->line('brand') ?></h4>  
                                      <input type="hidden" name="guid" id="guid" >
                                </div>
                               <br>
@@ -221,12 +220,12 @@ function reload_update_user(){
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="customer_category" class="req"><?php echo $this->lang->line('customer_category') ?></label>                                                                                                       
-                                                           <?php $customer_category=array('name'=>'customer_category',
+                                                         <label for="brands_name" class="req"><?php echo $this->lang->line('brands_name') ?></label>                                                                                                       
+                                                           <?php $brands_name=array('name'=>'brands_name',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'customer_category',
-                                                                                    'value'=>set_value('customer_category'));
-                                                           echo form_input($customer_category)?> 
+                                                                                    'id'=>'brands_name',
+                                                                                    'value'=>set_value('brands_name'));
+                                                           echo form_input($brands_name)?> 
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -239,7 +238,7 @@ function reload_update_user(){
                    <div class="row">
                         <div class="col-lg-4"></div>
                       <div class="col col-lg-4 text-center"><br><br>
-                          <button id="update_customer_category"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
+                          <button id="update_brands"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
                           <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
                       </div>
                   </div>
@@ -264,15 +263,14 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                        
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customer_category');?>', { type: "warning" });
+                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length; i++){
+                      for (i = 0; i < posnic.length-1; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/customer_category/active',
+                                url: '<?php echo base_url() ?>/index.php/brands/active',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -306,7 +304,7 @@ function reload_update_user(){
                       }
                       if (flag<1) {
                         
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customer_category');?>', { type: "warning" });
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
                       }else{
                             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')."".$this->lang->line('Are you Sure To Delete') ?>", function(result) {
              if(result){
@@ -316,7 +314,7 @@ function reload_update_user(){
                         for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/customer_category/delete',
+                                url: '<?php echo base_url() ?>/index.php/brands/delete',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -325,7 +323,7 @@ function reload_update_user(){
                                 success: function(response)
                                 {
                                     if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('deleted');?>', { type: "error" });
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('deleted');?>', { type: "success" });
                                         $("#dt_table_tools").dataTable().fnDraw();
                                     }
                                 }
@@ -352,15 +350,14 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                        
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('customer_category');?>', { type: "warning" });
+                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length; i++){
+                      for (i = 0; i < posnic.length-1; i++){
                           if(posnic[i].checked==true){                             
                                  $.ajax({
-                                    url: '<?php echo base_url() ?>/index.php/customer_category/deactive',
+                                    url: '<?php echo base_url() ?>/index.php/brands/deactive',
                                     type: "POST",
                                     data: {
                                         guid: posnic[i].value

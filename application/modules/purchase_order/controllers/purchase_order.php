@@ -325,9 +325,33 @@ class Purchase_order extends CI_Controller{
         
         
 function convert_date($date){
-    $new=array();
+   $new=array();
    $new[]= date('n.j.Y', strtotime('+0 year, +0 days',$date));
    echo json_encode($new);
+}
+function search_supplier(){
+       $search= $this->input->post('term');
+         if($search!=""){
+            $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);
+       
+            $data= $this->posnic->posnic_or_like('suppliers',$like)    ;
+            echo json_encode($data);
+        }
+        
+}
+function order_number(){
+       $data[]= $this->posnic->posnic_master_max('purchase_order')    ;
+       echo json_encode($data);
+}
+function search_items($guid){
+       $search= $this->input->post('term');
+         if($search!=""){
+           
+            $this->load->model('purchase');
+            $data= $this->purchase->serach_items($search,$_SESSION['Bid'],$guid);      
+            echo json_encode($data);
+        }
+        
 }
 }
 ?>

@@ -404,13 +404,13 @@ $lang['credit_days']='Credit Days';
  // suppliers
  $lang['add_new_conatct']='Add New Conatct';
          
- // supplier categorya
+ // supplier category
          
   $lang['suppliers_category']='Suppliers Category'   ; 
   //suppliers vs items
   $lang['add_items']='Add Items';
   $lang['details']='Details';
-  $lang['sl_no']='SL Nothis';
+  $lang['sl_no']='SL No';
   $lang['image']='Image';
   $lang['add_image']='Add Image';
   $lang['saved_image']='Saved Image';
@@ -431,9 +431,17 @@ $lang['credit_days']='Credit Days';
   $lang['expiry_date']='Expiry Date';
   $lang['freight']='Freight';
   $lang['round_off_amount']='Round off Amount';
+  $lang['free']='Free';
+  $lang['delivery_date']='Delivery Date';
+  $lang['not_able_to_order']='Not Able Pick This Much Of Order From';
+  $lang['for']='For';
+  $lang['new']='New';
+  $lang['order_items']='Order Items';
+  $lang['order_items_details']='Order Items Details';
   
   
   // sales types
   
   $lang['sales_types']='Sales Types';
+  $lang['total']='Total';
 ?>﻿

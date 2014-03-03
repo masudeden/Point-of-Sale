@@ -386,6 +386,12 @@ class Posnic{
          $data =$CI->posnic_model->get_aa_data_as_result_admin($table,$_SESSION['Bid']);
          return $data;
     }
+    function posnic_master_max($key){
+         $CI=  get_instance();
+         $CI->load->model('modules_model')  ;        
+         $data =$CI->posnic_model->posnic_master_max($key,$_SESSION['Bid']);
+         return $data;
+    }
 }
        
 ?>

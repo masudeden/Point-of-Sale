@@ -331,6 +331,11 @@ class posnic_model extends CI_model{
        return $guid;
         
     }
+    function posnic_master_max($key,$bid){
+        $this->db->select()->from('master_data')->where('branch_id',$bid)->where('key',$key);
+        $sql =$this->db->get();
+        return $sql->result();
+    }
     
 }
 ?>

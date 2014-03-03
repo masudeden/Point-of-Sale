@@ -1,7 +1,15 @@
 
 <script type="text/javascript" charset="utf-8">
           $(document).ready( function () {
-        
+        	 if($('#selected_item_table').length) {
+                $('#selected_item_table').dataTable({
+                    "sPaginationType": "bootstrap_full",
+                    "fnRowCallback" : function(nRow, aData, iDisplayIndex){
+                $("td:first", nRow).html(iDisplayIndex +1);
+               return nRow;
+            },
+                });
+            }
                     $('#add_new_order').hide();
                     $('#edit_brand_form').hide();
                   $('#add_customer_form').validate();
@@ -93,63 +101,11 @@
                supplier=guid;
            }
            
-           $('#selected_item_table').dataTable({
-                                      "bProcessing": true,
-                                      "bDestroy": true ,
-				      "bServerSide": true,
-                                      "sAjaxSource": "<?php echo base_url() ?>index.php/purchase_order/purchase_order_table/"+supplier,
-                                       aoColumns: [  
-                                    
-         { "bVisible": false} , {	"sName": "ID",
-                   						"bSearchable": false,
-                   						"bSortable": false,
-                                                                
-                   						"fnRender": function (oObj) {
-                   							return "<input type=checkbox value='"+oObj.aData[0]+"'  ><input type='hidden' id='item_name_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'><input type='hidden' id='item_id_"+oObj.aData[10]+"' value='"+oObj.aData[1]+"'>";
-								},
-								
-								
-							},
-        
-         null, null, null, null,  null,  null, 
-
- 							{	"sName": "ID",
-                   						"bSearchable": false,
-                   						"bSortable": false,
-                                                                
-                   						"fnRender": function (oObj) {
-                   							if(oObj.aData[8]==0){
-                                                                            return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
-                                                                        }else{
-                                                                            return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
-                                                                        }
-								},
-								
-								
-							},
- 							{	"sName": "ID1",
-                   						"bSearchable": false,
-                   						"bSortable": false,
-                                                                
-                   						"fnRender": function (oObj) {
-                                                                if(oObj.aData[9]==0){
-                   							return '<a href=javascript:posnic_items_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
-								}else{
-                                                                        return '<a href=javascript:posnic_item_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
-                                                                }
-                                                                },
-								
-								
-							},
-
- 							
-
- 						]
-		}
-						
-						
-                                    
-                                    );
+         		 if($('#selected_item_table').length) {
+                $('#selected_item_table').dataTable({
+                    "sPaginationType": "bootstrap_full"
+                });
+            }	
                                    
 			}
  function user_function(guid){
