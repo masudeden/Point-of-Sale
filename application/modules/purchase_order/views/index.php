@@ -66,7 +66,8 @@
                 $('#parsley_reg #price').val($('#parsley_reg #items').select2('data').price);
                 $('#parsley_reg #mrp').val($('#parsley_reg #items').select2('data').mrp);
                 $('#parsley_reg #supplier_quty').val($('#parsley_reg #items').select2('data').quty);
-                  $('#parsley_reg #quantity').focus();
+                
+                    $("#parsley_reg #quantity").attr("autofocus","autofocus")
           }
           });
           function format_item(sup) {
@@ -82,11 +83,12 @@
                 escapeMarkup: function(m) { return m; },
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('items') ?>",
                 ajax: {
-                     url: '<?php echo base_url() ?>index.php/purchase_order/search_items/'+$('#parsley_reg #supplier_guid').val(),
+                     url: '<?php echo base_url() ?>index.php/purchase_order/search_items/',
                      data: function(term, page) {
                             return {types: ["exercise"],
-                                limit: -1,
-                                term: term
+                                limit: 2,
+                                term: term,
+                               
                             };
                      },
                     type:'POST',
@@ -94,7 +96,8 @@
                     quietMillis: 100,
                     data: function (term) {
                         return {
-                            term: term
+                            term: term,
+                                     suppler:$('#parsley_reg #supplier_guid').val()
                         };
                     },
                     results: function (data) {
@@ -125,6 +128,7 @@
     return  "<p >"+sup.text+"    <br>"+sup.company+"   "+sup.address1+"</p> ";
             }
         $('#parsley_reg #first_name').change(function() {
+            refresh_items_table();
                    var guid = $('#parsley_reg #first_name').select2('data').id;
 
                  $('#parsley_reg #first_name').val($('#parsley_reg #first_name').select2('data').text);
@@ -132,7 +136,7 @@
                  $('#parsley_reg #address').val($('#parsley_reg #first_name').select2('data').address1);
                  $('#parsley_reg #supplier_guid').val(guid);
               
-                
+             
           });
           $('#parsley_reg #first_name').select2({
               dropdownCssClass : 'supplier_select',
@@ -180,10 +184,7 @@
   
         
      });
-     function refresh_item_table(){
-     
-      
-     }
+    
 function posnic_add_new(){
 $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
     <?php if($_SESSION['purchase_order_per']['add']==1){ ?>
@@ -555,7 +556,7 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
 
    var addId = $('#selected_item_table').dataTable().fnAddData( [
       '1',
-      '<input type="hidden" name="index[]" id="index"><input type="hidden" name="items_id[]" id="items_id">'+name,
+      '<input type="hidden" name="index" id="index"><input type="hidden" name="items_id[]" id="items_id">'+name,
       '<input type="hidden" name="items_sku[]" id="items_sku">'+name,
       '<input type="hidden" name="item_quty[]" value="'+quty+'" id="items_quty">'+quty,
       '<input type="hidden" name="items_free[]" value="'+free+'" id="items_free">'+free,
@@ -653,7 +654,7 @@ function clear_inputs(){
                                                                                         'disabled'=>'disabled',
                                                                                         'value'=>set_value('company'));
                                                                          echo form_input($last_name)?>
-                                                    </div><input type="text" value="e91054c7db987e18f232ffa506f49394" name='supplier_guid' id='supplier_guid'>
+                                                    </div><input type="hidden" value="" name='supplier_guid' id='supplier_guid'>
                                                </div>
                                               
                                                <div class="col col-sm-2" >

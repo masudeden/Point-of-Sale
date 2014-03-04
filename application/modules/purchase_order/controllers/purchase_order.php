@@ -343,8 +343,9 @@ function order_number(){
        $data[]= $this->posnic->posnic_master_max('purchase_order')    ;
        echo json_encode($data);
 }
-function search_items($guid){
+function search_items(){
        $search= $this->input->post('term');
+    $guid= $this->input->post('suppler');
          if($search!=""){
             
             $this->load->model('purchase');
