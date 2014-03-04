@@ -1,12 +1,14 @@
 
 <script type="text/javascript" charset="utf-8">
           $(document).ready( function () {
+              
         	 if($('#selected_item_table').length) {
                 $('#selected_item_table').dataTable({
                      "bProcessing": true,
                     "sPaginationType": "bootstrap_full",
                     "fnRowCallback" : function(nRow, aData, iDisplayIndex){
                 $("td:first", nRow).html(iDisplayIndex +1);
+                $("#index", nRow).val(iDisplayIndex +1);
                return nRow;
             },
                 });

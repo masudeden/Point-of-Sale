@@ -554,8 +554,8 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
 
 
    var addId = $('#selected_item_table').dataTable().fnAddData( [
-      '<input type="hidden" name="items_id[]" id="items_id">1',
-      '<input type="hidden" name="items_id[]" id="items_id">'+name,
+      '1',
+      '<input type="hidden" name="index[]" id="index"><input type="hidden" name="items_id[]" id="items_id">'+name,
       '<input type="hidden" name="items_sku[]" id="items_sku">'+name,
       '<input type="hidden" name="item_quty[]" value="'+quty+'" id="items_quty">'+quty,
       '<input type="hidden" name="items_free[]" value="'+free+'" id="items_free">'+free,
@@ -564,13 +564,13 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
       '<input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">'+mrp,
       '<input type="hidden" name="items_date[]" value="'+date+'" id="items_date">'+date,
       '<input type="hidden" name="items_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_total">'+parseFloat(quty)*parseFloat(cost),
-      '<a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item(1); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
+      '<a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
 console.log($('#selected_item_table #new_item_row_id_'+items_id +' td:nth-child(1)').html());
 var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
 theNode.setAttribute('id','new_item_row_id_'+items_id)
     $.bootstrapGrowl('<?php echo $this->lang->line('new')." ".$this->lang->line('item') ?> '+name+' <?php echo $this->lang->line('added');?> ', { type: "success" });  
     
-   
+    
     clear_inputs();
       }  
         }else{
@@ -592,8 +592,9 @@ function edit_order_item(guid){
 
 }
 function delete_order_item(guid){
+    var index=$('#selected_item_table #new_item_row_id_'+guid+' #index').val();
      var anSelected =  $("#selected_item_table").dataTable();
-       anSelected.fnDeleteRow(guid);
+       anSelected.fnDeleteRow(index);
 
 }
 function clear_inputs(){
@@ -949,7 +950,9 @@ function clear_inputs(){
                                     <th><?php echo $this->lang->line('action') ?></th>
                                     </tr>
                                     </thead>
-                                    <tbody id="new_order_items" ></tbody >
+                                    <tbody id="new_order_items" >
+                                       
+                                    </tbody >
                                 </table>
                                 </div>
                                 
