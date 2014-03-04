@@ -443,6 +443,7 @@ $lang['credit_days']='Credit Days';
   $lang['grand_total']='Grand Total';
   $lang['order_items']='Order Items';
   $lang['order_items_details']='Order Items Details';
+  $lang['Please_Select_A_Supplier']='Please Select A Supplier';
   
   
   // sales types
