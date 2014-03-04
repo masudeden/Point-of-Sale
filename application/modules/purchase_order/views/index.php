@@ -55,8 +55,9 @@
          
         
           $('#parsley_reg #items').change(function() {
-              if(document.getElementById('item_id_'+$('#parsley_reg #items').select2('data').id) && $('#parsley_reg #diabled_item').val()!=$('#parsley_reg #items').select2('data').id){
+              if(document.getElementById('new_item_row_id_'+$('#parsley_reg #items').select2('data').id) && $('#parsley_reg #diabled_item').val()!=$('#parsley_reg #items').select2('data').id){
                      $.bootstrapGrowl('<?php echo $this->lang->line('this item already added');?> '+$('#parsley_reg #first_name').val(), { type: "warning" });  
+                       $('#parsley_reg #items').select2('open');
               }else{
                    var guid = $('#parsley_reg #items').select2('data').id;
                 $('#parsley_reg #item_id').val(guid);
@@ -66,8 +67,8 @@
                 $('#parsley_reg #price').val($('#parsley_reg #items').select2('data').price);
                 $('#parsley_reg #mrp').val($('#parsley_reg #items').select2('data').mrp);
                 $('#parsley_reg #supplier_quty').val($('#parsley_reg #items').select2('data').quty);
-                
-                    $("#parsley_reg #quantity").attr("autofocus","autofocus")
+                 $('#parsley_reg #quantity').focus();
+                 
           }
           });
           function format_item(sup) {
@@ -337,12 +338,12 @@ function add_new_quty(e){
         }
        else{
            //document.getElementById("item_cost").focus();
-             $("#parsley_reg #items").focus();
+           $('#parsley_reg #items').select2('open');
         }
         }
         }else{
  $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
-         $("#parsley_reg #items").focus();
+         $('#parsley_reg #items').select2('open');
 
         }
 
@@ -393,7 +394,7 @@ function add_new_cost(e){
     }else{
          $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
     
-       $('#parsley_reg #items').focus();
+       $('#parsley_reg #items').select2('open');
     }
     }
 function add_new_price(e){          
@@ -414,7 +415,7 @@ function add_new_price(e){
         }
         }
     }else{
-       $('#parsley_reg #items').focus();
+       $('#parsley_reg #items').select2('open');
         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
     }
     }
@@ -428,13 +429,14 @@ function add_new_price(e){
         }
        else{ 
             if($('#parsley_reg #item_id').val()!=""){
-            
-                            
-                              $('#parsley_reg #delivery_date').focus();
+           
+     
+        document.getElementById('parsley_reg delivery_date').focus();
+                  
                             
        }else{
                                         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
-           $('#parsley_reg #items').focus();
+          $('#parsley_reg #items').select2('open');
         }
        }
          if (unicode!=27){
@@ -446,7 +448,7 @@ function add_new_price(e){
         }
         }else{
         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" });          
-        $('#parsley_reg #items').focus();
+       $('#parsley_reg #items').select2('open');
     }
     }
  function add_new_date(e){
@@ -462,11 +464,11 @@ function add_new_price(e){
             
                             
                              // $('#parsley_reg #delivery_date').focus();
-                             coppy_items();
+                             copy_items();
                             
        }else{
                                         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
-           $('#parsley_reg #items').focus();
+          $('#parsley_reg #items').select2('open');
         }
        }
          if (unicode!=27){
@@ -478,7 +480,7 @@ function add_new_price(e){
         }
         }else{
         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" });          
-        $('#parsley_reg #items').focus();
+        $('#parsley_reg #items').select2('open');
     }
     }
     function net_amount(){
@@ -506,7 +508,7 @@ function copy_items(){
 if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val())){
 
     var  name=$('#parsley_reg #item_name').val();
-  var  sku=$('#parsley_reg #item_name').val();
+  var  sku=$('#parsley_reg #sku').val();
   var  quty=$('#parsley_reg #quantity').val();
   var  free=$('#parsley_reg #free').val();
   var  cost=$('#parsley_reg #cost').val();
@@ -516,7 +518,7 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
   var  items_id=$('#parsley_reg #item_id').val();
   var  supplier=$('#parsley_reg #supplier_guid').val();
   ///$('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()).remove();
-  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(1)').html(1);
+
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(2)').html(name);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(3)').html(sku);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(4)').html(quty);
@@ -556,8 +558,8 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
 
    var addId = $('#selected_item_table').dataTable().fnAddData( [
       '1',
-      '<input type="hidden" name="index" id="index"><input type="hidden" name="items_id[]" id="items_id">'+name,
-      '<input type="hidden" name="items_sku[]" id="items_sku">'+name,
+      '<input type="hidden" name="index" id="index"><input type="hidden" name="item_name" id="row_item_name" value="'+name+'"><input type="hidden" name="items_id[]" id="items_id">'+name,
+      '<input type="hidden" name="items_sku[]" value="'+sku+'" id="items_sku">'+sku,
       '<input type="hidden" name="item_quty[]" value="'+quty+'" id="items_quty">'+quty,
       '<input type="hidden" name="items_free[]" value="'+free+'" id="items_free">'+free,
       '<input type="hidden" name="items_cost[]" value="'+cost+'" id="items_cost">'+cost,
@@ -566,13 +568,14 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
       '<input type="hidden" name="items_date[]" value="'+date+'" id="items_date">'+date,
       '<input type="hidden" name="items_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_total">'+parseFloat(quty)*parseFloat(cost),
       '<a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
-console.log($('#selected_item_table #new_item_row_id_'+items_id +' td:nth-child(1)').html());
+
 var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
 theNode.setAttribute('id','new_item_row_id_'+items_id)
     $.bootstrapGrowl('<?php echo $this->lang->line('new')." ".$this->lang->line('item') ?> '+name+' <?php echo $this->lang->line('added');?> ', { type: "success" });  
     
     
     clear_inputs();
+    
       }  
         }else{
        
@@ -586,11 +589,24 @@ theNode.setAttribute('id','new_item_row_id_'+items_id)
         }
         }else{
          $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" });          
-           $('#parsley_reg #items').focus();
+          $('#parsley_reg #items').select2('open');
         }
+       
 }
 function edit_order_item(guid){
+   
 
+    $('#parsley_reg #item_name').val($('#selected_item_table #new_item_row_id_'+guid+' #row_item_name').val());
+    $('#parsley_reg #sku').val($('#selected_item_table #new_item_row_id_'+guid+' #items_sku').val());
+    $('#parsley_reg #quantity').val($('#selected_item_table #new_item_row_id_'+guid+' #items_quty').val());
+    $('#parsley_reg #free').val($('#selected_item_table #new_item_row_id_'+guid+' #items_free').val());
+    $('#parsley_reg #cost').val($('#selected_item_table #new_item_row_id_'+guid+' #items_cost').val());
+    $('#parsley_reg #price').val($('#selected_item_table #new_item_row_id_'+guid+' #items_price').val());
+    $('#parsley_reg #mrp').val($('#selected_item_table #new_item_row_id_'+guid+' #items_mrp').val());
+    $('#parsley_reg #delivery_date').val($('#selected_item_table #new_item_row_id_'+guid+' #items_date').val());
+    $('#parsley_reg #item_id').val(guid);
+    $('#parsley_reg #total').val(parseFloat($('#selected_item_table #new_item_row_id_'+guid+' #items_cost').val())*parseFloat($('#selected_item_table #new_item_row_id_'+guid+' #items_quty').val()));
+     $("#parsley_reg #items").select2('data', {id:guid,text:$('#selected_item_table #new_item_row_id_'+guid+' #row_item_name').val() });
 }
 function delete_order_item(guid){
     var index=$('#selected_item_table #new_item_row_id_'+guid+' #index').val();
@@ -603,12 +619,13 @@ function clear_inputs(){
   $('#parsley_reg #sku').val('');
   $('#parsley_reg #quantity').val('');
   $('#parsley_reg #free').val('');
-  $('#parsley_reg #toatal').val('');
+  $('#parsley_reg #total').val('');
   $('#parsley_reg #cost').val('');
   $('#parsley_reg #price').val('');
   $('#parsley_reg #mrp').val('');
   $('#parsley_reg #item_id').val('')
     $("#parsley_reg #items").select2('data', {id:'',text: 'Search Item'});
+     $('#parsley_reg #items').select2('open');
 }
 </script>
 
@@ -619,17 +636,16 @@ function clear_inputs(){
                           'name'=>'items_form',
                           'class'=>'form-horizontal');
        echo form_open_multipart('purchase_order/upadate_pos_purchase_order_details/',$form);?>
-        <div id="main_content_outer" class="clearfix">
-            <div id="main_content">
+        
+    <div id="main_content" style="padding: 0 14px !important;">
                      
-                <div class="row">
-                    <div  class="col-lg-12" style="padding:0px 16px;">
+                
                          <div class="row">
                           <div class="panel panel-default">
                               <div class="panel-heading" >
                                      <h4 class="panel-title"><?php echo $this->lang->line('purchase_order')." ".$this->lang->line('details') ?></h4>                                                                               
                                </div>
-                              <div class="row">
+                            
                                  
                                        <div id="" class="col col-sm-12" style="padding-right: 25px;padding-left: 25px">
                                            <div class="row">
@@ -758,21 +774,20 @@ function clear_inputs(){
                                            </div>
                                      <br>
                                         </div>                              
-                              </div>
+                             
                           </div>
                           </div>
                          
                          
-          </div>
-          </div>
+         
                     <div class="row small_inputs" >
                     <div class="col col-lg-12">
-                        <div class="row">
+                      
                          
                              
                               <div class="row" style="padding-top: 1px;">
                                  
-                                  <div class="col col-sm-2" style="padding-right: 0px">
+                                  <div class="col col-sm-2" style="padding-right: 0px;padding-left: 0;">
                                        
                                              <label for="items" class="req"><?php echo $this->lang->line('items') ?></label>	
                                                      <div class="form_sep" id='display_none_div'>
@@ -788,10 +803,11 @@ function clear_inputs(){
                                                  
                                                  <input type="hidden" name="item_id" id="item_id">
                                            <input type="hidden" name="item_name" id="item_name">
+                                           <input type="hidden" name="sku" id="sku">
                                            <input type="hidden" name="seleted_row_id" id="seleted_row_id">
                                            <input type="hidden" name="supplier_quty" id="supplier_quty">
                                                   </div>
-                                                <div class="col col-sm-10" style="padding-right: 25px;">
+                                                <div class="col col-sm-10" style="padding-right:0px;">
                                                     <table style=" margin-left: -13px !important; max-width: 102%"><tr>
                                                        
                                              <td>
@@ -873,7 +889,7 @@ function clear_inputs(){
                                                         </div>
                                                     </div>
                                                </td>
-                                            <td>
+                                             <td>
                                                 <div class="col col-lg-12" style="padding:0px">
                                                    <div class="form_sep">
                                                             
@@ -884,7 +900,7 @@ function clear_inputs(){
                                                                                             'class'=>'required form-control',
                                                                                             'id'=>'delivery_date',
                                                                                           
-                                                                                            'onKeyPress'=>"add_new_date(event); ",
+                                                                                       'onKeyPress'=>"add_new_date(event); ",
                                                                                             'value'=>set_value('delivery_date'));
                                                                              echo form_input($delivery_date)?>
                                                                 <span class="input-group-addon"><i class="icon-calendar"></i></span>
@@ -907,6 +923,7 @@ function clear_inputs(){
                                                         </div>
                                                     </div>
                                                </td>
+                                              
                                                <td>  
                                                     <label for="mrp" ><?php echo $this->lang->line('save') ?></label>
                                                     <a class="btn btn-success" href="javascript:copy_items()" style="padding: 2px 12px"><i class="icon icon-save"></i></a>
@@ -926,7 +943,7 @@ function clear_inputs(){
                                         </div>                              
                               </div>
                           
-                          </div>
+                          
                         <div class="row" ><input type="hidden" value="0" id='sl_number'>
              
                             <div class="image_items">
@@ -959,7 +976,101 @@ function clear_inputs(){
                                 
                             </div>
                         </div>
-                    </div>
+                        <div class="row" >
+                            <div class="col col-lg-12">
+                            <div class="row">
+                         
+                             
+                                 
+                                       <div id="" class="col col-lg-6" style="padding-right: 0px;padding-left: 0px">
+                                           <div class="panel panel-default">
+                              <div class="panel-heading" >
+                                     <h4 class="panel-title"><?php echo $this->lang->line('note')." ".$this->lang->line('and')." ".$this->lang->line('remark') ?></h4>                                                                               
+                              </div> <div class="row" style="padding-left:25px;padding-right:25px;padding-bottom:  25px">
+                                               <div class="col col-sm-6" >
+                                                   <div class="form_sep ">
+                                                        <label for="note" ><?php echo $this->lang->line('note') ?></label>													
+                                                                  <?php $note=array('name'=>'note',
+                                                                                    'class'=>' form-control',
+                                                                                    'id'=>'note',
+                                                                                   'rows'=>3,
+                                                                                    'value'=>set_value('note'));
+                                                                     echo form_textarea($note)?>
+                                                        
+                                                  </div>
+                                               </div>
+                                               <div class="col col-sm-6" >
+                                                   <div class="form_sep ">
+                                                         <label for="remark" ><?php echo $this->lang->line('remark') ?></label>													
+                                                                  <?php $remark=array('name'=>'remark',
+                                                                                    'class'=>' form-control',
+                                                                                    'id'=>'remark',
+                                                                                   'rows'=>3,
+                                                                                    'value'=>set_value('remark'));
+                                                                     echo form_textarea($remark)?>
+                                                        
+                                                  </div>
+                                               </div>
+                                               
+                                               
+                                               
+                                              
+                                           </div>
+                                           </div>
+                                     <br>
+                                        </div> 
+                                  <div class="col col-sm-6">
+                                      <div class="row">
+                                          <div class="col col-sm-2" >
+                                                   <div class="form_sep supplier_select_2">
+                                                       <label for="remark" >&nbsp;</label>	
+                                                       <input type="submit" class="btn btn-success" name="save_order" id="save_new_order" value="<?php echo $this->lang->line('save') ?>">
+                                                  </div>
+                                               </div>
+                                          <div class="col col-sm-2" >
+                                                   <div class="form_sep supplier_select_2">
+                                                       <label for="remark" >&nbsp;</label>	
+                                                       <input type="submit" class="btn btn-warning" name="save_order" id="save_new_order" value="<?php echo $this->lang->line('clear') ?>">
+                                                  </div>
+                                               </div>
+                                               
+                                               <div class="col col-sm-6" >
+                                                     <div class="panel panel-default">
+                                                    <div class="panel-heading" >
+                                     <h4 class="panel-title"><?php echo $this->lang->line('amount') ?></h4>                                                                               
+                              </div>
+                                                         <div class="form_sep " style="padding: 0 25px">
+                                                        <label for="total_amount" ><?php echo $this->lang->line('total_amount') ?></label>													
+                                                                  <?php $total_amount=array('name'=>'demo_total_amount',
+                                                                                    'class'=>'required  form-control',
+                                                                                    'id'=>'demo_total_amount',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('total_amount'));
+                                                                     echo form_input($total_amount)?>
+                                                        <input type="hidden" name="total_amount" id="total_amount">
+                                                        
+                                                  </div>
+                                                         <div class="form_sep " style="padding: 0 25px">
+                                                        <label for="grand_total" ><?php echo $this->lang->line('grand_total') ?></label>													
+                                                                  <?php $grand_total=array('name'=>'demo_grand_total',
+                                                                                    'class'=>'required  form-control',
+                                                                                    'id'=>'demo_grand_total',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('grand_total'));
+                                                                     echo form_input($grand_total)?>
+                                                        <input type="hidden" name="grand_total" id="grand_total">
+                                                        
+                                                  </div><br>
+                                                  </div>
+                                               </div>
+                                      </div>
+                                  </div>
+                             
+                          
+                          </div>
+                            </div>
+                        </div>
+                    
           </div>  </div>  </div>
     <?php echo form_close();?>
 </section>    
