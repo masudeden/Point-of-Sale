@@ -628,7 +628,7 @@ function reload_update_user(){
 <script type="text/javascript">
    function new_conatct_for_edit(){
        
-       console.log($('#parsley_reg #cotact_number').val());
+     
        if($('#parsley_reg').valid()){
            
         var cno=$('#parsley_reg #cotact_number').val();

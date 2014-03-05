@@ -50,7 +50,7 @@ class Purchase extends CI_Model{
         $this->db->delete('supplier_contacts');
     }
     function count($branch){
-        $this->db->select()->from('suppliers')->where('branch_id',$branch)->where('active_status',0)->where('active',0)->where('delete_status',0);
+        $this->db->select()->from('purchase_order')->where('branch_id',$branch)->where('active_status',0)->where('delete_status',0);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }

@@ -146,55 +146,56 @@ class Purchase_order extends CI_Controller{
  
     
   
-    function save_items(){
-           if($this->input->post('save')){       
-        if($_SESSION['Posnic_Add']==="Add"){
+function save(){      
+       if($_SESSION['purchase_order_per']['add']==1){
         
         
-            $this->form_validation->set_rules('supplier_id',$this->lang->line('supplier_id'), 'required');
-            $this->form_validation->set_rules('expdate',$this->lang->line('expdate'), 'required');
-            $this->form_validation->set_rules('pono', $this->lang->line('pono'), 'required');
-            $this->form_validation->set_rules('podate', $this->lang->line('podate'), 'required');                      
-            $this->form_validation->set_rules('hidden_total_price', $this->lang->line('hidden_total_price'), 'required');                      
+            $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
+            $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
+            $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
+            $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
+            $this->form_validation->set_rules('grand_total', $this->lang->line('grand_total'), 'required');                      
+            $this->form_validation->set_rules('total_amount', $this->lang->line('total_amount'), 'required');                      
            
             if ( $this->form_validation->run() !== false ) {    
-      $supplier=  $this->input->post('supplier_id');
-      $expdate=strtotime($this->input->post('expdate'));
-      $pono= $this->input->post('pono');
-      $podate= strtotime($this->input->post('podate'));
+      $supplier=  $this->input->post('supplier_guid');
+      $expdate=strtotime($this->input->post('expiry_date'));
+      $pono= $this->input->post('order_number');
+      $podate= strtotime($this->input->post('order_date'));
       $discount=  $this->input->post('discount');
+      $discount_amount=  $this->input->post('discount_amount');
       $freight=  $this->input->post('freight');
-       $round_amt=  $this->input->post('round_amt');
-      $total_items=$this->input->post('roll_no')-1;
+       $round_amt=  $this->input->post('round_off_amount');
+      $total_items=$this->input->post('index');
       $remark=  $this->input->post('remark');
       $note=  $this->input->post('note');
-    $item_total=  $this->input->post('hidden_total_price');
-       $dis_amt= (trim($item_total)*$discount)/100;
-      $grand_total=  (trim($item_total)-$dis_amt)+trim($freight)+trim($round_amt);
-      $item=  $this->input->post('items');
-      $quty=  $this->input->post('quty');
-      $cost=  $this->input->post('cost');
-      $free=  $this->input->post('free');
-      $sell=  $this->input->post('sell');
-      $mrp=  $this->input->post('mrp');
-      $del_date= $this->input->post('del_date');
-      $net=  $this->input->post('net');
-             $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$dis_amt,'freight'=>$freight,'round_amt'=>$freight,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$item_total);
-           $guid= $this->posnic->posnic_add($value);
-            $module='purchase_order_items';
+    $total_amount=  $this->input->post('total_amount');
+    $grand_total=  $this->input->post('grand_total');
+  
+     
+             $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
+           $guid=   $this->posnic->posnic_add_record($value,'purchase_order');
+          
+             $item=  $this->input->post('items_id');
+      $quty=  $this->input->post('items_quty');
+      $cost=  $this->input->post('items_cost');
+      $free=  $this->input->post('items_free');
+      $sell=  $this->input->post('items_price');
+      $mrp=  $this->input->post('items_mrp');
+      $del_date= $this->input->post('items_date');
+      $net=  $this->input->post('items_total');
       for($i=0;$i<count($item);$i++){
+          
           $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
-      $this->posnic->posnic_module_add($module,$item_value);
+         $this->posnic->posnic_add_record($item_value,'purchase_order_items');
       }
- redirect('purchase_order/get_list');
+       echo 'TRUE';
     
      }else{
-          $this->load->view('add_items');
+        echo 'FALSE';
      }
         }
-           }else{
-               redirect('purchase_order');
-           }
+           
     }
     function get_list(){
         

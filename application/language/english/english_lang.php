@@ -436,6 +436,7 @@ $lang['credit_days']='Credit Days';
   $lang['not_able_to_order']='Not Able Pick This Much Of Order From';
   $lang['for']='For';
   $lang['and']='And';
+  $lang['please_enter']='Please Enter';
   $lang['amount']='Amount';
   $lang['new']='New';
   $lang['note']='Note';
@@ -444,6 +445,8 @@ $lang['credit_days']='Credit Days';
   $lang['order_items']='Order Items';
   $lang['order_items_details']='Order Items Details';
   $lang['Please_Select_A_Supplier']='Please Select A Supplier';
+  $lang['please_select']='Please Select';
+  $lang['all_require_elements']='All Require Elements';
   
   
   // sales types
