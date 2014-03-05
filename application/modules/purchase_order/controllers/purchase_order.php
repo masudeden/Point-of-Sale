@@ -147,54 +147,57 @@ class Purchase_order extends CI_Controller{
     
   
 function save(){      
-       if($_SESSION['purchase_order_per']['add']==1){
-        
-        
-            $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
-            $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
-            $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
-            $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
-            $this->form_validation->set_rules('grand_total', $this->lang->line('grand_total'), 'required');                      
-            $this->form_validation->set_rules('total_amount', $this->lang->line('total_amount'), 'required');                      
+     if($_SESSION['purchase_order_per']['add']==1){
+        $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
+        $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
+        $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
+        $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
+        $this->form_validation->set_rules('grand_total', $this->lang->line('grand_total'), 'required');                      
+        $this->form_validation->set_rules('total_amount', $this->lang->line('total_amount'), 'required');                      
            
             if ( $this->form_validation->run() !== false ) {    
-      $supplier=  $this->input->post('supplier_guid');
-      $expdate=strtotime($this->input->post('expiry_date'));
-      $pono= $this->input->post('order_number');
-      $podate= strtotime($this->input->post('order_date'));
-      $discount=  $this->input->post('discount');
-      $discount_amount=  $this->input->post('discount_amount');
-      $freight=  $this->input->post('freight');
-       $round_amt=  $this->input->post('round_off_amount');
-      $total_items=$this->input->post('index');
-      $remark=  $this->input->post('remark');
-      $note=  $this->input->post('note');
-    $total_amount=  $this->input->post('total_amount');
-    $grand_total=  $this->input->post('grand_total');
+                $supplier=  $this->input->post('supplier_guid');
+                $expdate=strtotime($this->input->post('expiry_date'));
+                $pono= $this->input->post('order_number');
+                $podate= strtotime($this->input->post('order_date'));
+                $discount=  $this->input->post('discount');
+                $discount_amount=  $this->input->post('discount_amount');
+                $freight=  $this->input->post('freight');
+                $round_amt=  $this->input->post('round_off_amount');
+                $total_items=$this->input->post('index');
+                $remark=  $this->input->post('remark');
+                $note=  $this->input->post('note');
+                $total_amount=  $this->input->post('total_amount');
+                $grand_total=  $this->input->post('grand_total');
   
      
-             $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
-           $guid=   $this->posnic->posnic_add_record($value,'purchase_order');
+              $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
+              $guid=   $this->posnic->posnic_add_record($value,'purchase_order');
           
-             $item=  $this->input->post('items_id');
-      $quty=  $this->input->post('items_quty');
-      $cost=  $this->input->post('items_cost');
-      $free=  $this->input->post('items_free');
-      $sell=  $this->input->post('items_price');
-      $mrp=  $this->input->post('items_mrp');
-      $del_date= $this->input->post('items_date');
-      $net=  $this->input->post('items_total');
-      for($i=0;$i<count($item);$i++){
+                $item=  $this->input->post('items_id');
+                $quty=  $this->input->post('items_quty');
+                $cost=  $this->input->post('items_cost');
+                $free=  $this->input->post('items_free');
+                $sell=  $this->input->post('items_price');
+                $mrp=  $this->input->post('items_mrp');
+                $del_date= $this->input->post('items_date');
+                $net=  $this->input->post('items_total');
+                for($i=0;$i<count($item);$i++){
           
-          $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
-         $this->posnic->posnic_add_record($item_value,'purchase_order_items');
-      }
-       echo 'TRUE';
+                        $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
+                        $this->posnic->posnic_add_record($item_value,'purchase_order_items');
+                
+                        
+                }
+                $this->posnic->posnic_master_increment_max('purchase_order')  ;
+                 echo 'TRUE';
     
-     }else{
-        echo 'FALSE';
-     }
-        }
+                }else{
+                   echo 'FALSE';
+                }
+        }else{
+                   echo 'Noop';
+                }
            
     }
     function get_list(){
@@ -340,6 +343,38 @@ function search_supplier(){
         }
         
 }
+function delete(){
+   if($_SESSION['brands_per']['delete']==1){
+            if($this->input->post('guid')){
+             $guid=  $this->input->post('guid');
+              $this->posnic->posnic_delete($guid,'purchase_order');
+              $this->load->model('purchase');
+            
+             echo 'TRUE';
+            }
+           }else{
+            echo 'FALSE';
+        }
+    
+}
+ function active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'purchase_order'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'purchase_order'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
 function order_number(){
        $data[]= $this->posnic->posnic_master_max('purchase_order')    ;
        echo json_encode($data);

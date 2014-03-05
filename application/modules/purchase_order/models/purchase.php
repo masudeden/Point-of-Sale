@@ -93,22 +93,8 @@ class Purchase extends CI_Model{
           $sql=  $this->db->get();
           return $sql->result();
     }
-    function serach_items1($search,$bid,$guid){
-             $this->db->select('suppliers_x_items.* ,items.name ,items.guid ,items.image  as image, items.code ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',0)->where('items.delete_status',0);
-             //   $this->db->join('items', 'suppliers_x_items.item_id=items.guid','left');
-                $this->db->join('items_category', 'items.category_id=items_category.guid','left');
-                $this->db->join('brands', 'items.brand_id=brands.guid','left');
-                $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
-               // $this->db->join('supplier', 'stock.supplier=supplier.id','left');
-               $this->db->where('suppliers_x_items.supplier_id',$guid);
-               //$this->db->order_by($order);
-               // $this->db->like('stage',$stage);
-                $like=array('items.name'=>$search,'items.code'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
-                $this->db->or_like($like);     
-                $query=$this->db->get();
-                return $query->result_array(); 
-    }
-     function serach_items($search,$bid,$guid){
+    
+    function serach_items($search,$bid,$guid){
          $this->db->select('brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.code,items.image,suppliers_x_items.*')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',0)->where('items.delete_status',0);
          $this->db->join('items', "items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."' ",'left');
          $this->db->join('items_category', 'items.category_id=items_category.guid','left');

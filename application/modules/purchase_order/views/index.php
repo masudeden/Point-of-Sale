@@ -68,14 +68,15 @@
                                 if(response['responseText']=='TRUE'){
                                       $.bootstrapGrowl('<?php echo $this->lang->line('supplier').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#add_supplier_details").trigger('reset');
-                                       posnic_suppliers_lists();
+                                       $("#parsley_reg").trigger('reset');
+                                       posnic_purchase_order_lists();
+                                       refresh_items_table();
                                     }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#suppliers_name').val()+' <?php echo $this->lang->line('supplier').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#parsley_reg #order_number').val()+' <?php echo $this->lang->line('supplier').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('supplier');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('purchase_order');?>', { type: "error" });                           
                                     }
                        }
                 });
@@ -1544,9 +1545,9 @@ function new_discount_amount(){
 
                       }    
                       }
-                    function posnic_item_delete(){
+                    function posnic_delete(){
                      var flag=0;
-                     var field=document.forms.items_form;
+                     var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
                           if(field[i].checked==true){
                               flag=flag+1;
@@ -1556,17 +1557,17 @@ function new_discount_amount(){
                       }
                       if (flag<1) {
                         
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('items');?>', { type: "warning" });
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('paruchase_order');?>', { type: "warning" });
                       }else{
                             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')."".$this->lang->line('Are you Sure To Delete') ?>", function(result) {
              if(result){
               
              
-                        var posnic=document.forms.items_form;
+                        var posnic=document.forms.posnic;
                         for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/purchase_order/item_delete',
+                                url: '<?php echo base_url() ?>/index.php/purchase_order/delete',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -1575,8 +1576,8 @@ function new_discount_amount(){
                                 success: function(response)
                                 {
                                     if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('items')." ".$this->lang->line('deleted');?>', { type: "error" });
-                                        $("#selected_item_table").dataTable().fnDraw();
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')." ".$this->lang->line('deleted');?>', { type: "error" });
+                                        $("#dt_table_tools").dataTable().fnDraw();
                                     }
                                 }
                             });

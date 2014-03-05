@@ -45,7 +45,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							return "<input type=checkbox value='"+oObj.aData[0]+"' ><input type='hidden' id='supplier_name_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
+                   							return "<input type=checkbox value='"+oObj.aData[0]+"' ><input type='hidden' id='order__number_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
 								},
 								
 								
@@ -70,7 +70,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[8]==0){
+                   							if(oObj.aData[9]==0){
                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
@@ -84,10 +84,10 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[8]==0){
-                                                                         	return '<a href=javascript:posnic_items_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                if(oObj.aData[9]==0){
+                                                                         	return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
 								}else{
-                                                                        return '<a href=javascript:posnic_item_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -120,10 +120,10 @@
 			}
  function user_function(guid){
     <?php if($_SESSION['purchase_order_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#item_name_'+guid).val(), function(result) {
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
-                url: '<?php echo base_url() ?>/index.php/purchase_order/item_delete',
+                url: '<?php echo base_url() ?>/index.php/purchase_order/delete',
                 type: "POST",
                 data: {
                     guid: guid
@@ -132,15 +132,15 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl($('#item_name_'+guid).val()+ ' <?php echo $this->lang->line('items') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
-                        $("#selected_item_table").dataTable().fnDraw();
+                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                        $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });
         
 
                         }
     }); <?php }else{?>
-           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('brand');?>', { type: "error" });                       
+           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
    <?php }
 ?>
                         }
@@ -155,12 +155,14 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl($('#supplier_name_'+guid).val()+ ' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
-                        $("#selected_item_table").dataTable().fnDraw();
+                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
+                        $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }
             });
             }
+          
+        
             function posnic_active(guid){
                            $.ajax({
                 url: '<?php echo base_url() ?>index.php/purchase_order/active',
@@ -172,85 +174,13 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl($('#supplier_name_'+guid).val()+ ' <?php echo $this->lang->line('isactivated');?>', { type: "success" });
-                        $("#selected_item_table").dataTable().fnDraw();
+                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('isactivated');?>', { type: "success" });
+                         $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }
             });
             }
-            function posnic_items_deactive(guid){
-                $.ajax({
-                url: '<?php echo base_url() ?>index.php/purchase_order/item_deactive',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                success: function(response)
-                {
-                    if(response){
-                         $.bootstrapGrowl($('#item_name_'+guid).val()+ ' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
-                           $("#selected_item_table").dataTable().fnDraw();
-                    }
-                }
-            });
-            }
-            function posnic_item_active(guid){
-                           $.ajax({
-                url: '<?php echo base_url() ?>index.php/purchase_order/item_active',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                success: function(response)
-                {
-                    if(response){
-                         $.bootstrapGrowl($('#item_name_'+guid).val()+ ' <?php echo $this->lang->line('isactivated');?>', { type: "success" });
-                         $("#selected_item_table").dataTable().fnDraw();
-                    }
-                }
-            });
-            }
-           function supplier_function(guid){
-        
-           $('#loading').modal('show');
-           $('#edit_brand_form').show();
-                      
-                       $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['purchase_order_per']['add']==1){ ?>
-                            $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/purchase_order/edit_purchase_order/"+guid,                      
-                             data: "", 
-                             dataType: 'json',               
-                             success: function(data)        
-                             {    
-                                 $("#user_list").hide();
-                                 $('#edit_supplier_form').show('slow');
-                                 $('#delete').attr("disabled", "disabled");
-                                 $('#posnic_add_purchase_order').attr("disabled", "disabled");
-                                 $('#active').attr("disabled", "disabled");
-                                 $('#deactive').attr("disabled", "disabled");
-                                 $('#purchase_order_lists').removeAttr("disabled");
-                                
-                                 $('#parsley_reg #first_name').val(data[0]['first_name']);
-                                 $('#parsley_reg #company').val(data[0]['company_name']);
-                                 $('#parsley_reg #email').val(data[0]['email']);
-                                 $('#parsley_reg #phone').val(data[0]['phone']);
-                                $('#parsley_reg #category').val(data[0]['c_name']);
-                                $('#edit_brand_form #supplier_guid').val(guid);
-                                $('#loading').modal('hide');
-                             } 
-                           });
-                           $('#edit_brand_form #supplier_guid').val(guid);
-                         posnic_item_table(guid);
-                        
-                              // $("#selected_item_table").dataTable().fnDraw();
-                         
-                        <?php }else{?>
-                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
-                        <?php }?>
-                       }
+          
            function edit_function(guid){
         
            $('#loading').modal('show');
