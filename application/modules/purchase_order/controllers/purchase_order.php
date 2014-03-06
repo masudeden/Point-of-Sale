@@ -46,7 +46,9 @@ class Purchase_order extends CI_Controller{
 		
 			if ( $_GET['sSearch'] != "" )
 		{
-		$like =array('first_name'=>  $this->input->get_post('sSearch'));
+		$like =array(
+                    'po_no'=>  $this->input->get_post('sSearch'),
+                        );
 				
 			}
 					   

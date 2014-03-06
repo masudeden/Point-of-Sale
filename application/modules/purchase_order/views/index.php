@@ -181,6 +181,7 @@
                     },
                     results: function (data) {
                       var results = [];
+                      
                       $.each(data, function(index, item){
                         results.push({
                           id: item.i_guid,
@@ -195,8 +196,14 @@
                           price: item.price,
                           mrp: item.mrp,
                         });
-                      });
+                      });   if($('#supplier_guid').val()==""){
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
+     $('#parsley_reg #items').select2('close');   
+    $('#parsley_reg #first_name').select2('open');
+        
+                      }
                       return {
+                       
                           results: results
                       };
                     }
@@ -339,6 +346,7 @@ function reload_update_user(){
                         <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
                         <a href="javascript:posnic_purchase_order_lists()" class="btn btn-success" id="purchase_order_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('purchase_order') ?></a>
+                        
                 </div>
             </div>
     </div>
