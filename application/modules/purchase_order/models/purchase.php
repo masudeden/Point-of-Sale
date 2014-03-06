@@ -95,7 +95,7 @@ class Purchase extends CI_Model{
     }
     
     function serach_items($search,$bid,$guid){
-         $this->db->select('brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.code,items.image,suppliers_x_items.*')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',0)->where('items.delete_status',0);
+         $this->db->select('brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.guid as i_guid,items.code,items.image,suppliers_x_items.*')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',0)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',0)->where('items.delete_status',0);
          $this->db->join('items', "items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."' ",'left');
          $this->db->join('items_category', 'items.category_id=items_category.guid','left');
          $this->db->join('brands', 'items.brand_id=brands.guid','left');
@@ -106,6 +106,32 @@ class Purchase extends CI_Model{
          $sql=  $this->db->get();
          return $sql->result();
      
+     }
+     function get_purchase_order($guid){
+         $this->db->select('suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,purchase_order.*,purchase_order_items.guid as o_i_guid ,purchase_order_items.order_id ,purchase_order_items.item ,purchase_order_items.quty ,purchase_order_items.free ,purchase_order_items.cost ,purchase_order_items.sell ,purchase_order_items.mrp ,purchase_order_items.amount ,purchase_order_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('purchase_order')->where('purchase_order.guid',$guid);
+         $this->db->join('purchase_order_items', 'purchase_order_items.order_id = purchase_order.guid AND purchase_order_items.delete_status=0','left');
+         $this->db->join('items', "items.guid=purchase_order_items.item AND purchase_order_items.order_id='".$guid."'",'left');
+         $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id','left');
+         $this->db->join('suppliers_x_items', 'suppliers_x_items.supplier_id=purchase_order.supplier_id AND suppliers_x_items.item_id=purchase_order_items.item','left');
+         $sql=  $this->db->get();
+         $data=array();
+         foreach($sql->result_array() as $row){
+             
+          $row['po_date']=date('d-m-Y',$row['po_date']);
+       
+          $row['exp_date']=date('d-m-Y',$row['exp_date']);
+         
+          $row['date']=date('d-m-Y',$row['date']);
+         
+          $data[]=$row;
+         }
+         return $data;
+     }
+     function delete_order_item($guid){
+      
+  
+     $this->db->where('guid',$guid);
+     $this->db->update('purchase_order_items',array('delete_status'=>1));
      }
     
 }

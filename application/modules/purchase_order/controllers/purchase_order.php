@@ -13,6 +13,9 @@ class Purchase_order extends CI_Controller{
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());
         $this->load->view('template/app/footer');
+        
+        //$this->load->model('purchase');
+       // $this->purchase->get_purchase_order('be0e9618297967699deb19956c7567cc');
     }
     // purchase order data table
     function data_table(){
@@ -200,132 +203,91 @@ function save(){
                 }
            
     }
-    function get_list(){
-        
-	        $config["base_url"] = base_url()."index.php/purchase_order/get_list";
-	        $config["total_rows"] =$this->posnic->posnic_count(); 
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->posnic->posnic_count();                 
-	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
-	        $data["links"] = $this->pagination->create_links(); 
-                $where=array();
-                $data['sup']=  $this->posnic->posnic_module_where('suppliers',$where);
-                $this->load->view('order_list',$data);
-    }
-    function purchase_order_magement(){
-        if(isset($_POST['add'])){
-            if($_SESSION['Posnic_Add']==="Add"){
-            $this->add_order();
-            }else{
-                  echo "You  Have No permmission To Edit PO";
-                    $this->get_list();
-            }
-        }
-        if(isset($_POST['cancel'])){
-            redirect('home');
-        }
-        
-    }
-    function edit_purchase_order($guid){
-        if($_SESSION['Posnic_Edit']==="Edit"){
-                $where=array('guid'=>$guid);
-                $data['order']=  $this->posnic->posnic_module_where('purchase_order',$where);
-                $where=array('order_id'=>$guid);
-                $data['order_items']=  $this->posnic->posnic_module_all_where('purchase_order_items',$where);
-                $where=array();
-                $data['item']= $this->posnic->posnic_module_all_where('items',$where);
-                $where=array();
-                $data['sup']=  $this->posnic->posnic_module_all_where('suppliers',$where);
-                $this->load->view('update_order',$data);
-    }else{
-        echo "You  Have No permmission To Edit PO";
-        $this->get_list();
-    }
-    
-        }
-        function update_order(){
-            if(isset($_POST['save'])){
-        if($_SESSION['Posnic_Edit']==="Edit"){
-        
-            
-            $this->form_validation->set_rules('supplier_id',$this->lang->line('supplier_id'), 'required');
-            $this->form_validation->set_rules('expdate',$this->lang->line('expdate'), 'required');
-            $this->form_validation->set_rules('pono', $this->lang->line('pono'), 'required');
-            $this->form_validation->set_rules('podate', $this->lang->line('podate'), 'required');                      
-           $guid=  $this->input->post('order_id');
+    function update(){
+            if(isset($_POST['purchase_order_guid'])){
+      if($_SESSION['purchase_order_per']['edit']==1){
+        $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
+        $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
+        $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
+        $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
+        $this->form_validation->set_rules('grand_total', $this->lang->line('grand_total'), 'required');                      
+        $this->form_validation->set_rules('total_amount', $this->lang->line('total_amount'), 'required');                      
+           
             if ( $this->form_validation->run() !== false ) {    
-      $supplier=  $this->input->post('supplier_id');
-      $expdate=strtotime($this->input->post('expdate'));
-      $pono= $this->input->post('pono');
-      $podate= strtotime($this->input->post('podate'));
-      $discount=  $this->input->post('discount');
-      $freight=  $this->input->post('freight');
-       $round_amt=  $this->input->post('round_amt');
-      $total_items=$this->input->post('roll_no')-1;
-      $remark=  $this->input->post('remark');
-      $note=  $this->input->post('note');
-      $item_total= $this->input->post('hidden_total_pric');
-      $dis_amt= (trim($item_total)*$discount)/100;
-      $grand_total=  (trim($item_total)-$dis_amt)+trim($freight)+trim($round_amt);
-      $item=  $this->input->post('items');
-      $quty=  $this->input->post('quty');
-      $free=  $this->input->post('free');
-      $cost=  $this->input->post('cost');
-      $sell=  $this->input->post('sell');
-      $mrp=  $this->input->post('mrp');
-      $del_date=$this->input->post('del_dates');
-      $net=  $this->input->post('net');
-             $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$dis_amt,'freight'=>$freight,'round_amt'=>$freight,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$item_total);
-                $where=array('guid'=>$guid);
-                $this->posnic->posnic_update($value,$where);
-             
-                 if($_SESSION['Posnic_Delete']==="Delete"){
-                $where=array('order_id'=>$guid);
-               $data=$this->posnic->posnic_array_other_module_where('purchase_order_items',$where);
-            
-            if(count($data)>0)     { $i=0;
-                 foreach ($data as $i_value){
-             
-                     if(!$this->input->post($i_value['item'])){
-                        $where=array('guid'=>$i_value['guid']);
-                        $this->posnic->posnic_module_delete($where,'purchase_order_items');
-                       
-                     }
-                 }
-                    }
-            }
-            $module='purchase_order_items';
-             for($i=0;$i<count($item);$i++){         
-      
-               $value=array('order_id'=>$guid,'item'=>$item[$i]);
-                        if($this->posnic->check_module_unique($value,$module)){
-                            $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=>strtotime($del_date[$i]));
-                            $this->posnic->posnic_module_add($module,$item_value);
-            }else{
-                $where=array('order_id'=>$guid,'item'=>$item[$i]);
-                            $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=>strtotime($del_date[$i]));
-                            $this->posnic->posnic_module_update($module,$item_value,$where);
-            }
+                $supplier=  $this->input->post('supplier_guid');
+                $expdate=strtotime($this->input->post('expiry_date'));
+                $pono= $this->input->post('order_number');
+                $podate= strtotime($this->input->post('order_date'));
+                $discount=  $this->input->post('discount');
+                $discount_amount=  $this->input->post('discount_amount');
+                $freight=  $this->input->post('freight');
+                $round_amt=  $this->input->post('round_off_amount');
+                $total_items=$this->input->post('index');
+                $remark=  $this->input->post('remark');
+                $note=  $this->input->post('note');
+                $total_amount=  $this->input->post('total_amount');
+                $grand_total=  $this->input->post('grand_total');
+  
+     
+              $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
+              $guid=  $this->input->post('purchase_order_guid');
+              $update_where=array('guid'=>$guid);
+              $this->posnic->posnic_update_record($value,$update_where,'purchase_order');
+          
+                $item=  $this->input->post('items_id');
+                $quty=  $this->input->post('items_quty');
+                $cost=  $this->input->post('items_cost');
+                $free=  $this->input->post('items_free');
+                $sell=  $this->input->post('items_price');
+                $mrp=  $this->input->post('items_mrp');
+                $del_date= $this->input->post('items_date');
+                $net=  $this->input->post('items_total');
+                $net=  $this->input->post('new_items');
+                for($i=0;$i<count($item);$i++){
+          
+                         $where=array('order_id'=>$guid,'item'=>$item[$i]);
+                        $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
+                       $this->posnic->posnic_update_record($item_value,$where,'purchase_order_items');
                 
-             }  
-            $this->get_list();
-            }else{
-                $this->edit_purchase_order($guid);
-            }
-            
-            
-            
-         }else{
-        echo "You  Have No permmission To Edit PO";
-        $this->get_list();
-    }
+                        
+                }
+                $delete=  $this->input->post('r_items');
+                    for($j=0;$j<count($delete);$j++){
+                        $this->load->model('purchase');
+                        
+                         $this->purchase->delete_order_item($delete[$j]);
+                    }
+                    
+                $new_item=  $this->input->post('new_item_id');
+                $new_quty=  $this->input->post('new_item_quty');
+                $new_cost=  $this->input->post('new_item_cost');
+                $new_free=  $this->input->post('new_item_free');
+                $new_sell=  $this->input->post('new_item_price');
+                $new_mrp=  $this->input->post('new_item_mrp');
+                $new_del_date= $this->input->post('new_item_date');
+                $new_net=  $this->input->post('new_item_total');
+                for($i=0;$i<count($new_quty);$i++){
+          if($new_quty[$i]!=""){
+                        $new_item_value=array('order_id'=>$guid,'item'=>$new_item[$i],'quty'=>$new_quty[$i],'free'=>$new_free[$i],'cost'=>$new_cost[$i],'sell'=>$new_sell[$i],'mrp'=>$new_mrp[$i],'amount'=>$new_net[$i],'date'=> strtotime($new_del_date[$i]));
+                        $this->posnic->posnic_add_record($new_item_value,'purchase_order_items');
+          }
+                        
+                }
+                    
+                    
+                    
+                 echo 'TRUE';
+    
+                }else{
+                   echo 'FALSE';
+                }
+        }else{
+                   echo 'Noop';
+                }
         }
-        else{
-            redirect('purchase_order/get_list');
-        }}
+        
+        
+         }
         
         
 function convert_date($date){
@@ -357,7 +319,14 @@ function delete(){
         }
     
 }
- function active(){
+function  get_purchase_order($guid){
+    if($_SESSION['purchase_order_per']['edit']==1){
+    $this->load->model('purchase');
+    $data=  $this->purchase->get_purchase_order($guid);
+    echo json_encode($data);
+    }
+}
+function active(){
             $id=  $this->input->post('guid');
             $report= $this->posnic->posnic_module_active($id,'purchase_order'); 
             if (!$report['error']) {
@@ -366,7 +335,7 @@ function delete(){
                 echo 'FALSE';
               }
     }
-    function deactive(){
+function deactive(){
             $id=  $this->input->post('guid');
             $report= $this->posnic->posnic_module_deactive($id,'purchase_order'); 
             if (!$report['error']) {

@@ -4,10 +4,7 @@
               
         	 refresh_items_table();
                  $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('purchase_order') ?>');
-                    $('#add_new_order').hide();
-                    $('#edit_brand_form').hide();
-                  $('#add_customer_form').validate();
-                  
+                     $('#add_new_order').hide();
                               posnic_table();
                                 
                                 parsley_reg.onsubmit=function()
@@ -32,6 +29,7 @@
             },
                 });
             }
+              $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('purchase_order') ?>');
                 }        
            function posnic_table(){
            $('#dt_table_tools').dataTable({
@@ -182,7 +180,15 @@
             }
           
            function edit_function(guid){
-        
+           $('#deleted').remove();
+           $('#parent_items').append('<div id="deleted"></div>');
+           $('#newly_added').remove();
+           $('#parent_items').append('<div id="newly_added"></div>');
+         refresh_items_table();
+         $('#update_button').show();
+         $('#save_button').hide();
+         $('#update_clear').show();
+         $('#save_clear').hide();
            $('#loading').modal('show');
         
                         <?php if($_SESSION['purchase_order_per']['edit']==1){ ?>
@@ -191,20 +197,84 @@
                              data: "", 
                              dataType: 'json',               
                              success: function(data)        
-                             {    
-                               
-                                
-                                 $('#parsley_reg #seleted_row_id').val(data[0]['guid']);
-                                 $('#parsley_reg #item_id').val(data[1]['guid']);
-                                 $('#parsley_reg #quantity').val(data[0]['quty']);
-                                 $('#parsley_reg #cost').val(data[0]['cost']);
-                                 $('#parsley_reg #price').val(data[0]['price']);
-                                 $('#parsley_reg #sku').val(data[1]['code']);
-                                 $('#parsley_reg #diabled_item').val(data[1]['guid']);
-                                 $('#parsley_reg #mrp').val(data[0]['mrp']);
-                                   $("#parsley_reg #items").select2('data', {id:data[0]['item_id'],text: data[1]['name']});
-                                   $('#parsley_reg #diabled_item').val(data[1]['guid']);
+                             { 
+                              $("#user_list").hide();
+                              $('#add_new_order').show('slow');
+                              $('#delete').attr("disabled", "disabled");
+                              $('#posnic_add_purchase_order').attr("disabled", "disabled");
+                              $('#active').attr("disabled", "disabled");
+                              $('#deactive').attr("disabled", "disabled");
+                              $('#purchase_order_lists').removeAttr("disabled");
                                 $('#loading').modal('hide');
+                                $("#parsley_reg").trigger('reset');
+                           
+                                $("#parsley_reg #first_name").select2('data', {id:'1',text: data[0]['s_name']});
+                                $("#parsley_reg #company").val(data[0]['c_name']);
+                                $("#parsley_reg #address").val(data[0]['address']);
+                                $("#parsley_reg #purchase_order_guid").val(guid);
+                                $("#parsley_reg #demo_order_number").val(data[0]['po_no']);
+                                $("#parsley_reg #order_number").val(data[0]['po_no']);
+                                $("#parsley_reg #order_date").val(data[0]['po_date']);
+                                $("#parsley_reg #expiry_date").val(data[0]['exp_date']);
+                                
+                                $("#parsley_reg #id_discount").val(data[0]['discount']);
+                                $("#parsley_reg #note").val(data[0]['note']);
+                                $("#parsley_reg #remark").val(data[0]['remark']);
+                                $("#parsley_reg #discount_amount").val(data[0]['discount_amt']);
+                                $("#parsley_reg #freight").val(data[0]['freight']);
+                                $("#parsley_reg #round_off_amount").val(data[0]['round_amt']);
+                                $("#parsley_reg #demo_grand_total").val(data[0]['total_amt']);
+                                $("#parsley_reg #grand_total").val(data[0]['total_amt']);
+                                
+                                $("#parsley_reg #demo_total_amount").val(data[0]['total_item_amt']);
+                                $("#parsley_reg #total_amount").val(data[0]['total_item_amt']);
+                                $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
+                                
+                                for(i=0;i<data.length;i++){
+                                  
+                                    var  name=data[i]['items_name'];
+                                    var  sku=data[i]['i_code'];
+                                    var  quty=data[i]['quty'];
+                                    var  limit=data[i]['item_limit'];
+                                  
+                                    var  free=data[i]['free'];
+                                   
+                                    var  cost=data[i]['cost'];
+                                    var  price=data[i]['sell'];
+                                    var  mrp=data[i]['mrp'];
+                                    var  o_i_guid=data[i]['o_i_guid'];
+                                    var  date=data[i]['date'];
+                                    var  items_id=data[i]['item'];
+                                    var addId = $('#selected_item_table').dataTable().fnAddData( [
+                                    null,
+                                    name,
+                                    sku,
+                                    quty,
+                                    free,
+                                    cost,
+                                    price,
+                                    mrp,
+                                    date,
+                                    parseFloat(quty)*parseFloat(cost),
+                                    '<input type="hidden" name="index" id="index">\n\
+                              <input type="hidden" name="item_name" id="row_item_name" value="'+name+'">\n\
+                              <input type="hidden" name="item_limit" id="item_limit" value="'+limit+'">\n\
+                              <input type="hidden" name="items_id[]" id="items_id" value="'+items_id+'">\n\
+                              <input type="hidden" name="items_sku[]" value="'+sku+'" id="items_sku">\n\
+                              <input type="hidden" name="items_order_guid[]" value="'+o_i_guid+'" id="items_order_guid">\n\
+                              <input type="hidden" name="items_quty[]" value="'+quty+'" id="items_quty"> \n\
+                              <input type="hidden" name="items_free[]" value="'+free+'" id="items_free">\n\
+                              <input type="hidden" name="items_cost[]" value="'+cost+'" id="items_cost"> \n\
+                              <input type="hidden" name="items_price[]" value="'+price+'" id="items_price">\n\
+                              <input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">\n\
+                              <input type="hidden" name="items_date[]" value="'+date+'" id="items_date">\n\
+                              <input type="hidden" name="items_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_total">\n\
+                                      <a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
+
+                              var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
+                              theNode.setAttribute('id','new_item_row_id_'+items_id)
+                                }
+                                
                              } 
                            });
                       

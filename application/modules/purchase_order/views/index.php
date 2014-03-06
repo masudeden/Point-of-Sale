@@ -66,7 +66,44 @@
                             type:'POST',
                             complete: function(response) {
                                 if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('supplier').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
+                                       $("#dt_table_tools").dataTable().fnDraw();
+                                       $("#parsley_reg").trigger('reset');
+                                       posnic_purchase_order_lists();
+                                       refresh_items_table();
+                                    }else  if(response['responseText']=='ALREADY'){
+                                           $.bootstrapGrowl($('#parsley_reg #order_number').val()+' <?php echo $this->lang->line('supplier').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                    }else  if(response['responseText']=='FALSE'){
+                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                                    }else{
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('purchase_order');?>', { type: "error" });                           
+                                    }
+                       }
+                });
+                    }else{
+                  
+                   $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
+                     $('#parsley_reg #items').select2('open');
+                    }
+                    }else{
+                   $.bootstrapGrowl('<?php echo $this->lang->line('please_enter')." ".$this->lang->line('all_require_elements');?>', { type: "error" });                        
+                    }<?php }else{ ?>
+                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('supplier');?>', { type: "error" });                       
+                    <?php }?>
+    }
+    function update_order(){
+         <?php if($_SESSION['purchase_order_per']['edit']==1){ ?>
+                   if($('#parsley_reg').valid()){
+                       var oTable = $('#selected_item_table').dataTable();
+                       if(oTable.fnGetData().length>0){
+                var inputs = $('#parsley_reg').serialize();
+                      $.ajax ({
+                            url: "<?php echo base_url('index.php/purchase_order/update')?>",
+                            data: inputs,
+                            type:'POST',
+                            complete: function(response) {
+                                if(response['responseText']=='TRUE'){
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#parsley_reg").trigger('reset');
                                        posnic_purchase_order_lists();
@@ -146,7 +183,7 @@
                       var results = [];
                       $.each(data, function(index, item){
                         results.push({
-                          id: item.guid,
+                          id: item.i_guid,
                           text: item.name,
                           value: item.code,
                           image: item.image,
@@ -229,7 +266,18 @@
     
 function posnic_add_new(){
 refresh_items_table();
+$('#update_button').hide();
+$('#save_button').show();
+$('#update_clear').hide();
+$('#save_clear').show();
+$('#total_amount').val('');
+$('#items_id').val('');
+$('#supplier_guid').val('');
 $("#parsley_reg").trigger('reset');
+$('#deleted').remove();
+$('#parent_items').append('<div id="deleted"></div>');
+$('#newly_added').remove();
+$('#parent_items').append('<div id="newly_added"></div>');
 $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
     <?php if($_SESSION['purchase_order_per']['add']==1){ ?>
              $.ajax({                                      
@@ -269,7 +317,13 @@ function posnic_purchase_order_lists(){
       $('#purchase_order_lists').attr("disabled",'disabled');
 }
 function clear_add_purchase_order(){
-      $("#posnic_user_2").trigger('reset');
+      $("#parsley_reg").trigger('reset');
+      refresh_items_table();
+}
+function clear_update_purchase_order(){
+      $("#parsley_reg").trigger('reset');
+      refresh_items_table();
+      edit_function($('#purchase_order_guid').val());
 }
 function reload_update_user(){
     var id=$('#guid').val();
@@ -722,7 +776,7 @@ function add_new_price(e){
                 $('#parsley_reg #quantity').val(0)
             }
         }else{
-            if(parseFloat($('#parsley_reg #quantity').val())>parseFloat($('#parsley_reg #supplier_quty').val()) && $('#parsley_reg #quantity').val()!=0){
+            if(parseFloat($('#parsley_reg #quantity').val())>parseFloat($('#parsley_reg #supplier_quty').val()) && $('#parsley_reg #supplier_quty').val()!=0){
               $('#parsley_reg #quantity').val(0);
                $('#parsley_reg #total').val($('#parsley_reg #cost').val()*$('#parsley_reg #quantity').val());
                 $.bootstrapGrowl('<?php echo $this->lang->line('not_able_to_order');?> '+$('#parsley_reg #first_name').val()+' <?php echo $this->lang->line('for');?> '+$('#parsley_reg #item_name').val(), { type: "warning" }); 
@@ -764,6 +818,19 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(8)').html(mrp);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(9)').html(date);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(10)').html(parseFloat(quty)*parseFloat(cost));
+ 
+  $('#newly_added #new_item_id_'+items_id).val(items_id);
+  $('#newly_added #new_item_quty_'+items_id).val(quty);
+  $('#newly_added #new_item_free_'+items_id).val(free);
+  $('#newly_added #new_item_cost_'+items_id).val(cost);
+  $('#newly_added #new_item_price_'+items_id).val(price);
+  $('#newly_added #new_item_mrp_'+items_id).val(mrp);
+  $('#newly_added #new_item_date_'+items_id).val(date);
+  $('#newly_added #new_item_total_'+items_id).val(parseFloat(quty)*parseFloat(cost));
+ 
+  
+  
+  
   
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' #items_id').val(items_id);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' #items_name').val(name);
@@ -820,20 +887,43 @@ $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
   var  date=$('#parsley_reg #delivery_date').val();
   var  items_id=$('#parsley_reg #item_id').val();
   var  supplier=$('#parsley_reg #supplier_guid').val();
-
-
+  var  limit=$('#parsley_reg #supplier_quty').val();
+   $('#newly_added').append('<div id="newly_added_items_list_'+items_id+'"> \n\
+\n\
+<input type="hidden" name="new_item_id[]" value="'+items_id+'"  id="new_item_id_'+items_id+'">\n\
+<input type="hidden" name="new_item_quty[]" value="'+quty+'" id="new_item_quty_'+items_id+'"> \n\
+<input type="hidden" name="new_item_free[]" value="'+free+'" id="new_item_free_'+items_id+'">\n\
+<input type="hidden" name="new_item_cost[]" value="'+cost+'" id="new_item_cost_'+items_id+'"> \n\
+<input type="hidden" name="new_item_price[]" value="'+price+'" id="new_item_price_'+items_id+'">\n\
+<input type="hidden" name="new_item_mrp[]" value="'+mrp+'" id="new_item_mrp_'+items_id+'">\n\
+<input type="hidden" name="new_item_date[]" value="'+date+'" id="new_item_date_'+items_id+'">\n\
+<input type="hidden" name="new_item_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="new_item_total_'+items_id+'">\n\
+</div>');
    var addId = $('#selected_item_table').dataTable().fnAddData( [
-      '1',
-      '<input type="hidden" name="index" id="index"><input type="hidden" name="item_name" id="row_item_name" value="'+name+'"><input type="hidden" name="items_id[]" id="items_id" value="'+items_id+'">'+name,
-      '<input type="hidden" name="items_sku[]" value="'+sku+'" id="items_sku">'+sku,
-      '<input type="hidden" name="items_quty[]" value="'+quty+'" id="items_quty">'+quty,
-      '<input type="hidden" name="items_free[]" value="'+free+'" id="items_free">'+free,
-      '<input type="hidden" name="items_cost[]" value="'+cost+'" id="items_cost">'+cost,
-      '<input type="hidden" name="items_price[]" value="'+price+'" id="items_price">'+price,
-      '<input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">'+mrp,
-      '<input type="hidden" name="items_date[]" value="'+date+'" id="items_date">'+date,
-      '<input type="hidden" name="items_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_total">'+parseFloat(quty)*parseFloat(cost),
-      '<a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
+      null,
+      name,
+      sku,
+      quty,
+      free,
+      cost,
+      price,
+      mrp,
+      date,
+      parseFloat(quty)*parseFloat(cost),
+      '<input type="hidden" name="index" id="index">\n\
+<input type="hidden" name="item_name" id="row_item_name" value="'+name+'">\n\
+<input type="hidden" name="items_id[]" id="items_id" value="'+items_id+'">\n\
+<input type="hidden" name="items_sku[]" value="'+sku+'" id="items_sku">\n\
+      <input type="hidden" name="item_limit" id="item_limit" value="'+limit+'">\n\
+<input type="hidden" name="items_quty[]" value="'+quty+'" id="items_quty"> \n\
+<input type="hidden" name="items_free[]" value="'+free+'" id="items_free">\n\
+<input type="hidden" name="items_cost[]" value="'+cost+'" id="items_cost"> \n\
+<input type="hidden" name="items_price[]" value="'+price+'" id="items_price">\n\
+   <input type="hidden" name="items_order_guid[]" value="" id="items_order_guid">\n\
+<input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">\n\
+<input type="hidden" name="items_date[]" value="'+date+'" id="items_date">\n\
+<input type="hidden" name="items_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_total">\n\
+        <a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
 
 var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
 theNode.setAttribute('id','new_item_row_id_'+items_id)
@@ -878,7 +968,11 @@ $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
         }
         
         }else{
-          if($('#parsley_reg #quantity').val()==""){
+         if($('#parsley_reg #item_id').val()==""){
+            $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" });          
+           $('#parsley_reg #items').select2('open');
+        }
+          else if($('#parsley_reg #quantity').val()==""){
           $.bootstrapGrowl('<?php echo $this->lang->line('please_enter')." ".$this->lang->line('quantity');?>', { type: "warning" });          
            $('#parsley_reg #quantity').focus();
         }else if($('#parsley_reg #cost').val()==""){
@@ -912,6 +1006,7 @@ function edit_order_item(guid){
 
     $('#parsley_reg #item_name').val($('#selected_item_table #new_item_row_id_'+guid+' #row_item_name').val());
     $('#parsley_reg #sku').val($('#selected_item_table #new_item_row_id_'+guid+' #items_sku').val());
+    $('#parsley_reg #supplier_quty').val($('#selected_item_table #new_item_row_id_'+guid+' #item_limit').val());
     $('#parsley_reg #quantity').val($('#selected_item_table #new_item_row_id_'+guid+' #items_quty').val());
     $('#parsley_reg #free').val($('#selected_item_table #new_item_row_id_'+guid+' #items_free').val());
     $('#parsley_reg #cost').val($('#selected_item_table #new_item_row_id_'+guid+' #items_cost').val());
@@ -923,10 +1018,20 @@ function edit_order_item(guid){
      $("#parsley_reg #items").select2('data', {id:guid,text:$('#selected_item_table #new_item_row_id_'+guid+' #row_item_name').val() });
 }
 function delete_order_item(guid){
+    var net=$('#selected_item_table #new_item_row_id_'+guid+' #items_total').val();
+    var total=$("#parsley_reg #total_amount").val();
+    $("#parsley_reg #total_amount").val(parseFloat(total)-parseFloat(net));
+    $("#parsley_reg #demo_total_amount").val(parseFloat(total)-parseFloat(net));
+    new_discount_amount();
+    $("#parsley_reg #total_amount").val()
+     var order=$('#selected_item_table #new_item_row_id_'+guid+' #items_order_guid').val();
+      $('#deleted').append('<input type="text" id="r_items" name="r_items[]" value="'+order+'">');
     var index=$('#selected_item_table #new_item_row_id_'+guid+' #index').val();
      var anSelected =  $("#selected_item_table").dataTable();
-       anSelected.fnDeleteRow(index);
-
+       anSelected.fnDeleteRow(index-1);
+    if(document.getElementById('newly_added_items_list_'+guid)){
+        $('#newly_added_items_list_'+guid).remove();
+    }
 }
 function clear_inputs(){
   $('#parsley_reg #item_name').val('');
@@ -1034,7 +1139,7 @@ function new_discount_amount(){
                                                                                    
                                                                                     'value'=>set_value('first_name'));
                                                                      echo form_input($first_name)?>
-                                                        
+                                                        <input type="hidden" id="purchase_order_guid" name="purchase_order_guid">
                                                   </div>
                                                </div>
                                                <div class="col col-sm-2" >
@@ -1361,7 +1466,7 @@ function new_discount_amount(){
                             </div>
                         </div>
                         <div class="row" >
-                            <div class="col col-lg-12">
+                            <div class="col col-lg-12" id="parent_items">
                             <div class="row">
                          
                              
@@ -1406,15 +1511,23 @@ function new_discount_amount(){
                                 <div class="col col-sm-6" style="padding-right: 0">
                                       <div class="row">
                                           <div class="col col-sm-3" style="padding-top: 50px" >
-                                              <div class="form_sep " style="padding-left: 50px">
-                                                       <label for="remark" >&nbsp;</label>	
+                                              <div class="form_sep " id="save_button" style="padding-left: 50px">
+                                                       <label for="" >&nbsp;</label>	
                                                        <a href="javascript:save_new_order()" class="btn btn-success"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
+                                                  </div>
+                                              <div class="form_sep " id="update_button" style=" margin-top: 0 !important;padding-left: 50px">
+                                                       <label for="" >&nbsp;</label>	
+                                                       <a href="javascript:update_order()" class="btn btn-success"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
                                                   </div>
                                                </div>
                                           <div class="col col-sm-3" style="padding-top: 50px"  >
-                                                   <div class="form_sep ">
+                                                   <div class="form_sep " id="save_clear">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="" class="btn btn-warning"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_add_purchase_order()" class="btn btn-warning"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                  </div>
+                                              <div class="form_sep " id="update_clear" style="margin-top:0 !important">
+                                                       <label for="remark" >&nbsp;</label>	
+                                                        <a href="javascript:clear_update_purchase_order()" class="btn btn-warning"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                                </div>
                                          
@@ -1453,6 +1566,12 @@ function new_discount_amount(){
                              
                           
                           </div>
+                                <div id="deleted">
+                                    
+                                </div>
+                                <div id="newly_added">
+                                    
+                                </div>
                             </div>
                         </div>
                     
