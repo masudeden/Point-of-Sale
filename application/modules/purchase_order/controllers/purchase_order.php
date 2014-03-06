@@ -339,12 +339,8 @@ function active(){
     }
 function deactive(){
             $id=  $this->input->post('guid');
-            $report= $this->posnic->posnic_module_deactive($id,'purchase_order'); 
-            if (!$report['error']) {
-                echo 'TRUE';
-              } else {
-                echo 'FALSE';
-              }
+            $this->load->model('purchase');
+            $this->purchase->deactive_order($id);
     }
 function order_number(){
        $data[]= $this->posnic->posnic_master_max('purchase_order')    ;

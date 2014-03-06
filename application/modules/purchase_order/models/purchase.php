@@ -127,11 +127,20 @@ class Purchase extends CI_Model{
          }
          return $data;
      }
-     function delete_order_item($guid){
-      
-  
-     $this->db->where('guid',$guid);
-     $this->db->update('purchase_order_items',array('delete_status'=>1));
+     function delete_order_item($guid){      
+          $this->db->where('guid',$guid);
+          $this->db->update('purchase_order_items',array('delete_status'=>1));
+     }
+     function deactive_order($guid){
+         $this->db->select()->from('purchase_order')->where('guid',$guid)->where('order_status',0);
+         $sql=  $this->db->get();
+         if($sql->num_rows()>0){
+             $this->db->where('guid',$guid);
+             $this->db->update('purchase_order',array('active'=>1));
+             echo 'TRUE';
+         }else {
+             echo "approve";
+         }
      }
     
 }

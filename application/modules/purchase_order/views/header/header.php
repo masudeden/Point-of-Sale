@@ -150,11 +150,12 @@
                     guid: guid
                     
                 },
-                success: function(response)
-                {
-                    if(response){
+                  complete: function(response) {
+                     if(response['responseText']=='TRUE'){
                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
                         $("#dt_table_tools").dataTable().fnDraw();
+                    }else if(response['responseText']=='approve'){
+                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is')." ".$this->lang->line('already')." ".$this->lang->line('approved');?>', { type: "warning" });
                     }
                 }
             });

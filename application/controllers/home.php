@@ -4,8 +4,9 @@ class Home extends CI_Controller
 {
     function __construct() {
         parent::__construct();
+         session_start();
         $this->load->helper('form');
-        session_start();
+       
         $this->load->library('session');
         $this->load->library('poslanguage');                                       
         $this->poslanguage->set_language();               

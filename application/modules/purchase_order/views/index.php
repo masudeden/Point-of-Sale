@@ -785,7 +785,7 @@ function add_new_price(e){
             }
         }else{
             if(parseFloat($('#parsley_reg #quantity').val())>parseFloat($('#parsley_reg #supplier_quty').val()) && $('#parsley_reg #supplier_quty').val()!=0){
-              $('#parsley_reg #quantity').val(0);
+              $('#parsley_reg #quantity').val($('#parsley_reg #supplier_quty').val());
                $('#parsley_reg #total').val($('#parsley_reg #cost').val()*$('#parsley_reg #quantity').val());
                 $.bootstrapGrowl('<?php echo $this->lang->line('not_able_to_order');?> '+$('#parsley_reg #first_name').val()+' <?php echo $this->lang->line('for');?> '+$('#parsley_reg #item_name').val(), { type: "warning" }); 
             }else{

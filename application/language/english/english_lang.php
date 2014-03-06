@@ -439,6 +439,9 @@ $lang['credit_days']='Credit Days';
   $lang['please_enter']='Please Enter';
   $lang['amount']='Amount';
   $lang['new']='New';
+  $lang['already']='Already';
+  $lang['approved']='Approved';
+  $lang['is']='Is';
   $lang['note']='Note';
   $lang['remark']='Remark';
   $lang['grand_total']='Grand Total';
@@ -453,4 +456,9 @@ $lang['credit_days']='Credit Days';
   
   $lang['sales_types']='Sales Types';
   $lang['total']='Total';
+  
+  
+  // purchase order approval
+  $lang['purchase_order_approval']='P O Approval';
+  
 ?>﻿
