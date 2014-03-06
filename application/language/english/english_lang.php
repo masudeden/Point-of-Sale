@@ -460,5 +460,8 @@ $lang['credit_days']='Credit Days';
   
   // purchase order approval
   $lang['purchase_order_approval']='P O Approval';
+  $lang['approved']='Approved';
+  $lang['canceled']='Canceled';
+  $lang['wating']='Waiting';
   
 ?>﻿
