@@ -45,6 +45,26 @@
     #dt_table_tools tr td + td + td + td + td + td + td + td + td {
   width: 120px !important;
 }
+.editable-address {
+    display: block;
+    margin-bottom: 5px;  
+}
+
+.editable-address span {
+    width: 70px;  
+    display: inline-block;
+}
+.editable-buttons {
+    text-align: center;
+}
+.popover-title {
+    
+    text-align: center;
+}
+.popover-content {
+    padding: 6px 24px !important;
+    width: 277px!important;
+}
 </style>	
 <script type="text/javascript">
     function numbersonly(e){
@@ -390,6 +410,44 @@ function reload_update_user(){
              </div>
         </div>
 </section>    
+
+               
+                
+               <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap.js"></script>
+               <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap-editable.js"></script>
+               <link href="<?php echo base_url() ?>template/app/x_edit/address.css" rel="stylesheet">
+               <script src="<?php echo base_url() ?>template/app/x_edit/address.js"></script> 
+              
+<script > $(document).ready( function () {
+    free_and_discount_input();
+
+           });
+           function free_and_discount_input(){
+                 $('#item_free_and_discount').editable({
+       
+        value: {
+            i_discount: "0", 
+            i_dis_amt: "0", 
+            free: "0"
+        },
+//        validate: function(value) {
+//            if(value.i_discount == '') return 'city is required!'; 
+//        },
+        display: function(value) {
+            if(!value) {
+                $(this).empty();
+                return; 
+            }
+            //var html = '<b>Discount' + $('<div>').text(value.i_discount).html() + '</b> ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
+            var html="<input type='text' class='form-control' id='free' value='"+value.free+"' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
+            $(this).html(html); 
+            alert('jibi');
+        }         
+    });    
+           }
+        </script>
+
+  
 <div class="modal fade" id="loading">
     <div class="modal-dialog" style="width: 146px;margin-top: 20%">
                 
@@ -601,7 +659,8 @@ function add_new_quty(e){
         }
        else{
            $('#parsley_reg #free').focus();
-           
+           free_and_discount_input();
+           $('#parsley_reg #free').click();
         }
          if (unicode!=27){
         }
@@ -624,17 +683,24 @@ function add_new_free(e){
    if($('#parsley_reg #free').value!=""){
         
                   if (unicode!=13 && unicode!=9){
+                      
         }
        else{
            $('#parsley_reg #cost').focus();
          
         }
          if (unicode!=27){
+           
         }
        else{
           
              $("#parsley_reg #quantity").focus();
         }
+         if (unicode!=27 && unicode!=13 && unicode!=9){
+                 free_and_discount_input();
+           $('#parsley_reg #free').click();
+           console.log('jibi');
+         }
         }
         }else{
  $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
@@ -1325,10 +1391,10 @@ function new_discount_amount(){
                                                         </div>
                                                 </td>
                                              <td>
-                                                  <div class="col col-lg-12" style="padding:0px">
+                                                  <div class="col col-lg-12" style="padding:0px; width: 130px;">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="free" ><?php echo $this->lang->line('free') ?></label>
+                                                                <label for="free" ><?php echo $this->lang->line('free')." & ".$this->lang->line('discount') ?></label>
 
                                                                  <?php $free=array('name'=>'free',
                                                                                             'class'=>' form-control text-right',
@@ -1336,7 +1402,8 @@ function new_discount_amount(){
                                                                                             
                                                                      'onKeyPress'=>"add_new_free(event); return numbersonly(event)",
                                                                                             'value'=>set_value('free'));
-                                                                             echo form_input($free)?>
+                                                                              //form_input($free)?>
+                                                                <a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>">jibib</a>
                                                                
                                                         </div>
                                                         </div>

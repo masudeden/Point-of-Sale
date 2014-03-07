@@ -1,6 +1,6 @@
 /**
 Address editable input.
-Internally value stored as {city: "Moscow", street: "Lenina", building: "15"}
+Internally value stored as {i_discount: "Moscow", i_dis_amt: "Lenina", free: "15"}
 
 @class address
 @extends abstractinput
@@ -11,11 +11,11 @@ Internally value stored as {city: "Moscow", street: "Lenina", building: "15"}
 $(function(){
     $('#address').editable({
         url: '/post',
-        title: 'Enter city, street and building #',
+        title: 'Enter i_discount, i_dis_amt and free #',
         value: {
-            city: "Moscow", 
-            street: "Lenina", 
-            building: "15"
+            i_discount: "Moscow", 
+            i_dis_amt: "Lenina", 
+            free: "15"
         }
     });
 });
@@ -51,7 +51,7 @@ $(function(){
                 $(element).empty();
                 return; 
             }
-            var html = $('<div>').text(value.city).html() + ', ' + $('<div>').text(value.street).html() + ' st., bld. ' + $('<div>').text(value.building).html();
+            var html = $('<div>').text(value.i_discount).html() + ', ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
             $(element).html(html); 
         },
         
@@ -63,14 +63,14 @@ $(function(){
         html2value: function(html) {        
           /*
             you may write parsing method to get value by element's html
-            e.g. "Moscow, st. Lenina, bld. 15" => {city: "Moscow", street: "Lenina", building: "15"}
+            e.g. "Moscow, st. Lenina, bld. 15" => {i_discount: "Moscow", i_dis_amt: "Lenina", free: "15"}
             but for complex structures it's not recommended.
             Better set value directly via javascript, e.g. 
             editable({
                 value: {
-                    city: "Moscow", 
-                    street: "Lenina", 
-                    building: "15"
+                    i_discount: "Moscow", 
+                    i_dis_amt: "Lenina", 
+                    free: "15"
                 }
             });
           */ 
@@ -116,9 +116,9 @@ $(function(){
            if(!value) {
              return;
            }
-           this.$input.filter('[name="city"]').val(value.city);
-           this.$input.filter('[name="street"]').val(value.street);
-           this.$input.filter('[name="building"]').val(value.building);
+           this.$input.filter('[name="i_discount"]').val(value.i_discount);
+           this.$input.filter('[name="i_dis_amt"]').val(value.i_dis_amt);
+           this.$input.filter('[name="free"]').val(value.free);
        },       
        
        /**
@@ -128,9 +128,9 @@ $(function(){
        **/          
        input2value: function() { 
            return {
-              city: this.$input.filter('[name="city"]').val(), 
-              street: this.$input.filter('[name="street"]').val(), 
-              building: this.$input.filter('[name="building"]').val()
+              i_discount: this.$input.filter('[name="i_discount"]').val(), 
+              i_dis_amt: this.$input.filter('[name="i_dis_amt"]').val(), 
+              free: this.$input.filter('[name="free"]').val()
            };
        },        
        
@@ -140,7 +140,7 @@ $(function(){
         @method activate() 
        **/        
        activate: function() {
-            this.$input.filter('[name="city"]').focus();
+            this.$input.filter('[name="i_discount"]').focus();
        },  
        
        /**
@@ -158,9 +158,9 @@ $(function(){
     });
 
     Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
-        tpl: '<div class="editable-address"><label><span>City: </span><input type="text" name="city" class="input-small"></label></div>'+
-             '<div class="editable-address"><label><span>Street: </span><input type="text" name="street" class="input-small"></label></div>'+
-             '<div class="editable-address"><label><span>Building: </span><input type="text" name="building" class="input-mini"></label></div>',
+        tpl: '<div class="row"><div class="col col-lg-7"><label><span>Discount %: </span></div><div class="col col-lg-5"><input type="text" name="i_discount" onKeyPress="return numbersonly(event)" maxlength="2" class="form-control"></label></div></div>'+
+             '<div class="row"><div class="col col-lg-7"><label><span>Discount Amount: </span></div><div class="col col-lg-5"><input type="text" name="i_dis_amt" onKeyPress="return numbersonly(event)"  class="form-control"></label></div></div>'+
+             '<div class="row"><div class="col col-lg-7"><label><span>Free: </span></div><div class="col col-lg-5"><input type="text" name="free" class="form-control"></label></div></div>',
              
         inputclass: ''
     });

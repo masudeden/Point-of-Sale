@@ -176,7 +176,7 @@
                     data: function (term) {
                         return {
                             term: term,
-                                     suppler:$('#parsley_reg #supplier_guid').val()
+                            suppler:$('#parsley_reg #supplier_guid').val()
                         };
                     },
                     results: function (data) {
@@ -1118,6 +1118,18 @@ function new_discount_amount(){
 }
 </script>
 
+               <script src="<?php echo base_url() ?>template/app/x_edit/jquery-1.9.1.min.js"></script>  
+                <link href="<?php echo base_url() ?>template/app/x_edit/bootstrap.css" rel="stylesheet">
+               <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap.js"></script>
+               <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap-editable.js"></script>
+               <link href="<?php echo base_url() ?>template/app/x_edit/address.css" rel="stylesheet">
+               <script src="<?php echo base_url() ?>template/app/x_edit/address.js"></script> 
+              
+<script > $(document).ready( function () {
+           });
+        </script>
+
+  <a href="#" id="address" data-type="address" data-pk="1" data-title="Please, fill address">jibib</a>
   
 <section id="add_new_order" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',
