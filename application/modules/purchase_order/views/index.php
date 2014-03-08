@@ -158,6 +158,8 @@
                        $('#parsley_reg #items').select2('open');
               }else{
                    var guid = $('#parsley_reg #items').select2('data').id;
+                
+                       
                 $('#parsley_reg #item_id').val(guid);
                 $('#parsley_reg #sku').val($('#parsley_reg #items').select2('data').value);
                 $('#parsley_reg #item_name').val($('#parsley_reg #items').select2('data').text);
@@ -165,7 +167,10 @@
                 $('#parsley_reg #price').val($('#parsley_reg #items').select2('data').price);
                 $('#parsley_reg #mrp').val($('#parsley_reg #items').select2('data').mrp);
                 $('#parsley_reg #supplier_quty').val($('#parsley_reg #items').select2('data').quty);
-                 $('#parsley_reg #quantity').focus();
+                
+                     free_and_discount_input();
+                      $('#parsley_reg #extra_elements').click();
+                       $('#parsley_reg #quantity').focus();
                  
           }
           });
@@ -235,6 +240,7 @@
             }
         $('#parsley_reg #first_name').change(function() {
             refresh_items_table();
+           
                    var guid = $('#parsley_reg #first_name').select2('data').id;
 
                  $('#parsley_reg #first_name').val($('#parsley_reg #first_name').select2('data').text);
@@ -418,11 +424,40 @@ function reload_update_user(){
                <link href="<?php echo base_url() ?>template/app/x_edit/address.css" rel="stylesheet">
                <script src="<?php echo base_url() ?>template/app/x_edit/address.js"></script> 
               
-<script > $(document).ready( function () {
-    free_and_discount_input();
-
-           });
-           function free_and_discount_input(){
+<script >
+     $(document).ready( function () {
+         
+        
+         
+     });
+    function item_editable_discount(){
+        var amount=$('#i_dis_amt').val();
+        var per=$('#i_discount').val();
+          if (isNaN(per)) {
+              per=0;
+          }
+          if (isNaN(amount)) {
+            //  amount=0;
+          }
+       var quantity=($('#quantity').val());
+        var cost=$('#cost').val();
+          if(per!="" && per!=0){
+    
+          
+           var  discount=parseFloat(cost*quantity)*per/100;      
+           
+                $('#i_dis_amt').val(discount);
+                $('#total').val(parseFloat(cost*quantity)-discount);
+          }else{
+              $('#total').val(parseFloat(cost*quantity)-amount);
+          }
+    }
+    function free_and_discount_input(){
+     console.log($('#parsley_reg #supplier_guid').val());
+     console.log($('#parsley_reg #item_id').val());
+                 if($('#parsley_reg #supplier_guid').val()!="" && $('#parsley_reg #item_id').val()!="" ){
+                     
+                 
                  $('#item_free_and_discount').editable({
        
         value: {
@@ -439,11 +474,20 @@ function reload_update_user(){
                 return; 
             }
             //var html = '<b>Discount' + $('<div>').text(value.i_discount).html() + '</b> ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
-            var html="<input type='text' class='form-control' id='free' value='"+value.free+"' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
+            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='hidden' value='"+value.free+"' id='hidden_free'><input type='text' class='form-control' id='extra_elements' value='"+value.free+" & "+value.i_dis_amt+" ' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
             $(this).html(html); 
-            alert('jibi');
+           
         }         
-    });    
+    });    }else{
+    if($('#parsley_reg #supplier_guid').val()!=""){
+     //$.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
+      //   $('#parsley_reg #first_name').select2('open');
+    }else{
+   // $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
+      //   $('#parsley_reg #items').select2('open');
+    }
+    
+    }
            }
         </script>
 
@@ -507,7 +551,7 @@ function new_order_date(e){
         }
         }else{
  $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
-         $('#parsley_reg #items').select2('open');
+         $('#parsley_reg #first_name').select2('open');
 
         }
 
@@ -559,6 +603,84 @@ function new_discount(e){
        else{
             
           document.getElementById("expiry_date").focus();
+        }
+        
+        }else{
+ $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
+         $('#parsley_reg #first_name').select2('open');
+
+        }
+
+    }
+function item_discount(e){
+    if($('#parsley_reg #supplier_guid').val()!=""){
+
+     var unicode=e.charCode? e.charCode : e.keyCode
+
+        
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#parsley_reg #i_dis_amt').focus();
+            
+        }
+         if (unicode!=27){
+        }
+       else{
+            
+         // document.getElementById("expiry_date").focus();
+        }
+        
+        }else{
+ $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
+         $('#parsley_reg #first_name').select2('open');
+
+        }
+
+    }
+function item_discount_amount(e){
+    if($('#parsley_reg #supplier_guid').val()!=""){
+
+     var unicode=e.charCode? e.charCode : e.keyCode
+
+        
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#parsley_reg #i_free').focus();
+            
+        }
+         if (unicode!=27){
+        }
+       else{
+            
+      $('#parsley_reg #i_dis_amt').focus();
+        }
+        
+        }else{
+ $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
+         $('#parsley_reg #first_name').select2('open');
+
+        }
+
+    }
+function item_free(e){
+    if($('#parsley_reg #supplier_guid').val()!=""){
+
+     var unicode=e.charCode? e.charCode : e.keyCode
+
+        
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+      //     $('#parsley_reg #i_free').focus();
+            
+        }
+         if (unicode!=27){
+        }
+       else{
+            
+      $('#parsley_reg #i_free').focus();
         }
         
         }else{
@@ -659,8 +781,8 @@ function add_new_quty(e){
         }
        else{
            $('#parsley_reg #free').focus();
-           free_and_discount_input();
-           $('#parsley_reg #free').click();
+         free_and_discount_input();
+                      $('#parsley_reg #extra_elements').click();
         }
          if (unicode!=27){
         }
@@ -696,11 +818,7 @@ function add_new_free(e){
           
              $("#parsley_reg #quantity").focus();
         }
-         if (unicode!=27 && unicode!=13 && unicode!=9){
-                 free_and_discount_input();
-           $('#parsley_reg #free').click();
-           console.log('jibi');
-         }
+         
         }
         }else{
  $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
@@ -1350,8 +1468,13 @@ function new_discount_amount(){
                              
                               <div class="row" style="padding-top: 1px;">
                                  
-                                  <div class="col col-sm-2" style="padding-right: 0px;padding-left: 0;">
-                                       
+                                  
+                                                <div class="col col-sm-12" style="padding-right:0px;padding-left: 0;">
+                                                    <table style="  max-width: 102%"><tr>
+                                                       
+                                             <td>
+                                                 <div class="col col-lg-12" style="padding:0px;width: 150px">
+                                                   
                                              <label for="items" ><?php echo $this->lang->line('items') ?></label>	
                                                      <div class="form_sep" id='display_none_div'>
                                                       												
@@ -1369,10 +1492,8 @@ function new_discount_amount(){
                                            <input type="hidden" name="sku" id="sku">
                                            <input type="hidden" name="seleted_row_id" id="seleted_row_id">
                                            <input type="hidden" name="supplier_quty" id="supplier_quty">
-                                                  </div>
-                                                <div class="col col-sm-10" style="padding-right:0px;">
-                                                    <table style=" margin-left: -13px !important; max-width: 102%"><tr>
-                                                       
+                                                        </div>
+                                                </td>
                                              <td>
                                                  <div class="col col-lg-12" style="padding:0px">
                                                    <div class="form_sep">
@@ -1391,10 +1512,10 @@ function new_discount_amount(){
                                                         </div>
                                                 </td>
                                              <td>
-                                                  <div class="col col-lg-12" style="padding:0px; width: 130px;">
+                                                  <div class="col col-lg-12" style="padding:0px; width: 120px;">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="free" ><?php echo $this->lang->line('free')." & ".$this->lang->line('discount') ?></label>
+                                                                <label for="free" ><?php echo $this->lang->line('free'); ?></label>
 
                                                                  <?php $free=array('name'=>'free',
                                                                                             'class'=>' form-control text-right',
@@ -1402,8 +1523,8 @@ function new_discount_amount(){
                                                                                             
                                                                      'onKeyPress'=>"add_new_free(event); return numbersonly(event)",
                                                                                             'value'=>set_value('free'));
-                                                                              //form_input($free)?>
-                                                                <a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>">jibib</a>
+                                                                              echo form_input($free)?>
+                                                              
                                                                
                                                         </div>
                                                         </div>
@@ -1453,22 +1574,39 @@ function new_discount_amount(){
                                                         </div>
                                                     </div>
                                                </td>
-                                             <td>
-                                                <div class="col col-lg-12" style="padding:0px">
+                                            <td>
+                                                <div class="col col-lg-12" style="padding:0px;">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="delivery_date" ><?php echo $this->lang->line('delivery_date') ?></label>
+                                                                <label for="total" ><?php echo $this->lang->line('sub_total') ?></label>
 
-                                                             <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                           <?php $delivery_date=array('name'=>'delivery_date',
-                                                                                            'class'=>' form-control',
-                                                                                            'id'=>'delivery_date',
+                                                                 <?php $total=array('name'=>'total',
+                                                                                            'class'=>' form-control text-right',
+                                                                                            'id'=>'total',
+                                                                                            'disabled'=>'disabled',
+                                                                                            'value'=>set_value('total'));
+                                                                             echo form_input($total)?>
+                                                        </div>
+                                                    </div>
+                                               </td>
+                                             <td>
+                                                <div class="col col-lg-12" style="padding:0px;width: 123px;">
+                                                   <div class="form_sep">
+                                                            
+                                                                <label for="delivery_date" ><?php echo $this->lang->line('tax')." & ".$this->lang->line('discount') ?></label>
+
+<!--                                                             <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                           <?php // $delivery_date=array('name'=>'delivery_date',
+                                                                                          //  'class'=>' form-control',
+                                                                                      //      'id'=>'delivery_date',
                                                                                           
-                                                                                       'onKeyPress'=>"add_new_date(event); ",
-                                                                                            'value'=>set_value('delivery_date'));
-                                                                             echo form_input($delivery_date)?>
+                                                                                   //    'onKeyPress'=>"add_new_date(event); ",
+                                                                                     //       'value'=>set_value('delivery_date'));
+                                                                           //  echo form_input($delivery_date)?>
+                                                                
                                                                 <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
+                                                                </div>-->
+<a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php  echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>"><input type="text" class="form-control" value="0 & 0"></a>
                                                         </div>
                                                     </div>
                                                </td>

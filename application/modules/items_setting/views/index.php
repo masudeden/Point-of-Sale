@@ -307,8 +307,8 @@ function reload_update_user(){
                                                     <div class="form_sep">
                                                          <label for="allow_negative" ><?php echo $this->lang->line('allow_negative') ?></label>                                                                                                       
                                                          <select class="form-control" name="allow_negative" id="allow_negative">
-                                                             <option value="0" ><?php  echo $this->lang->line('no') ?></option>
-                                                             <option value="1" ><?php  echo $this->lang->line('yes') ?></option>
+                                                             <option value="0" id="yes"><?php  echo $this->lang->line('no') ?></option>
+                                                             <option value="1" id="no" ><?php  echo $this->lang->line('yes') ?></option>
                                                          </select>
                                                     </div>
                                                </div>
@@ -319,9 +319,9 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="tax_Inclusive" ><?php echo $this->lang->line('tax_Inclusive') ?></label>                                                                                                       
-                                                         <select class="form-control" name="tax_Inclusive" id="allow_negative">
-                                                             <option value="0" ><?php  echo $this->lang->line('yes') ?></option>
-                                                             <option value="1" ><?php  echo $this->lang->line('no') ?></option>
+                                                         <select class="form-control" name="tax_Inclusive" id="tax_Inclusive">
+                                                             <option value="0" id="tax_yes"><?php  echo $this->lang->line('yes') ?></option>
+                                                             <option value="1" id="tax_no"><?php  echo $this->lang->line('no') ?></option>
                                                          </select>
                                                     </div>
                                                </div>
@@ -560,7 +560,7 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="tax_Inclusive" ><?php echo $this->lang->line('tax_Inclusive') ?></label>                                                                                                       
-                                                         <select class="form-control" name="tax_Inclusive" id="allow_negative">
+                                                         <select class="form-control" name="tax_Inclusive" id="tax_Inclusive">
                                                              <option value="0" ><?php  echo $this->lang->line('yes') ?></option>
                                                              <option value="1" ><?php  echo $this->lang->line('no') ?></option>
                                                          </select>

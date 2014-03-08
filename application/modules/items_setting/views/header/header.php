@@ -190,10 +190,27 @@
                                  $('#edit_item_form #min_quty').val(data[1][0]['min_q']);
                                  $('#edit_item_form #max_quty').val(data[1][0]['max_q']);
                                  $('#edit_item_form #allow_negative').val(data[1][0]['allow_negative']);
-                                 $('#edit_item_form #tax_Inclusive').val(data[1][0]['tax_inclusive']);
+                                 
+                                 console.log(data[1][0]['tax_inclusive']);
+                                 if(data[1][0]['tax_inclusive']==1){
+                                    $('#edit_item_form #tax_Inclusive').val(1); 
+                                    
+                                 }else{
+                                    $('#edit_item_form #tax_Inclusive').val(0); 
+                                 }
+                                 if(data[1][0]['tax_inclusive']==1){
+                                    $('#edit_item_form #tax_inclusive').val(1); 
+                                    
+                                 }else{
+                                    $('#edit_item_form #tax_inclusive').val(0); 
+                                 }
+
+
+
+
                                  var sales=data[1][0]['sales'];
                                  if(sales==0){
-                                  $('#edit_item_form #sales_yes').attr('checked',true);
+                                         $('#edit_item_form #sales_yes').attr('checked',true);
                                  }else{
                                       $('#edit_item_form #sales_no').attr("checked", true );
                                  }

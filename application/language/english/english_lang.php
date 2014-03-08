@@ -456,6 +456,8 @@ $lang['credit_days']='Credit Days';
   
   $lang['sales_types']='Sales Types';
   $lang['total']='Total';
+  $lang['sub_total']='Sub Total';
+  $lang['more']='More';
   
   
   // purchase order approval
