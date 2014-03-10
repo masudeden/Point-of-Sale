@@ -167,7 +167,17 @@
                 $('#parsley_reg #price').val($('#parsley_reg #items').select2('data').price);
                 $('#parsley_reg #mrp').val($('#parsley_reg #items').select2('data').mrp);
                 $('#parsley_reg #supplier_quty').val($('#parsley_reg #items').select2('data').quty);
-                
+                $('#parsley_reg #tax_value').val($('#parsley_reg #items').select2('data').tax_value);
+                $('#parsley_reg #tax_type').val($('#parsley_reg #items').select2('data').tax_type);
+                var tax=$('#parsley_reg #items').select2('data').tax_Inclusive;
+               if(tax==0){
+                   
+                  $("#tax_lablel").text('Tax Is Inclusive');  
+               }else{
+                   $("#tax_lablel").text('Tax Is Exclusive');
+               }
+               console.log( $("#tax_lablel").text('Tax Is Exclusive'));
+               
                      free_and_discount_input();
                       $('#parsley_reg #extra_elements').click();
                        $('#parsley_reg #quantity').focus();
@@ -220,6 +230,9 @@
                           cost: item.cost,
                           price: item.price,
                           mrp: item.mrp,
+                          tax_type: item.tax_type_name,
+                          tax_value: item.tax_value,
+                          tax_Inclusive : item.tax_Inclusive ,
                         });
                       });   if($('#supplier_guid').val()==""){
                           $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
@@ -1488,6 +1501,10 @@ function new_discount_amount(){
                                                  <input type="hidden" id='diabled_item' class="form-control">
                                                  
                                                  <input type="hidden" name="item_id" id="item_id">
+                                                 <input type="hidden" name="tax_type" id="tax_type">
+                                                 <input type="hidden" name="tax_Inclusive " id="tax_Inclusive ">
+                                                 
+                                                 <input type="hidden" name="tax_value" id="tax_value">
                                            <input type="hidden" name="item_name" id="item_name">
                                            <input type="hidden" name="sku" id="sku">
                                            <input type="hidden" name="seleted_row_id" id="seleted_row_id">

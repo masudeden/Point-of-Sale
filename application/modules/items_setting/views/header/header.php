@@ -191,18 +191,12 @@
                                  $('#edit_item_form #max_quty').val(data[1][0]['max_q']);
                                  $('#edit_item_form #allow_negative').val(data[1][0]['allow_negative']);
                                  
-                                 console.log(data[1][0]['tax_inclusive']);
-                                 if(data[1][0]['tax_inclusive']==1){
-                                    $('#edit_item_form #tax_Inclusive').val(1); 
+                               
+                                 if(data[1][0]['allow_negative']==1){
+                                    $('#edit_item_form #allow_negative').val(1); 
                                     
                                  }else{
-                                    $('#edit_item_form #tax_Inclusive').val(0); 
-                                 }
-                                 if(data[1][0]['tax_inclusive']==1){
-                                    $('#edit_item_form #tax_inclusive').val(1); 
-                                    
-                                 }else{
-                                    $('#edit_item_form #tax_inclusive').val(0); 
+                                    $('#edit_item_form #allow_negative').val(0); 
                                  }
 
 

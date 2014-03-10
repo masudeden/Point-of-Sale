@@ -160,7 +160,7 @@ $(function(){
     Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         tpl: '<div class="row"><div class="col col-lg-7"><label><span>Discount %: </span></div><div class="col col-lg-5"><input type="text" name="i_discount" id="i_discount" onKeyPress="item_discount(event);return numbersonly(event)" maxlength="2" onkeyup="item_editable_discount()" class="form-control"></label></div></div>'+
              '<div class="row"><div class="col col-lg-7"><label><span>Discount Amount: </span></div><div class="col col-lg-5"><input type="text" name="i_dis_amt" id="i_dis_amt" onKeyPress="item_discount_amount(event);return numbersonly(event)" onkeyup="item_editable_discount()" class="form-control"></label></div></div>'+
-             '<div class="row"><div class="col col-lg-7"><label><span>Free: </span></div><div class="col col-lg-5"><input type="text" name="free" id="i_free"  onKeyPress="item_free(event);return numbersonly(event)"  class="form-control"></label></div></div>',
+             '<div class="row"><div class="col col-lg-7"><label  id="tax_lablel">Tax</div><div class="col col-lg-5"><input type="text" name="free" id="i_free"  onKeyPress="item_free(event);return numbersonly(event)"  class="form-control"></label></div></div>',
              
         inputclass: ''
     });

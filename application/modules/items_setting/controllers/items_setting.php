@@ -117,7 +117,6 @@ class Items_setting extends CI_Controller{
                     'purchase'=>$this->input->post('purchase'),
                     'purchase_return'=>$this->input->post('purchase_return'),
                     'allow_negative'=>$this->input->post('allow_negative'),
-                    'tax_inclusive'=>$this->input->post('tax_Inclusive'),
                     'min_q'=>$this->input->post('min_quty'),
                     'max_q'=>$this->input->post('max_quty'));
                     $where=array('guid'=>$guid);
