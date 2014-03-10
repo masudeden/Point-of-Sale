@@ -65,6 +65,10 @@
     padding: 6px 24px !important;
     width: 277px!important;
 }
+.small_inputs input{
+    font-size: 11px;
+    padding: 0 1px !important;
+}
 </style>	
 <script type="text/javascript">
     function numbersonly(e){
@@ -170,6 +174,7 @@
                 $('#parsley_reg #tax_value').val($('#parsley_reg #items').select2('data').tax_value);
                 $('#parsley_reg #tax_type').val($('#parsley_reg #items').select2('data').tax_type);
                 var tax=$('#parsley_reg #items').select2('data').tax_Inclusive;
+                disacount_and_amount_editable();
                if(tax==0){
                    
                   $("#tax_lablel").text('Tax Is Inclusive');  
@@ -435,14 +440,161 @@ function reload_update_user(){
                <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap.js"></script>
                <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap-editable.js"></script>
                <link href="<?php echo base_url() ?>template/app/x_edit/address.css" rel="stylesheet">
-               <script src="<?php echo base_url() ?>template/app/x_edit/address.js"></script> 
+               
               
 <script >
      $(document).ready( function () {
-         
         
          
      });
+   function  disacount_and_amount_editable(){
+          "use strict";
+    
+    var Address = function (options) {
+        this.init('address', options, Address.defaults);
+    };
+
+    //inherit from Abstract input
+    $.fn.editableutils.inherit(Address, $.fn.editabletypes.abstractinput);
+
+    $.extend(Address.prototype, {
+        /**
+        Renders input from tpl
+
+        @method render() 
+        **/        
+        render: function() {
+           this.$input = this.$tpl.find('input');
+        },
+        
+        /**
+        Default method to show value in element. Can be overwritten by display option.
+        
+        @method value2html(value, element) 
+        **/
+        value2html: function(value, element) {
+            if(!value) {
+                $(element).empty();
+                return; 
+            }
+            var html = $('<div>').text(value.i_discount).html() + ', ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
+            $(element).html(html); 
+        },
+        
+        /**
+        Gets value from element's html
+        
+        @method html2value(html) 
+        **/        
+        html2value: function(html) {        
+          /*
+            you may write parsing method to get value by element's html
+            e.g. "Moscow, st. Lenina, bld. 15" => {i_discount: "Moscow", i_dis_amt: "Lenina", free: "15"}
+            but for complex structures it's not recommended.
+            Better set value directly via javascript, e.g. 
+            editable({
+                value: {
+                    i_discount: "Moscow", 
+                    i_dis_amt: "Lenina", 
+                    free: "15"
+                }
+            });
+          */ 
+          return null;  
+        },
+      
+       /**
+        Converts value to string. 
+        It is used in internal comparing (not for sending to server).
+        
+        @method value2str(value)  
+       **/
+       value2str: function(value) {
+           var str = '';
+           if(value) {
+               for(var k in value) {
+                   str = str + k + ':' + value[k] + ';';  
+               }
+           }
+           return str;
+       }, 
+       
+       /*
+        Converts string to value. Used for reading value from 'data-value' attribute.
+        
+        @method str2value(str)  
+       */
+       str2value: function(str) {
+           /*
+           this is mainly for parsing value defined in data-value attribute. 
+           If you will always set value by javascript, no need to overwrite it
+           */
+           return str;
+       },                
+       
+       /**
+        Sets value of input.
+        
+        @method value2input(value) 
+        @param {mixed} value
+       **/         
+       value2input: function(value) {
+           if(!value) {
+             return;
+           }
+           this.$input.filter('[name="i_discount"]').val(value.i_discount);
+           this.$input.filter('[name="i_dis_amt"]').val(value.i_dis_amt);
+           this.$input.filter('[name="free"]').val(value.free);
+       },       
+       
+       /**
+        Returns value of input.
+        
+        @method input2value() 
+       **/          
+       input2value: function() { 
+           return {
+              i_discount: this.$input.filter('[name="i_discount"]').val(), 
+              i_dis_amt: this.$input.filter('[name="i_dis_amt"]').val(), 
+              free: this.$input.filter('[name="free"]').val()
+           };
+       },        
+       
+        /**
+        Activates input: sets focus on the first field.
+        
+        @method activate() 
+       **/        
+       activate: function() {
+            this.$input.filter('[name="i_discount"]').focus();
+       },  
+       
+       /**
+        Attaches handler to submit form in case of 'showbuttons=false' mode
+        
+        @method autosubmit() 
+       **/       
+       autosubmit: function() {
+           this.$input.keydown(function (e) {
+                if (e.which === 13) {
+                    $(this).closest('form').submit();
+                }
+           });
+       }       
+    });
+
+    Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
+        tpl: '<div class="row"><div class="col col-lg-7"><label><span><?php echo $this->lang->line('discount') ?> %: </span></lable></div><div class="col col-lg-5"><input type="text" name="i_discount" id="i_discount" onKeyPress="item_discount(event);return numbersonly(event)" maxlength="2" onkeyup="item_editable_discount()" class="form-control"></div></div>'+
+             '<div class="row"><div class="col col-lg-7"><label><span><?php echo $this->lang->line('discount_amount') ?> </span></lable></div><div class="col col-lg-5"><input type="text" name="i_dis_amt" id="i_dis_amt" onKeyPress="item_discount_amount(event);return numbersonly(event)" onkeyup="item_editable_discount()" class="form-control"></div></div>'+
+             '',
+          
+        inputclass: ''
+    });
+   console.log($('#company').val());
+   alert('jibi')
+    $.fn.editabletypes.address = Address;
+        
+     }
     function item_editable_discount(){
         var amount=$('#i_dis_amt').val();
         var per=$('#i_discount').val();
@@ -487,7 +639,7 @@ function reload_update_user(){
                 return; 
             }
             //var html = '<b>Discount' + $('<div>').text(value.i_discount).html() + '</b> ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
-            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='hidden' value='"+value.free+"' id='hidden_free'><input type='text' class='form-control' id='extra_elements' value='"+value.free+" & "+value.i_dis_amt+" ' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
+            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='hidden' value='"+value.free+"' id='hidden_free'><input type='text' class='form-control text-center' id='extra_elements' value='"+value.free+" & "+value.i_dis_amt+" ' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
             $(this).html(html); 
            
         }         
@@ -1482,13 +1634,10 @@ function new_discount_amount(){
                               <div class="row" style="padding-top: 1px;">
                                  
                                   
-                                                <div class="col col-sm-12" style="padding-right:0px;padding-left: 0;">
-                                                    <table style="  max-width: 102%"><tr>
-                                                       
-                                             <td>
-                                                 <div class="col col-lg-12" style="padding:0px;width: 150px">
+                                                <div class="col col-sm-1" style="padding:1px; width: 140px;">
+                                             
                                                    
-                                             <label for="items" ><?php echo $this->lang->line('items') ?></label>	
+                                             <label for="items" class="text-center" ><?php echo $this->lang->line('items') ?></label>	
                                                      <div class="form_sep" id='display_none_div'>
                                                       												
                                                                   <?php $items=array('name'=>'items',
@@ -1510,15 +1659,14 @@ function new_discount_amount(){
                                            <input type="hidden" name="seleted_row_id" id="seleted_row_id">
                                            <input type="hidden" name="supplier_quty" id="supplier_quty">
                                                         </div>
-                                                </td>
-                                             <td>
-                                                 <div class="col col-lg-12" style="padding:0px">
+                                                
+                                                 <div class="col col-lg-1" style="padding:1px;width: 104px;">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="quantity" ><?php echo $this->lang->line('quantity') ?></label>
+                                                                <label for="quantity" class="text-center" ><?php echo $this->lang->line('quantity') ?></label>
 
                                                                  <?php $quantity=array('name'=>'quantity',
-                                                                                            'class'=>' form-control',
+                                                                                            'class'=>' form-control text-center',
                                                                                             'id'=>'quantity',
                                                                                             'onkeyup'=>"net_amount()", 
                                                                      'onKeyPress'=>"add_new_quty(event); return numbersonly(event)",
@@ -1527,15 +1675,14 @@ function new_discount_amount(){
                                                                
                                                         </div>
                                                         </div>
-                                                </td>
-                                             <td>
-                                                  <div class="col col-lg-12" style="padding:0px; width: 120px;">
+                                                
+                                                  <div class="col col-lg-1" style="padding:1px; width: 80px;">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="free" ><?php echo $this->lang->line('free'); ?></label>
+                                                                <label for="free" class="text-center" ><?php echo $this->lang->line('free'); ?></label>
 
                                                                  <?php $free=array('name'=>'free',
-                                                                                            'class'=>' form-control text-right',
+                                                                                            'class'=>' form-control text-center',
                                                                                             'id'=>'free',
                                                                                             
                                                                      'onKeyPress'=>"add_new_free(event); return numbersonly(event)",
@@ -1545,12 +1692,11 @@ function new_discount_amount(){
                                                                
                                                         </div>
                                                         </div>
-                                                </td>
-                                                <td>
-                                                     <div class="col col-lg-12" style="padding:0px">
+                                                
+                                                     <div class="col col-lg-1" style="padding:1px">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="cost" ><?php echo $this->lang->line('cost') ?></label>
+                                                                <label for="cost" class="text-center" ><?php echo $this->lang->line('cost') ?></label>
 
                                                                  <?php $cost=array('name'=>'cost',
                                                                                             'class'=>' form-control small_length text-right',
@@ -1561,11 +1707,11 @@ function new_discount_amount(){
                                                                              echo form_input($cost)?>
                                                         </div>
                                                         </div>
-                                               </td><td>
-                                                    <div class="col col-lg-12" style="padding:0px">
+                                              
+                                                    <div class="col col-lg-1" style="padding:1px">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="price" ><?php echo $this->lang->line('price') ?></label>
+                                                                <label for="price" class="text-center" ><?php echo $this->lang->line('price') ?></label>
 
                                                                  <?php $price=array('name'=>'price',
                                                                                             'class'=>' form-control small_length text-right',
@@ -1575,12 +1721,11 @@ function new_discount_amount(){
                                                                              echo form_input($price)?>
                                                         </div>
                                                         </div>
-                                            </td>
-                                            <td>
-                                                <div class="col col-lg-12" style="padding:0px">
+                                          
+                                                <div class="col col-lg-1" style="padding:1px">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="mrp" ><?php echo $this->lang->line('mrp') ?></label>
+                                                                <label for="mrp" class="text-center"  ><?php echo $this->lang->line('mrp') ?></label>
 
                                                                  <?php $mrp=array('name'=>'mrp',
                                                                                             'class'=>' form-control text-right',
@@ -1590,76 +1735,65 @@ function new_discount_amount(){
                                                                              echo form_input($mrp)?>
                                                         </div>
                                                     </div>
-                                               </td>
-                                            <td>
-                                                <div class="col col-lg-12" style="padding:0px;">
-                                                   <div class="form_sep">
-                                                            
-                                                                <label for="total" ><?php echo $this->lang->line('sub_total') ?></label>
-
-                                                                 <?php $total=array('name'=>'total',
-                                                                                            'class'=>' form-control text-right',
-                                                                                            'id'=>'total',
-                                                                                            'disabled'=>'disabled',
-                                                                                            'value'=>set_value('total'));
-                                                                             echo form_input($total)?>
-                                                        </div>
-                                                    </div>
-                                               </td>
-                                             <td>
-                                                <div class="col col-lg-12" style="padding:0px;width: 123px;">
-                                                   <div class="form_sep">
-                                                            
-                                                                <label for="delivery_date" ><?php echo $this->lang->line('tax')." & ".$this->lang->line('discount') ?></label>
-
-<!--                                                             <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                           <?php // $delivery_date=array('name'=>'delivery_date',
-                                                                                          //  'class'=>' form-control',
-                                                                                      //      'id'=>'delivery_date',
-                                                                                          
-                                                                                   //    'onKeyPress'=>"add_new_date(event); ",
-                                                                                     //       'value'=>set_value('delivery_date'));
-                                                                           //  echo form_input($delivery_date)?>
-                                                                
-                                                                <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>-->
-<a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php  echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>"><input type="text" class="form-control" value="0 & 0"></a>
-                                                        </div>
-                                                    </div>
-                                               </td>
-                                            <td>
-                                                <div class="col col-lg-12" style="padding:0px">
-                                                   <div class="form_sep">
-                                                            
-                                                                <label for="total" ><?php echo $this->lang->line('total') ?></label>
-
-                                                                 <?php $total=array('name'=>'total',
-                                                                                            'class'=>' form-control text-right',
-                                                                                            'id'=>'total',
-                                                                                            'disabled'=>'disabled',
-                                                                                            'value'=>set_value('total'));
-                                                                             echo form_input($total)?>
-                                                        </div>
-                                                    </div>
-                                               </td>
                                               
-                                               <td>  
-                                                    <label for="mrp" ><?php echo $this->lang->line('save') ?></label>
-                                                    <a class="btn btn-success" href="javascript:copy_items()" style="padding: 2px 12px"><i class="icon icon-save"></i></a>
+                                                <div class="col col-lg-1" style="padding:1px;width: 110px;">
+                                                   <div class="form_sep">
+                                                            
+                                                                <label for="total" class="text-center"  ><?php echo $this->lang->line('sub_total') ?></label>
+
+                                                                 <?php $total=array('name'=>'total',
+                                                                                            'class'=>' form-control text-right',
+                                                                                            'id'=>'total',
+                                                                                            'disabled'=>'disabled',
+                                                                                            'value'=>set_value('total'));
+                                                                             echo form_input($total)?>
+                                                        </div>
+                                                    </div>
+                                                <div class="col col-lg-1" style="padding:1px;width: 100px">
+                                                   <div class="form_sep">
+                                                     <label for="delivery_date" class="text-center" >
+                                                         <?php echo $this->lang->line('delivery_date') ?></label>
+                                                       <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2"><?php $delivery_date=array('name'=>'delivery_date','class'=>' form-control','id'=>'delivery_date','onKeyPress'=>"add_new_date(event); ", 'value'=>set_value('delivery_date')); echo form_input($delivery_date)?><span class="input-group-addon"><i class="icon-calendar"></i></span></div>
+                                                        </div>
+                                                    </div>
+                                             
+                                              
+                                               
+                                                <div class="col col-lg-1" style="padding:1px;width: 100px">
+                                                   <div class="form_sep">
+                                                            
+                                                                <label for="total" class="text-center"  ><?php echo $this->lang->line('tax')." & ".$this->lang->line('dis') ?></label>
+
+                                                                 <a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php  echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>"><input type="text" class="form-control text-center"  value="0 & 0"></a>
+                                                        </div>
+                                                    </div>
+                                                <div class="col col-lg-1" style="padding:1px;width: 110px;">
+                                                   <div class="form_sep">
+                                                            
+                                                                <label for="total" class="text-center"  ><?php echo $this->lang->line('total') ?></label>
+
+                                                                 <?php $total=array('name'=>'total',
+                                                                                            'class'=>' form-control text-right',
+                                                                                            'id'=>'total',
+                                                                                            'disabled'=>'disabled',
+                                                                                            'value'=>set_value('total'));
+                                                                             echo form_input($total)?>
+                                                        </div>
+                                                    </div>
+                                                <div class="col col-lg-1" style="padding: 18px 0px 1px; width: 28px;">
+                                                
+                                                    <a  href="javascript:copy_items()" style="padding: 2px 7px"><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('save') ?>" style="height: 24px;padding: 4px 6px;width:24px "><i class="icon icon-save"></i></span></a>
                                                   
-                                                  </td>
-                                               <td>  
-                                                    <label for="mrp" ><?php echo $this->lang->line('clear') ?></label>
+                                                </div> <div class="col col-lg-1" style=" padding: 18px 0px 1px; width: 28px;">
                                                   
-                                                    <a class="btn btn-warning pull-right" style="padding: 2px 12px" href="javascript:clear_inputs()"><i class="icon icon-refresh"></i></a>
-                                                 </td>
-                                               </tr>
+                                                    <a  style="padding: 2px 7px" href="javascript:clear_inputs()"><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('clear') ?>" style="height: 24px;padding: 4px 6px;width:24px "><i class="icon icon-refresh"></i></span></a>
+                                                </div>
                                                
                                                
-                                               </table>
+                          
                                           
                                      <br>
-                                        </div>                              
+                                                                     
                               </div>
                           
                           
