@@ -155,7 +155,7 @@
     
      $(document).ready( function () {
          
-        
+       
           $('#parsley_reg #items').change(function() {
               if(document.getElementById('new_item_row_id_'+$('#parsley_reg #items').select2('data').id) && $('#parsley_reg #diabled_item').val()!=$('#parsley_reg #items').select2('data').id){
                      $.bootstrapGrowl('<?php echo $this->lang->line('this item already added');?> '+$('#parsley_reg #first_name').val(), { type: "warning" });  
@@ -174,18 +174,17 @@
                 $('#parsley_reg #tax_value').val($('#parsley_reg #items').select2('data').tax_value);
                 $('#parsley_reg #tax_type').val($('#parsley_reg #items').select2('data').tax_type);
                 var tax=$('#parsley_reg #items').select2('data').tax_Inclusive;
+                $('#parsley_reg #tax_Inclusive').val(tax);
+                if(tax==1){
+                    $('#tax_label').text('Tax(Exc)');
+                }else{
+                    $('#tax_label').text('Tax(Inc)');   
+                }
                 disacount_and_amount_editable();
-               if(tax==0){
-                   
-                  $("#tax_lablel").text('Tax Is Inclusive');  
-               }else{
-                   $("#tax_lablel").text('Tax Is Exclusive');
-               }
-               console.log( $("#tax_lablel").text('Tax Is Exclusive'));
+                    free_and_discount_input();
                
-                     free_and_discount_input();
-                      $('#parsley_reg #extra_elements').click();
-                       $('#parsley_reg #quantity').focus();
+                $('#parsley_reg #extra_elements').click();
+                $('#parsley_reg #quantity').focus();
                  
           }
           });
@@ -544,7 +543,7 @@ function reload_update_user(){
            }
            this.$input.filter('[name="i_discount"]').val(value.i_discount);
            this.$input.filter('[name="i_dis_amt"]').val(value.i_dis_amt);
-           this.$input.filter('[name="free"]').val(value.free);
+           this.$input.filter('[name="tax_amount"]').val(value.tax_amount);
        },       
        
        /**
@@ -556,7 +555,7 @@ function reload_update_user(){
            return {
               i_discount: this.$input.filter('[name="i_discount"]').val(), 
               i_dis_amt: this.$input.filter('[name="i_dis_amt"]').val(), 
-              free: this.$input.filter('[name="free"]').val()
+              tax_amount: this.$input.filter('[name="tax_amount"]').val()
            };
        },        
        
@@ -585,25 +584,21 @@ function reload_update_user(){
 
     Address.defaults = $.extend({}, $.fn.editabletypes.abstractinput.defaults, {
         tpl: '<div class="row"><div class="col col-lg-7"><label><span><?php echo $this->lang->line('discount') ?> %: </span></lable></div><div class="col col-lg-5"><input type="text" name="i_discount" id="i_discount" onKeyPress="item_discount(event);return numbersonly(event)" maxlength="2" onkeyup="item_editable_discount()" class="form-control"></div></div>'+
-             '<div class="row"><div class="col col-lg-7"><label><span><?php echo $this->lang->line('discount_amount') ?> </span></lable></div><div class="col col-lg-5"><input type="text" name="i_dis_amt" id="i_dis_amt" onKeyPress="item_discount_amount(event);return numbersonly(event)" onkeyup="item_editable_discount()" class="form-control"></div></div>'+
-             '',
+             '<div class="row"><div class="col col-lg-7"><label><span><?php echo $this->lang->line('discount_amount') ?> </span></lable></div><div class="col col-lg-5"><input type="text" name="i_dis_amt" id="i_dis_amt" onKeyPress="item_discount_amount(event);return numbersonly(event)" onkeyup="item_editable_discount_amount()" class="form-control"></div></div>',
           
         inputclass: ''
     });
-   console.log($('#company').val());
-   alert('jibi')
+  
     $.fn.editabletypes.address = Address;
         
      }
     function item_editable_discount(){
-        var amount=$('#i_dis_amt').val();
+       
         var per=$('#i_discount').val();
           if (isNaN(per)) {
               per=0;
           }
-          if (isNaN(amount)) {
-            //  amount=0;
-          }
+          
        var quantity=($('#quantity').val());
         var cost=$('#cost').val();
           if(per!="" && per!=0){
@@ -614,21 +609,43 @@ function reload_update_user(){
                 $('#i_dis_amt').val(discount);
                 $('#total').val(parseFloat(cost*quantity)-discount);
           }else{
+              $('#total').val(parseFloat(cost*quantity));
+                $('#i_dis_amt').val(0);
+          }
+    }
+    function item_editable_discount_amount(){
+        var amount=$('#i_dis_amt').val();
+       
+          if (isNaN(amount)) {
+              amount=0;
+          }
+         
+       var quantity=($('#quantity').val());
+        var cost=$('#cost').val();
+          if(amount!="" && amount!=0){
+    
+          
+           var  per=parseFloat((amount*100)/(cost*quantity));      
+           console.log()
+                $('#i_discount').val(per);
+                $('#total').val(parseFloat(cost*quantity)-amount);
+          }else{
               $('#total').val(parseFloat(cost*quantity)-amount);
+               $('#i_discount').val(0);
           }
     }
     function free_and_discount_input(){
-     console.log($('#parsley_reg #supplier_guid').val());
-     console.log($('#parsley_reg #item_id').val());
+     
                  if($('#parsley_reg #supplier_guid').val()!="" && $('#parsley_reg #item_id').val()!="" ){
                      
-                 
-                 $('#item_free_and_discount').editable({
+              
+                
+                         $('#item_free_and_discount').editable({
        
         value: {
             i_discount: "0", 
-            i_dis_amt: "0", 
-            free: "0"
+            i_dis_amt: "0"
+          
         },
 //        validate: function(value) {
 //            if(value.i_discount == '') return 'city is required!'; 
@@ -639,11 +656,12 @@ function reload_update_user(){
                 return; 
             }
             //var html = '<b>Discount' + $('<div>').text(value.i_discount).html() + '</b> ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
-            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='hidden' value='"+value.free+"' id='hidden_free'><input type='text' class='form-control text-center' id='extra_elements' value='"+value.free+" & "+value.i_dis_amt+" ' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
+            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='text' class='form-control text-center' id='extra_elements' value='"+value.i_dis_amt+" ' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
             $(this).html(html); 
            
         }         
-    });    }else{
+    }); 
+               }else{
     if($('#parsley_reg #supplier_guid').val()!=""){
      //$.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
       //   $('#parsley_reg #first_name').select2('open');
@@ -1647,17 +1665,15 @@ function new_discount_amount(){
                                                                      echo form_input($items)?>
                                                   </div>
                                          
-                                                 <input type="hidden" id='diabled_item' class="form-control">
-                                                 
-                                                 <input type="hidden" name="item_id" id="item_id">
-                                                 <input type="hidden" name="tax_type" id="tax_type">
-                                                 <input type="hidden" name="tax_Inclusive " id="tax_Inclusive ">
-                                                 
-                                                 <input type="hidden" name="tax_value" id="tax_value">
-                                           <input type="hidden" name="item_name" id="item_name">
-                                           <input type="hidden" name="sku" id="sku">
-                                           <input type="hidden" name="seleted_row_id" id="seleted_row_id">
-                                           <input type="hidden" name="supplier_quty" id="supplier_quty">
+                                                    <input type="hidden" id='diabled_item' class="form-control">                                                 
+                                                    <input type="hidden" name="item_id" id="item_id">
+                                                    <input type="hidden" name="tax_type" id="tax_type">
+                                                    <input type="text" name="tax_Inclusive" id="tax_Inclusive">                                                 
+                                                    <input type="hidden" name="tax_value" id="tax_value">
+                                                    <input type="hidden" name="item_name" id="item_name">
+                                                    <input type="hidden" name="sku" id="sku">
+                                                    <input type="hidden" name="seleted_row_id" id="seleted_row_id">
+                                                    <input type="hidden" name="supplier_quty" id="supplier_quty">
                                                         </div>
                                                 
                                                  <div class="col col-lg-1" style="padding:1px;width: 104px;">
@@ -1735,8 +1751,8 @@ function new_discount_amount(){
                                                                              echo form_input($mrp)?>
                                                         </div>
                                                     </div>
-                                              
-                                                <div class="col col-lg-1" style="padding:1px;width: 110px;">
+                                  
+                                                <div class="col col-lg-1" style="padding:1px;width: 105px;">
                                                    <div class="form_sep">
                                                             
                                                                 <label for="total" class="text-center"  ><?php echo $this->lang->line('sub_total') ?></label>
@@ -1749,25 +1765,39 @@ function new_discount_amount(){
                                                                              echo form_input($total)?>
                                                         </div>
                                                     </div>
-                                                <div class="col col-lg-1" style="padding:1px;width: 100px">
+                                  
+                                                <div class="col col-lg-1" style="padding:1px;width: 78px">
                                                    <div class="form_sep">
                                                      <label for="delivery_date" class="text-center" >
-                                                         <?php echo $this->lang->line('delivery_date') ?></label>
-                                                       <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2"><?php $delivery_date=array('name'=>'delivery_date','class'=>' form-control','id'=>'delivery_date','onKeyPress'=>"add_new_date(event); ", 'value'=>set_value('delivery_date')); echo form_input($delivery_date)?><span class="input-group-addon"><i class="icon-calendar"></i></span></div>
+                                                         <span data-toggle="tooltip" class=" hint--top hint--info" data-hint="<?php echo $this->lang->line('delivery_date') ?>"> <?php echo $this->lang->line('short_delivery_date') ?></span></label>
+                                                       <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2"><?php $delivery_date=array('name'=>'delivery_date','class'=>' form-control','id'=>'delivery_date','onKeyPress'=>"add_new_date(event); ", 'value'=>set_value('delivery_date')); echo form_input($delivery_date)?><span class="input-group-addon" style="display: none"></span></div>
                                                         </div>
                                                     </div>
                                              
-                                              
-                                               
-                                                <div class="col col-lg-1" style="padding:1px;width: 100px">
+                                                          <div class="col col-lg-1" style="padding:1px;width: 70px;">
                                                    <div class="form_sep">
                                                             
-                                                                <label for="total" class="text-center"  ><?php echo $this->lang->line('tax')." & ".$this->lang->line('dis') ?></label>
+                                                                <label for="tax" class="text-center" id="tax_label"  ><?php echo $this->lang->line('tax') ?></label>
 
-                                                                 <a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php  echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>"><input type="text" class="form-control text-center"  value="0 & 0"></a>
+                                                                 <?php $tax=array('name'=>'tax',
+                                                                                            'class'=>' form-control text-right',
+                                                                                            'id'=>'tax',
+                                                                                            'disabled'=>'disabled',
+                                                                                            'value'=>set_value('tax'));
+                                                                             echo form_input($tax)?>
                                                         </div>
                                                     </div>
-                                                <div class="col col-lg-1" style="padding:1px;width: 110px;">
+                                               
+                                                <div class="col col-lg-1" style="padding:1px;width: 70px">
+                                                   <div class="form_sep">
+                                                            
+                                                                <label for="total" class="text-center"  ><?php echo $this->lang->line('discount') ?></label>
+
+                                                                 <a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php  echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>"><input type="text" class="form-control text-center"  value="0"></a>
+                                                                
+                                                        </div>
+                                                    </div>
+                                                <div class="col col-lg-1" style="padding:1px;width: 105px;">
                                                    <div class="form_sep">
                                                             
                                                                 <label for="total" class="text-center"  ><?php echo $this->lang->line('total') ?></label>
@@ -1780,13 +1810,13 @@ function new_discount_amount(){
                                                                              echo form_input($total)?>
                                                         </div>
                                                     </div>
-                                                <div class="col col-lg-1" style="padding: 18px 0px 1px; width: 28px;">
+                                                <div class="col col-lg-1" style="padding: 18px 0px 1px; width: 25px;">
                                                 
-                                                    <a  href="javascript:copy_items()" style="padding: 2px 7px"><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('save') ?>" style="height: 24px;padding: 4px 6px;width:24px "><i class="icon icon-save"></i></span></a>
+                                                    <a  href="javascript:copy_items()" style="padding: 2px 3px"><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('save') ?>" style="height: 24px;padding: 4px 6px;width:24px "><i class="icon icon-save"></i></span></a>
                                                   
-                                                </div> <div class="col col-lg-1" style=" padding: 18px 0px 1px; width: 28px;">
+                                                </div> <div class="col col-lg-1" style=" padding: 18px 0px 1px; width: 25px;">
                                                   
-                                                    <a  style="padding: 2px 7px" href="javascript:clear_inputs()"><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('clear') ?>" style="height: 24px;padding: 4px 6px;width:24px "><i class="icon icon-refresh"></i></span></a>
+                                                    <a  style="padding: 2px 3px" href="javascript:clear_inputs()"><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('clear') ?>" style="height: 24px;padding: 4px 6px;width:24px "><i class="icon icon-refresh"></i></span></a>
                                                 </div>
                                                
                                                
