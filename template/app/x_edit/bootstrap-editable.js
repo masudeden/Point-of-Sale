@@ -138,7 +138,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             **/              
             
             this.$div.triggerHandler('cancel');
+                net_amount();
               $('#extra_elements').focus();
+            
         },
         showLoading: function() {
             var w, h;
@@ -301,7 +303,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.error(msg);
                 this.showForm();
             }, this));
+            net_amount();
             $('#extra_elements').focus();
+              
         },
 
         save: function(submitValue) {
@@ -640,6 +644,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
     
     //engine
     $.fn.editableform.engine = 'jquery';
+   
 }(window.jQuery));
 
 /**
@@ -772,6 +777,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
         method to escape html.
        **/
        escape: function(str) {
+            
            return $('<div>').text(str).html();
        },
        
@@ -1161,6 +1167,8 @@ Applied as jQuery method.
             });
             **/
             this.$element.triggerHandler('hidden', reason || 'manual');   
+            net_amount();
+            $('#extra_elements').focus();
         },
 
         /* internal show method. To be overwritten in child classes */

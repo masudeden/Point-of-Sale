@@ -351,7 +351,7 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="purchase" ></label>                                                                                                       
-                                                     <input type="radio" value="0" name="purchase" id="purchase_yes"> <label for="purchase_yes" class="icheck_label"><?php echo $this->lang->line('purchase') ?></label><br>
+                                                         <input type="radio" autocomplete="o" value="0" name="purchase" id="purchase_yes"> <label for="purchase_yes" class="icheck_label"><?php echo $this->lang->line('purchase') ?></label><br>
                                                       <input type="radio" value="1" name="purchase" id="purchase_no" > <label for="purchase_No" class="icheck_label"><?php echo $this->lang->line('non_purchase') ?></label>
                                                     
                                                     </div>
