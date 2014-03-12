@@ -96,7 +96,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 }
                  
                 //attach 'cancel' handler
-                this.$form.find('.editable-cancel').click($.proxy(this.cancel, this));
+                this.$form.find('.editable-cancel').click($.proxy(this.cancel,this));
                 
                 if(this.input.error) {
                     this.error(this.input.error);
@@ -112,6 +112,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                     this.input.value2input(value);
                     //attach submit handler
                     this.$form.submit($.proxy(this.submit, this));
+                   
                 }
 
                 /**        
@@ -135,7 +136,9 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
             @event cancel 
             @param {Object} event event object
             **/              
+            
             this.$div.triggerHandler('cancel');
+              $('#extra_elements').focus();
         },
         showLoading: function() {
             var w, h;
@@ -298,6 +301,7 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.error(msg);
                 this.showForm();
             }, this));
+            $('#extra_elements').focus();
         },
 
         save: function(submitValue) {
@@ -4681,7 +4685,7 @@ Editableform based on Twitter Bootstrap 3
       '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
         '<i class="glyphicon glyphicon-ok"></i>'+
       '</button>'+
-      '<button type="button" class="btn btn-default btn-sm editable-cancel">'+
+      '<button type="button" class="btn btn-default btn-sm editable-cancel" id="discount_close">'+
         '<i class="glyphicon glyphicon-remove"></i>'+
       '</button>';         
     

@@ -443,8 +443,10 @@ function reload_update_user(){
               
 <script >
      $(document).ready( function () {
-        
-         
+        $('#discount_close').click(function(){
+        alert("button");
+        console.log();
+      }); 
      });
    function  disacount_and_amount_editable(){
           "use strict";
@@ -476,7 +478,7 @@ function reload_update_user(){
                 $(element).empty();
                 return; 
             }
-            var html = $('<div>').text(value.i_discount).html() + ', ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
+            var html = $('<div>').text(value.i_discount).html() + ', ' + $('<div>').text(value.i_dis_amt).html() ;
             $(element).html(html); 
         },
         
@@ -543,7 +545,6 @@ function reload_update_user(){
            }
            this.$input.filter('[name="i_discount"]').val(value.i_discount);
            this.$input.filter('[name="i_dis_amt"]').val(value.i_dis_amt);
-           this.$input.filter('[name="tax_amount"]').val(value.tax_amount);
        },       
        
        /**
@@ -555,7 +556,6 @@ function reload_update_user(){
            return {
               i_discount: this.$input.filter('[name="i_discount"]').val(), 
               i_dis_amt: this.$input.filter('[name="i_dis_amt"]').val(), 
-              tax_amount: this.$input.filter('[name="tax_amount"]').val()
            };
        },        
        
@@ -577,6 +577,8 @@ function reload_update_user(){
            this.$input.keydown(function (e) {
                 if (e.which === 13) {
                     $(this).closest('form').submit();
+                    document.getElementById('extra_elements').focus();
+                    alert('jibi');
                 }
            });
        }       
@@ -624,13 +626,17 @@ function reload_update_user(){
         var cost=$('#cost').val();
           if(amount!="" && amount!=0){
     
-          
+          if(amount>parseFloat(cost*quantity)){
+              $('#i_dis_amt').val('');
+               $('#i_discount').val(0);
+                $('#total').val(parseFloat(cost*quantity));
+          }else{
            var  per=parseFloat((amount*100)/(cost*quantity));      
-           console.log()
+        
                 $('#i_discount').val(per);
                 $('#total').val(parseFloat(cost*quantity)-amount);
-          }else{
-              $('#total').val(parseFloat(cost*quantity)-amount);
+          }}else{
+              $('#total').val(parseFloat(cost*quantity));
                $('#i_discount').val(0);
           }
     }
@@ -643,8 +649,8 @@ function reload_update_user(){
                          $('#item_free_and_discount').editable({
        
         value: {
-            i_discount: "0", 
-            i_dis_amt: "0"
+            i_discount: "", 
+            i_dis_amt: ""
           
         },
 //        validate: function(value) {
@@ -656,7 +662,7 @@ function reload_update_user(){
                 return; 
             }
             //var html = '<b>Discount' + $('<div>').text(value.i_discount).html() + '</b> ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
-            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='text' class='form-control text-center' id='extra_elements' value='"+value.i_dis_amt+" '  onKeyPress='add_new_discount(event);return numbersonly(event)'>"
+            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='text' class='form-control text-center' id='extra_elements' value='"+value.i_dis_amt+" ' onKeyPress='add_new_discount(event);return numbersonly(event)'  onkeyup='set_default_amount()'>"
             $(this).html(html); 
            
         }         
@@ -683,6 +689,10 @@ function reload_update_user(){
         </div>
 </div>
 <script type="text/javascript">
+    function set_default_amount(){
+        document.getElementById('extra_elements').value=$('#hidden_dis_amt').val();
+      
+    }
     function discounte_amount(){
     if(parseFloat($('#parsley_reg #hidden_total_price').val())>0){
         total=parseFloat($('#parsley_reg #hidden_total_price').val());
@@ -810,7 +820,12 @@ function item_discount(e){
          if (unicode!=27){
         }
        else{
-            
+           document.getElementById('extra_elements').focus();
+          window.setTimeout(function ()
+    {
+       //$('#parsley_reg #delivery_date').focus();
+       document.getElementById('extra_elements').focus();
+    }, 1000);
          // document.getElementById("expiry_date").focus();
         }
         
@@ -823,7 +838,36 @@ function item_discount(e){
     }
 function item_discount_amount(e){
     
+   if($('#parsley_reg #supplier_guid').val()!=""){
 
+     var unicode=e.charCode? e.charCode : e.keyCode
+
+        
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#parsley_reg .editable-submit').focus();
+            
+        }
+         if (unicode!=27){
+        }
+       else{
+           document.getElementById('extra_elements').focus();
+          window.setTimeout(function ()
+    {
+       //$('#parsley_reg #delivery_date').focus();
+       document.getElementById('extra_elements').focus();
+    }, 1000);
+         // document.getElementById("expiry_date").focus();
+        }
+        
+        }else{
+ $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
+         $('#parsley_reg #first_name').select2('open');
+
+        }
+
+    
     }
 function item_free(e){
     if($('#parsley_reg #supplier_guid').val()!=""){
@@ -980,6 +1024,13 @@ function add_new_discount(e){
         }
            if (unicode!=13 && unicode!=9 && unicode!=27){
                $('#extra_elements').click();
+               document.getElementById('i_discount').focus();
+                document.getElementById('extra_elements').value=$('#hidden_dis_amt').val();
+                  window.setTimeout(function ()
+                    {
+                       //$('#parsley_reg #delivery_date').focus();
+                       document.getElementById('extra_elements').value=$('#hidden_dis_amt').val();
+                    }, 10);
            }
         
         }else{
@@ -1126,9 +1177,16 @@ function add_new_price(e){
         }
        else{ 
             if($('#parsley_reg #item_id').val()!=""){
-                     //    free_and_discount_input();
-                      $('#parsley_reg #extra_elements').click();
-                            
+                         free_and_discount_input();
+                    //  $('#parsley_reg #extra_elements').focus();
+                        document.getElementById('extra_elements').focus();
+                       
+                        
+                  window.setTimeout(function ()
+                    { 
+                           document.getElementById('extra_elements').focus();
+                    }, 0);
+                      //      
        }else{
                                         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
           $('#parsley_reg #items').select2('open');
@@ -1164,6 +1222,7 @@ function add_new_price(e){
         }
     }
 function copy_items(){
+
  if( $('#parsley_reg #item_id').val()!="" &&  $('#parsley_reg #cost').val()!="" && $('#parsley_reg #price').val()!="" && $('#parsley_reg #mrp').val()!="" && $('#parsley_reg #quantity').val()!="" && $('#parsley_reg #delivery_date').val()){
  
    if($('#parsley_reg #cost').val()<$('#parsley_reg #price').val()) { 
