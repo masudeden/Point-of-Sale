@@ -656,7 +656,7 @@ function reload_update_user(){
                 return; 
             }
             //var html = '<b>Discount' + $('<div>').text(value.i_discount).html() + '</b> ' + $('<div>').text(value.i_dis_amt).html() + ' st., bld. ' + $('<div>').text(value.free).html();
-            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='text' class='form-control text-center' id='extra_elements' value='"+value.i_dis_amt+" ' onkeyup='' onKeyPress='add_new_free(event);return numbersonly(event)'>"
+            var html="<input type='hidden' value='"+value.i_dis_amt+"' id='hidden_dis_amt'><input type='hidden' value='"+value.i_discount+"' id='hidden_dis'><input type='text' class='form-control text-center' id='extra_elements' value='"+value.i_dis_amt+" '  onKeyPress='add_new_discount(event);return numbersonly(event)'>"
             $(this).html(html); 
            
         }         
@@ -822,29 +822,7 @@ function item_discount(e){
 
     }
 function item_discount_amount(e){
-    if($('#parsley_reg #supplier_guid').val()!=""){
-
-     var unicode=e.charCode? e.charCode : e.keyCode
-
-        
-                  if (unicode!=13 && unicode!=9){
-        }
-       else{
-           $('#parsley_reg #i_free').focus();
-            
-        }
-         if (unicode!=27){
-        }
-       else{
-            
-      $('#parsley_reg #i_dis_amt').focus();
-        }
-        
-        }else{
- $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
-         $('#parsley_reg #first_name').select2('open');
-
-        }
+    
 
     }
 function item_free(e){
@@ -964,8 +942,7 @@ function add_new_quty(e){
         }
        else{
            $('#parsley_reg #free').focus();
-         free_and_discount_input();
-                      $('#parsley_reg #extra_elements').click();
+         
         }
          if (unicode!=27){
         }
@@ -981,17 +958,17 @@ function add_new_quty(e){
         }
 
     }
-function add_new_free(e){
+function add_new_discount(e){
     if($('#parsley_reg #item_id').val()!=""){
 
      var unicode=e.charCode? e.charCode : e.keyCode
-   if($('#parsley_reg #free').value!=""){
+   
         
                   if (unicode!=13 && unicode!=9){
                       
         }
        else{
-           $('#parsley_reg #cost').focus();
+         copy_items();
          
         }
          if (unicode!=27){
@@ -999,16 +976,41 @@ function add_new_free(e){
         }
        else{
           
-             $("#parsley_reg #quantity").focus();
+               document.getElementById('delivery_date').focus();
         }
-         
-        }
+           if (unicode!=13 && unicode!=9 && unicode!=27){
+               $('#extra_elements').click();
+           }
+        
         }else{
  $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
          $("#parsley_reg #items").focus();
 
         }
 
+    }
+function add_new_free(e){          
+  if($('#parsley_reg #item_id').val()!=""){
+     var unicode=e.charCode? e.charCode : e.keyCode
+    if($('#parsley_reg #free').value!=""){
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#parsley_reg #cost').focus();
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+               
+            $('#parsley_reg #quantity').focus();
+        }
+        }
+    }else{
+         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
+    
+       $('#parsley_reg #items').select2('open');
+    }
     }
 function add_new_cost(e){          
   if($('#parsley_reg #item_id').val()!=""){
@@ -1067,7 +1069,7 @@ function add_new_price(e){
             if($('#parsley_reg #item_id').val()!=""){
            
      
-        document.getElementById('parsley_reg delivery_date').focus();
+        document.getElementById('delivery_date').focus();
                   
                             
        }else{
@@ -1124,7 +1126,8 @@ function add_new_price(e){
         }
        else{ 
             if($('#parsley_reg #item_id').val()!=""){
-                             copy_items();
+                     //    free_and_discount_input();
+                      $('#parsley_reg #extra_elements').click();
                             
        }else{
                                         $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
@@ -1668,7 +1671,7 @@ function new_discount_amount(){
                                                     <input type="hidden" id='diabled_item' class="form-control">                                                 
                                                     <input type="hidden" name="item_id" id="item_id">
                                                     <input type="hidden" name="tax_type" id="tax_type">
-                                                    <input type="text" name="tax_Inclusive" id="tax_Inclusive">                                                 
+                                                    <input type="hidden" name="tax_Inclusive" id="tax_Inclusive">                                                 
                                                     <input type="hidden" name="tax_value" id="tax_value">
                                                     <input type="hidden" name="item_name" id="item_name">
                                                     <input type="hidden" name="sku" id="sku">
