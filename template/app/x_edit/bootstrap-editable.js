@@ -303,9 +303,11 @@ Editableform is linked with one of input types, e.g. 'text', 'select' etc.
                 this.error(msg);
                 this.showForm();
             }, this));
-            net_amount();
+           
+          
             $('#extra_elements').focus();
-              
+               net_amount();
+          
         },
 
         save: function(submitValue) {
