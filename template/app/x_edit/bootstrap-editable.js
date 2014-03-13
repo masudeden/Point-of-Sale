@@ -4690,7 +4690,7 @@ Editableform based on Twitter Bootstrap 3
     
     //buttons
     $.fn.editableform.buttons = 
-      '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
+      '<button type="submit" id="discount_submit_button" class="btn btn-primary btn-sm editable-submit">'+
         '<i class="glyphicon glyphicon-ok"></i>'+
       '</button>'+
       '<button type="button" class="btn btn-default btn-sm editable-cancel" id="discount_close">'+

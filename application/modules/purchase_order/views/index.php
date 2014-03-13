@@ -181,7 +181,11 @@
                     $('#tax_label').text('Tax(Inc)');   
                 }
                 disacount_and_amount_editable();
-                    free_and_discount_input();
+                  
+                    $('#i_discount').val('0');
+                    $('#i_dis_amt').val('0');
+                      free_and_discount_input();
+                    console.log();
                net_amount();
                 $('#parsley_reg #extra_elements').click();
                 $('#parsley_reg #quantity').focus();
@@ -550,8 +554,8 @@ function reload_update_user(){
            if(!value) {
              return;
            }
-           this.$input.filter('[name="i_discount"]').val(value.i_discount);
-           this.$input.filter('[name="i_dis_amt"]').val(value.i_dis_amt);
+           this.$input.filter('[name="i_discount"]').val($('#dummy_discount').val());
+           this.$input.filter('[name="i_dis_amt"]').val($('#dummy_discount_amount').val());
        },       
        
        /**
@@ -585,7 +589,7 @@ function reload_update_user(){
                 if (e.which === 13) {
                     $(this).closest('form').submit();
                     document.getElementById('extra_elements').focus();
-                    alert('jibi');
+                   
                 }
            });
        }       
@@ -620,8 +624,13 @@ function reload_update_user(){
                 $('#total').val(num.toFixed(3));    
                 $('#i_dis_amt').val(0);
                 $('#i_discount').val('');
+                 $('#dummy_discount_amount').val(0);
+                $('#dummy_discount').val();
            }else{
                 $('#i_dis_amt').val(discount);
+                $('#dummy_discount_amount').val(discount);
+                $('#dummy_discount').val(per);
+                
                  var num = parseFloat(discount);
                 discount=num.toFixed(3);      
               if($('#tax_Inclusive').val()==1){
@@ -655,8 +664,10 @@ function reload_update_user(){
           if(amount!="" && amount!=0){
     
           if(amount>parseFloat(cost*quantity)){
-              $('#i_dis_amt').val('');
-               $('#i_discount').val(0);
+                $('#i_dis_amt').val('');
+                $('#i_discount').val(0);
+                $('#dummy_discount_amount').val(0);
+                $('#dummy_discount').val();
                 $('#total').val(parseFloat(cost*quantity));
           }else{
            var  per=parseFloat((amount*100)/(cost*quantity));      
@@ -669,7 +680,8 @@ function reload_update_user(){
                    }else{
                         $('#parsley_reg #total').val($('#parsley_reg #cost').val()*$('#parsley_reg #quantity').val()-amount);
                    }
-              
+              $('#dummy_discount_amount').val(amount);
+                $('#dummy_discount').val(per);
           }}else{
              if($('#tax_Inclusive').val()==1){
                         $('#parsley_reg #total').val($('#parsley_reg #cost').val()*$('#parsley_reg #quantity').val()+parseFloat($('#tax').val()));
@@ -688,11 +700,11 @@ function reload_update_user(){
                 
                          $('#item_free_and_discount').editable({
        
-//        value: {
-//            i_discount: "", 
-//            i_dis_amt: "0"
-//          
-//        },
+        value: {
+            i_discount: "", 
+            i_dis_amt: "0"
+          
+        },
 //        validate: function(value) {
 //            if(value.i_discount == '') return 'city is required!'; 
 //        },
@@ -1571,11 +1583,8 @@ function edit_order_item(guid){
     }
      $("#parsley_reg #items").select2('data', {id:guid,text:$('#selected_item_table #new_item_row_id_'+guid+' #row_item_name').val() });
 $('#extra_elements').click()
-          window.setTimeout(function ()
-                    {
-                       //$('#parsley_reg #delivery_date').focus();
-                       document.getElementById('i_discount').value='1090';
-                    }, 1000);
+          $('#dummy_discount_amount').val($('#selected_item_table #new_item_row_id_'+guid+' #items_discount').val());
+          $('#dummy_discount').val($('#selected_item_table #new_item_row_id_'+guid+' #items_discount_per').val());
 
 
 }
@@ -1683,7 +1692,8 @@ function new_discount_amount(){
         
     <div id="main_content" style="padding: 0 14px !important;">
                      
-                
+        <input type="text" name="dummy_discount" id="dummy_discount" >
+        <input type="text" name="dummy_discount_amount" id="dummy_discount_amount" >
                          <div class="row">
                           <div class="panel panel-default">
                               <div class="panel-heading" >
