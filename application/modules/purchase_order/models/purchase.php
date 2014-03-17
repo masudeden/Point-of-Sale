@@ -110,11 +110,13 @@ class Purchase extends CI_Model{
      
      }
      function get_purchase_order($guid){
-         $this->db->select('suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,purchase_order.*,purchase_order_items.guid as o_i_guid ,purchase_order_items.order_id ,purchase_order_items.item ,purchase_order_items.quty ,purchase_order_items.free ,purchase_order_items.cost ,purchase_order_items.sell ,purchase_order_items.mrp ,purchase_order_items.amount ,purchase_order_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('purchase_order')->where('purchase_order.guid',$guid);
+         $this->db->select('items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,purchase_order.*,purchase_order_items.discount_per as dis_per ,purchase_order_items.discount_amount as dis_amt ,purchase_order_items.tax as dis_amt ,purchase_order_items.tax as order_tax,purchase_order_items.item ,purchase_order_items.quty ,purchase_order_items.free ,purchase_order_items.cost ,purchase_order_items.sell ,purchase_order_items.mrp ,purchase_order_items.amount ,purchase_order_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('purchase_order')->where('purchase_order.guid',$guid);
          $this->db->join('purchase_order_items', 'purchase_order_items.order_id = purchase_order.guid AND purchase_order_items.delete_status=0','left');
          $this->db->join('items', "items.guid=purchase_order_items.item AND purchase_order_items.order_id='".$guid."'",'left');
-         $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id','left');
-         $this->db->join('suppliers_x_items', 'suppliers_x_items.supplier_id=purchase_order.supplier_id AND suppliers_x_items.item_id=purchase_order_items.item','left');
+         $this->db->join('taxes', "items.tax_id=taxes.guid AND items.guid=purchase_order_items.item",'left');
+         $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=purchase_order_items.item ",'left');
+         $this->db->join('suppliers', "suppliers.guid=purchase_order.supplier_id AND purchase_order_items.order_id='".$guid."'",'left');
+         $this->db->join('suppliers_x_items', "suppliers_x_items.supplier_id=purchase_order.supplier_id AND suppliers_x_items.item_id=purchase_order_items.item AND purchase_order_items.order_id='".$guid."'",'left');
          $sql=  $this->db->get();
          $data=array();
          foreach($sql->result_array() as $row){

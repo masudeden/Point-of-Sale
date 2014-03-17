@@ -179,17 +179,21 @@ function save(){
               $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
               $guid=   $this->posnic->posnic_add_record($value,'purchase_order');
           
-                $item=  $this->input->post('items_id');
-                $quty=  $this->input->post('items_quty');
-                $cost=  $this->input->post('items_cost');
-                $free=  $this->input->post('items_free');
-                $sell=  $this->input->post('items_price');
-                $mrp=  $this->input->post('items_mrp');
-                $del_date= $this->input->post('items_date');
-                $net=  $this->input->post('items_total');
+                $item=  $this->input->post('new_item_id');
+                $quty=  $this->input->post('new_item_quty');
+                $cost=  $this->input->post('new_item_cost');
+                $free=  $this->input->post('new_item_free');
+                $sell=  $this->input->post('new_item_price');
+                $mrp=  $this->input->post('new_item_mrp');
+                $del_date= $this->input->post('new_item_date');
+                $net=  $this->input->post('new_item_total');
+                $per=  $this->input->post('new_item_discount_per');
+                $dis=  $this->input->post('new_item_discount');
+                $tax=  $this->input->post('new_item_tax');
+           
                 for($i=0;$i<count($item);$i++){
           
-                        $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
+                        $item_value=array('order_id'=>$guid,'discount_per'=>$per[$i],'discount_amount'=>$dis[$i],'tax'=>$tax[$i],'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
                         $this->posnic->posnic_add_record($item_value,'purchase_order_items');
                 
                         

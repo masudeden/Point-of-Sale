@@ -199,13 +199,13 @@
                              dataType: 'json',               
                              success: function(data)        
                              { 
-                              $("#user_list").hide();
-                              $('#add_new_order').show('slow');
-                              $('#delete').attr("disabled", "disabled");
-                              $('#posnic_add_purchase_order').attr("disabled", "disabled");
-                              $('#active').attr("disabled", "disabled");
-                              $('#deactive').attr("disabled", "disabled");
-                              $('#purchase_order_lists').removeAttr("disabled");
+                                $("#user_list").hide();
+                                $('#add_new_order').show('slow');
+                                $('#delete').attr("disabled", "disabled");
+                                $('#posnic_add_purchase_order').attr("disabled", "disabled");
+                                $('#active').attr("disabled", "disabled");
+                                $('#deactive').attr("disabled", "disabled");
+                                $('#purchase_order_lists').removeAttr("disabled");
                                 $('#loading').modal('hide');
                                 $("#parsley_reg").trigger('reset');
                            
@@ -230,9 +230,11 @@
                                 $("#parsley_reg #demo_total_amount").val(data[0]['total_item_amt']);
                                 $("#parsley_reg #total_amount").val(data[0]['total_item_amt']);
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
-                                
+                                var tax;
                                 for(i=0;i<data.length;i++){
-                                  
+                                  if(data[i]['tax_Inclusive']==1){
+                                     
+                                  }
                                     var  name=data[i]['items_name'];
                                     var  sku=data[i]['i_code'];
                                     var  quty=data[i]['quty'];
@@ -246,6 +248,7 @@
                                     var  o_i_guid=data[i]['o_i_guid'];
                                     var  date=data[i]['date'];
                                     var  items_id=data[i]['item'];
+                                    var discount=data[i]['discount_amount'];
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
                                     name,
@@ -256,6 +259,9 @@
                                     price,
                                     mrp,
                                     date,
+                                    parseFloat(quty)*parseFloat(cost),
+                                    1,
+                                    1,
                                     parseFloat(quty)*parseFloat(cost),
                                     '<input type="hidden" name="index" id="index">\n\
                               <input type="hidden" name="item_name" id="row_item_name" value="'+name+'">\n\
