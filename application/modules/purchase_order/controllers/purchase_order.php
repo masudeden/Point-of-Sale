@@ -248,11 +248,13 @@ function save(){
                 $mrp=  $this->input->post('items_mrp');
                 $del_date= $this->input->post('items_date');
                 $net=  $this->input->post('items_total');
-                $net=  $this->input->post('new_items');
+                $per=  $this->input->post('items_discount_per');
+                $dis=  $this->input->post('items_discount');
+                $tax=  $this->input->post('items_tax');
                 for($i=0;$i<count($item);$i++){
           
                          $where=array('order_id'=>$guid,'item'=>$item[$i]);
-                        $item_value=array('order_id'=>$guid,'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
+                        $item_value=array('order_id'=>$guid,'discount_per'=>$per[$i],'discount_amount'=>$dis[$i],'tax'=>$tax[$i],'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
                        $this->posnic->posnic_update_record($item_value,$where,'purchase_order_items');
                 
                         
@@ -272,9 +274,12 @@ function save(){
                 $new_mrp=  $this->input->post('new_item_mrp');
                 $new_del_date= $this->input->post('new_item_date');
                 $new_net=  $this->input->post('new_item_total');
+                $new_per=  $this->input->post('new_item_discount_per');
+                $new_dis=  $this->input->post('new_item_discount');
+                $new_tax=  $this->input->post('new_item_tax');
                 for($i=0;$i<count($new_quty);$i++){
           if($new_quty[$i]!=""){
-                        $new_item_value=array('order_id'=>$guid,'item'=>$new_item[$i],'quty'=>$new_quty[$i],'free'=>$new_free[$i],'cost'=>$new_cost[$i],'sell'=>$new_sell[$i],'mrp'=>$new_mrp[$i],'amount'=>$new_net[$i],'date'=> strtotime($new_del_date[$i]));
+                        $new_item_value=array('order_id'=>$guid,'discount_per'=>$new_per[$i],'discount_amount'=>$new_dis[$i],'tax'=>$new_tax[$i],'item'=>$new_item[$i],'quty'=>$new_quty[$i],'free'=>$new_free[$i],'cost'=>$new_cost[$i],'sell'=>$new_sell[$i],'mrp'=>$new_mrp[$i],'amount'=>$new_net[$i],'date'=> strtotime($new_del_date[$i]));
                         $this->posnic->posnic_add_record($new_item_value,'purchase_order_items');
           }
                         
@@ -352,9 +357,8 @@ function order_number(){
 }
 function search_items(){
        $search= $this->input->post('term');
-    $guid= $this->input->post('suppler');
+       $guid= $this->input->post('suppler');
          if($search!=""){
-            
             $this->load->model('purchase');
             $data= $this->purchase->serach_items($search,$_SESSION['Bid'],$guid);      
             echo json_encode($data);
