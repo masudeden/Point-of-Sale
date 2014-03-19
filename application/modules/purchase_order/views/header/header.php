@@ -1,5 +1,6 @@
 
 <script type="text/javascript" charset="utf-8">
+    var point=3;
           $(document).ready( function () {
               
         	 refresh_items_table();
@@ -181,6 +182,7 @@
             }
           
            function edit_function(guid){
+           
            $('#deleted').remove();
            $('#parent_items').append('<div id="deleted"></div>');
            $('#newly_added').remove();
@@ -229,6 +231,19 @@
                                 
                                 $("#parsley_reg #demo_total_amount").val(data[0]['total_item_amt']);
                                 $("#parsley_reg #total_amount").val(data[0]['total_item_amt']);
+                                
+                                  var num = parseFloat($('#demo_total_amount').val());
+                                  $('#demo_total_amount').val(num.toFixed(point));
+                                  
+                                  var num = parseFloat($('#total_amount').val());
+                                  $('#total_amount').val(num.toFixed(point));
+                                  
+                                  var num = parseFloat($('#grand_total').val());
+                                  $('#grand_total').val(num.toFixed(point));
+                                  
+                                  var num = parseFloat($('#demo_grand_total').val());
+                                  $('#demo_grand_total').val(num.toFixed(point));
+                                  
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 var tax;
                                 for(i=0;i<data.length;i++){
@@ -254,6 +269,8 @@
                                     var per=data[i]['dis_per'];
                                     }else{
                                     var discount=data[i]['item_dis_amt'];
+                                     var num = parseFloat(discount);
+                                      discount=num.toFixed(point);
                                     var per="";
                                   
                                     }
@@ -261,12 +278,16 @@
                                      var tax=data[i]['order_tax'];
                                     
                                       var total=+tax+ +(parseFloat(quty)*parseFloat(cost))-discount;
-                                     var type='Exc';
+                                      var type='Exc';
+                                      var num = parseFloat(total);
+                                      total=num.toFixed(point);
                                   }else{
                                       var type="Inc";
                                   
                                       var tax=data[i]['order_tax'];
-                                       var total=(parseFloat(quty)*parseFloat(cost))-discount;
+                                      var total=(parseFloat(quty)*parseFloat(cost))-discount;
+                                      var num = parseFloat(total);
+                                      total=num.toFixed(point);
                                   }
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
