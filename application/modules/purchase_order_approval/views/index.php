@@ -341,11 +341,7 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                       <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
-                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
-                        
-                        
-                        <a href="javascript:posnic_purchase_order_lists()" class="btn btn-success" id="purchase_order_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('purchase_order') ?></a>
+                      
                         
                 </div>
             </div>
@@ -1118,18 +1114,13 @@ function new_discount_amount(){
 }
 </script>
 
-               <script src="<?php echo base_url() ?>template/app/x_edit/jquery-1.9.1.min.js"></script>  
-                <link href="<?php echo base_url() ?>template/app/x_edit/bootstrap.css" rel="stylesheet">
-               <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap.js"></script>
-               <script src="<?php echo base_url() ?>template/app/x_edit/bootstrap-editable.js"></script>
-               <link href="<?php echo base_url() ?>template/app/x_edit/address.css" rel="stylesheet">
-               <script src="<?php echo base_url() ?>template/app/x_edit/address.js"></script> 
+             
               
 <script > $(document).ready( function () {
            });
         </script>
 
-  <a href="#" id="address" data-type="address" data-pk="1" data-title="Please, fill address">jibib</a>
+ 
   
 <section id="add_new_order" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',

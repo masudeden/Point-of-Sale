@@ -306,6 +306,7 @@ $lang['code']='Item Code';
  $lang['You Have NO Permission To Edit']='You Have NO Permission To Edit ';
  $lang['You Have NO Permission To Add']='You Have NO Permission To Add ';
  $lang['You Have NO Permission To Set']='You Have NO Permission To Set ';
+ $lang['You Have NO Permission']='You Have NO Permission ';
  $lang['Are you Sure To Delete']='Are you Sure To Delete ';
  $lang['Select Atleast One']='Select Atleast One ';
  // Brands
@@ -467,6 +468,7 @@ $lang['credit_days']='Credit Days';
   // purchase order approval
   $lang['purchase_order_approval']='P O Approval';
   $lang['approved']='Approved';
+  $lang['approve']='Approve';
   $lang['canceled']='Canceled';
   $lang['waiting']='Waiting';
   

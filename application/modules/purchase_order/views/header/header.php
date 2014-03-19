@@ -183,18 +183,19 @@
           
            function edit_function(guid){
            
-           $('#deleted').remove();
-           $('#parent_items').append('<div id="deleted"></div>');
-           $('#newly_added').remove();
-           $('#parent_items').append('<div id="newly_added"></div>');
-         refresh_items_table();
-         $('#update_button').show();
-         $('#save_button').hide();
-         $('#update_clear').show();
-         $('#save_clear').hide();
-           $('#loading').modal('show');
         
                         <?php if($_SESSION['purchase_order_per']['edit']==1){ ?>
+                                
+                            $('#deleted').remove();
+                            $('#parent_items').append('<div id="deleted"></div>');
+                            $('#newly_added').remove();
+                            $('#parent_items').append('<div id="newly_added"></div>');
+                            refresh_items_table();
+                            $('#update_button').show();
+                            $('#save_button').hide();
+                            $('#update_clear').show();
+                            $('#save_clear').hide();
+                            $('#loading').modal('show');
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/purchase_order/get_purchase_order/"+guid,                      
                              data: "", 
