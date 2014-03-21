@@ -151,52 +151,35 @@ class Goods_receiving_note extends CI_Controller{
   
 function save(){      
      if($_SESSION['purchase_order_per']['add']==1){
-        $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
-        $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
-        $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
-        $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
-        $this->form_validation->set_rules('grand_total', $this->lang->line('grand_total'), 'required');                      
-        $this->form_validation->set_rules('total_amount', $this->lang->line('total_amount'), 'required');                      
+        $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
+        $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
+        $this->form_validation->set_rules('grn_no', $this->lang->line('grn_no'), 'required');                     
            
             if ( $this->form_validation->run() !== false ) {    
-                $supplier=  $this->input->post('supplier_guid');
-                $expdate=strtotime($this->input->post('expiry_date'));
-                $pono= $this->input->post('order_number');
-                $podate= strtotime($this->input->post('order_date'));
-                $discount=  $this->input->post('discount');
-                $discount_amount=  $this->input->post('discount_amount');
-                $freight=  $this->input->post('freight');
-                $round_amt=  $this->input->post('round_off_amount');
-                $total_items=$this->input->post('index');
+                $po=  $this->input->post('goods_receiving_note_guid');
+                $grn_date=strtotime($this->input->post('grn_date'));
+                $grn_no= $this->input->post('grn_no');
                 $remark=  $this->input->post('remark');
                 $note=  $this->input->post('note');
-                $total_amount=  $this->input->post('total_amount');
-                $grand_total=  $this->input->post('grand_total');
+                
   
      
-              $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
-              $guid=   $this->posnic->posnic_add_record($value,'purchase_order');
+              $value=array('grn_no'=>$grn_no,'date'=>$grn_date,'po'=>$po,'remark'=>$remark,'note'=>$note);
+                 $guid=   $this->posnic->posnic_add_record($value,'grn');
           
-                $item=  $this->input->post('new_item_id');
-                $quty=  $this->input->post('new_item_quty');
-                $cost=  $this->input->post('new_item_cost');
-                $free=  $this->input->post('new_item_free');
-                $sell=  $this->input->post('new_item_price');
-                $mrp=  $this->input->post('new_item_mrp');
-                $del_date= $this->input->post('new_item_date');
-                $net=  $this->input->post('new_item_total');
-                $per=  $this->input->post('new_item_discount_per');
-                $dis=  $this->input->post('new_item_discount');
-                $tax=  $this->input->post('new_item_tax');
+                $quty=  $this->input->post('receive_quty');
+                $free=  $this->input->post('receive_free');
+                $items=  $this->input->post('items');
+                $po_item=  $this->input->post('order_items');
            
-                for($i=0;$i<count($item);$i++){
+                for($i=0;$i<count($items);$i++){
           
-                        $item_value=array('order_id'=>$guid,'discount_per'=>$per[$i],'discount_amount'=>$dis[$i],'tax'=>$tax[$i],'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
-                        $this->posnic->posnic_add_record($item_value,'purchase_order_items');
-                
-                        
+                        $item_value=array('grn'=>$guid,'item'=>$items[$i],'quty'=>$quty[$i],'free'=>$free[$i]);
+                        $this->posnic->posnic_add_record($item_value,'grn_x_items');
+                        $this->load->model('grn');
+                        $this->grn->update_item_receving($po_item[$i],$quty[$i],$free[$i]);
                 }
-                $this->posnic->posnic_master_increment_max('purchase_order')  ;
+                $this->posnic->posnic_master_increment_max('grn')  ;
                  echo 'TRUE';
     
                 }else{
@@ -349,7 +332,7 @@ function deactive(){
             $this->purchase->deactive_order($id);
     }
 function order_number(){
-       $data[]= $this->posnic->posnic_master_max('purchase_order')    ;
+       $data[]= $this->posnic->posnic_master_max('grn')    ;
        echo json_encode($data);
 }
 function search_items(){

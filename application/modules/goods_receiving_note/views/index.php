@@ -18,7 +18,9 @@
     padding:1px 1px 1px 3px;
     transition: none 0s ease 0s;
     }
-  
+    .ordered_items_table tr td{
+        text-align: center;
+    }
    .supplier_select{
         width: 200px !important;
     }
@@ -78,7 +80,104 @@
         return false
           }
     }
-    function save_new_order(){
+    function receive_quty(e,i){
+        var unicode=e.charCode? e.charCode : e.keyCode
+            if (unicode!=13 && unicode!=9){          
+            }
+            else{
+                   receive_quty_items(i);
+                   $('#parsley_reg #r_free_id_'+i).focus();
+            }
+             if (unicode!=27){
+            }
+            else{  if(parseFloat(i)==0){ 
+                     $('#parsley_reg #grn_date').focus();
+                    window.setTimeout(function ()
+                   { 
+                       $('#parsley_reg #grn_date').focus();
+                       document.getElementById('grn_date').focus();
+                   }, 0);
+                    receive_quty_items(i);
+            }else{
+                 $('#parsley_reg #r_free_id_'+parseFloat(+i-1)).focus();
+             }
+            }
+    }
+    function receive_free_items(i)
+    {
+        if(isNaN($('#parsley_reg #r_free_id_'+i).val())){
+           $('#parsley_reg #r_free_id_'+i).val("");
+        }else{
+            var good=  $('#parsley_reg #r_free_id_'+i).val();
+            var res=  $('#parsley_reg #o_free_id_'+i).val();
+            if(parseFloat(good)>parseFloat(res)){
+                $('#parsley_reg #r_free_id_'+i).val(res);
+                 
+            }
+        }
+    }
+    function receive_quty_items(i)
+    {
+        if(isNaN($('#parsley_reg #r_quty_id_'+i).val())){
+           $('#parsley_reg #r_quty_id_'+i).val("");
+        }else{
+            var good=  $('#parsley_reg #r_quty_id_'+i).val();
+            var res=  $('#parsley_reg #o_quty_id_'+i).val();
+            if(parseFloat(good)>parseFloat(res)){
+                $('#parsley_reg #r_quty_id_'+i).val(res);
+                 
+            }
+        }
+    }
+    function new_order_date(e){
+    if($('#parsley_reg #goods_receiving_note_guid').val()!=""){
+
+     var unicode=e.charCode? e.charCode : e.keyCode
+   if($('#parsley_reg #order_date').value!=""){
+        
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#parsley_reg #r_quty_id_0').focus();
+              window.setTimeout(function ()
+    {
+         $('#parsley_reg #r_quty_id_0').focus();
+            }, 0);
+        }
+         if (unicode!=27){
+        }
+       else{
+        
+          $('#parsley_reg #demo_order_number').select2('open');
+        }
+        }
+        }else{
+         $.bootstrapGrowl('<?php echo $this->lang->line('please_select')." ".$this->lang->line('purchase_order');?>', { type: "warning" }); 
+         $('#parsley_reg #demo_order_number').select2('open');
+
+        }
+
+    }
+    function receive_free(e,i,n){
+        var unicode=e.charCode? e.charCode : e.keyCode
+            if (unicode!=13 && unicode!=9){          
+            }
+            else{
+                if(parseFloat(n-1)==parseFloat(i)){
+                    $('#parsley_reg #note').focus();
+                }else{
+                   $('#parsley_reg #r_quty_id_'+parseFloat(+i+1)).focus();
+               }
+               receive_free_items(i)
+            }
+             if (unicode!=27){
+            }
+            else{
+                 $('#parsley_reg #r_quty_id_'+i).focus();
+                 receive_free_items(i);
+            }
+    }
+    function save_new_grn(){
          <?php if($_SESSION['goods_receiving_note_per']['add']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
@@ -264,11 +363,12 @@
     return  "<p >"+sup.text+"    <br>"+sup.order_date+" "+sup.company+"   "+sup.supplier+"</p> ";
             }
         $('#parsley_reg #demo_order_number').change(function() {
-               $("#parsley_reg").trigger('reset');
+            
                refresh_items_table();
              $('#loading').modal('show');
                    var guid = $('#parsley_reg #demo_order_number').select2('data').id;
 
+                 $('#parsley_reg #goods_receiving_note_guid').val($('#parsley_reg #demo_order_number').select2('data').idayy);
                  $('#parsley_reg #demo_order_number').val($('#parsley_reg #demo_order_number').select2('data').text);
                  $('#parsley_reg #company').val($('#parsley_reg #demo_order_number').select2('data').company);
                  $('#parsley_reg #first_name').val($('#parsley_reg #demo_order_number').select2('data').supplier);
@@ -306,8 +406,7 @@
                                 $("#parsley_reg #expiry_date").val(data[0]['exp_date']);
                                 
                                 $("#parsley_reg #id_discount").val(data[0]['discount']);
-                                $("#parsley_reg #note").val(data[0]['note']);
-                                $("#parsley_reg #remark").val(data[0]['remark']);
+                              
                                 $("#parsley_reg #discount_amount").val(data[0]['discount_amt']);
                                 $("#parsley_reg #freight").val(data[0]['freight']);
                                 $("#parsley_reg #round_off_amount").val(data[0]['round_amt']);
@@ -342,6 +441,8 @@
                                     var  tax_Inclusive=data[i]['tax_Inclusive'];
                                   
                                     var  free=data[i]['free'];
+                                    var  received_quty=data[i]['received_quty'];
+                                    var  received_free=data[i]['received_free'];
                                    
                                     var  cost=data[i]['cost'];
                                     var  price=data[i]['sell'];
@@ -352,6 +453,8 @@
                                     if(data[i]['dis_per']!=0){
                                     var discount=(parseFloat(quty)*parseFloat(cost))*(data[i]['dis_per']/100);
                                     var per=data[i]['dis_per'];
+                                     var num = parseFloat(discount);
+                                      discount=num.toFixed(point);
                                     }else{
                                     var discount=data[i]['item_dis_amt'];
                                      var num = parseFloat(discount);
@@ -379,16 +482,17 @@
                                     null,
                                     name,
                                     sku,
-                                    "<input type=text class=form-control>",
-                                     "<input type=text class=form-control>",
                                     cost,
-                                    price,
-                                    mrp,
-                                    date,
-                                    parseFloat(quty)*parseFloat(cost),
-                                    tax+' : '+tax_type+'('+type+')',
-                                    discount,
                                     total,
+                                    date,
+                                    quty,
+                                    received_quty,
+                                    free,
+                                    received_free,
+                                    "<input type='hidden' name='items[]' value='"+data[i]['item']+"' ><input type='hidden' id='o_quty_id_"+i+"' value='"+parseFloat(quty-received_quty)+"' ><input type='text' id='r_quty_id_"+i+"' name='receive_quty[]' onkeyup='receive_quty_items("+i+")' onKeyPress='receive_quty(event,"+i+");return numbersonly(event)' class='form-control' style='width:100px'>",
+                                    "<input type='hidden' name='order_items[]' value='"+data[i]['o_i_guid']+"' ><input type='hidden' id='o_free_id_"+i+"' value='"+parseFloat(free-received_free)+"' ><input type='text' id='r_free_id_"+i+"' name='receive_free[]' onkeyup='receive_free_items("+i+")' onKeyPress='receive_free(event,"+i+","+data.length+");return numbersonly(event)' class='form-control' style='width:90px'>",
+                                   
+                                
                                  ] );
 
                               var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
@@ -461,7 +565,7 @@
     
 function posnic_add_new(){
 refresh_items_table();
-
+   $("#parsley_reg").trigger('reset');
     <?php if($_SESSION['goods_receiving_note_per']['add']==1){ ?>
             $('#update_button').hide();
             $('#save_button').show();
@@ -484,8 +588,8 @@ refresh_items_table();
                              {    
                                  
                                 
-                                 $('#parsley_reg #order_number').val(data[0][0]['prefix']+data[0][0]['max']);
-                                 $('#parsley_reg #demo_order_number').val(data[0][0]['prefix']+data[0][0]['max']);
+                                 $('#parsley_reg #demo_grn_no').val(data[0][0]['prefix']+data[0][0]['max']);
+                                 $('#parsley_reg #grn_no').val(data[0][0]['prefix']+data[0][0]['max']);
                              }
                              });
             
@@ -747,6 +851,32 @@ function reload_update_user(){
                                                                          echo form_input($round_off_amount)?>
                                                        </div>
                                                     </div>
+                                                <div class="col col-sm-2" >
+                                                   <div class="form_sep">
+                                                            <label for="grn_no" ><?php echo $this->lang->line('grn_no') ?></label>													
+                                                                     <?php $round_off_amount=array('name'=>'demo_grn_no',
+                                                                                        'class'=>'  form-control',
+                                                                                        'id'=>'demo_grn_no',
+                                                                                        'disabled'=>'disabled',
+                                                                                        'value'=>set_value('demo_grn_no'));
+                                                                         echo form_input($round_off_amount)?>
+                                                            <input type="hidden" name="grn_no" id="grn_no">
+                                                       </div>
+                                                    </div>
+                                                <div class="col col-sm-2" >
+                                                   <div class="form_sep">
+                                                            <label for="grn_date" ><?php echo $this->lang->line('grn_date') ?></label>													
+                                                                     <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                           <?php $grn_date=array('name'=>'grn_date',
+                                                                                            'class'=>'required form-control',
+                                                                                            'id'=>'grn_date',
+                                                                                            'onKeyPress'=>"new_order_date(event)", 
+                                                                                            'value'=>set_value('grn_date'));
+                                                                             echo form_input($grn_date)?>
+                                                                <span class="input-group-addon"><i class="icon-calendar"></i></span>
+                                                                </div>
+                                                       </div>
+                                                   </div>
                                            </div>
                                      <br>
                                         </div>                              
@@ -769,23 +899,31 @@ function reload_update_user(){
                                     <thead>
                                         <tr>
                                             
-                                     <th><?php echo $this->lang->line('sl_no') ?></th>
+                                    <th><?php echo $this->lang->line('sl_no') ?></th>
                                     <th><?php echo $this->lang->line('name') ?></th>
-                                        <th><?php echo $this->lang->line('sku') ?></th>
+                                    <th><?php echo $this->lang->line('sku') ?></th>
+                                    <th><?php echo $this->lang->line('cost') ?></th>
+                                    <th><?php echo $this->lang->line('total') ?></th>
+                                    <th><?php echo $this->lang->line('delivery_date') ?></th>
+                                    <th><?php echo $this->lang->line('ordered_quty') ?></th>
+                                    <th><?php echo $this->lang->line('received_quty') ?></th>
+                                    
+                                    <th><?php echo $this->lang->line('ordered_free') ?></th>
+                                    <th><?php echo $this->lang->line('received_free') ?></th>
+                                    
+                                   
+                                  
                                     <th><?php echo $this->lang->line('quantity') ?></th>
                                     <th><?php echo $this->lang->line('free') ?></th>
-                                    <th><?php echo $this->lang->line('cost') ?></th>
-                                    <th><?php echo $this->lang->line('price') ?></th>
-                                    <th><?php echo $this->lang->line('mrp') ?></th>
-                                    <th><?php echo $this->lang->line('delivery_date') ?></th>
-                                    <th><?php echo $this->lang->line('sub_total') ?></th>
-                                    <th><?php echo $this->lang->line('tax') ?></th>
-                                    <th><?php echo $this->lang->line('discount') ?></th>
-                                    <th><?php echo $this->lang->line('total') ?></th>
+                                 
+                                 
+                                   
+                              
+                                    
                                  
                                     </tr>
                                     </thead>
-                                    <tbody id="new_order_items" >
+                                    <tbody id="new_order_items" class="ordered_items_table" >
                                        
                                     </tbody >
                                 </table>
@@ -841,7 +979,7 @@ function reload_update_user(){
                                           <div class="col col-sm-3" style="padding-top: 50px" >
                                               <div class="form_sep " id="save_button" style="padding-left: 50px">
                                                        <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:save_new_order()" class="btn btn-success"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
+                                                       <a href="javascript:save_new_grn()" class="btn btn-success"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_button" style=" margin-top: 0 !important;padding-left: 50px">
                                                        <label for="" >&nbsp;</label>	

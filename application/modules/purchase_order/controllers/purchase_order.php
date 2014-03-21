@@ -192,9 +192,7 @@ function save(){
                 $tax=  $this->input->post('new_item_tax');
            
                 for($i=0;$i<count($item);$i++){
-                if($per[$i]==""){
-                    $per[$i]=0;
-                }
+              
                         $item_value=array('order_id'=>$guid,'discount_per'=>$per[$i],'discount_amount'=>$dis[$i],'tax'=>$tax[$i],'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
                         $this->posnic->posnic_add_record($item_value,'purchase_order_items');
                 
@@ -254,9 +252,7 @@ function save(){
                 $dis=  $this->input->post('items_discount');
                 $tax=  $this->input->post('items_tax');
                 for($i=0;$i<count($item);$i++){
-                if($per[$i]==""){
-                          $per[$i]=0;
-                      }
+               
                          $where=array('order_id'=>$guid,'item'=>$item[$i]);
                         $item_value=array('order_id'=>$guid,'discount_per'=>$per[$i],'discount_amount'=>$dis[$i],'tax'=>$tax[$i],'item'=>$item[$i],'quty'=>$quty[$i],'free'=>$free[$i],'cost'=>$cost[$i],'sell'=>$sell[$i],'mrp'=>$mrp[$i],'amount'=>$net[$i],'date'=> strtotime($del_date[$i]));
                        $this->posnic->posnic_update_record($item_value,$where,'purchase_order_items');
@@ -283,9 +279,7 @@ function save(){
                 $new_tax=  $this->input->post('new_item_tax');
                 for($i=0;$i<count($new_quty);$i++){
           if($new_quty[$i]!=""){
-              if($new_per[$i]==""){
-                    $new_per[$i]=0;
-                }
+             
                         $new_item_value=array('order_id'=>$guid,'discount_per'=>$new_per[$i],'discount_amount'=>$new_dis[$i],'tax'=>$new_tax[$i],'item'=>$new_item[$i],'quty'=>$new_quty[$i],'free'=>$new_free[$i],'cost'=>$new_cost[$i],'sell'=>$new_sell[$i],'mrp'=>$new_mrp[$i],'amount'=>$new_net[$i],'date'=> strtotime($new_del_date[$i]));
                         $this->posnic->posnic_add_record($new_item_value,'purchase_order_items');
           }
@@ -305,7 +299,7 @@ function save(){
         }
         
         
-         }
+    }
         
         
 function convert_date($date){
@@ -314,10 +308,9 @@ function convert_date($date){
    echo json_encode($new);
 }
 function search_supplier(){
-       $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);
-       
+    $search= $this->input->post('term');
+        if($search!=""){
+            $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
             $data= $this->posnic->posnic_or_like('suppliers',$like)    ;
             echo json_encode($data);
         }

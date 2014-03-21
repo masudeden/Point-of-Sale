@@ -473,4 +473,10 @@ $lang['credit_days']='Credit Days';
   $lang['waiting']='Waiting';
   // Goods_receiving_note
   $lang['goods_receiving_note']='G R N';
+  $lang['grn_no']='G R N No';
+  $lang['grn_date']='G R N Date';
+  $lang['received_quty']='Rec Quty';
+  $lang['ordered_quty']='Ord Quty';
+  $lang['received_free']='Rec Free';
+  $lang['ordered_free']='Ord Free';
 ?>﻿
