@@ -5,8 +5,6 @@ class Goods_receiving_note extends CI_Controller{
                 $this->load->library('posnic');               
     }
     function index(){     
-           //   $this->get_list();
-              
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
         $this->load->view('template/branch',$this->posnic->branchs());
@@ -17,7 +15,7 @@ class Goods_receiving_note extends CI_Controller{
         
         
     }
-    // purchase order data table
+    // goods Receiving Note data table
     function data_table(){
         $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active','active' );	
 	$start = "";
@@ -331,8 +329,8 @@ function delete(){
 }
 function  get_purchase_order($guid){
     if($_SESSION['purchase_order_per']['edit']==1){
-    $this->load->model('purchase');
-    $data=  $this->purchase->get_purchase_order($guid);
+    $this->load->model('grn');
+    $data=  $this->grn->get_purchase_order($guid);
     echo json_encode($data);
     }
 }

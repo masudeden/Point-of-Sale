@@ -26,7 +26,7 @@ class Grn extends CI_Model{
                   $data=array();
                 foreach($sql->result_array() as $row){
                     
-        if($row['exp_date']< strtotime(date("Y/m/d"))){
+      //  if($row['exp_date'] < strtotime(date("Y/m/d"))){
                 $row['po_date']=date('d-m-Y',$row['po_date']);
 
                 $row['exp_date']=date('d-m-Y',$row['exp_date']);
@@ -34,7 +34,7 @@ class Grn extends CI_Model{
             
 
                  $data[]=$row;
-        }
+        //}
                 }
          return $data;
                
