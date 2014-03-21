@@ -471,5 +471,6 @@ $lang['credit_days']='Credit Days';
   $lang['approve']='Approve';
   $lang['canceled']='Canceled';
   $lang['waiting']='Waiting';
-  
+  // Goods_receiving_note
+  $lang['goods_receiving_note']='G R N';
 ?>﻿
