@@ -73,6 +73,7 @@
 }
 </style>	
 <script type="text/javascript">
+    var grn_number;
     function numbersonly(e){
         var unicode=e.charCode? e.charCode : e.keyCode
         if (unicode!=8 && unicode!=46 && unicode!=37 && unicode!=38 && unicode!=39 && unicode!=40){ //if the key isn't the backspace key (which we should allow)
@@ -124,6 +125,35 @@
             var good=  $('#parsley_reg #r_quty_id_'+i).val();
             var res=  $('#parsley_reg #o_quty_id_'+i).val();
             if(parseFloat(good)>parseFloat(res)){
+                $('#parsley_reg #r_quty_id_'+i).val(res);
+                 
+            }
+        }
+    }
+    function receive_free_items_update(i)
+    {
+        if(isNaN($('#parsley_reg #r_free_id_'+i).val())){
+           $('#parsley_reg #r_free_id_'+i).val("");
+        }else{
+            var good=  $('#parsley_reg #r_free_id_'+i).val();
+            var res=  $('#parsley_reg #o_free_id_'+i).val();
+             var old=  $('#parsley_reg #grn_old_free_'+i).val();
+            if(parseFloat(good)>parseFloat(res)){
+                $('#parsley_reg #r_free_id_'+i).val(res);
+                 
+            }
+        }
+    }
+    function receive_quty_items_update(i)
+    {
+        if(isNaN($('#parsley_reg #r_quty_id_'+i).val())){
+           $('#parsley_reg #r_quty_id_'+i).val("");
+        }else{
+            var good=  $('#parsley_reg #r_quty_id_'+i).val();
+            var res=  $('#parsley_reg #o_quty_id_'+i).val();
+            var old=  $('#parsley_reg #grn_old_quantity_'+i).val();
+            if(parseFloat(good)>parseFloat(res)){
+               
                 $('#parsley_reg #r_quty_id_'+i).val(res);
                  
             }
@@ -205,8 +235,12 @@
                 });
                     }else{
                   
-                   $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
-                     $('#parsley_reg #items').select2('open');
+                     $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('all_items_was_received') ?>', { type: "success" });                         
+                     $('#parsley_reg #demo_order_number').select2('open');
+                     $("#parsley_reg").trigger('reset');
+                      $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('purchase_order')." ".$this->lang->line('for')." ".$this->lang->line('goods_receiving_note') ?>');
+                     $('#grn_no').val(grn_number);
+                     $('#demo_grn_no').val(grn_number);
                     }
                     }else{
                    $.bootstrapGrowl('<?php echo $this->lang->line('please_enter')." ".$this->lang->line('all_require_elements');?>', { type: "error" });                        
@@ -363,12 +397,12 @@
     return  "<p >"+sup.text+"    <br>"+sup.order_date+" "+sup.company+"   "+sup.supplier+"</p> ";
             }
         $('#parsley_reg #demo_order_number').change(function() {
-            
+            if($('#parsley_reg #demo_order_number').select2('data').expired==0){
                refresh_items_table();
              $('#loading').modal('show');
                    var guid = $('#parsley_reg #demo_order_number').select2('data').id;
 
-                 $('#parsley_reg #goods_receiving_note_guid').val($('#parsley_reg #demo_order_number').select2('data').idayy);
+                 $('#parsley_reg #goods_receiving_note_guid').val($('#parsley_reg #demo_order_number').select2('data').id);
                  $('#parsley_reg #demo_order_number').val($('#parsley_reg #demo_order_number').select2('data').text);
                  $('#parsley_reg #company').val($('#parsley_reg #demo_order_number').select2('data').company);
                  $('#parsley_reg #first_name').val($('#parsley_reg #demo_order_number').select2('data').supplier);
@@ -430,8 +464,11 @@
                                   
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 var tax;
+                                var receive=0;
                                 for(i=0;i<data.length;i++){
-                                  
+                               
+                                  if(data[i]['received_quty']<data[i]['quty']){
+                                      receive=1;
                                     var  name=data[i]['items_name'];
                                     var  sku=data[i]['i_code'];
                                     var  quty=data[i]['quty'];
@@ -498,7 +535,10 @@
                               var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
                               theNode.setAttribute('id','new_item_row_id_'+items_id)
                                 }
-                                
+                                }if(receive==0){
+                                  $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('all_items_was_received') ?>', { type: "success" });                         
+                                  $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('all_items_was_received') ?>');
+                                  }
                              } 
                            });
                     
@@ -508,7 +548,14 @@
                        document.getElementById('order_date').focus();
                        $('#loading').modal('hide');
                     }, 0);  
-               
+                    }else{
+                     $('#parsley_reg #demo_order_number').select2('open');
+                     $("#parsley_reg").trigger('reset');
+                     $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('was_expired');?>', { type: "error" });                         
+                     $('#grn_no').val(grn_number);
+                     $('#demo_grn_no').val(grn_number);
+                     
+                    }
           });
           $('#parsley_reg #demo_order_number').select2({
               dropdownCssClass : 'supplier_select',
@@ -547,6 +594,7 @@
                           dis_amount: item.discount_amt,
                           freight: item.freight,
                           round: item.round_amt,
+                          expired: item.expired,
                         });
                       });
                       return {
@@ -555,19 +603,16 @@
                     }
                 }
             });
-        
-        
-        
-        
-  
-        
-     });
+      
+    });
     
 function posnic_add_new(){
 refresh_items_table();
    $("#parsley_reg").trigger('reset');
     <?php if($_SESSION['goods_receiving_note_per']['add']==1){ ?>
             $('#update_button').hide();
+            $(".supplier_select_2").show();
+            $(".porchase_order_for_grn").hide();
             $('#save_button').show();
             $('#update_clear').hide();
             $('#save_clear').show();
@@ -590,6 +635,7 @@ refresh_items_table();
                                 
                                  $('#parsley_reg #demo_grn_no').val(data[0][0]['prefix']+data[0][0]['max']);
                                  $('#parsley_reg #grn_no').val(data[0][0]['prefix']+data[0][0]['max']);
+                                 grn_number=data[0][0]['prefix']+data[0][0]['max'];
                              }
                              });
             
@@ -640,8 +686,8 @@ function reload_update_user(){
             <div class="row">
                 <div class="col col-lg-7">
                         <a href="javascript:posnic_add_new()" id="posnic_add_goods_receiving_note" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
-                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
-                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
+                      
+                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
                         <a href="javascript:posnic_goods_receiving_note_lists()" class="btn btn-success" id="goods_receiving_note_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('goods_receiving_note') ?></a>
                         
@@ -730,7 +776,12 @@ function reload_update_user(){
                                                                                     'value'=>set_value('demo_order_number'));
                                                                      echo form_input($demo_order_number)?>
                                                         <input type="hidden" id="goods_receiving_note_guid" name="goods_receiving_note_guid">
-                                                  </div>
+                                                       
+                                                  </div> 
+                                                   <div class="form_sep porchase_order_for_grn" style="margin-top:0px">
+                                                         <label for="demo_order_number" ><?php echo $this->lang->line('order_number') ?></label>	
+                                                         <input type="text" disabled="disabled" id="edit_grn_node" class='form-control'>
+                                                   </div>
                                                </div>
                                                 <div class="col col-sm-2" >
                                                    <div class="form_sep">

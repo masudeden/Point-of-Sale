@@ -30,7 +30,7 @@
             },
                 });
             }
-              $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('goods_receiving_note') ?>');
+              $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('purchase_order')." ".$this->lang->line('for')." ".$this->lang->line('goods_receiving_note') ?>');
                 }        
            function posnic_table(){
            $('#dt_table_tools').dataTable({
@@ -69,10 +69,10 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[9]==0){
-                                                                            return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
+                   							if(oObj.aData[9]==1){
+                                                                            return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('approved') ?></span>';
                                                                         }else{
-                                                                            return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
+                                                                            return '<span data-toggle="tooltip" class="label label-warning hint--top data-hint="<?php echo $this->lang->line('waiting') ?>" ><?php echo $this->lang->line('waiting') ?></span>';
                                                                         }
 								},
 								
@@ -83,10 +83,10 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[9]==0){
-                                                                         	return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                if(oObj.aData[9]==1){
+                                                                        return '<a ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('approved') ?>"><i class="icon-play"></i></span></a>&nbsp<a   ><span data-toggle="tooltip" class="label label-info hint--top hint--success" data-hint="<?php echo $this->lang->line('approved') ?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a  ><span data-toggle='tooltip' class='label label-danger hint--top hint--success' data-hint='<?php echo $this->lang->line('approved') ?>'><i class='icon-trash'></i></span> </a>";
 								}else{
-                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:good_receiving_note_approve("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('approve') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -143,9 +143,10 @@
    <?php }
 ?>
                         }
-            function posnic_deactive(guid){
+        function good_receiving_note_approve(guid){
+            <?php if($_SESSION['goods_receiving_note_per']['approve']==1){ ?>
                 $.ajax({
-                url: '<?php echo base_url() ?>index.php/goods_receiving_note/deactive',
+                url: '<?php echo base_url() ?>index.php/goods_receiving_note/good_receiving_note_approve',
                 type: "POST",
                 data: {
                     guid: guid
@@ -153,17 +154,21 @@
                 },
                   complete: function(response) {
                      if(response['responseText']=='TRUE'){
-                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
+                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('approved');?>', { type: "success" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }else if(response['responseText']=='approve'){
                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is')." ".$this->lang->line('already')." ".$this->lang->line('approved');?>', { type: "warning" });
                     }
                 }
             });
-            }
+             <?php }else{?>
+                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                <?php }?>
+               }
+        
           
         
-            function posnic_active(guid){
+        function posnic_active(guid){
                            $.ajax({
                 url: '<?php echo base_url() ?>index.php/goods_receiving_note/active',
                 type: "POST",
@@ -179,11 +184,9 @@
                     }
                 }
             });
-            }
+        }
           
-           function edit_function(guid){
-           
-        
+        function edit_function(guid){
                         <?php if($_SESSION['goods_receiving_note_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
@@ -209,10 +212,9 @@
                                 $('#active').attr("disabled", "disabled");
                                 $('#deactive').attr("disabled", "disabled");
                                 $('#goods_receiving_note_lists').removeAttr("disabled");
-                                $('#loading').modal('hide');
-                                $("#parsley_reg").trigger('reset');
-                           
-                                $("#parsley_reg #first_name").select2('data', {id:'1',text: data[0]['s_name']});
+                               
+                             
+                                $("#parsley_reg #first_name").val(data[0]['s_name']);
                                 $("#parsley_reg #company").val(data[0]['c_name']);
                                 $("#parsley_reg #address").val(data[0]['address']);
                                 $("#parsley_reg #goods_receiving_note_guid").val(guid);
@@ -220,10 +222,18 @@
                                 $("#parsley_reg #order_number").val(data[0]['po_no']);
                                 $("#parsley_reg #order_date").val(data[0]['po_date']);
                                 $("#parsley_reg #expiry_date").val(data[0]['exp_date']);
-                                
-                                $("#parsley_reg #id_discount").val(data[0]['discount']);
+                                $("#parsley_reg #demo_grn_no").val(data[0]['grn_no']);
+                                $("#parsley_reg #grn_date").val(data[0]['grn_date']);
                                 $("#parsley_reg #note").val(data[0]['note']);
                                 $("#parsley_reg #remark").val(data[0]['remark']);
+                              
+                               // $("#parsley_reg #demo_order_number").select2('data', {id:'',text: data[0]['po_no']});
+                                $(".supplier_select_2").hide();
+                                $(".porchase_order_for_grn").show();
+                                $("#edit_grn_node").val(data[0]['po_no']);
+                                
+                                $("#parsley_reg #id_discount").val(data[0]['discount']);
+                              
                                 $("#parsley_reg #discount_amount").val(data[0]['discount_amt']);
                                 $("#parsley_reg #freight").val(data[0]['freight']);
                                 $("#parsley_reg #round_off_amount").val(data[0]['round_amt']);
@@ -247,9 +257,13 @@
                                   
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 var tax;
+                                var receive=0;
                                 for(i=0;i<data.length;i++){
-                                  
+                               
+                                      receive=1;
                                     var  name=data[i]['items_name'];
+                                    var  rece_quty=data[i]['rece_quty'];
+                                    var  rece_free=data[i]['rece_quty'];
                                     var  sku=data[i]['i_code'];
                                     var  quty=data[i]['quty'];
                                     var  limit=data[i]['item_limit'];
@@ -258,6 +272,8 @@
                                     var  tax_Inclusive=data[i]['tax_Inclusive'];
                                   
                                     var  free=data[i]['free'];
+                                    var  received_quty=data[i]['received_quty'];
+                                    var  received_free=data[i]['received_free'];
                                    
                                     var  cost=data[i]['cost'];
                                     var  price=data[i]['sell'];
@@ -268,6 +284,8 @@
                                     if(data[i]['dis_per']!=0){
                                     var discount=(parseFloat(quty)*parseFloat(cost))*(data[i]['dis_per']/100);
                                     var per=data[i]['dis_per'];
+                                     var num = parseFloat(discount);
+                                      discount=num.toFixed(point);
                                     }else{
                                     var discount=data[i]['item_dis_amt'];
                                      var num = parseFloat(discount);
@@ -275,6 +293,7 @@
                                     var per="";
                                   
                                     }
+                                    
                                    if(data[i]['tax_Inclusive']==1){
                                      var tax=data[i]['order_tax'];
                                     
@@ -290,50 +309,39 @@
                                       var num = parseFloat(total);
                                       total=num.toFixed(point);
                                   }
+                                 var grn_received_quty=parseFloat(received_quty-rece_quty);
+                                 console.log(grn_received_quty);
+                                 var grn_received_free=parseFloat(received_quty-rece_free);
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
                                     name,
                                     sku,
-                                    quty,
-                                    free,
                                     cost,
-                                    price,
-                                    mrp,
-                                    date,
-                                    parseFloat(quty)*parseFloat(cost),
-                                    tax+' : '+tax_type+'('+type+')',
-                                    discount,
                                     total,
-                                    '<input type="hidden" name="index" id="index">\n\
-                                <input type="hidden" name="item_name" id="row_item_name" value="'+name+'">\n\
-                                <input type="hidden" name="item_limit" id="item_limit" value="'+limit+'">\n\
-                                <input type="hidden" name="items_id[]" id="items_id" value="'+items_id+'">\n\
-                                <input type="hidden" name="items_sku[]" value="'+sku+'" id="items_sku">\n\
-                                <input type="hidden" name="items_order_guid[]" value="'+o_i_guid+'" id="items_order_guid">\n\
-                                <input type="hidden" name="items_quty[]" value="'+quty+'" id="items_quty"> \n\
-                                <input type="hidden" name="items_free[]" value="'+free+'" id="items_free">\n\
-                                <input type="hidden" name="items_cost[]" value="'+cost+'" id="items_cost"> \n\
-                                <input type="hidden" name="items_price[]" value="'+price+'" id="items_price">\n\
-                                <input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">\n\
-                                <input type="hidden" name="items_date[]" value="'+date+'" id="items_date">\n\
-                                <input type="hidden" name="items_tax[]" value="'+tax+'" id="items_tax">\n\
-                                <input type="hidden" name="items_tax_type[]" value="'+tax_type+'" id="items_tax_type">\n\
-                                <input type="hidden" name="items_tax_value[]" value="'+tax_value+'" id="items_tax_value">\n\
-                                <input type="hidden" name="items_tax_inclusive[]" value="'+tax_Inclusive+'" id="items_tax_inclusive">\n\
-                                <input type="hidden" name="items_discount[]" value="'+discount+'" id="items_discount">\n\
-                                <input type="hidden" name="items_discount_per[]" value="'+per+'" id="items_discount_per">\n\
-                                <input type="hidden" name="items_sub_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_sub_total">\n\
-                                <input type="hidden" name="items_total[]"  value="'+total+'" id="items_total">\n\
-                                <a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
+                                    date,
+                                    quty,
+                                    received_quty,
+                                    free,
+                                    received_free,
+                                    "<input type='hidden' id='grn_old_quantity_"+i+"'  value='"+rece_quty+"' ><input type='hidden' name='items[]' value='"+data[i]['item']+"' ><input type='hidden' id='o_quty_id_"+i+"' value='"+parseFloat(quty-grn_received_quty)+"' ><input type='text' id='r_quty_id_"+i+"' name='receive_quty[]' value='"+rece_quty+"' onkeyup='receive_quty_items_update("+i+")' onKeyPress='receive_quty(event,"+i+");return numbersonly(event)' class='form-control' style='width:100px'>",
+                                    "<input type='hidden' id='grn_old_free_"+i+"'  value='"+rece_free+"' ><input type='hidden' name='order_items[]' value='"+data[i]['o_i_guid']+"' ><input type='hidden' id='o_free_id_"+i+"' value='"+parseFloat(free-grn_received_free)+"' ><input type='text' id='r_free_id_"+i+"' name='receive_free[]' value='"+rece_free+"' onkeyup='receive_free_items_update("+i+")' onKeyPress='receive_free(event,"+i+","+data.length+");return numbersonly(event)' class='form-control' style='width:90px'>",
+                                   
+                                
+                                 ] );
 
                               var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
                               theNode.setAttribute('id','new_item_row_id_'+items_id)
-                                }
                                 
+                                }
                              } 
                            });
                       
-                        
+                          window.setTimeout(function ()
+                    {
+                       //$('#parsley_reg #delivery_date').focus();
+                       document.getElementById('order_date').focus();
+                       $('#loading').modal('hide');
+                    }, 0);
                          
                         <?php }else{?>
                                  $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       

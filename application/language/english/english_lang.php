@@ -479,4 +479,6 @@ $lang['credit_days']='Credit Days';
   $lang['ordered_quty']='Ord Quty';
   $lang['received_free']='Rec Free';
   $lang['ordered_free']='Ord Free';
+  $lang['was_expired']='Was Expired';
+  $lang['all_items_was_received']=' All Items Was Received';
 ?>﻿

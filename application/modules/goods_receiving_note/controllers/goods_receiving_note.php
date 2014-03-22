@@ -17,7 +17,7 @@ class Goods_receiving_note extends CI_Controller{
     }
     // goods Receiving Note data table
     function data_table(){
-        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active','active' );	
+        $aColumns = array( 'grn_guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','grn_active','grn_active' );	
 	$start = "";
 			$end="";
 		
@@ -178,6 +178,7 @@ function save(){
                         $this->posnic->posnic_add_record($item_value,'grn_x_items');
                         $this->load->model('grn');
                         $this->grn->update_item_receving($po_item[$i],$quty[$i],$free[$i]);
+                        //$this->grn->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$_SESSION['Bid']);
                 }
                 $this->posnic->posnic_master_increment_max('grn')  ;
                  echo 'TRUE';
@@ -317,20 +318,24 @@ function  get_purchase_order($guid){
     echo json_encode($data);
     }
 }
-function active(){
+function  get_goods_receiving_note($guid){
+    if($_SESSION['purchase_order_per']['edit']==1){
+    $this->load->model('grn');
+    $data=  $this->grn->get_goods_receiving_note($guid);
+    echo json_encode($data);
+    }
+}
+function good_receiving_note_approve(){
+    if($_SESSION['goods_receiving_note_per']['approve']==1){
             $id=  $this->input->post('guid');
-            $report= $this->posnic->posnic_module_active($id,'purchase_order'); 
+            $report= $this->posnic->posnic_module_deactive($id,'grn'); 
             if (!$report['error']) {
                 echo 'TRUE';
               } else {
                 echo 'FALSE';
               }
     }
-function deactive(){
-            $id=  $this->input->post('guid');
-            $this->load->model('purchase');
-            $this->purchase->deactive_order($id);
-    }
+}
 function order_number(){
        $data[]= $this->posnic->posnic_master_max('grn')    ;
        echo json_encode($data);
