@@ -211,7 +211,7 @@ class Grn extends CI_Model{
         if($quty>$balance_quty){
             $quty=$balance_quty;
         }
-        $data=array('received_quty'=>$received_quty+$free,'received_free'=>$received_free+$free);
+        $data=array('received_quty'=>$received_quty+$quty,'received_free'=>$received_free+$free);
         $this->db->where('guid',$po_item);
         $this->db->update('purchase_order_items',$data);
         
