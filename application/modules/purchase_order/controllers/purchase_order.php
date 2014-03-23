@@ -339,7 +339,7 @@ function  get_purchase_order($guid){
 }
 
 function purchase_order_approve(){
-     if($_SESSION['purchase_order_per']['edit']==1){
+     if($_SESSION['purchase_order_per']['approve']==1){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
             $this->purchase->deactive_order($id);

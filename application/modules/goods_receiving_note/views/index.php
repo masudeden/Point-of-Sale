@@ -687,7 +687,7 @@ function reload_update_user(){
                 <div class="col col-lg-7">
                         <a href="javascript:posnic_add_new()" id="posnic_add_goods_receiving_note" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
                       
-                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
+                        <a href="javascript:posnic_group_approve()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
                         <a href="javascript:grn_group_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
                         <a href="javascript:posnic_goods_receiving_note_lists()" class="btn btn-success" id="goods_receiving_note_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('goods_receiving_note') ?></a>
                         
@@ -757,7 +757,7 @@ function reload_update_user(){
                      
         <input type="hidden" name="dummy_discount" id="dummy_discount" >
         <input type="hidden" name="dummy_discount_amount" id="dummy_discount_amount" >
-        <input type="text" name="grn_guid" id="grn_guid" >
+        <input type="hidden" name="grn_guid" id="grn_guid" >
                          <div class="row">
                           <div class="panel panel-default">
                               <div class="panel-heading" >
@@ -1101,8 +1101,9 @@ function reload_update_user(){
            </div>
 		</div>
 	
-                <script type="text/javascript">
-                    function posnic_group_active(){
+    <script type="text/javascript">
+        function posnic_group_approve(){
+              <?php if($_SESSION['goods_receiving_note_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -1118,21 +1119,25 @@ function reload_update_user(){
                       }else{
                             var posnic=document.forms.posnic;
                       for (i = 0; i < posnic.length-1; i++){
+                          var guid=posnic[i].value;
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/goods_receiving_note/active',
+                                url: '<?php echo base_url() ?>/index.php/goods_receiving_note/good_receiving_note_approve',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
 
                                 },
-                                success: function(response)
-                                {
-                                    if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('activated');?>', { type: "success" });
-                                        $("#dt_table_tools").dataTable().fnDraw();
-                                    }
-                                }
+                                 complete: function(response) {
+                                    if(response['responseText']=='TRUE'){
+                                        $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('approved');?>', { type: "success" });
+                                       $("#dt_table_tools").dataTable().fnDraw();
+                                   }else if(response['responseText']=='approve'){
+                                        $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is')." ".$this->lang->line('already')." ".$this->lang->line('approved');?>', { type: "warning" });
+                                   }else if(response['responseText']=='Noop'){
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                                   }
+                               }
                             });
 
                           }
@@ -1140,8 +1145,12 @@ function reload_update_user(){
                       }
                   
 
-                      }    
-                      }
+                      }  
+               <?php }else{?>
+                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                <?php }?>
+               }
+                      
                    
     function grn_group_delete(){
                      <?php if($_SESSION['goods_receiving_note_per']['delete']==1){ ?>
@@ -1195,8 +1204,7 @@ function reload_update_user(){
                     
                     
                     
-                   
-                   
+                 
                     
                 </script>
         

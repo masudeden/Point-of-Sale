@@ -141,8 +141,8 @@ function save(){
         $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
         $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
         //$this->form_validation->set_rules('grn_no', $this->lang->line('grn_no'), 'required');                         
-        $this->form_validation->set_rules('receive_quty[]', 'receive_quty', 'regex_match[/^[0-109]+$/]|xss_clean');
-        $this->form_validation->set_rules('receive_free[]', 'receive_free', 'regex_match[/^[0-109]+$/]|xss_clean');
+        $this->form_validation->set_rules('receive_quty[]', 'receive_quty', 'regex_match[/^[0-9]+$/]|xss_clean');
+        $this->form_validation->set_rules('receive_free[]', 'receive_free', 'regex_match[/^[0-9]+$/]|xss_clean');
             if ( $this->form_validation->run() !== false ) {    
                 $po=  $this->input->post('goods_receiving_note_guid');
                 $grn_date=strtotime($this->input->post('grn_date'));

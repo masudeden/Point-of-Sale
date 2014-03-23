@@ -2400,7 +2400,8 @@ function new_discount_amount(){
                     
                     
                     
-                    function posnic_group_deactive(){
+    function purchase_order_group_approve(){
+         <?php if($_SESSION['purchase_order_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2416,21 +2417,25 @@ function new_discount_amount(){
                       }else{
                             var posnic=document.forms.posnic;
                       for (i = 0; i < posnic.length-1; i++){
+                           var guid=posnic[i].value;
                           if(posnic[i].checked==true){                             
                                  $.ajax({
-                                    url: '<?php echo base_url() ?>/index.php/purchase_order/deactive',
+                                    url: '<?php echo base_url() ?>/index.php/purchase_order/purchase_order_approve',
                                     type: "POST",
                                     data: {
                                         guid: posnic[i].value
 
                                     },
-                                    success: function(response)
-                                    {
-                                        if(response){
-                                             $.bootstrapGrowl('<?php echo $this->lang->line('deactivated');?>', { type: "danger" });
+                                     complete: function(response) {
+                                        if(response['responseText']=='TRUE'){
+                                               $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
                                             $("#dt_table_tools").dataTable().fnDraw();
+                                        }else if(response['responseText']=='Approved'){
+                                             $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>   <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
+                                        }else{
+                                              $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                        
                                         }
-                                    }
+                                        }
                                 });
 
                           }
@@ -2438,7 +2443,11 @@ function new_discount_amount(){
                       }
                   
 
-                      }    
+                      }   
+                        <?php }else{?>
+                                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
+                            <?php }
+                         ?>
                       }
                     function posnic_group_item_deactive(){
                      var flag=0;
