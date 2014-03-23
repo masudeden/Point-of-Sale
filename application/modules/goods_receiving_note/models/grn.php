@@ -154,7 +154,7 @@ class Grn extends CI_Model{
         return $data;
      }
     function get_goods_receiving_note($guid){
-        $this->db->select('grn.date as grn_date,grn.note as grn_note,grn.remark as grn_remark,grn.grn_no,grn_x_items.quty as rece_quty,grn_x_items.free as rece_free,items.tax_Inclusive ,grn.po,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,purchase_order.*,purchase_order_items.discount_per as dis_per ,purchase_order_items.discount_amount as item_dis_amt ,purchase_order_items.tax as dis_amt ,purchase_order_items.tax as order_tax,purchase_order_items.item ,purchase_order_items.quty ,purchase_order_items.free,purchase_order_items.guid as o_i_guid ,purchase_order_items.received_quty ,purchase_order_items.received_free ,purchase_order_items.cost ,purchase_order_items.sell ,purchase_order_items.mrp,purchase_order_items.guid as o_i_guid ,purchase_order_items.amount ,purchase_order_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('grn')->where('grn.guid',$guid)->where('grn.active',0);
+        $this->db->select('grn.date as grn_date,grn.note as grn_note,grn.remark as grn_remark,grn.grn_no,grn_x_items.guid as grn_items_guid,grn_x_items.quty as rece_quty,grn_x_items.free as rece_free,items.tax_Inclusive ,grn.po,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,purchase_order.*,purchase_order_items.discount_per as dis_per ,purchase_order_items.discount_amount as item_dis_amt ,purchase_order_items.tax as dis_amt ,purchase_order_items.tax as order_tax,purchase_order_items.item ,purchase_order_items.quty ,purchase_order_items.free,purchase_order_items.guid as o_i_guid ,purchase_order_items.received_quty ,purchase_order_items.received_free ,purchase_order_items.cost ,purchase_order_items.sell ,purchase_order_items.mrp,purchase_order_items.guid as o_i_guid ,purchase_order_items.amount ,purchase_order_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('grn')->where('grn.guid',$guid)->where('grn.active',0);
         $this->db->join('purchase_order', 'grn.po=purchase_order.guid','left');
         $this->db->join('grn_x_items', 'grn_x_items.grn=grn.guid','left');
         $this->db->join('purchase_order_items', 'purchase_order_items.order_id = purchase_order.guid AND grn_x_items.item=purchase_order_items.item AND purchase_order_items.delete_status=0','left');
@@ -239,6 +239,46 @@ class Grn extends CI_Model{
             $this->db->where('id',$id);
             $this->db->update('stock',array('guid'=>  md5('stock'.$items.$id)));
         }
+    }
+    function update_grn_items_quty($guid,$quty,$free,$items,$po_item){
+        $this->db->select()->from('grn_x_items')->where('guid',$guid);        
+        $sql=  $this->db->get();
+      
+          $old_quty;
+        $old_free;
+        $oquty;
+        $ofree;
+        $rquty;
+        $rree;
+        foreach ($sql->result() as $row){
+           $old_free=$row->free;
+      $old_quty=$row->quty;
+        }
+        
+        $this->db->select()->from('purchase_order_items')->where('guid',$po_item);
+        $po=  $this->db->get();
+        foreach ($po->result() as $prow){
+            $ofree=$prow->free;
+           $oquty=$prow->quty;
+            $rfree=$prow->received_free;
+            $rquty=$prow->received_quty;
+        }
+       $old_received_quty=$rquty-$old_quty;
+      
+        $old_received_free=$rfree-$old_free;
+        $current_quty=$quty+$old_received_quty;
+        $current_free=$free+$old_received_free;
+        if($current_quty>$oquty){
+          echo $quty=$oquty-$old_received_quty;
+        }
+        if($current_free>$ofree){
+          echo  $free=$ofree-$old_received_free;
+        }
+        $this->db->where('guid',$guid);
+        $this->db->update('grn_x_items',array('quty'=>$quty,'free'=>$free));
+        $this->db->where('guid',$po_item);
+        $this->db->update('purchase_order_items',array('received_quty'=>$old_received_quty+$quty,'received_free'=>$free+$old_received_free));
+        
     }
     
 }

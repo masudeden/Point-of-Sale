@@ -140,7 +140,7 @@
              var old=  $('#parsley_reg #grn_old_free_'+i).val();
             if(parseFloat(good)>parseFloat(res)){
                 $('#parsley_reg #r_free_id_'+i).val(res);
-                 
+                
             }
         }
     }
@@ -757,6 +757,7 @@ function reload_update_user(){
                      
         <input type="hidden" name="dummy_discount" id="dummy_discount" >
         <input type="hidden" name="dummy_discount_amount" id="dummy_discount_amount" >
+        <input type="text" name="grn_guid" id="grn_guid" >
                          <div class="row">
                           <div class="panel panel-default">
                               <div class="panel-heading" >

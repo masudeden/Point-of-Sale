@@ -256,6 +256,7 @@
                                   $('#demo_grand_total').val(num.toFixed(point));
                                   
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
+                                $("#parsley_reg #grn_guid").val(guid);
                                 var tax;
                                 var receive=0;
                                 for(i=0;i<data.length;i++){
@@ -263,15 +264,15 @@
                                       receive=1;
                                     var  name=data[i]['items_name'];
                                     var  rece_quty=data[i]['rece_quty'];
-                                    var  rece_free=data[i]['rece_quty'];
+                                    var  rece_free=data[i]['rece_free'];
                                     var  sku=data[i]['i_code'];
-                                    var  quty=data[i]['quty'];
+                                    var  quty=parseFloat(data[i]['quty']);
                                     var  limit=data[i]['item_limit'];
                                     var  tax_type=data[i]['tax_type_name'];
                                     var  tax_value=data[i]['tax_value'];
                                     var  tax_Inclusive=data[i]['tax_Inclusive'];
                                   
-                                    var  free=data[i]['free'];
+                                    var  free=parseFloat(data[i]['free']);
                                     var  received_quty=data[i]['received_quty'];
                                     var  received_free=data[i]['received_free'];
                                    
@@ -309,9 +310,11 @@
                                       var num = parseFloat(total);
                                       total=num.toFixed(point);
                                   }
-                                 var grn_received_quty=parseFloat(received_quty-rece_quty);
-                                 console.log(grn_received_quty);
-                                 var grn_received_free=parseFloat(received_quty-rece_free);
+                                 var grn_received_quty=parseFloat(received_quty)-parseFloat(rece_quty);
+                             
+                                 var grn_received_free=parseFloat(received_free)-parseFloat(rece_free);
+                                 console.log(grn_received_free);
+                                 console.log(free);
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
                                     name,
@@ -323,7 +326,7 @@
                                     received_quty,
                                     free,
                                     received_free,
-                                    "<input type='hidden' id='grn_old_quantity_"+i+"'  value='"+rece_quty+"' ><input type='hidden' name='items[]' value='"+data[i]['item']+"' ><input type='hidden' id='o_quty_id_"+i+"' value='"+parseFloat(quty-grn_received_quty)+"' ><input type='text' id='r_quty_id_"+i+"' name='receive_quty[]' value='"+rece_quty+"' onkeyup='receive_quty_items_update("+i+")' onKeyPress='receive_quty(event,"+i+");return numbersonly(event)' class='form-control' style='width:100px'>",
+                                    "<input type='hidden' name='grn_items_guid[]' value='"+data[i]['grn_items_guid']+"' ><input type='hidden' id='grn_old_quantity_"+i+"'  value='"+rece_quty+"' ><input type='hidden' name='items[]' value='"+data[i]['item']+"' ><input type='hidden' id='o_quty_id_"+i+"' value='"+parseFloat(quty-grn_received_quty)+"' ><input type='text' id='r_quty_id_"+i+"' name='receive_quty[]' value='"+rece_quty+"' onkeyup='receive_quty_items_update("+i+")' onKeyPress='receive_quty(event,"+i+");return numbersonly(event)' class='form-control' style='width:100px'>",
                                     "<input type='hidden' id='grn_old_free_"+i+"'  value='"+rece_free+"' ><input type='hidden' name='order_items[]' value='"+data[i]['o_i_guid']+"' ><input type='hidden' id='o_free_id_"+i+"' value='"+parseFloat(free-grn_received_free)+"' ><input type='text' id='r_free_id_"+i+"' name='receive_free[]' value='"+rece_free+"' onkeyup='receive_free_items_update("+i+")' onKeyPress='receive_free(event,"+i+","+data.length+");return numbersonly(event)' class='form-control' style='width:90px'>",
                                    
                                 
