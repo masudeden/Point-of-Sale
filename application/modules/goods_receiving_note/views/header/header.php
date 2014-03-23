@@ -224,8 +224,8 @@
                                 $("#parsley_reg #expiry_date").val(data[0]['exp_date']);
                                 $("#parsley_reg #demo_grn_no").val(data[0]['grn_no']);
                                 $("#parsley_reg #grn_date").val(data[0]['grn_date']);
-                                $("#parsley_reg #note").val(data[0]['note']);
-                                $("#parsley_reg #remark").val(data[0]['remark']);
+                                $("#parsley_reg #note").val(data[0]['grn_note']);
+                                $("#parsley_reg #remark").val(data[0]['grn_remark']);
                               
                                // $("#parsley_reg #demo_order_number").select2('data', {id:'',text: data[0]['po_no']});
                                 $(".supplier_select_2").hide();
@@ -313,8 +313,6 @@
                                  var grn_received_quty=parseFloat(received_quty)-parseFloat(rece_quty);
                              
                                  var grn_received_free=parseFloat(received_free)-parseFloat(rece_free);
-                                 console.log(grn_received_free);
-                                 console.log(free);
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
                                     name,
