@@ -201,15 +201,21 @@ function delete(){
    if($_SESSION['goods_receiving_note_per']['delete']==1){
         if($this->input->post('guid')){
             $guid=  $this->input->post('guid');
-            $this->posnic->posnic_delete($guid,'grn');
             $this->load->model('grn');
-            $this->grn->delete_grn_items($guid);
+            $status=$this->grn->check_approve($guid);
+           if($status!=FALSE){
+            $this->posnic->posnic_delete($guid,'grn');
             
-             echo 'TRUE';
+            $this->grn->delete_grn_items($guid);            
+                echo 'TRUE';
+            }else{
+                echo 'Approved';
             }
-           }else{
-            echo 'FALSE';
+        
         }
+    }else{
+         echo 'FALSE';
+    }
     
 }
 function  get_purchase_order($guid){
