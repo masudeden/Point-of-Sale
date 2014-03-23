@@ -136,15 +136,9 @@ class Purchase extends CI_Model{
           $this->db->update('purchase_order_items',array('delete_status'=>1));
      }
      function deactive_order($guid){
-         $this->db->select()->from('purchase_order')->where('guid',$guid)->where('order_status',0);
-         $sql=  $this->db->get();
-         if($sql->num_rows()>0){
-             $this->db->where('guid',$guid);
-             $this->db->update('purchase_order',array('active'=>1));
-             echo 'TRUE';
-         }else {
-             echo "approve";
-         }
+         $this->db->where('guid',$guid);
+         $this->db->update('purchase_order',array('order_status'=>1));
+        
      }
     
 }

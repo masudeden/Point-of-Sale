@@ -19,7 +19,7 @@ class Purchase_order extends CI_Controller{
     }
     // purchase order data table
     function data_table(){
-        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active','active' );	
+        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active','order_status' );	
 	$start = "";
 			$end="";
 		
@@ -337,19 +337,16 @@ function  get_purchase_order($guid){
     echo json_encode($data);
     }
 }
-function active(){
-            $id=  $this->input->post('guid');
-            $report= $this->posnic->posnic_module_active($id,'purchase_order'); 
-            if (!$report['error']) {
-                echo 'TRUE';
-              } else {
-                echo 'FALSE';
-              }
-    }
-function deactive(){
+
+function purchase_order_approve(){
+     if($_SESSION['purchase_order_per']['edit']==1){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
             $this->purchase->deactive_order($id);
+            echo 'TRUE';
+     }else{
+         echo 'FALSE';
+     }
     }
 function order_number(){
        $data[]= $this->posnic->posnic_master_max('purchase_order')    ;

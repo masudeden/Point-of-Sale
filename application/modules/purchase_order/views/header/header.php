@@ -69,10 +69,10 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[9]==0){
-                                                                            return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
+                   							if(oObj.aData[9]==1){
+                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('approved') ?></span>'
                                                                         }else{
-                                                                            return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
+                                                                            return '<span data-toggle="tooltip"  class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('waiting') ?>" ><?php echo $this->lang->line('waiting') ?></span>';
                                                                         }
 								},
 								
@@ -83,10 +83,10 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[9]==0){
-                                                                         	return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                if(oObj.aData[9]==1){
+                                                                         	 return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('approved') ?></span>'
 								}else{
-                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:purchase_order_approve("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('approve') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -143,43 +143,34 @@
    <?php }
 ?>
                         }
-            function posnic_deactive(guid){
-                $.ajax({
-                url: '<?php echo base_url() ?>index.php/purchase_order/deactive',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                  complete: function(response) {
-                     if(response['responseText']=='TRUE'){
-                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
-                        $("#dt_table_tools").dataTable().fnDraw();
-                    }else if(response['responseText']=='approve'){
-                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is')." ".$this->lang->line('already')." ".$this->lang->line('approved');?>', { type: "warning" });
-                    }
-                }
-            });
-            }
+           
           
         
-            function posnic_active(guid){
-                           $.ajax({
-                url: '<?php echo base_url() ?>index.php/purchase_order/active',
+function purchase_order_approve(guid){
+        <?php if($_SESSION['purchase_order_per']['delete']==1){ ?>
+            $.ajax({
+                url: '<?php echo base_url() ?>index.php/purchase_order/purchase_order_approve',
                 type: "POST",
                 data: {
                     guid: guid
                     
                 },
-                success: function(response)
-                {
-                    if(response){
-                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('isactivated');?>', { type: "success" });
-                         $("#dt_table_tools").dataTable().fnDraw();
+                complete: function(response) {
+                    if(response['responseText']=='TRUE'){
+                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
+                        $("#dt_table_tools").dataTable().fnDraw();
+                    }else if(response['responseText']=='Approved'){
+                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>   <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
+                    }else{
+                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                        
                     }
-                }
+                    }
             });
-            }
+            <?php }else{?>
+                        $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
+                <?php }
+             ?>
+}
           
            function edit_function(guid){
            
