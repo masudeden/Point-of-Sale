@@ -5,7 +5,7 @@ class Grn extends CI_Model{
     }
     function get($end,$start,$like,$branch){
                 $this->db->select('purchase_order.*,grn.guid as grn_guid,grn.active as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
-                $this->db->from('grn')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0);
+                $this->db->from('grn')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0)->where('grn.active_status',0)->where('grn.delete_status',0);
                 $this->db->join('purchase_order', 'purchase_order.guid=grn.po','left');
                 $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id AND purchase_order.guid=grn.po','left');
                 $this->db->limit($end,$start); 
@@ -287,6 +287,43 @@ class Grn extends CI_Model{
         $this->db->where('guid',$po_item);
         $this->db->update('purchase_order_items',array('received_quty'=>$old_received_quty+$quty,'received_free'=>$free+$old_received_free));
         
+    }
+    function get_order_chnage_order($guid){
+        $this->db->select()->from('grn')->where('guid',$guid);
+        $sql=  $this->db->get();
+        foreach ($sql->result() as $row){
+            return $row->po;
+        }
+    }
+    function delete_grn_items($guid){
+        $this->db->select()->from('grn')->where('guid',$guid);
+        $grn=  $this->db->get();
+        $order_id;
+        foreach ($grn->result() as $row){
+            $order_id= $row->po;
+        }
+        $this->db->select()->from('purchase_order_items')->where('order_id',$order_id);
+        $po=$this->db->get();
+        foreach ($po->result() as $item){
+            $quty;
+            $free;
+            $this->db->select()->from('grn_x_items')->where('grn',$guid)->where('item',$item->item) ;
+            $grn_item=  $this->db->get();
+            $grn_item_guid;
+            foreach ($grn_item->result() as $grn_row)
+            {
+                $quty=$grn_row->quty;   
+                $free=$grn_row->free; 
+                $grn_item_guid=$grn_row->guid; 
+            }
+            
+           
+            $this->db->where('guid',$item->guid);
+            $this->db->update('purchase_order_items',array('received_quty'=>$item->received_quty-$quty,'received_free'=>$item->received_free-$free));
+            $this->db->where('guid',$grn_item_guid);
+            $this->db->update('grn_x_items',array('active'=>1,'active_status'=>1));
+                    
+        }
     }
     
 }

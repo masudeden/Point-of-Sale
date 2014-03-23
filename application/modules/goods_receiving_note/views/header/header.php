@@ -119,7 +119,7 @@
 			}
  function user_function(guid){
     <?php if($_SESSION['goods_receiving_note_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('goods_receiving_note') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
                 url: '<?php echo base_url() ?>/index.php/goods_receiving_note/delete',
@@ -159,6 +159,8 @@
                         $("#dt_table_tools").dataTable().fnDraw();
                     }else if(response['responseText']=='approve'){
                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is')." ".$this->lang->line('already')." ".$this->lang->line('approved');?>', { type: "warning" });
+                    }else if(response['responseText']=='Noop'){
+                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
                     }
                 }
             });
