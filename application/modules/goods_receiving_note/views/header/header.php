@@ -159,6 +159,8 @@
                         $("#dt_table_tools").dataTable().fnDraw();
                     }else if(response['responseText']=='approve'){
                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is')." ".$this->lang->line('already')." ".$this->lang->line('approved');?>', { type: "warning" });
+                    }else if(response['responseText']=='Noop'){
+                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
                     }
                 }
             });

@@ -466,9 +466,10 @@
                                 var tax;
                                 var receive=0;
                                 for(i=0;i<data.length;i++){
-                               
-                                  if(data[i]['received_quty']<data[i]['quty']){
+                              
+                                  if(parseFloat(data[i]['received_quty'])<parseFloat(data[i]['quty'])){
                                       receive=1;
+                                     
                                     var  name=data[i]['items_name'];
                                     var  sku=data[i]['i_code'];
                                     var  quty=data[i]['quty'];
@@ -687,7 +688,7 @@ function reload_update_user(){
                 <div class="col col-lg-7">
                         <a href="javascript:posnic_add_new()" id="posnic_add_goods_receiving_note" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
                       
-                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
+                        <a href="javascript:grn_group_approve()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
                         <a href="javascript:posnic_goods_receiving_note_lists()" class="btn btn-success" id="goods_receiving_note_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('goods_receiving_note') ?></a>
                         
@@ -1102,7 +1103,8 @@ function reload_update_user(){
 		</div>
 	
                 <script type="text/javascript">
-                    function posnic_group_active(){
+     function grn_group_approve(){
+            <?php if($_SESSION['goods_receiving_note_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -1113,14 +1115,14 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
+                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('goods_receiving_note');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
                       for (i = 0; i < posnic.length-1; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/goods_receiving_note/active',
+                                url: '<?php echo base_url() ?>/index.php/goods_receiving_note/group_approve',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -1129,7 +1131,7 @@ function reload_update_user(){
                                 success: function(response)
                                 {
                                     if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('activated');?>', { type: "success" });
+                                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('approved');?>', { type: "success" });
                                         $("#dt_table_tools").dataTable().fnDraw();
                                     }
                                 }
@@ -1140,8 +1142,12 @@ function reload_update_user(){
                       }
                   
 
-                      }    
-                      }
+                      }   
+                      <?php }else{?>
+                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                        <?php }?>
+                       }
+                      
                     function posnic_group_item_active(){
                      var flag=0;
                      var field=document.forms.items_form;
@@ -1224,89 +1230,6 @@ function reload_update_user(){
                       }    
                       }
                       });
-                      }    
-                      }
-                    
-                    
-                    
-                    function posnic_group_deactive(){
-                     var flag=0;
-                     var field=document.forms.posnic;
-                      for (i = 0; i < field.length; i++){
-                          if(field[i].checked==true){
-                              flag=flag+1;
-
-                          }
-
-                      }
-                      if (flag<1) {
-                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
-                      
-                      }else{
-                            var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
-                          if(posnic[i].checked==true){                             
-                                 $.ajax({
-                                    url: '<?php echo base_url() ?>/index.php/goods_receiving_note/deactive',
-                                    type: "POST",
-                                    data: {
-                                        guid: posnic[i].value
-
-                                    },
-                                    success: function(response)
-                                    {
-                                        if(response){
-                                             $.bootstrapGrowl('<?php echo $this->lang->line('deactivated');?>', { type: "danger" });
-                                            $("#dt_table_tools").dataTable().fnDraw();
-                                        }
-                                    }
-                                });
-
-                          }
-
-                      }
-                  
-
-                      }    
-                      }
-                    function posnic_group_item_deactive(){
-                     var flag=0;
-                     var field=document.forms.items_form;
-                      for (i = 0; i < field.length; i++){
-                          if(field[i].checked==true){
-                              flag=flag+1;
-
-                          }
-
-                      }
-                      if (flag<1) {
-                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
-                      
-                      }else{
-                            var posnic=document.forms.items_form;
-                      for (i = 0; i < posnic.length-1; i++){
-                          if(posnic[i].checked==true){                             
-                                 $.ajax({
-                                    url: '<?php echo base_url() ?>index.php/goods_receiving_note/item_deactive',
-                                    type: "POST",
-                                    data: {
-                                        guid: posnic[i].value
-
-                                    },
-                                    success: function(response)
-                                    {
-                                        if(response){
-                                             $.bootstrapGrowl('<?php echo $this->lang->line('deactivated');?>', { type: "danger" });
-                                            $("#selected_item_table").dataTable().fnDraw();
-                                        }
-                                    }
-                                });
-
-                          }
-
-                      }
-                  
-
                       }    
                       }
                     

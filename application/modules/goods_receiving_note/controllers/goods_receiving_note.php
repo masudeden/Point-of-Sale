@@ -227,16 +227,35 @@ function  get_goods_receiving_note($guid){
 }
 function good_receiving_note_approve(){
     if($_SESSION['goods_receiving_note_per']['approve']==1){
-            $id=  $this->input->post('guid');
-            $po=  $this->input->post('po');
-            $report= $this->posnic->posnic_module_deactive($id,'grn'); 
-            $this->load->model('grn');
-            $this->grn->add_stock($id,$po,$_SESSION['Bid']);
-            if (!$report['error']) {
-                echo 'TRUE';
-              } else {
-                echo 'FALSE';
-              }
+        $id=  $this->input->post('guid');
+        $po=  $this->input->post('po');
+        $report= $this->posnic->posnic_module_deactive($id,'grn'); 
+        $this->load->model('grn');
+        $this->grn->add_stock($id,$po,$_SESSION['Bid']);
+        if (!$report['error']) {
+            echo 'TRUE';
+        } else {
+            echo 'FALSE';
+        }
+    }else{
+        echo 'Noop';
+    }
+}
+function group_approve(){
+    if($_SESSION['goods_receiving_note_per']['approve']==1){
+        $id=  $this->input->post('guid');
+        $this->load->model('grn');
+        $po= $this->grn->get_order_chnage_order($guid);
+        $report= $this->posnic->posnic_module_deactive($id,'grn'); 
+        
+        $this->grn->add_stock($id,$po,$_SESSION['Bid']);
+        if (!$report['error']) {
+            echo 'TRUE';
+        } else {
+            echo 'FALSE';
+        }
+    }else{
+        echo 'Noop';
     }
 }
 function order_number(){

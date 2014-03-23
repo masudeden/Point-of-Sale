@@ -288,6 +288,13 @@ class Grn extends CI_Model{
         $this->db->update('purchase_order_items',array('received_quty'=>$old_received_quty+$quty,'received_free'=>$free+$old_received_free));
         
     }
+    function get_order_chnage_order($guid){
+        $this->db->select()->from('grn')->where('guid',$guid);
+        $sql=  $this->db->get();
+        foreach ($sql->result() as $row){
+            return $row->po;
+        }
+    }
     
 }
 ?>
