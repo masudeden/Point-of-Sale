@@ -119,7 +119,7 @@
 			}
  function user_function(guid){
     <?php if($_SESSION['goods_receiving_note_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('goods_receiving_note') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
                 url: '<?php echo base_url() ?>/index.php/goods_receiving_note/delete',

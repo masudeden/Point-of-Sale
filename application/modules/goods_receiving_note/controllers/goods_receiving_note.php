@@ -198,11 +198,12 @@ function search_purchase_order(){
         
 }
 function delete(){
-   if($_SESSION['brands_per']['delete']==1){
-            if($this->input->post('guid')){
-             $guid=  $this->input->post('guid');
-              $this->posnic->posnic_delete($guid,'purchase_order');
-              $this->load->model('purchase');
+   if($_SESSION['goods_receiving_note_per']['delete']==1){
+        if($this->input->post('guid')){
+            $guid=  $this->input->post('guid');
+            $this->posnic->posnic_delete($guid,'grn');
+            $this->load->model('grn');
+            $this->grn->delete_grn_items($guid);
             
              echo 'TRUE';
             }
