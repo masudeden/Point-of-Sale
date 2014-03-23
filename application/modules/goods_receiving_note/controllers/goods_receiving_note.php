@@ -102,8 +102,8 @@ class Goods_receiving_note extends CI_Controller{
     function  set_seleted_item_suppier($suid){
         $_SESSION['supplier_guid']=$suid;
     }
-            function get_selected_supplier()
-    {       
+    function get_selected_supplier()
+        {       
        $q= addslashes($_REQUEST['term']);
                 $where=array('company_name'=>$q);
                 $name=$this->posnic->posnic_like('suppliers',$where,'company_name');
@@ -125,27 +125,24 @@ class Goods_receiving_note extends CI_Controller{
     
     }
    
-   function get_item_details(){
-       $q= addslashes($_REQUEST['term']);
-                $like=array('code'=>$q);    
-               
-                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$_SESSION['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
-                $data=$this->posnic-> posnic_join_like('suppliers_x_items','items',$like,$where);
-        echo json_encode($data);
-    }   
+function get_item_details(){
+    $q= addslashes($_REQUEST['term']);
+    $like=array('code'=>$q); 
+    $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$_SESSION['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
+    $data=$this->posnic-> posnic_join_like('suppliers_x_items','items',$like,$where);
+    echo json_encode($data);
+}   
     
-    function get_item_details_for_view($iid){
-        if ($iid=="pos") return;
-            $this->load->model('grn');     
-            $id=urldecode($iid);
-            $where=array('code'=>$id);
-            $data=$this->posnic->posnic_one_array_module_where('items',$where);
-           foreach ($data as $value){ 
-            echo "  <table> <tr><td >Name  </td><td >Cost</td><td >Price</td><td > MRF</td></tr><tr><td ><input type=text style=width:150px disabled value =$value[description]   ></td><td ><input type=text value =$value[cost_price] class=items_div disabled ></td><td ><input type=text value =$value[selling_price] class=items_div disabled ></td><td ><input type=text value= $value[mrp] class=items_div  disabled ></td></tr></table>";
-            
-            
-        }
-     }
+function get_item_details_for_view($iid){
+    if ($iid=="pos") return;
+    $this->load->model('grn');     
+    $id=urldecode($iid);
+    $where=array('code'=>$id);
+    $data=$this->posnic->posnic_one_array_module_where('items',$where);
+    foreach ($data as $value){ 
+        echo "  <table> <tr><td >Name  </td><td >Cost</td><td >Price</td><td > MRF</td></tr><tr><td ><input type=text style=width:150px disabled value =$value[description]   ></td><td ><input type=text value =$value[cost_price] class=items_div disabled ></td><td ><input type=text value =$value[selling_price] class=items_div disabled ></td><td ><input type=text value= $value[mrp] class=items_div  disabled ></td></tr></table>";
+    }
+}
  
     
   
