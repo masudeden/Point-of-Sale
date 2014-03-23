@@ -2348,7 +2348,8 @@ function new_discount_amount(){
 
                       }    
                       }
-                    function posnic_delete(){
+     function posnic_delete(){
+            <?php if($_SESSION['purchase_order_per']['delete']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2391,6 +2392,10 @@ function new_discount_amount(){
                       }
                       });
                       }    
+                      <?php }else{?>
+                                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
+                           <?php }
+                        ?>
                       }
                     
                     
