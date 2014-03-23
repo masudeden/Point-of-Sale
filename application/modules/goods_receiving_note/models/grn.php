@@ -217,34 +217,42 @@ class Grn extends CI_Model{
          
      }
     # Add Stock From Purchase Receve Note
-    function add_stock($items,$quty,$po_item,$Bid){
-        $this->db->select()->from('purchase_order_items')->where('guid',$po_item);
+    function add_stock($guid,$po_item,$Bid){
+        $this->db->select()->from('grn_x_items')->where('grn',$guid);
+        $grn=$this->db->get();
+        foreach ($grn->result() as $grn_row){
+     
+        
+        $this->db->select()->from('purchase_order_items')->where('order_id',$po_item)->where('item',$grn_row->item);
         $sql=  $this->db->get();
         $price;
         foreach ($sql->result() as $row){
-             $price=$row->sell;
+           $price=$row->sell;
         }
-        $this->db->select()->from('stock')->where('branch_id',$Bid)->where('item',$items);
+        $this->db->select()->from('stock')->where('branch_id',$Bid)->where('item',$grn_row->item);
         $sql_order=  $this->db->get();
         if($sql_order->num_rows()>0){
             $stock_quty;
             foreach ($sql_order->result() as $stock){
                 $stock_quty=  $stock->quty;
             }
-            $this->db->where('branch_id',$Bid)->where('item',$items);
-            $this->db->update('stock',array('item'=>$items,'quty'=>$quty+$stock_quty,'price'=>$price,'branch_id'=>$Bid));
+            $this->db->where('branch_id',$Bid)->where('item',$grn_row->item);
+            $this->db->update('stock',array('quty'=>$grn_row->quty+$stock_quty,'price'=>$price));
+           
         }else{
-            $this->db->insert('stock',array('item'=>$items,'quty'=>$quty,'price'=>$price,'branch_id'=>$Bid));
+            $this->db->insert('stock',array('item'=>$grn_row->item,'quty'=>$grn_row->quty,'price'=>$price,'branch_id'=>$Bid));
             $id=  $this->db->insert_id();
             $this->db->where('id',$id);
-            $this->db->update('stock',array('guid'=>  md5('stock'.$items.$id)));
+             
+            $this->db->update('stock',array('guid'=>  md5('stock'.$grn_row->item.$id)));
+        }
         }
     }
     function update_grn_items_quty($guid,$quty,$free,$items,$po_item){
         $this->db->select()->from('grn_x_items')->where('guid',$guid);        
         $sql=  $this->db->get();
       
-          $old_quty;
+        $old_quty;
         $old_free;
         $oquty;
         $ofree;
@@ -269,10 +277,10 @@ class Grn extends CI_Model{
         $current_quty=$quty+$old_received_quty;
         $current_free=$free+$old_received_free;
         if($current_quty>$oquty){
-          echo $quty=$oquty-$old_received_quty;
+          $quty=$oquty-$old_received_quty;
         }
         if($current_free>$ofree){
-          echo  $free=$ofree-$old_received_free;
+            $free=$ofree-$old_received_free;
         }
         $this->db->where('guid',$guid);
         $this->db->update('grn_x_items',array('quty'=>$quty,'free'=>$free));

@@ -17,7 +17,7 @@ class Goods_receiving_note extends CI_Controller{
     }
     // goods Receiving Note data table
     function data_table(){
-        $aColumns = array( 'grn_guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','grn_active','grn_active' );	
+        $aColumns = array( 'grn_guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','grn_active','grn_active','guid' );	
 	$start = "";
 			$end="";
 		
@@ -141,7 +141,8 @@ function save(){
         $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
         $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
         //$this->form_validation->set_rules('grn_no', $this->lang->line('grn_no'), 'required');                         
-        $this->form_validation->set_rules('receive_quty[]', 'receive_quty', 'regex_match[/^[0-9]+$/]|xss_clean');
+        $this->form_validation->set_rules('receive_quty[]', 'receive_quty', 'regex_match[/^[0-109]+$/]|xss_clean');
+        $this->form_validation->set_rules('receive_free[]', 'receive_free', 'regex_match[/^[0-109]+$/]|xss_clean');
             if ( $this->form_validation->run() !== false ) {    
                 $po=  $this->input->post('goods_receiving_note_guid');
                 $grn_date=strtotime($this->input->post('grn_date'));
@@ -154,8 +155,7 @@ function save(){
                 $value=array('date'=>$grn_date,'remark'=>$remark,'note'=>$note);
                 $guid=  $this->input->post('grn_guid');
                 $update_where=array('guid'=>$guid);
-           //     $this->posnic->posnic_update_record($value,$update_where,'grn');
-          
+                $this->posnic->posnic_update_record($value,$update_where,'grn');          
                 $quty=  $this->input->post('receive_quty');
                 $grn_item_guid=  $this->input->post('grn_items_guid');
                 $free=  $this->input->post('receive_free');
@@ -166,7 +166,7 @@ function save(){
           
                         $this->load->model('grn');
                         $this->grn->update_grn_items_quty($grn_item_guid[$i],$quty[$i],$free[$i],$items[$i],$po_item[$i]);
-                        //$this->grn->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$_SESSION['Bid']);
+                      
                 }
                     
                     
@@ -228,7 +228,10 @@ function  get_goods_receiving_note($guid){
 function good_receiving_note_approve(){
     if($_SESSION['goods_receiving_note_per']['approve']==1){
             $id=  $this->input->post('guid');
+            $po=  $this->input->post('po');
             $report= $this->posnic->posnic_module_deactive($id,'grn'); 
+            $this->load->model('grn');
+            $this->grn->add_stock($id,$po,$_SESSION['Bid']);
             if (!$report['error']) {
                 echo 'TRUE';
               } else {
