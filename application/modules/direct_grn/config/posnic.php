@@ -1,4 +1,4 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['M_ACL']	=array('access','approve','cancel');
+$config['M_ACL']	=array('access','read','add','edit','approve','delete');
 ?>

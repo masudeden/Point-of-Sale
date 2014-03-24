@@ -482,4 +482,8 @@ $lang['credit_days']='Credit Days';
   $lang['was_expired']='Was Expired';
   $lang['grn_number']='G R N No';
   $lang['all_items_was_received']=' All Items Was Received';
+  
+  //Direct GRN
+  $lang['direct_grn']='Direct G R N';
+  
 ?>﻿
