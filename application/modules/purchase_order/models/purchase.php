@@ -141,7 +141,7 @@ class Purchase extends CI_Model{
         
      }
      function  check_approve($guid){
-          $this->db->select()->from('purcchase_order')->where('guid',$guid)->where('order_status',1);
+          $this->db->select()->from('purchase_order')->where('guid',$guid)->where('order_status',1);
             $sql=  $this->db->get();
             if($sql->num_rows()>0){
                return FALSE;

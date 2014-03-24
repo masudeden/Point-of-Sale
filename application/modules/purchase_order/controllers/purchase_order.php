@@ -320,10 +320,11 @@ function delete(){
    if($_SESSION['brands_per']['delete']==1){
             if($this->input->post('guid')){
                 $this->load->model('purchase');
+                $guid=$this->input->post('guid');
                 $status=$this->purchase->check_approve($guid);
                     if($status!=FALSE){
                          $this->posnic->posnic_delete($guid,'purchase_order');
-                    $this->grn->delete_grn_items($guid);            
+                            
                         echo 'TRUE';
                     }else{
                         echo 'Approved';

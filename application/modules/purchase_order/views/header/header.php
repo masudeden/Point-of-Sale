@@ -44,7 +44,11 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
+                                                                    if(oObj.aData[9]==1){
+                                                                        return "<input type=checkbox value='"+oObj.aData[0]+"' disabled='disabled' ><input type='hidden' id='order__number_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
+                                                                    }else{
                    							return "<input type=checkbox value='"+oObj.aData[0]+"' ><input type='hidden' id='order__number_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
+                                                                    }
 								},
 								
 								
