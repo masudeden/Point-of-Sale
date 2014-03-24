@@ -108,8 +108,8 @@ class Purchase extends CI_Model{
          $sql=  $this->db->get();
          return $sql->result();
      
-     }
-     function get_direct_grn($guid){
+    }
+    function get_direct_grn($guid){
          $this->db->select('items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,direct_grn.*,direct_grn_items.discount_per as dis_per ,direct_grn_items.discount_amount as item_dis_amt ,direct_grn_items.tax as dis_amt ,direct_grn_items.tax as order_tax,direct_grn_items.item ,direct_grn_items.quty ,direct_grn_items.free ,direct_grn_items.cost ,direct_grn_items.sell ,direct_grn_items.mrp,direct_grn_items.guid as o_i_guid ,direct_grn_items.amount ,direct_grn_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('direct_grn')->where('direct_grn.guid',$guid);
          $this->db->join('direct_grn_items', 'direct_grn_items.order_id = direct_grn.guid AND direct_grn_items.delete_status=0','left');
          $this->db->join('items', "items.guid=direct_grn_items.item AND direct_grn_items.order_id='".$guid."' AND direct_grn_items.delete_status=0",'left');
@@ -130,17 +130,17 @@ class Purchase extends CI_Model{
           $data[]=$row;
          }
          return $data;
-     }
-     function delete_order_item($guid){      
+    }
+    function delete_order_item($guid){      
           $this->db->where('guid',$guid);
           $this->db->update('direct_grn_items',array('delete_status'=>1));
-     }
-     function deactive_order($guid){
+    }
+    function deactive_order($guid){
          $this->db->where('guid',$guid);
          $this->db->update('direct_grn',array('order_status'=>1));
         
-     }
-     function  check_approve($guid){
+    }
+    function  check_approve($guid){
           $this->db->select()->from('direct_grn')->where('guid',$guid)->where('order_status',1);
             $sql=  $this->db->get();
             if($sql->num_rows()>0){
@@ -149,7 +149,31 @@ class Purchase extends CI_Model{
                 return TRUE;
             }
             
-     }
+    }
+    function direct_grn_stock($guid,$Bid){
+        $this->db->select()->from('direct_grn_items')->where('order_id',$guid);
+        $grn=$this->db->get();
+        foreach ($grn->result() as $grn_row){
+            $price=$grn_row->sell;
+            $this->db->select()->from('stock')->where('branch_id',$Bid)->where('item',$grn_row->item);
+            $sql_order=  $this->db->get();
+            if($sql_order->num_rows()>0){
+                $stock_quty;
+                foreach ($sql_order->result() as $stock){
+                    $stock_quty=  $stock->quty;
+                }
+                $this->db->where('branch_id',$Bid)->where('item',$grn_row->item);
+                $this->db->update('stock',array('quty'=>$grn_row->quty+$stock_quty,'price'=>$price));
+
+            }else{
+                $this->db->insert('stock',array('item'=>$grn_row->item,'quty'=>$grn_row->quty,'price'=>$price,'branch_id'=>$Bid));
+                $id=  $this->db->insert_id();
+                $this->db->where('id',$id);
+                $this->db->update('stock',array('guid'=>  md5('stock'.$grn_row->item.$id)));
+            }
+        }
+         
+    }
     
 }
 ?>

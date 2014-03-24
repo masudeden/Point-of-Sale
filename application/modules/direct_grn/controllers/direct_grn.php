@@ -346,6 +346,7 @@ function direct_grn_approve(){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
             $this->purchase->deactive_order($id);
+            $this->purchase->direct_grn_stock($id,$_SESSION['Bid']);
             echo 'TRUE';
      }else{
          echo 'FALSE';
