@@ -329,7 +329,7 @@ class Grn extends CI_Model{
             $this->db->select()->from('grn')->where('guid',$guid)->where('active',1);
             $sql=  $this->db->get();
             if($sql->num_rows()>0){
-                return True;
+                return FALSE;
             }else{
                 return TRUE;
             }

@@ -1173,7 +1173,8 @@ function reload_update_user(){
              
                         var posnic=document.forms.posnic;
                         for (i = 0; i < posnic.length; i++){
-                          if(posnic[i].checked==true){                             
+                          if(posnic[i].checked==true){   
+                              var guid=posnic[i].value;
                               $.ajax({
                                 url: '<?php echo base_url() ?>/index.php/goods_receiving_note/delete',
                                 type: "POST",
@@ -1181,13 +1182,16 @@ function reload_update_user(){
                                     guid:posnic[i].value
 
                                 },
-                                success: function(response)
-                                {
-                                    if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('goods_receiving_note')." ".$this->lang->line('deleted');?>', { type: "error" });
+                                 complete: function(response) {
+                                    if(response['responseText']=='TRUE'){
+                                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('goods_receiving_note') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                                         $("#dt_table_tools").dataTable().fnDraw();
+                                    }else if(response['responseText']=='Approved'){
+                                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>  <?php echo $this->lang->line('is');?> <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
+                                    }else{
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
                                     }
-                                }
+                                    }
                             });
 
                           }

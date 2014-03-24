@@ -319,11 +319,16 @@ function search_supplier(){
 function delete(){
    if($_SESSION['brands_per']['delete']==1){
             if($this->input->post('guid')){
-             $guid=  $this->input->post('guid');
-              $this->posnic->posnic_delete($guid,'purchase_order');
-              $this->load->model('purchase');
+                $this->load->model('purchase');
+                $status=$this->purchase->check_approve($guid);
+                    if($status!=FALSE){
+                         $this->posnic->posnic_delete($guid,'purchase_order');
+                    $this->grn->delete_grn_items($guid);            
+                        echo 'TRUE';
+                    }else{
+                        echo 'Approved';
+                    }
             
-             echo 'TRUE';
             }
            }else{
             echo 'FALSE';

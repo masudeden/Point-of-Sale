@@ -399,7 +399,7 @@ function reload_update_user(){
                 <div class="col col-lg-7">
                         <a href="javascript:posnic_add_new()" id="posnic_add_purchase_order" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
                      
-                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
+                        <a href="javascript:purchase_order_group_approve()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
                         <a href="javascript:posnic_purchase_order_lists()" class="btn btn-success" id="purchase_order_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('purchase_order') ?></a>
                         
@@ -2268,7 +2268,8 @@ function new_discount_amount(){
 		</div>
 	
                 <script type="text/javascript">
-                    function posnic_group_active(){
+                    function purchase_order_group_approve(){
+              <?php if($_SESSION['purchase_order_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2279,26 +2280,29 @@ function new_discount_amount(){
 
                       }
                       if (flag<1) {
-                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
+                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('purchase_order');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
                       for (i = 0; i < posnic.length-1; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/purchase_order/active',
+                                url: '<?php echo base_url() ?>/index.php/purchase_order/purchase_order_approve',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
 
                                 },
-                                success: function(response)
-                                {
-                                    if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('activated');?>', { type: "success" });
+                                complete: function(response) {
+                                    if(response['responseText']=='TRUE'){
+                                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
                                         $("#dt_table_tools").dataTable().fnDraw();
+                                    }else if(response['responseText']=='Approved'){
+                                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>   <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
+                                    }else{
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                              
                                     }
-                                }
+                                    }
                             });
 
                           }
@@ -2306,7 +2310,11 @@ function new_discount_amount(){
                       }
                   
 
-                      }    
+                      }   
+                       <?php }else{?>
+                                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
+                            <?php }
+                         ?>
                       }
                     function posnic_group_item_active(){
                      var flag=0;
@@ -2369,7 +2377,9 @@ function new_discount_amount(){
              
                         var posnic=document.forms.posnic;
                         for (i = 0; i < posnic.length; i++){
-                          if(posnic[i].checked==true){                             
+                           
+                          if(posnic[i].checked==true){ 
+                              var guid=posnic[i].value;
                               $.ajax({
                                 url: '<?php echo base_url() ?>/index.php/purchase_order/delete',
                                 type: "POST",
@@ -2377,13 +2387,16 @@ function new_discount_amount(){
                                     guid:posnic[i].value
 
                                 },
-                                success: function(response)
-                                {
-                                    if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')." ".$this->lang->line('deleted');?>', { type: "error" });
+                                  complete: function(response) {
+                                    if(response['responseText']=='TRUE'){
+                                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('goods_receiving_note') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                                         $("#dt_table_tools").dataTable().fnDraw();
+                                    }else if(response['responseText']=='Approved'){
+                                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>  <?php echo $this->lang->line('is');?> <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
+                                    }else{
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
                                     }
-                                }
+                                    }
                             });
 
                           }
