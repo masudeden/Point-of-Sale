@@ -364,7 +364,12 @@ $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
       $('#active').attr("disabled", "disabled");
       $('#deactive').attr("disabled", "disabled");
       $('#purchase_order_lists').removeAttr("disabled");
+     
+         window.setTimeout(function ()
+    {
+       //$('#parsley_reg #delivery_date').focus();
         $('#parsley_reg #first_name').select2('open');
+    }, 500);
       <?php }else{ ?>
                     $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                         
                     <?php }?>
@@ -1690,6 +1695,8 @@ function clear_inputs(){
   $('#parsley_reg #extra_elements').val('');
   $('#parsley_reg #item_id').val('')
   $('#parsley_reg #dummy_discount_amount').val('')
+  $('#parsley_reg #hidden_dis_amt').val('')
+  $('#parsley_reg #hidden_dis').val('')
   $('#parsley_reg #tax_label').text('<?php echo $this->lang->line('tax')?>');
   $('#parsley_reg #dummy_discount').val('')
   $("#parsley_reg #items").select2('data', {id:'',text: 'Search Item'});
@@ -1877,7 +1884,7 @@ function new_discount_amount(){
                                                                      <?php $discount=array('name'=>'discount',
                                                                                         'class'=>'  form-control',
                                                                                         'id'=>'id_discount',
-                                                                                         'maxlength'=>2,
+                                                                                         'maxlength'=>3,
                                                                                          'onkeyup'=>'new_discount_amount()',
                                                                                         'onKeyPress'=>"new_discount(event);return numbersonly(event)",
                                                                                         'value'=>set_value('discount'));
@@ -2039,7 +2046,7 @@ function new_discount_amount(){
                                                         </div>
                                                     </div>
                                   
-                                                <div class="col col-lg-1" style="padding:1px;width: 105px;">
+                                                <div class="col col-lg-1" style="padding:1px;width: 120px;">
                                                    <div class="form_sep">
                                                             
                                                                 <label for="sub_total" class="text-center"  ><?php echo $this->lang->line('sub_total') ?></label>
@@ -2061,7 +2068,7 @@ function new_discount_amount(){
                                                         </div>
                                                     </div>
                                              
-                                                          <div class="col col-lg-1" style="padding:1px;width: 70px;">
+                                                          <div class="col col-lg-1" style="padding:1px;width: 77px;">
                                                    <div class="form_sep">
                                                             
                                                                 <label for="tax" class="text-center" id="tax_label"  ><?php echo $this->lang->line('tax') ?></label>
@@ -2075,7 +2082,7 @@ function new_discount_amount(){
                                                         </div>
                                                     </div>
                                                
-                                                <div class="col col-lg-1" style="padding:1px;width: 70px">
+                                                <div class="col col-lg-1" style="padding:1px;width: 77px">
                                                    <div class="form_sep">
                                                             
                                                                 <label for="total" class="text-center"  ><?php echo $this->lang->line('discount') ?></label>
@@ -2084,7 +2091,7 @@ function new_discount_amount(){
                                                                 
                                                         </div>
                                                     </div>
-                                                <div class="col col-lg-1" style="padding:1px;width: 105px;">
+                                                <div class="col col-lg-1" style="padding:1px;width: 120px;">
                                                    <div class="form_sep">
                                                             
                                                                 <label for="total" class="text-center"  ><?php echo $this->lang->line('total') ?></label>

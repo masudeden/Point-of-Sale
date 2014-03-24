@@ -17,7 +17,7 @@ class Goods_receiving_note extends CI_Controller{
     }
     // goods Receiving Note data table
     function data_table(){
-        $aColumns = array( 'grn_guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','grn_active','grn_active','guid' );	
+        $aColumns = array( 'grn_guid','po_no','po_no','grn_no','c_name','s_name','grn_date','total_items','total_amt','grn_active','grn_active','guid' );	
 	$start = "";
 			$end="";
 		
@@ -46,6 +46,7 @@ class Goods_receiving_note extends CI_Controller{
 		{
 		$like =array(
                     'po_no'=>  $this->input->get_post('sSearch'),
+                    'grn_no'=>  $this->input->get_post('sSearch'),
                         );
 				
 			}

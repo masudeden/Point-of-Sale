@@ -44,7 +44,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                    if(oObj.aData[9]==1){
+                                                                    if(oObj.aData[10]==1){
                                                                         return "<input type=checkbox disabled='disabled' value='"+oObj.aData[0]+"' ><input type='hidden' id='order__number_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
                                                                          }else{
                    							return "<input type=checkbox value='"+oObj.aData[0]+"' ><input type='hidden' id='order__number_"+oObj.aData[0]+"' value='"+oObj.aData[1]+"'>";
@@ -54,13 +54,13 @@
 								
 							},
         
-        null, null, null, {	"sName": "ID",
+        null, null, null, null, {	"sName": "ID",
                    						"bSearchable": false,
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
                    							//if(oObj.aData[8]==0)
-                                                                      return   oObj.aData[5];
+                                                                      return   oObj.aData[6];
 								},
 								
 								
@@ -73,7 +73,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[9]==1){
+                   							if(oObj.aData[10]==1){
                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('approved') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="label label-warning hint--top data-hint="<?php echo $this->lang->line('waiting') ?>" ><?php echo $this->lang->line('waiting') ?></span>';
@@ -87,7 +87,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[9]==1){
+                                                                if(oObj.aData[10]==1){
                                                                         //return '<a ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('approved') ?>"><i class="icon-play"></i></span></a>&nbsp<a   ><span data-toggle="tooltip" class="label label-info hint--top hint--success" data-hint="<?php echo $this->lang->line('approved') ?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a  ><span data-toggle='tooltip' class='label label-danger hint--top hint--success' data-hint='<?php echo $this->lang->line('approved') ?>'><i class='icon-trash'></i></span> </a>";
                                                                         return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('approved') ?></span>'
 								}else{

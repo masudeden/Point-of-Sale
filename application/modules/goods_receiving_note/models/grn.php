@@ -4,14 +4,21 @@ class Grn extends CI_Model{
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('purchase_order.*,grn.guid as grn_guid,grn.active as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
+                $this->db->select('purchase_order.*,grn.grn_no,grn.active_status as grn_active_status,grn.guid as grn_guid,grn.active as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
                 $this->db->from('grn')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0)->where('grn.active_status',0)->where('grn.delete_status',0);
-                $this->db->join('purchase_order', 'purchase_order.guid=grn.po','left');
+                $this->db->join('purchase_order', 'purchase_order.guid=grn.po AND grn.active_status=0','left');
                 $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id AND purchase_order.guid=grn.po','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
                 $query=$this->db->get();
-                return $query->result_array(); 
+                $data=array();
+                foreach ($query->result_array() as $row){
+                    if($row['grn_active_status']==0){
+                    $row['grn_date']=date('d-m-Y',$row['grn_date']);
+                    $data[]=$row;
+                    }
+                }
+                return $data; 
         
     }
     function search_purchase_order($like,$branch){

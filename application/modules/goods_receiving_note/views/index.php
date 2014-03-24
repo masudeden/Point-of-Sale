@@ -719,7 +719,8 @@ function reload_update_user(){
                                         <tr>
                                          <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
-                                          <th ><?php echo $this->lang->line('order_number') ?></th>
+                                          <th ><?php echo $this->lang->line('purchase_order') ?></th>
+                                          <th ><?php echo $this->lang->line('grn_number') ?></th>
                                           
                                           <th><?php echo $this->lang->line('company') ?></th>
                                            <th><?php echo $this->lang->line('name') ?></th>

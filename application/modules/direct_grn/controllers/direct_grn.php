@@ -1,5 +1,5 @@
 <?php
-class Purchase_order_approval extends CI_Controller{
+class Direct_grn extends CI_Controller{
    function __construct() {
                 parent::__construct();
                 $this->load->library('posnic');               
