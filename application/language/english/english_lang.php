@@ -486,4 +486,8 @@ $lang['credit_days']='Credit Days';
   //Direct GRN
   $lang['direct_grn']='Direct G R N';
   
+  // purchase invoice
+  $lang['invoice']='Invoice';
+  
+  
 ?>﻿

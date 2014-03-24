@@ -8,7 +8,7 @@ class Goods_receiving_note extends CI_Controller{
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
         $this->load->view('template/branch',$this->posnic->branchs());
-        $data['active']='purchase_order';
+        $data['active']='goods_receiving_note';
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());
         $this->load->view('template/app/footer');
