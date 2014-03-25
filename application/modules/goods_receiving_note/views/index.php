@@ -402,17 +402,6 @@
              $('#loading').modal('show');
                    var guid = $('#parsley_reg #demo_order_number').select2('data').id;
 
-                 $('#parsley_reg #goods_receiving_note_guid').val($('#parsley_reg #demo_order_number').select2('data').id);
-                 $('#parsley_reg #demo_order_number').val($('#parsley_reg #demo_order_number').select2('data').text);
-                 $('#parsley_reg #company').val($('#parsley_reg #demo_order_number').select2('data').company);
-                 $('#parsley_reg #first_name').val($('#parsley_reg #demo_order_number').select2('data').supplier);
-                 $('#parsley_reg #order_date').val($('#parsley_reg #demo_order_number').select2('data').order_date);
-                 $('#parsley_reg #expiry_date').val($('#parsley_reg #demo_order_number').select2('data').expiry);
-                 $('#parsley_reg #id_discount').val($('#parsley_reg #demo_order_number').select2('data').discount);
-                 $('#parsley_reg #discount_amount').val($('#parsley_reg #demo_order_number').select2('data').dis_amount);
-                 $('#parsley_reg #freight').val($('#parsley_reg #demo_order_number').select2('data').freight);
-                 $('#parsley_reg #round_off_amount').val($('#parsley_reg #demo_order_number').select2('data').round);
-                 $('#parsley_reg #supplier_guid').val(guid);
                
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/goods_receiving_note/get_purchase_order/"+guid,                      
@@ -420,7 +409,19 @@
                              dataType: 'json',               
                              success: function(data)        
                              { 
-                             
+                             if(data[0]['grn_status']==0){
+                                 
+                                $('#parsley_reg #goods_receiving_note_guid').val($('#parsley_reg #demo_order_number').select2('data').id);
+                                $('#parsley_reg #demo_order_number').val($('#parsley_reg #demo_order_number').select2('data').text);
+                                $('#parsley_reg #company').val($('#parsley_reg #demo_order_number').select2('data').company);
+                                $('#parsley_reg #first_name').val($('#parsley_reg #demo_order_number').select2('data').supplier);
+                                $('#parsley_reg #order_date').val($('#parsley_reg #demo_order_number').select2('data').order_date);
+                                $('#parsley_reg #expiry_date').val($('#parsley_reg #demo_order_number').select2('data').expiry);
+                                $('#parsley_reg #id_discount').val($('#parsley_reg #demo_order_number').select2('data').discount);
+                                $('#parsley_reg #discount_amount').val($('#parsley_reg #demo_order_number').select2('data').dis_amount);
+                                $('#parsley_reg #freight').val($('#parsley_reg #demo_order_number').select2('data').freight);
+                                $('#parsley_reg #round_off_amount').val($('#parsley_reg #demo_order_number').select2('data').round);
+                                $('#parsley_reg #supplier_guid').val(guid);
                                 $("#user_list").hide();
                                 $('#add_new_order').show('slow');
                                 $('#delete').attr("disabled", "disabled");
@@ -532,6 +533,11 @@
                                   $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('all_items_was_received') ?>');
                                   }
                              } 
+                             else{
+                               $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('all_items_was_received') ?>', { type: "success" });                         
+                                 $('#parsley_reg #demo_order_number').select2('open');
+                             }
+                             }
                            });
                     
                       window.setTimeout(function ()
@@ -1208,6 +1214,6 @@ function reload_update_user(){
                  
                     
                 </script>
-        
+              
 
       

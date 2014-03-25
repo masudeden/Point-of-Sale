@@ -332,7 +332,8 @@ class Grn extends CI_Model{
                     
         }
         
-    }function check_approve($guid){
+    }
+    function check_approve($guid){
             $this->db->select()->from('grn')->where('guid',$guid)->where('active',1);
             $sql=  $this->db->get();
             if($sql->num_rows()>0){
@@ -341,7 +342,13 @@ class Grn extends CI_Model{
                 return TRUE;
             }
             
-        }
+    }
+    function update_grn_status($po){
+        $this->db->where('guid',$po);
+        $this->db->update('purchase_order',array('grn_status'=>1));
+                
+            
+    }
     
 }
 ?>

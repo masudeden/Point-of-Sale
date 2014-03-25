@@ -111,7 +111,8 @@ function save(){
      
                 $value=array('grn_no'=>$grn_no,'date'=>$grn_date,'po'=>$po,'remark'=>$remark,'note'=>$note);
                 $guid=   $this->posnic->posnic_add_record($value,'grn');
-          
+                $this->load->model('grn');
+                $this->grn->update_grn_status($po);
                 $quty=  $this->input->post('receive_quty');
                 $free=  $this->input->post('receive_free');
                 $items=  $this->input->post('items');
