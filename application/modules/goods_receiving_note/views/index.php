@@ -444,23 +444,13 @@
                                 $("#parsley_reg #discount_amount").val(data[0]['discount_amt']);
                                 $("#parsley_reg #freight").val(data[0]['freight']);
                                 $("#parsley_reg #round_off_amount").val(data[0]['round_amt']);
-                                $("#parsley_reg #demo_grand_total").val(data[0]['total_amt']);
-                                $("#parsley_reg #grand_total").val(data[0]['total_amt']);
+                             
                                 
-                                $("#parsley_reg #demo_total_amount").val(data[0]['total_item_amt']);
-                                $("#parsley_reg #total_amount").val(data[0]['total_item_amt']);
-                                
-                                  var num = parseFloat($('#demo_total_amount').val());
-                                  $('#demo_total_amount').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#total_amount').val());
-                                  $('#total_amount').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#grand_total').val());
-                                  $('#grand_total').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#demo_grand_total').val());
-                                  $('#demo_grand_total').val(num.toFixed(point));
+                                 
+                                  $('#demo_total_amount').val('');
+                                  $('#total_amount').val('');
+                                  $('#grand_total').val('');
+                                  $('#demo_grand_total').val('');
                                   
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 var tax;
@@ -520,15 +510,17 @@
                                     name,
                                     sku,
                                     cost,
-                                    total,
-                                    date,
+                                  //  total,
+                                  
                                     quty,
                                     received_quty,
                                     free,
                                     received_free,
                                     "<input type='hidden' name='items[]' value='"+data[i]['item']+"' ><input type='hidden' id='o_quty_id_"+i+"' value='"+parseFloat(quty-received_quty)+"' ><input type='text' id='r_quty_id_"+i+"' name='receive_quty[]' onkeyup='receive_quty_items("+i+")' onKeyPress='receive_quty(event,"+i+");return numbersonly(event)' class='form-control' style='width:100px'>",
                                     "<input type='hidden' name='order_items[]' value='"+data[i]['o_i_guid']+"' ><input type='hidden' id='o_free_id_"+i+"' value='"+parseFloat(free-received_free)+"' ><input type='text' id='r_free_id_"+i+"' name='receive_free[]' onkeyup='receive_free_items("+i+")' onKeyPress='receive_free(event,"+i+","+data.length+");return numbersonly(event)' class='form-control' style='width:90px'>",
-                                   
+                                 type+':'+0,
+                                  0,
+                                  0
                                 
                                  ] );
 
@@ -952,22 +944,26 @@ function reload_update_user(){
                                     <thead>
                                         <tr>
                                             
-                                    <th><?php echo $this->lang->line('sl_no') ?></th>
+                                    <th><?php echo $this->lang->line('no') ?></th>
                                     <th><?php echo $this->lang->line('name') ?></th>
                                     <th><?php echo $this->lang->line('sku') ?></th>
                                     <th><?php echo $this->lang->line('cost') ?></th>
-                                    <th><?php echo $this->lang->line('total') ?></th>
-                                    <th><?php echo $this->lang->line('delivery_date') ?></th>
+                                  
+                                    
                                     <th><?php echo $this->lang->line('ordered_quty') ?></th>
                                     <th><?php echo $this->lang->line('received_quty') ?></th>
                                     
                                     <th><?php echo $this->lang->line('ordered_free') ?></th>
                                     <th><?php echo $this->lang->line('received_free') ?></th>
+                                   
                                     
                                    
                                   
                                     <th><?php echo $this->lang->line('quantity') ?></th>
                                     <th><?php echo $this->lang->line('free') ?></th>
+                                     <th><?php echo $this->lang->line('tax') ?></th>
+                                     <th><?php echo $this->lang->line('discount') ?></th>
+                                     <th><?php echo $this->lang->line('amount') ?></th>
                                  
                                  
                                    

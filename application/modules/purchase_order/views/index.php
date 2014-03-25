@@ -1750,24 +1750,30 @@ var round_amt=parseFloat($("#parsley_reg #round_off_amount").val());
 }
 function new_discount_amount(){
  if(parseFloat($("#parsley_reg #total_amount").val())>0){
-      var total=parseFloat($("#parsley_reg #total_amount").val());
-      var discount=(total*parseFloat($("#parsley_reg #id_discount").val()))/100;
-         $("#parsley_reg #demo_grand_total").val(parseFloat($("#parsley_reg #total_amount").val())-discount);
-         $("#parsley_reg #grand_total").val(parseFloat($("#parsley_reg #total_amount").val())-discount);
-       $("#parsley_reg #discount_amount").val(discount);
-        var round_amt=parseFloat($("#parsley_reg #round_off_amount").val());
-        var freight=parseFloat($("#parsley_reg #freight").val())
-        if(freight==""){freight=0;}
-        if(round_amt==""){round_amt=0;}
+    var total=parseFloat($("#parsley_reg #total_amount").val());
+    if($("#parsley_reg #id_discount").val()!="" && $("#parsley_reg #id_discount").val()!=0){
+            var discount=(total*parseFloat($("#parsley_reg #id_discount").val()))/100;
+              $("#parsley_reg #discount_amount").val(discount);
+    }else{
+        var  discount=$('discount_amount').val();
+       
+    }
+    $("#parsley_reg #demo_grand_total").val(parseFloat($("#parsley_reg #total_amount").val())-discount);
+    $("#parsley_reg #grand_total").val(parseFloat($("#parsley_reg #total_amount").val())-discount);
+  
+    var round_amt=parseFloat($("#parsley_reg #round_off_amount").val());
+    var freight=parseFloat($("#parsley_reg #freight").val())
+    if(freight==""){freight=0;}
+    if(round_amt==""){round_amt=0;}
          
-        if (isNaN($("#parsley_reg #total_amount").val())) 
-    $("#parsley_reg #total_amount").val(0)    
-        if (isNaN($("#parsley_reg #discount_amount").val())) 
-    $("#parsley_reg #discount_amount").val(0);
-        if (isNaN($("#parsley_reg #round_off_amount").val())) 
-    $("#parsley_reg #round_off_amount").val(0);
-        if (isNaN($("#parsley_reg #freight").val())) 
-    $("#parsley_reg #freight").val()
+    if (isNaN($("#parsley_reg #total_amount").val())) 
+        $("#parsley_reg #total_amount").val(0)    
+    if (isNaN($("#parsley_reg #discount_amount").val())) 
+        $("#parsley_reg #discount_amount").val(0);
+    if (isNaN($("#parsley_reg #round_off_amount").val())) 
+        $("#parsley_reg #round_off_amount").val(0);
+    if (isNaN($("#parsley_reg #freight").val())) 
+        $("#parsley_reg #freight").val()
     }
     
     new_grand_total();
