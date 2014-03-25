@@ -249,23 +249,23 @@
                                 $("#parsley_reg #discount_amount").val(data[0]['discount_amt']);
                                 $("#parsley_reg #freight").val(data[0]['freight']);
                                 $("#parsley_reg #round_off_amount").val(data[0]['round_amt']);
-                                $("#parsley_reg #demo_grand_total").val(data[0]['total_amt']);
-                                $("#parsley_reg #grand_total").val(data[0]['total_amt']);
-                                
-                                $("#parsley_reg #demo_total_amount").val(data[0]['total_item_amt']);
-                                $("#parsley_reg #total_amount").val(data[0]['total_item_amt']);
-                                
-                                  var num = parseFloat($('#demo_total_amount').val());
-                                  $('#demo_total_amount').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#total_amount').val());
-                                  $('#total_amount').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#grand_total').val());
-                                  $('#grand_total').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#demo_grand_total').val());
-                                  $('#demo_grand_total').val(num.toFixed(point));
+//                                $("#parsley_reg #demo_grand_total").val(data[0]['total_amt']);
+//                                $("#parsley_reg #grand_total").val(data[0]['total_amt']);
+//                                
+//                                $("#parsley_reg #demo_total_amount").val(data[0]['total_item_amt']);
+//                                $("#parsley_reg #total_amount").val(data[0]['total_item_amt']);
+//                                
+//                                  var num = parseFloat($('#demo_total_amount').val());
+//                                  $('#demo_total_amount').val(num.toFixed(point));
+//                                  
+//                                  var num = parseFloat($('#total_amount').val());
+//                                  $('#total_amount').val(num.toFixed(point));
+//                                  
+//                                  var num = parseFloat($('#grand_total').val());
+//                                  $('#grand_total').val(num.toFixed(point));
+//                                  
+//                                  var num = parseFloat($('#demo_grand_total').val());
+//                                  $('#demo_grand_total').val(num.toFixed(point));
                                   
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 $("#parsley_reg #grn_guid").val(guid);
@@ -307,20 +307,20 @@
                                   
                                     }
                                     
-                                   if(data[i]['tax_Inclusive']==1){
-                                     var tax=data[i]['order_tax'];
-                                    
-                                      var total=+tax+ +(parseFloat(quty)*parseFloat(cost))-discount;
-                                      var type='Exc';
-                                      var num = parseFloat(total);
-                                      total=num.toFixed(point);
-                                  }else{
-                                      var type="Inc";
-                                  
-                                      var tax=data[i]['order_tax'];
-                                      var total=(parseFloat(quty)*parseFloat(cost))-discount;
-                                      var num = parseFloat(total);
-                                      total=num.toFixed(point);
+                                    if(data[i]['tax_Inclusive']==1){
+                                        var tax=parseFloat(data[i]['tax_value']);                                    
+                                        var tax_amount=(parseFloat(rece_quty)*parseFloat(cost)*tax)/100;
+                                        var type='Exc';
+                                         var total=((parseFloat(rece_quty)*parseFloat(cost)))-parseFloat(discount)+parseFloat(tax_amount);
+                                        var num = parseFloat(total);
+                                        total=num.toFixed(point);
+                                    }else{
+                                        var type="Inc";
+                                        var tax=parseFloat(data[i]['tax_value']);
+                                        var tax_amount=(parseFloat(rece_quty)*parseFloat(cost)*tax)/100;
+                                        var total=(parseFloat(rece_quty)*parseFloat(cost))-discount;
+                                        var num = parseFloat(total);
+                                        total=num.toFixed(point);
                                   }
                                  var grn_received_quty=parseFloat(received_quty)-parseFloat(rece_quty);
                              
@@ -330,25 +330,27 @@
                                     name,
                                     sku,
                                     cost,
-                                    total,
-                                    date,
                                     quty,
                                     received_quty,
                                     free,
                                     received_free,
-                                    "<input type='hidden' name='grn_items_guid[]' value='"+data[i]['grn_items_guid']+"' ><input type='hidden' id='grn_old_quantity_"+i+"'  value='"+rece_quty+"' ><input type='hidden' name='items[]' value='"+data[i]['item']+"' ><input type='hidden' id='o_quty_id_"+i+"' value='"+parseFloat(quty-grn_received_quty)+"' ><input type='text' id='r_quty_id_"+i+"' name='receive_quty[]' value='"+rece_quty+"' onkeyup='receive_quty_items_update("+i+")' onKeyPress='receive_quty(event,"+i+");return numbersonly(event)' class='form-control' style='width:100px'>",
-                                    "<input type='hidden' id='grn_old_free_"+i+"'  value='"+rece_free+"' ><input type='hidden' name='order_items[]' value='"+data[i]['o_i_guid']+"' ><input type='hidden' id='o_free_id_"+i+"' value='"+parseFloat(free-grn_received_free)+"' ><input type='text' id='r_free_id_"+i+"' name='receive_free[]' value='"+rece_free+"' onkeyup='receive_free_items_update("+i+")' onKeyPress='receive_free(event,"+i+","+data.length+");return numbersonly(event)' class='form-control' style='width:90px'>",
-                                   
-                                
+                                    "<input type='hidden' id='total_id_"+i+"' value='"+total+"'><input type='hidden' id='tax_inclusive_"+i+"' value='"+data[i]['tax_Inclusive']+"' ><input type='hidden' id='discount_amt_"+i+"' value='"+discount+"' ><input type='hidden' id='cost_id_"+i+"' value='"+cost+"' ><input type='hidden' name='grn_items_guid[]' value='"+data[i]['grn_items_guid']+"' ><input type='hidden' id='grn_old_quantity_"+i+"' value='"+rece_quty+"' ><input type='hidden' name='items[]' value='"+data[i]['item']+"' ><input type='hidden' id='o_quty_id_"+i+"' value='"+parseFloat(quty-grn_received_quty)+"' ><input type='text' id='r_quty_id_"+i+"' name='receive_quty[]' value='"+rece_quty+"' onkeyup='receive_quty_items("+i+")' onKeyPress='receive_quty(event,"+i+");return numbersonly(event)' class='form-control' style='width:100px'>",
+                                    "<input type='hidden' id='tax_value_"+i+"' value='"+data[i]['tax_value']+"' ><input type='hidden' id='discount_per_"+i+"' value='"+per+"' ><input type='hidden' id='grn_old_free_"+i+"' value='"+rece_free+"' ><input type='hidden' name='order_items[]' value='"+data[i]['o_i_guid']+"' ><input type='hidden' id='o_free_id_"+i+"' value='"+parseFloat(free-grn_received_free)+"' ><input type='text' id='r_free_id_"+i+"' name='receive_free[]' value='"+rece_free+"' onkeyup='receive_free_items_update("+i+")' onKeyPress='receive_free(event,"+i+","+data.length+");return numbersonly(event)' class='form-control' style='width:90px'>",
+
+                                type+':'+tax_amount,
+                                  discount,
+                                  total
+                                 
                                  ] );
 
                               var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
-                              theNode.setAttribute('id','new_item_row_id_'+items_id)
+                              theNode.setAttribute('id','new_item_row_id_'+i)
                                 
                                 }
+                                    total_amount();
                              } 
                            });
-                      
+                  
                           window.setTimeout(function ()
                     {
                        //$('#parsley_reg #delivery_date').focus();
