@@ -4,7 +4,7 @@
           $(document).ready( function () {
               
         	 refresh_items_table();
-                 $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('goods_receiving_note') ?>');
+                 $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('purchase_invoice') ?>');
                      $('#add_new_order').hide();
                               posnic_table();
                                 
@@ -30,7 +30,7 @@
             },
                 });
             }
-              $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('purchase_order')." ".$this->lang->line('for')." ".$this->lang->line('goods_receiving_note') ?>');
+              $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('purchase_order')." ".$this->lang->line('for')." ".$this->lang->line('purchase_invoice') ?>');
                 }        
            function posnic_table(){
            $('#dt_table_tools').dataTable({
@@ -123,8 +123,8 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['goods_receiving_note_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('goods_receiving_note') ?> "+$('#order__number_'+guid).val(), function(result) {
+    <?php if($_SESSION['purchase_invoice_per']['delete']==1){ ?>
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('purchase_invoice') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
                 url: '<?php echo base_url() ?>/index.php/purchase_invoice/delete',
@@ -135,12 +135,12 @@
                 },
                complete: function(response) {
                     if(response['responseText']=='TRUE'){
-                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('goods_receiving_note') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_invoice') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }else if(response['responseText']=='Approved'){
                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>  <?php echo $this->lang->line('is');?> <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
                     }else{
-                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_invoice');?>', { type: "error" });                       
                     }
                     }
             });
@@ -148,12 +148,12 @@
 
                         }
     }); <?php }else{?>
-           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_invoice');?>', { type: "error" });                       
    <?php }
 ?>
                         }
         function good_receiving_note_approve(guid,po){
-            <?php if($_SESSION['goods_receiving_note_per']['approve']==1){ ?>
+            <?php if($_SESSION['purchase_invoice_per']['approve']==1){ ?>
                 $.ajax({
                 url: '<?php echo base_url() ?>index.php/purchase_invoice/good_receiving_note_approve',
                 type: "POST",
@@ -169,12 +169,12 @@
                     }else if(response['responseText']=='approve'){
                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is')." ".$this->lang->line('already')." ".$this->lang->line('approved');?>', { type: "warning" });
                     }else if(response['responseText']=='Noop'){
-                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_invoice');?>', { type: "error" });                       
                     }
                 }
             });
              <?php }else{?>
-                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_invoice');?>', { type: "error" });                       
                 <?php }?>
                }
         
@@ -199,7 +199,7 @@
         }
           
         function edit_function(guid){
-                        <?php if($_SESSION['goods_receiving_note_per']['edit']==1){ ?>
+                        <?php if($_SESSION['purchase_invoice_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
                             $('#parent_items').append('<div id="deleted"></div>');
@@ -212,7 +212,7 @@
                             $('#save_clear').hide();
                             $('#loading').modal('show');
                             $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/purchase_invoice/get_goods_receiving_note/"+guid,                      
+                             url: "<?php echo base_url() ?>index.php/purchase_invoice/get_purchase_invoice/"+guid,                      
                              data: "", 
                              dataType: 'json',               
                              success: function(data)        
@@ -220,16 +220,16 @@
                                 $("#user_list").hide();
                                 $('#add_new_order').show('slow');
                                 $('#delete').attr("disabled", "disabled");
-                                $('#posnic_add_goods_receiving_note').attr("disabled", "disabled");
+                                $('#posnic_add_purchase_invoice').attr("disabled", "disabled");
                                 $('#active').attr("disabled", "disabled");
                                 $('#deactive').attr("disabled", "disabled");
-                                $('#goods_receiving_note_lists').removeAttr("disabled");
+                                $('#purchase_invoice_lists').removeAttr("disabled");
                                
                              
                                 $("#parsley_reg #first_name").val(data[0]['s_name']);
                                 $("#parsley_reg #company").val(data[0]['c_name']);
                                 $("#parsley_reg #address").val(data[0]['address']);
-                                $("#parsley_reg #goods_receiving_note_guid").val(guid);
+                                $("#parsley_reg #purchase_invoice_guid").val(guid);
                                 $("#parsley_reg #demo_order_number").val(data[0]['po_no']);
                                 $("#parsley_reg #order_number").val(data[0]['po_no']);
                                 $("#parsley_reg #order_date").val(data[0]['po_date']);
@@ -357,7 +357,7 @@
                     }, 0);
                          
                         <?php }else{?>
-                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('purchase_invoice');?>', { type: "error" });                       
                         <?php }?>
                        }
 		</script>

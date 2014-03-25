@@ -4,7 +4,7 @@ class Grn extends CI_Model{
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('purchase_order.*,grn.grn_no,grn.active_status as grn_active_status,grn.guid as grn_guid,grn.active as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
+                $this->db->select('purchase_order.*,grn.grn_no,grn.active_status as grn_active_status,grn.guid as grn_guid,grn.grn_status as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
                 $this->db->from('grn')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0)->where('grn.active_status',0)->where('grn.delete_status',0);
                 $this->db->join('purchase_order', 'purchase_order.guid=grn.po AND grn.active_status=0','left');
                 $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id AND purchase_order.guid=grn.po','left');
@@ -295,12 +295,9 @@ class Grn extends CI_Model{
         $this->db->update('purchase_order_items',array('received_quty'=>$old_received_quty+$quty,'received_free'=>$free+$old_received_free));
         
     }
-    function get_order_chnage_order($guid){
-        $this->db->select()->from('grn')->where('guid',$guid);
-        $sql=  $this->db->get();
-        foreach ($sql->result() as $row){
-            return $row->po;
-        }
+    function change_grn_status($guid){
+        $this->db->where('guid',$guid);
+        $this->db->update('grn',array('grn_status'=>1));
     }
     function delete_grn_items($guid){
         $this->db->select()->from('grn')->where('guid',$guid);

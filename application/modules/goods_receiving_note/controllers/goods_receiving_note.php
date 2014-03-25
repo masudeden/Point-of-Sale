@@ -106,9 +106,6 @@ function save(){
                 $grn_no= $this->input->post('grn_no');
                 $remark=  $this->input->post('remark');
                 $note=  $this->input->post('note');
-                
-  
-     
                 $value=array('grn_no'=>$grn_no,'date'=>$grn_date,'po'=>$po,'remark'=>$remark,'note'=>$note);
                 $guid=   $this->posnic->posnic_add_record($value,'grn');
                 $this->load->model('grn');
@@ -151,9 +148,6 @@ function save(){
                // $grn_no= $this->input->post('grn_no');
                 $remark=  $this->input->post('remark');
                 $note=  $this->input->post('note');
-                
-  
-     
                 $value=array('date'=>$grn_date,'remark'=>$remark,'note'=>$note);
                 $guid=  $this->input->post('grn_guid');
                 $update_where=array('guid'=>$guid);
@@ -182,18 +176,13 @@ function save(){
                    echo 'Noop';
                 }
           
-   }
-        
-        
-function convert_date($date){
-   $new=array();
-   $new[]= date('n.j.Y', strtotime('+0 year, +0 days',$date));
-   echo json_encode($new);
 }
+        
+
 function search_purchase_order(){
        $search= $this->input->post('term');
          if($search!=""){
-             $this->load->model('grn');
+            $this->load->model('grn');
             $data= $this->grn->search_purchase_order($search,$_SESSION['Bid'])    ;
             echo json_encode($data);
         }
@@ -238,8 +227,9 @@ function good_receiving_note_approve(){
     if($_SESSION['goods_receiving_note_per']['approve']==1){
         $id=  $this->input->post('guid');
         $po=  $this->input->post('po');
-        $report= $this->posnic->posnic_module_deactive($id,'grn'); 
         $this->load->model('grn');
+        $report=$this->grn->change_grn_status($id);
+     
         $this->grn->add_stock($id,$po,$_SESSION['Bid']);
         if (!$report['error']) {
             echo 'TRUE';
@@ -250,23 +240,7 @@ function good_receiving_note_approve(){
         echo 'Noop';
     }
 }
-function group_approve(){
-    if($_SESSION['goods_receiving_note_per']['approve']==1){
-        $id=  $this->input->post('guid');
-        $this->load->model('grn');
-        $po= $this->grn->get_order_chnage_order($guid);
-        $report= $this->posnic->posnic_module_deactive($id,'grn'); 
-        
-        $this->grn->add_stock($id,$po,$_SESSION['Bid']);
-        if (!$report['error']) {
-            echo 'TRUE';
-        } else {
-            echo 'FALSE';
-        }
-    }else{
-        echo 'Noop';
-    }
-}
+
 function order_number(){
        $data[]= $this->posnic->posnic_master_max('grn')    ;
        echo json_encode($data);

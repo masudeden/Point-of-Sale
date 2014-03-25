@@ -1,13 +1,13 @@
 <?php
-class Grn extends CI_Model{
+class Invoice extends CI_Model{
     function __construct() {
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('purchase_order.*,grn.grn_no,grn.active_status as grn_active_status,grn.guid as grn_guid,grn.active as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
-                $this->db->from('grn')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0)->where('grn.active_status',0)->where('grn.delete_status',0);
-                $this->db->join('purchase_order', 'purchase_order.guid=grn.po AND grn.active_status=0','left');
-                $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id AND purchase_order.guid=grn.po','left');
+                $this->db->select('purchase_order.*,purchase_invoice.invoice,purchase_invoice.active_status as grn_active_status,purchase_invoice.guid as grn_guid,purchase_invoice.active as grn_active, purchase_invoice.date as grn_date,purchase_invoice.invoice ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
+                $this->db->from('purchase_invoice')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0)->where('purchase_invoice.active_status',0)->where('purchase_invoice.delete_status',0);
+                $this->db->join('purchase_order', 'purchase_order.guid=purchase_invoice.po AND purchase_invoice.active_status=0','left');
+                $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id AND purchase_order.guid=purchase_invoice.po','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
                 $query=$this->db->get();
@@ -21,12 +21,14 @@ class Grn extends CI_Model{
                 return $data; 
         
     }
-    function search_purchase_order($like,$branch){
-        $this->db->select('purchase_order.*,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
-        $this->db->from('purchase_order')->where('purchase_order.branch_id',$branch)->where('purchase_order.order_status',1)->where('purchase_order.active',0)->where('purchase_order.active_status',0)->where('purchase_order.delete_status',0);
-        $or_like=array('po_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
+    function search_grn_order($like,$branch){
+        $this->db->select('grn.*,direct_grn.*,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
+        $this->db->from('grn')->where('grn.branch_id',$branch)->where('grn.grn_status',1);
+        $or_like=array('grn_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
+        $this->db->join('purchase_order', 'purchase_order.guid=grn.po ','left');
         $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id ','left');
-
+    
+$this->db->join('direct_grn', '','left');
         $this->db->or_like($or_like);     
         $sql=$this->db->get();
         $data=array();
@@ -36,12 +38,8 @@ class Grn extends CI_Model{
                 $row['expired']=1;
             }
             $row['po_date']=date('d-m-Y',$row['po_date']);
-
             $row['exp_date']=date('d-m-Y',$row['exp_date']);
-
-           
-
-             $data[]=$row;
+            $data[]=$row;
 
         }
          return $data;

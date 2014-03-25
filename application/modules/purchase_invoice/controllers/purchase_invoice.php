@@ -51,13 +51,13 @@ class Purchase_invoice extends CI_Controller{
 				
 			}
 					   
-			$this->load->model('grn')	   ;
+			$this->load->model('invoice')	   ;
                         
-			 $rResult1 = $this->grn->get($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->invoice->get($end,$start,$like,$_SESSION['Bid']);
 		   
-		$iFilteredTotal =$this->grn->count($_SESSION['Bid']);
+		$iFilteredTotal =$this->invoice->count($_SESSION['Bid']);
 		
-		$iTotal =$this->grn->count($_SESSION['Bid']);
+		$iTotal =$this->invoice->count($_SESSION['Bid']);
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -110,7 +110,7 @@ function save(){
   
      
                 $value=array('grn_no'=>$grn_no,'date'=>$grn_date,'po'=>$po,'remark'=>$remark,'note'=>$note);
-                $guid=   $this->posnic->posnic_add_record($value,'grn');
+                $guid=   $this->posnic->posnic_add_record($value,'invoice');
           
                 $quty=  $this->input->post('receive_quty');
                 $free=  $this->input->post('receive_free');
@@ -119,13 +119,13 @@ function save(){
            
                 for($i=0;$i<count($items);$i++){
           
-                        $item_value=array('grn'=>$guid,'item'=>$items[$i],'quty'=>$quty[$i],'free'=>$free[$i]);
+                        $item_value=array('invoice'=>$guid,'item'=>$items[$i],'quty'=>$quty[$i],'free'=>$free[$i]);
                         $this->posnic->posnic_add_record($item_value,'grn_x_items');
-                        $this->load->model('grn');
-                        $this->grn->update_item_receving($po_item[$i],$quty[$i],$free[$i]);
-                        //$this->grn->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$_SESSION['Bid']);
+                        $this->load->model('invoice');
+                        $this->invoice->update_item_receving($po_item[$i],$quty[$i],$free[$i]);
+                        //$this->invoice->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$_SESSION['Bid']);
                 }
-                $this->posnic->posnic_master_increment_max('grn')  ;
+                $this->posnic->posnic_master_increment_max('invoice')  ;
                  echo 'TRUE';
     
                 }else{
@@ -156,7 +156,7 @@ function save(){
                 $value=array('date'=>$grn_date,'remark'=>$remark,'note'=>$note);
                 $guid=  $this->input->post('grn_guid');
                 $update_where=array('guid'=>$guid);
-                $this->posnic->posnic_update_record($value,$update_where,'grn');          
+                $this->posnic->posnic_update_record($value,$update_where,'invoice');          
                 $quty=  $this->input->post('receive_quty');
                 $grn_item_guid=  $this->input->post('grn_items_guid');
                 $free=  $this->input->post('receive_free');
@@ -165,8 +165,8 @@ function save(){
            
                 for($i=0;$i<count($items);$i++){
           
-                        $this->load->model('grn');
-                        $this->grn->update_grn_items_quty($grn_item_guid[$i],$quty[$i],$free[$i],$items[$i],$po_item[$i]);
+                        $this->load->model('invoice');
+                        $this->invoice->update_grn_items_quty($grn_item_guid[$i],$quty[$i],$free[$i],$items[$i],$po_item[$i]);
                       
                 }
                     
@@ -189,11 +189,11 @@ function convert_date($date){
    $new[]= date('n.j.Y', strtotime('+0 year, +0 days',$date));
    echo json_encode($new);
 }
-function search_purchase_order(){
+function search_grn_order(){
        $search= $this->input->post('term');
          if($search!=""){
-             $this->load->model('grn');
-            $data= $this->grn->search_purchase_order($search,$_SESSION['Bid'])    ;
+            $this->load->model('invoice');
+            $data= $this->invoice->search_grn_order($search,$_SESSION['Bid'])    ;
             echo json_encode($data);
         }
         
@@ -202,12 +202,12 @@ function delete(){
    if($_SESSION['goods_receiving_note_per']['delete']==1){
         if($this->input->post('guid')){
             $guid=  $this->input->post('guid');
-            $this->load->model('grn');
-            $status=$this->grn->check_approve($guid);
+            $this->load->model('invoice');
+            $status=$this->invoice->check_approve($guid);
            if($status!=FALSE){
-            $this->posnic->posnic_delete($guid,'grn');
+            $this->posnic->posnic_delete($guid,'invoice');
             
-            $this->grn->delete_grn_items($guid);            
+            $this->invoice->delete_grn_items($guid);            
                 echo 'TRUE';
             }else{
                 echo 'Approved';
@@ -219,17 +219,17 @@ function delete(){
     }
     
 }
-function  get_purchase_order($guid){
+function  get_grn($guid){
     if($_SESSION['purchase_order_per']['edit']==1){
-    $this->load->model('grn');
-    $data=  $this->grn->get_purchase_order($guid);
+    $this->load->model('invoice');
+    $data=  $this->invoice->get_purchase_order($guid);
     echo json_encode($data);
     }
 }
 function  get_goods_receiving_note($guid){
     if($_SESSION['purchase_order_per']['edit']==1){
-    $this->load->model('grn');
-    $data=  $this->grn->get_goods_receiving_note($guid);
+    $this->load->model('invoice');
+    $data=  $this->invoice->get_goods_receiving_note($guid);
     echo json_encode($data);
     }
 }
@@ -237,9 +237,9 @@ function good_receiving_note_approve(){
     if($_SESSION['goods_receiving_note_per']['approve']==1){
         $id=  $this->input->post('guid');
         $po=  $this->input->post('po');
-        $report= $this->posnic->posnic_module_deactive($id,'grn'); 
-        $this->load->model('grn');
-        $this->grn->add_stock($id,$po,$_SESSION['Bid']);
+        $report= $this->posnic->posnic_module_deactive($id,'invoice'); 
+        $this->load->model('invoice');
+        $this->invoice->add_stock($id,$po,$_SESSION['Bid']);
         if (!$report['error']) {
             echo 'TRUE';
         } else {
@@ -252,11 +252,11 @@ function good_receiving_note_approve(){
 function group_approve(){
     if($_SESSION['goods_receiving_note_per']['approve']==1){
         $id=  $this->input->post('guid');
-        $this->load->model('grn');
-        $po= $this->grn->get_order_chnage_order($guid);
-        $report= $this->posnic->posnic_module_deactive($id,'grn'); 
+        $this->load->model('invoice');
+        $po= $this->invoice->get_order_chnage_order($guid);
+        $report= $this->posnic->posnic_module_deactive($id,'invoice'); 
         
-        $this->grn->add_stock($id,$po,$_SESSION['Bid']);
+        $this->invoice->add_stock($id,$po,$_SESSION['Bid']);
         if (!$report['error']) {
             echo 'TRUE';
         } else {
@@ -267,7 +267,7 @@ function group_approve(){
     }
 }
 function order_number(){
-       $data[]= $this->posnic->posnic_master_max('grn')    ;
+       $data[]= $this->posnic->posnic_master_max('purchase_invoice')    ;
        echo json_encode($data);
 }
 function search_items(){

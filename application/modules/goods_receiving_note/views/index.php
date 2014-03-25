@@ -1261,7 +1261,8 @@ function reload_update_user(){
                                 url: '<?php echo base_url() ?>/index.php/goods_receiving_note/good_receiving_note_approve',
                                 type: "POST",
                                 data: {
-                                    guid:posnic[i].value
+                                    guid:posnic[i].value,
+                                    po:$('#purchase_order__number_'+guid).val()
 
                                 },
                                  complete: function(response) {
