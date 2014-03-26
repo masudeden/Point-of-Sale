@@ -1,7 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-// added new
+
 class Userlogin extends CI_Controller
 {
+    //jibbi gopi
+    
     function __construct() {
         parent::__construct();
         session_start();
