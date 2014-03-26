@@ -2,8 +2,6 @@
 
 class Userlogin extends CI_Controller
 {
-    //jibbi gopi
-    
     function __construct() {
         parent::__construct();
         session_start();
@@ -14,18 +12,7 @@ class Userlogin extends CI_Controller
         $this->load->library('form_validation');
         
         $this->load->library('poslanguage');                 
-        $this->poslanguage->set_language();    
-        
-        //My test merign
-        //My test merign
-        //My test merign
-        //My test merign
-        //My test merign
-        //My test merign
-        //My test merign
-        //My test merign
-        //My test merign
-        //My test merign
+        $this->poslanguage->set_language();     
     }
     function index(){       
         if(!isset($_SESSION['Uid'])){

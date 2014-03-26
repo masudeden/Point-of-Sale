@@ -46,13 +46,14 @@
                           
                        }
                 }); }else{
-                   $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields')." ".$this->lang->line('taxes');?>', { type: "error" });                           
+                   $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields')." ".$this->lang->line('users');?>', { type: "error" });                           
                 }<?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
                     <?php }?>
         });
-         $('#update_users').click(function() { 
-                <?php if($_SESSION['users_per']['edit']==1){ ?>
+ $('#update_users').click(function() { 
+        <?php if($_SESSION['users_per']['edit']==1){ ?>
+           if($('#parsley_reg').valid()){
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/users/upadate_pos_users_details')?>",
@@ -74,6 +75,9 @@
                           }
                        
                  });
+                  }else{
+                   $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields')." ".$this->lang->line('users');?>', { type: "error" });                           
+                }
                  <?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records')?>");  
                     <?php }?>
@@ -463,7 +467,7 @@ function reload_update_user(){
                                                         <label for="password" class="req"><?php echo $this->lang->line('password') ?></label>												
                                                                       <?php $password=array('name'=>'password',
                                                                                             'class'=>'required  form-control ',
-                                                                                            'id'=>'password',
+                                                                                            'id'=>'new_password',
                                                                                             'type'=>'password',
                                                                                             'value'=>set_value('password'));
                                                                              echo form_input($password)?>
@@ -476,7 +480,7 @@ function reload_update_user(){
                                                                                             'class'=>'required  form-control ',
                                                                                             'id'=>'confirm_password',
                                                                                             'type'=>'password',
-                                                                                            'equalto'=>"#password",
+                                                                                            'equalto'=>"#new_password",
                                                                                             'value'=>set_value('confirm_password'));
                                                                              echo form_input($confirm_password)?>
                                                     </div>
