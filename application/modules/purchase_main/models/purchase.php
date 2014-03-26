@@ -56,7 +56,7 @@ class Purchase extends CI_Model{
         return $sasi;        
     }
     function get_selected_item($data,$bid){
-        $this->db->select()->from('items')->like('code',$data)->where('active_status',1)->where('branch_id',$bid)->where('delete_status',1);
+        $this->db->select()->from('items')->like('code',$data)->where('active_status',1)->where('branch_id',$bid)->where('delete_status',0);
         $sql=  $this->db->get();
         $name=array();
         $companany=array();

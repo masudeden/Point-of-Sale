@@ -45,50 +45,8 @@ class Users extends CI_Controller{
                       $upload_data = $this->upload->data();
                       return  $file_name =$upload_data['file_name'];
 	}
-    function new_users(){        
-        if($_SESSION['users_per']['read']==1){ 
-        $data['msg']='new_user_added_successfully';
-        $data['type']='success';
-        $this->load->view('template/app/header',$data); 
-        $this->load->view('template/table/header');         
-        $this->load->view('template/branch',$this->posnic->branches());
-        $this->load->view('pos_users_list');
-        $this->load->view('template/app/navigation',$this->posnic->modules());
-        $this->load->view('template/app/footer');
-        }else{
-            redirect('home');
-        }
-    }
-    function user_error($msg){
-             if($_SESSION['users_per']['add']==1){  
-                    $this->load->model('user_groups');
-                    $this->load->model('branch');
-                     if($_SESSION['admin']==2){ 
-                     $data['branch']=$this->branch->get_user_for_branch_admin();
-                     }
-                     else{
-                    $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
-                     }
-                    $data['depa']= $this->user_groups->get_user_groups();  
-                    $this->load->view('template/app/header',$msg); 
-                    $this->load->view('template/table/header');         
-                    $this->load->view('template/branch',$this->posnic->branches());
-                    $this->load->view('add_new_pos_users',$data);
-                    $this->load->view('template/app/navigation',$this->posnic->modules());
-                    $this->load->view('template/app/footer');             
-             
-             }else{
-                    $data['msg']='U have No Permission to Add New User';
-                    $data['type']='error';
-                    $this->load->view('template/app/header',$data); 
-                    $this->load->view('template/table/header');         
-                    $this->load->view('template/branch',$this->posnic->branches());
-                    $this->load->view('pos_users_list');
-                    $this->load->view('template/app/navigation',$this->posnic->modules());
-                    $this->load->view('template/app/footer');
-                
-             }
-    }
+   
+  
     function pos_users_testing(){
         $this->load->model('pos_users_model');
         $test= $this->pos_users_model->get();
@@ -190,103 +148,8 @@ class Users extends CI_Controller{
             redirect('home');
         }
     }
-    function edit_pos_users_details($id){
-        if($_SESSION['users_per']['edit']==1){ 
-                $this->load->model('pos_users_model');
-                $this->load->model('branch');
-                $this->load->model('user_groups');
-                $data['row']=  $this->pos_users_model->edit_pos_users($id); 
-                $data['error']="";
-                $data['file_name']="null";
-                $data['selected_branch']=$this->branch->get_selected_branch($id);
-                $data['selected_depart']=$this->user_groups->get_user_depart($id);
-                if($_SESSION['admin']==2){ 
-                     $data['branch']=$this->branch->get_user_for_branch_admin();
-                     }
-                     else{
-                $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
-                     }
-                $data['depa']= $this->user_groups->get_user_groups(); 
-                $this->load->view('template/header');
-                $this->load->view('edit_pos_users_details',$data);
-                $this->load->view('template/footer');
-               
-        }else{
-            echo "You have No permission to Edit users";
-            redirect('pos_users/get_pos_users_details');
-        }
-    }
-    function get_selected_branches($depart,$id){
-        $this->load->model('branch');
-        $new_depa=array();
-        $o=0;
-        $w = 0;
-        $departed=$this->branch->get_user_branch($id);
-        $arr=array_merge($depart,$departed);
+  
 
-                $len = count($arr);
-        for ($i = 0; $i < $len; $i++) {
-        $temp = $arr[$i];
-        $j = $i;
-        for ($k = 0; $k < $len; $k++) {
-            if ($k != $j) {
-            if ($temp == $arr[$k]) {
-               
-                $arr[$k]=" ";
-                $arr[$i]=" ";
-            }
-            }
-        }
-        }
-      $r=0;
-        for ($i = 0; $i < $len; $i++) {
-       if($arr[$i]==" "){
-           
-       }
-       else{
-           $new_depa[$r]=$arr[$i];
-           $r++;
-       }
-        }
-        return $new_depa;
-           
-    }
-    function get_selected_user_groups($depart,$id){
-        $this->load->model('user_groups');
-        $new_depa=array();
-        $o=0;
-        $w = 0;
-        $departed=$this->user_groups->get_all_user_depart($id);
-        $arr=array_merge($depart,$departed);
-
-                $len = count($arr);
-        for ($i = 0; $i < $len; $i++) {
-        $temp = $arr[$i];
-        $j = $i;
-        for ($k = 0; $k < $len; $k++) {
-            if ($k != $j) {
-            if ($temp == $arr[$k]) {
-               
-                $arr[$k]=" ";
-                $arr[$i]=" ";
-            }
-            }
-        }
-        }
-$r=0;
-        for ($i = 0; $i < $len; $i++) {
-       if($arr[$i]==" "){
-           
-       }
-       else{
-           $new_depa[$r]=$arr[$i];
-           $r++;
-       }
-        }
-        return $new_depa;
-           
-    }    
-   
    
     function upadate_pos_users_details(){
        if($_SESSION['users_per']['edit']==1){ 

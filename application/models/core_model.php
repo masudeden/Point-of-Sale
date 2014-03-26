@@ -18,7 +18,7 @@ class Core_model extends CI_Model{
     
     
     function delete_item_setting($guid,$bid){
-        $data=array('active_status'=>0,'delete_status'=>0);
+        $data=array('active_status'=>0,'delete_status'=>1);
         $this->db->where('item_id',$guid);
         $this->db->where('branch_id',$bid);
         $this->db->update('items_setting',$data);
@@ -26,7 +26,7 @@ class Core_model extends CI_Model{
             
         }
     function restore_item_setting($guid,$bid){
-        $data=array('active_status'=>1,'delete_status'=>1);
+        $data=array('active_status'=>1,'delete_status'=>0);
         $this->db->where('item_id',$guid);
         $this->db->where('barnch_id',$bid);
         $this->db->update('items_setting',$data);

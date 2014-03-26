@@ -50,12 +50,12 @@ class Purchase extends CI_Model{
         $this->db->delete('supplier_contacts');
     }
     function count($branch){
-        $this->db->select()->from('direct_grn')->where('branch_id',$branch)->where('active_status',1)->where('delete_status',1);
+        $this->db->select()->from('direct_grn')->where('branch_id',$branch)->where('active_status',1)->where('delete_status',0);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }
     function supplier_vs_items_count($branch,$guid){
-        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',1)->where('delete_status',1);
+        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',1)->where('delete_status',0);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }
@@ -133,7 +133,7 @@ class Purchase extends CI_Model{
     }
     function delete_order_item($guid){      
           $this->db->where('guid',$guid);
-          $this->db->update('direct_grn_items',array('delete_status'=>0));
+          $this->db->update('direct_grn_items',array('delete_status'=>1));
     }
     function deactive_order($guid){
          $this->db->where('guid',$guid);

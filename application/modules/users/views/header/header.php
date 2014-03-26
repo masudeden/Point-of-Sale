@@ -168,7 +168,22 @@
                                  $('#parsley_reg #zip').val(data[0]['zip']);
                                  $('#parsley_reg #user_guid').val(data[0]['guid']);
                                  $('#parsley_reg #pos_users_id').val(data[0]['username']);
-                                
+                                for(var i=0;i<data.length;i++){
+                                    var group=data[i]['user_group_id'];
+                                    var group_name=data[i]['group_name'];
+                                    var branch_id=data[i]['branch_guid'];
+                                    var branch_name=data[i]['branch_name'];
+                                     $('#parsley_reg #selected_user_group_list').append($('<option >', {
+                                            value:group,
+                                            text: group_name+" ("+branch_name+")"
+                                        }));
+                                      $('#parsley_reg #parent_div #hidden_selected_user_group_list').append(' \n\
+                                      <input type="hidden"  id="group_id_'+group+'" value="'+group+'" >\n\
+                                      <input type="hidden" id="group_name_'+group+'" value="'+group_name+'" >\n\
+                                      <input type="hidden"  id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
+                                      <input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
+                                     ');
+                                }
                              } 
                            });
                           

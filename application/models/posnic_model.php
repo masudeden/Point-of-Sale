@@ -9,33 +9,33 @@ class posnic_model extends CI_model{
     }
    
     function get_data_as_result_array_admin($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',1)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result_array();
   }
   function get_data_as_result_array_user($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',1)->where('branch_id',$bid)->where('active_status',1);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('branch_id',$bid)->where('active_status',1);
         $sql=  $this->db->get();
         return $sql->result_array();
   }
  function get_data_as_result_admin($table,$where,$bid){
-        $this->db->select()->from($table)->where('delete_status',1)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
   }
  function get_aa_data_as_result_admin($table,$bid){
-        $this->db->select()->from($table)->where('delete_status',1)->where('branch_id',$bid)->where('active',0)->where('active_status',1);
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid)->where('active',0)->where('active_status',1);
         $sql=  $this->db->get();
         return $sql->result();
   }
   function get_data_as_result_user($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',1)->where('branch_id',$bid)->where('active_status',1);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('branch_id',$bid)->where('active_status',1);
         $sql=  $this->db->get();
         return $sql->result();
   }
   
   function get_data_count_for_admin($bid,$table){
-            $this->db->where('delete_status',1);        
+            $this->db->where('delete_status',0);        
             $this->db->where('branch_id',$bid);         
             $this->db->from($table);
             return $this->db->count_all_results();
@@ -44,7 +44,7 @@ class posnic_model extends CI_model{
  
   
   function get_data_count_for_user($bid,$table){
-            $this->db->where('delete_status',1);        
+            $this->db->where('delete_status',0);        
             $this->db->where('active_status',1);        
             $this->db->where('branch_id',$bid);         
             $this->db->from($table);
@@ -52,14 +52,14 @@ class posnic_model extends CI_model{
   }
     function get_data_for_admin_with_limit($limit, $start,$table,$bid){
                 $this->db->limit($limit, $start);            
-                $this->db->where('delete_status',1);               
+                $this->db->where('delete_status',0);               
                 $this->db->where('branch_id',$bid); 
                 $query = $this->db->get($table);
                 return $query->result();
     }
     function get_data_for_user_with_limit($limit, $start,$table,$bid){
                 $this->db->limit($limit, $start);            
-                $this->db->where('delete_status',1);  
+                $this->db->where('delete_status',0);  
                 $this->db->where('active_status',1); 
                 $this->db->where('active',0);
                 $this->db->where('branch_id',$bid); 
@@ -68,14 +68,14 @@ class posnic_model extends CI_model{
     }
     function get_data_array_for_admin_with_limit($limit, $start,$table,$bid){
                 $this->db->limit($limit, $start);            
-                $this->db->where('delete_status',1);               
+                $this->db->where('delete_status',0);               
                 $this->db->where('branch_id',$bid); 
                 $query = $this->db->get($table);
                 return $query->result_array();
     }
     function get_data_array_for_user_with_limit($limit, $start,$table,$bid){
                 $this->db->limit($limit, $start);            
-                $this->db->where('delete_status',1);  
+                $this->db->where('delete_status',0);  
                 $this->db->where('active_status',1); 
                 $this->db->where('branch_id',$bid); 
                 $query = $this->db->get($table);
@@ -91,7 +91,7 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function check_unique_data($data,$module,$bid){
-        $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',1)->where('active_status',1);
+        $this->db->select()->from($module)->where($data)->where('branch_id',$bid)->where('delete_status',0)->where('active_status',1);
         $sql=  $this->db->get();
         if($sql->num_rows()>0){
             return FALSE;
@@ -146,13 +146,13 @@ class posnic_model extends CI_model{
         $this->db->update($module,$data);
     }
     function admin_delete($guid,$module,$branch,$uid){
-        $data=array('active_status'=>0,'delete_status'=>0,'deleted_by'=>$uid);
+        $data=array('active_status'=>0,'delete_status'=>1,'deleted_by'=>$uid);
         $this->db->where('guid',$guid);
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
     function admin_where_delete($where,$module,$branch,$uid){
-        $data=array('active_status'=>0,'delete_status'=>0,'deleted_by'=>$uid);
+        $data=array('active_status'=>0,'delete_status'=>1,'deleted_by'=>$uid);
         $this->db->where($where);
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
@@ -170,32 +170,32 @@ class posnic_model extends CI_model{
         $this->db->update($module,$data);
     }
     function module_result($table,$bid){
-        $this->db->select()->from($table)->where('delete_status',1)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where('delete_status',0)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }
     function module_result_where($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',1)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }
     function posnic_module_all_where($table,$where,$bid){
-        $this->db->select()->from($table)->where('delete_status',1)->where('active_status',1)->where($where)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where('delete_status',0)->where('active_status',1)->where($where)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }
     function module_result_array_where($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',1)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result_array();
     }
     function module_result_one_array_where($table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',1)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result_array();
     }
     function module_result_one_field_where($field,$table,$where,$bid){
-        $this->db->select()->from($table)->where($where)->where('delete_status',1)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where($where)->where('delete_status',0)->where('active_status',1)->where('active',0)->where('branch_id',$bid);
          $sql=  $this->db->get();
         $data;
     foreach ($sql->result() as $row){
@@ -204,7 +204,7 @@ class posnic_model extends CI_model{
     return $data;
     }
     function posnic_like_data($table,$where,$name,$branch){
-        $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',1)->where('delete_status',1);
+        $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',1)->where('delete_status',0);
         $sql=  $this->db->get();
         $data=array();
     foreach ($sql->result() as $row){
@@ -213,22 +213,22 @@ class posnic_model extends CI_model{
     return $data;
     }
     function posnic_or_like($table,$like,$branch){
-        $this->db->select()->from($table)->or_like($like)->where('branch_id',$branch)->where('delete_status',1)->where('active_status',1);
+        $this->db->select()->from($table)->or_like($like)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',1);
         $sql=$this->db->get();
         return $sql->result();
     }
     function module_result_admin($table,$bid){
-        $this->db->select()->from($table)->where('delete_status',1)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }
     function module_result_user($table,$bid){
-        $this->db->select()->from($table)->where('delete_status',1)->where('active_status',1)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where('delete_status',0)->where('active_status',1)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }
     function posnic_module_like($table,$where,$branch){
-         $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',1)->where('delete_status',1);
+         $this->db->select()->from($table)->like($where)->where('branch_id',$branch)->where('active',0)->where('active_status',1)->where('delete_status',0);
          $sql=  $this->db->get();
          $data=array();
          $j=0;
@@ -285,7 +285,7 @@ class posnic_model extends CI_model{
             
     }
     function data_table_count($table,$branch){
-        $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',1)->where('active_status',1);
+        $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',1);
         $sql=  $this->db->get();
         return  $sql->num_rows();
     }
@@ -311,7 +311,7 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function posnic_data_table($end,$start,$order,$like,$table,$branch){
-         $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',1)->where('active_status',1);  
+         $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',1);  
          $this->db->limit($end,$start); 
          $this->db->order_by($order);
          $this->db->or_like($like);     

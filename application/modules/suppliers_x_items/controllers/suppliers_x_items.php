@@ -204,7 +204,7 @@ class Suppliers_x_items extends CI_Controller{
                             if ( $this->form_validation->run() !== false ) {
                                 
                                 
-                                $where=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>1);
+                                $where=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>0);
                                  if($this->posnic->check_record_unique($where,'suppliers_x_items')){
                    $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
                                      
@@ -238,7 +238,7 @@ class Suppliers_x_items extends CI_Controller{
                             if ( $this->form_validation->run() !== false ) {
                                 $guid=  $this->input->post('guid');
                                 
-                                $where=array('guid !='=>$guid,'supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>1);
+                                $where=array('guid !='=>$guid,'supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>0);
                                  if($this->posnic->check_record_unique($where,'suppliers_x_items')){
                                      $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
                                      $update_where=array('guid'=>$guid);

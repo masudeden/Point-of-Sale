@@ -78,9 +78,10 @@ class Pos_users_model extends CI_Model{
         return $sql->result();
    }
    function get_user_details($id){
-                $this->db->select('users.*,user_groups.group_name,users_x_user_groups.user_group_id')->from('users')->where('users.guid',$id);
+                $this->db->select('users.*,branches.store_name as branch_name,branches.guid as branch_guid,user_groups.group_name,users_x_user_groups.user_group_id')->from('users')->where('users.guid',$id);
                 $this->db->join('users_x_user_groups', 'users_x_user_groups.user_id=users.guid','left');
                 $this->db->join('user_groups', 'user_groups.guid=users_x_user_groups.user_group_id AND users_x_user_groups.user_id=users.guid','left');
+                $this->db->join('branches', 'branches.guid=user_groups.branch_id AND user_groups.guid=users_x_user_groups.user_group_id AND users_x_user_groups.user_id=users.guid','left');
 		$sql=$this->db->get();
                 $data=array();
                 foreach ($sql->result_array() as $row)                    
@@ -203,7 +204,7 @@ class Pos_users_model extends CI_Model{
        }
        function get_user_grous($guid){
            
-           $this->db->select()->from('user_groups')->where('active_status',1)->where('delete_status',1)->where('branch_id',$guid);
+           $this->db->select()->from('user_groups')->where('active_status',1)->where('delete_status',0)->where('branch_id',$guid);
            $sql=  $this->db->get();
            return $sql->result();
        }

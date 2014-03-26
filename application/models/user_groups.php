@@ -88,13 +88,13 @@ function get_user_groups_count($branch){
    }
    function get_user_groups_admin_count($branch){
             $this->db->where('branch_id ',$branch);
-            $this->db->where('delete_status',1);
+            $this->db->where('delete_status',0);
             $this->db->from('user_groups');
             return $this->db->count_all_results();
    }
    function get_user_groups_admin_details($limit,$start,$branch){
        $this->db->limit($limit, $start); 
-       $this->db->where('delete_status',1);
+       $this->db->where('delete_status',0);
        $this->db->where('branch_id ',$branch);
         $query = $this->db->get('user_groups');
         if ($query->num_rows() > 0) {
@@ -226,7 +226,7 @@ function get_user_groups_count($branch){
        $this->db->update('user_groups_x_branches',$data);
    }
    function delete_user_groups_for_admin($id){
-       $data=array('delete_status'=>0,'active_status'=>0);
+       $data=array('delete_status'=>1,'active_status'=>0);
        $this->db->where('id',$id);             
        $this->db->update('user_groups',$data);
        $this->db->where('user_group_id',$id);             
@@ -235,7 +235,7 @@ function get_user_groups_count($branch){
        $this->db->update('user_groups_x_branches',$data);
    }
    function get_modules_permission($bid){
-        $this->db->select()->from('modules_x_branches')->where('branch_id',$bid)->where('active_status',1)->where('delete_status',1);
+        $this->db->select()->from('modules_x_branches')->where('branch_id',$bid)->where('active_status',1)->where('delete_status',0);
         $sql=$this->db->get();
         $data=array();
         foreach ($sql->result() as $row){
