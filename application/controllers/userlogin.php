@@ -14,7 +14,18 @@ class Userlogin extends CI_Controller
         $this->load->library('form_validation');
         
         $this->load->library('poslanguage');                 
-        $this->poslanguage->set_language();     
+        $this->poslanguage->set_language();    
+        
+        //My test merign
+        //My test merign
+        //My test merign
+        //My test merign
+        //My test merign
+        //My test merign
+        //My test merign
+        //My test merign
+        //My test merign
+        //My test merign
     }
     function index(){       
         if(!isset($_SESSION['Uid'])){
