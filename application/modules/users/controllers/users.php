@@ -175,7 +175,7 @@ class Users extends CI_Controller{
                           $first_name=$this->input->post('first_name');
                           $last_name=  $this->input->post('last_name');
                           $email=$this->input->post('email');
-			  $user_id=$this->input->post('pos_users_id');
+			  $username=$this->input->post('pos_users_id');
                           $password=$this->input->post('password');
                           $address=$this->input->post('address');
                           $phone=$this->input->post('phone');
@@ -194,14 +194,22 @@ class Users extends CI_Controller{
                              if($this->pos_users_model->user_update_checking($email,$phone,$id)==FALSE){
                            
                                            $file_name='';
-                            $this->pos_users_model->update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$user_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password);
-                            $this->update_user_user_groups($id,$user_groups);                         
-                            $this->update_user_branch($id,$user_groups);  
-                          echo 'TRUE';
+                            $this->pos_users_model->update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$username,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password);
+                            $deleted_groups=$this->input->post('deleted_groups') ;
+                            $deleted_groups=  array_unique($deleted_groups);
+                            for($j=0;$j<count($deleted_groups);$j++){
+                                $this->pos_users_model->remove_user_groups($deleted_groups[$j],$id);
+                            }        
+                            $user_branchs=  $this->input->post('user_branchs');
+                            $user_branchs=  array_unique($user_branchs);
+                            for($j=0;$j<count($user_branchs);$j++){
+                                $this->pos_users_model->add_user_branchs_for_user($user_branchs[$j],$id);
+                            }
+                                echo 'TRUE';
                          
-                             }else{
+                            }else{
                                echo "ALREADY";
-                             }   
+                            }   
     }else{
            echo "FALSE";       
         }
@@ -375,10 +383,10 @@ $r=0;
                           for($i=0;$i<count($user_groups);$i++){
                               $this->pos_users_model->add_user_groups_for_user($user_groups[$i],$id);
                           }
-                          $user_branchs=  $this->input->post('user_branchs');
+                         $user_branchs=  $this->input->post('user_branchs');
                          $user_branchs=  array_unique($user_branchs);
                          for($j=0;$j<count($user_branchs);$j++){
-                            $user_branchs[$j];
+                           
                                  $this->pos_users_model->add_user_branchs_for_user($user_branchs[$j],$id);
                             
                          }
