@@ -1,5 +1,5 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+// added new
 class Userlogin extends CI_Controller
 {
     function __construct() {
