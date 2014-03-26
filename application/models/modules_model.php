@@ -15,9 +15,9 @@ class Modules_model extends CI_Model{
         $this->db->from('modules');  
         $this->db->join('modules_x_branches', " modules_x_branches.module_id= modules.guid ",'left');
         $this->db->where('modules.active_status ',1);
-        $this->db->where('modules.delete_status ',1);
+        $this->db->where('modules.delete_status ',0);
         $this->db->where('modules_x_branches.active_status',1);
-        $this->db->where('modules_x_branches.delete_status',1);        
+        $this->db->where('modules_x_branches.delete_status',0);        
         $query=$this->db->get();
         return $query->result();
        
