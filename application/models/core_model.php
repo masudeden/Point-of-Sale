@@ -18,7 +18,7 @@ class Core_model extends CI_Model{
     
     
     function delete_item_setting($guid,$bid){
-        $data=array('active_status'=>1,'delete_status'=>1);
+        $data=array('active_status'=>0,'delete_status'=>0);
         $this->db->where('item_id',$guid);
         $this->db->where('branch_id',$bid);
         $this->db->update('items_setting',$data);
@@ -26,7 +26,7 @@ class Core_model extends CI_Model{
             
         }
     function restore_item_setting($guid,$bid){
-        $data=array('active_status'=>0,'delete_status'=>0);
+        $data=array('active_status'=>1,'delete_status'=>1);
         $this->db->where('item_id',$guid);
         $this->db->where('barnch_id',$bid);
         $this->db->update('items_setting',$data);
@@ -74,22 +74,22 @@ class Core_model extends CI_Model{
     }
       function posnic_data_table($start,$end,$table2,$table1,$join_where,$branch,$uid,$order,$like){
         
-        $this->db->select(' users.*, users.active  as user_active , users_x_branchs.emp_id as emp_id')->from($table1 );  
+        $this->db->select('users.*, users_x_branches.user_active  as user_active , users_x_branches.user_id as user_id')->from($table1);  
         $this->db->limit($start,$end);  
         $this->db->order_by($order);
         $this->db->where('users.guid <>',$uid);
         $this->db->where('users.user_type <>',2 );
-        $this->db->where('users_x_branchs.user_active ',0 );
+      //  $this->db->where('users_x_branches.user_active ',0 );
         
         $this->db->or_like($like);
-        $join_where=$join_where."AND  $table1.delete_status=0 AND users.user_type!=2 and users_x_branchs.branch_id ='".$branch."'";
+        $join_where=$join_where."AND  $table1.user_delete=1 AND users.user_type!=2 ";
         $this->db->join($table2, "$join_where".'','left');
         $query=$this->db->get();
         return $query->result_array();
             
     }
     function items_data_table($end,$start,$order,$like,$branch){
-                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch)->where('items.active_status',0)->where('items.delete_status',0);
+                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch)->where('items.active_status',1)->where('items.delete_status',1);
                 $this->db->join('items_category', 'items.category_id=items_category.guid','left');
                 $this->db->join('brands', 'items.brand_id=brands.guid','left');
                 $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
@@ -120,7 +120,7 @@ class Core_model extends CI_Model{
                 return $query->result_array();  
     }
     function get_taxes($branch,$like){
-         $this->db->select('taxes.* ,taxes.guid as guid,tax_types.type as name,tax_types.guid as t_guid')->from('taxes')->where('taxes.branch_id',$branch)->where('taxes.active_status',0)->where('taxes.delete_status',0);
+         $this->db->select('taxes.* ,taxes.guid as guid,tax_types.type as name,tax_types.guid as t_guid')->from('taxes')->where('taxes.branch_id',$branch)->where('taxes.active_status',1)->where('taxes.delete_status',1);
                 $this->db->join('tax_types', 'taxes.type=tax_types.guid','left');
                 $this->db->like($like);
                 $query=$this->db->get();

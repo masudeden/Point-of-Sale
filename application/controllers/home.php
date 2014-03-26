@@ -29,7 +29,7 @@ class Home extends CI_Controller
         }else{
         $_SESSION['Posnic_User']='user';
         
-        $data['row']=$this->branch->get_active_user_branchs($_SESSION['Uid']);
+        $data['row']=$this->branch->get_active_user_branches($_SESSION['Uid']);
         }
        
         $this->load->view('template/app/header');
@@ -46,7 +46,7 @@ class Home extends CI_Controller
         
        
     }
-    function set_branchs($branch){
+    function set_branches($branch){
        // $_SESSION['user_branch']=$branch;        
     }    
       function home_main($module){

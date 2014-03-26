@@ -13,11 +13,11 @@ class Modules_model extends CI_Model{
     function get_modules($bid){         
         $this->db->select('modules.*');
         $this->db->from('modules');  
-        $this->db->join('modules_x_branchs', " modules_x_branchs.module_id= modules.guid ",'left');
-        $this->db->where('modules.active_status ',0);
-        $this->db->where('modules.delete_status ',0);
-        $this->db->where('modules_x_branchs.active_status',0);
-        $this->db->where('modules_x_branchs.delete_status',0);        
+        $this->db->join('modules_x_branches', " modules_x_branches.module_id= modules.guid ",'left');
+        $this->db->where('modules.active_status ',1);
+        $this->db->where('modules.delete_status ',1);
+        $this->db->where('modules_x_branches.active_status',1);
+        $this->db->where('modules_x_branches.delete_status',1);        
         $query=$this->db->get();
         return $query->result();
        
@@ -28,7 +28,7 @@ class Modules_model extends CI_Model{
         return $sql->result();
     }
     function get_modulenames($bid){
-        $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
+        $this->db->select()->from('modules_x_branches')->where('branch_id',$bid)->where('active_status',1)->where('delete_status',1);
         $sql=$this->db->get();
         $data=array();
         foreach ($sql->result() as $row){
@@ -41,7 +41,7 @@ class Modules_model extends CI_Model{
         return $data;
     }
     function get_module_permission($bid){
-         $this->db->select()->from('modules_x_branchs')->where('branch_id',$bid)->where('active_status',0)->where('delete_status',0);
+         $this->db->select()->from('modules_x_branches')->where('branch_id',$bid)->where('active_status',1)->where('delete_status',1);
         $sql=$this->db->get();
         $data=array();
         foreach ($sql->result() as $row){

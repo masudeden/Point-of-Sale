@@ -12,7 +12,7 @@ class Suppliers_category extends CI_Controller
      function get(){
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
-        $this->load->view('template/branch',$this->posnic->branchs());
+        $this->load->view('template/branch',$this->posnic->branches());
         $data['active']='suppliers_category';
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());

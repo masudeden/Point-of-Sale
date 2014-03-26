@@ -4,6 +4,8 @@
            
                     $('#add_user_form').hide();
                     $('#edit_user_form').hide();
+                  
+     
                               posnic_table();
                                 posnic_user_2.onsubmit=function()
                                 { 
@@ -41,7 +43,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[9]==0){
+                   							if(oObj.aData[9]==1){
                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
@@ -55,7 +57,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[9]==0){
+                                                                if(oObj.aData[9]==1){
                    							return '<a href=javascript:posnic_deactive("'+oObj.aData[2]+'","'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
 								}else{
                                                                         return '<a href=javascript:posnic_active("'+oObj.aData[2]+'","'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[2]+"','"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
@@ -151,36 +153,26 @@
                                  $('#active').attr("disabled", "disabled");
                                  $('#deactive').attr("disabled", "disabled");
                                  $('#users_lists').removeAttr("disabled");
-                                 $('#parsley_reg #first_name').val(data[0][0]['first_name']);
-                                 $('#parsley_reg #last_name').val(data[0][0]['last_name']);
-                                 $('#parsley_reg #age').val(data[0][0]['age']);
-                                 $('#parsley_reg #blood').val(data[0][0]['blood']);
-                                 $('#parsley_reg #city').val(data[0][0]['city']);
-                                 $('#parsley_reg #state').val(data[0][0]['state']);
-                                 $('#parsley_reg #country').val(data[0][0]['country']);
-                                 $('#parsley_reg #dob').val(data[0][1]);
-                                 $('#parsley_reg #email').val(data[0][0]['email']);
-                                 $('#parsley_reg #phone').val(data[0][0]['phone']);
-                                 $('#parsley_reg #sex').val(data[0][0]['sex']);
-                                 $('#parsley_reg #address').val(data[0][0]['address']);
-                                 $('#parsley_reg #zip').val(data[0][0]['zip']);
-                                 $('#parsley_reg #user_guid').val(data[0][0]['guid']);
-                                 $('#parsley_reg #pos_users_id').val(data[0][0]['user_id']);
-                                 $('#parsley_reg #department').val(data[1]);
+                                 $('#parsley_reg #first_name').val(data[0]['first_name']);
+                                 $('#parsley_reg #last_name').val(data[0]['last_name']);
+                                 $('#parsley_reg #age').val(data[0]['age']);
+                                 $('#parsley_reg #blood').val(data[0]['blood']);
+                                 $('#parsley_reg #city').val(data[0]['city']);
+                                 $('#parsley_reg #state').val(data[0]['state']);
+                                 $('#parsley_reg #country').val(data[0]['country']);
+                                 $('#parsley_reg #dob').val(data[0]['dob']);
+                                 $('#parsley_reg #email').val(data[0]['email']);
+                                 $('#parsley_reg #phone').val(data[0]['phone']);
+                                 $('#parsley_reg #sex').val(data[0]['sex']);
+                                 $('#parsley_reg #address').val(data[0]['address']);
+                                 $('#parsley_reg #zip').val(data[0]['zip']);
+                                 $('#parsley_reg #user_guid').val(data[0]['guid']);
+                                 $('#parsley_reg #pos_users_id').val(data[0]['username']);
+                                
                              } 
                            });
-                            $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/users/selected_user_group/"+guid,                      
-                             data: "", 
-                             dataType: 'json',               
-                             complete: function(data)        
-                             {    
-                              
-                               $('#selected_departmenet').html(data['responseText']);
-                             } 
-                            
-                           });
-                            $("#myDiv_depart option").remove();
+                          
+                          
                               
                          
                         <?php }else{?>

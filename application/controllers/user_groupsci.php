@@ -146,7 +146,7 @@ class user_groupsci extends CI_Controller{
         if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
                 $this->load->model('user_groups');            
                 $this->form_validation->set_rules("user_groups_name",$this->lang->line('user_groups_name'),"required"); 
-               // $this->form_validation->set_rules('branchs',$this->lang->line('branch'),"required");
+               // $this->form_validation->set_rules('branches',$this->lang->line('branch'),"required");
                 
            if ($this->form_validation->run()) {
                 $this->load->model('branch');
@@ -193,10 +193,10 @@ class user_groupsci extends CI_Controller{
            }    
     }
    
-    function add_permission($mode,$data,$depart_id,$branchid){
+    function add_permission($mode,$data,$user_group_id,$branchid){
          if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
                 $this->load->model('permissions');
-                $this->permissions->set_modules_permission($mode.'_x_page_x_permissions',$data,$depart_id,$branchid);
+                $this->permissions->set_modules_permission($mode.'_x_page_x_permissions',$data,$user_group_id,$branchid);
               
             
          }else{
@@ -346,16 +346,16 @@ class user_groupsci extends CI_Controller{
                 $this->get_user_groups();
             }
         }
-        function update_permission($item,$user,$depa,$branch,$supplier,$customer,$sales,$itemkites,$depart_id,$branchid){
+        function update_permission($item,$user,$depa,$branch,$supplier,$customer,$sales,$itemkites,$user_group_id,$branchid){
                 $this->load->model('permissions');
-                $this->permissions->update_items_permission($item,$depart_id,$branchid);
-                $this->permissions->update_users_permission($user,$depart_id,$branchid);
-                $this->permissions->update_depart_permission($depa,$depart_id,$branchid);
-                $this->permissions->update_branchCI_permission($branch,$depart_id,$branchid);
-                $this->permissions->update_suppliers_permission($supplier,$depart_id,$branchid);
-                $this->permissions->update_customers_permission($customer,$depart_id,$branchid);
-                $this->permissions->update_item_kites_permission($itemkites,$depart_id,$branchid);
-                $this->permissions->update_sales_permission($sales,$depart_id,$branchid);
+                $this->permissions->update_items_permission($item,$user_group_id,$branchid);
+                $this->permissions->update_users_permission($user,$user_group_id,$branchid);
+                $this->permissions->update_depart_permission($depa,$user_group_id,$branchid);
+                $this->permissions->update_branchCI_permission($branch,$user_group_id,$branchid);
+                $this->permissions->update_suppliers_permission($supplier,$user_group_id,$branchid);
+                $this->permissions->update_customers_permission($customer,$user_group_id,$branchid);
+                $this->permissions->update_item_kites_permission($itemkites,$user_group_id,$branchid);
+                $this->permissions->update_sales_permission($sales,$user_group_id,$branchid);
         }
         function to_activate_user_groups($id){
                 $this->load->model('user_groups');

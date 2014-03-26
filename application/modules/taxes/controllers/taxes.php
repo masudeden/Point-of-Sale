@@ -12,7 +12,7 @@ class Taxes extends CI_Controller
      function get_brands(){
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
-        $this->load->view('template/branch',$this->posnic->branchs());
+        $this->load->view('template/branch',$this->posnic->branches());
         $data['active']='brands';
         $where="'active',0";
         $data['type']=  $this->posnic->posnic_all_module_data('tax_types');

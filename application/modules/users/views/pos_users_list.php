@@ -24,6 +24,7 @@
      $(document).ready( function () {
          $('#add_new_user').click(function() { 
                 <?php if($_SESSION['users_per']['add']==1){ ?>
+                        if($('#posnic_user_2').valid()){
                 var inputs = $('#posnic_user_2').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/users/add_pos_users_details')?>",
@@ -31,19 +32,22 @@
                             type:'POST',
                             complete: function(response) {
                           if(response['responseText']=='true'){
-                             bootbox.alert("<?php echo $this->lang->line('New Record Added ')?>");;                                                                            
+                             $.bootstrapGrowl('<?php echo $this->lang->line('users')." ".$this->lang->line('added');?>', { type: "success" });                                                                                                
                              $("#dt_table_tools").dataTable().fnDraw();
                              $("#posnic_user_2").trigger('reset');
-                          }else if(response['responseText']=='already'){
-                             bootbox.alert("<?php echo $this->lang->line('This Record Already Added')?>");      
-                          }else if(response['responseText']=='noop'){
-                              bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");   
-                          }else{
-                               bootbox.alert("<?php echo $this->lang->line('Please Enter All Required Fields')?>");  
-                          }
+                             posnic_users_lists();
+                            }else  if(response['responseText']=='already'){
+                                   $.bootstrapGrowl($('#taxes_name').val()+' <?php echo $this->lang->line('taxes').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                            }else  if(response['responseText']=='false'){
+                                   $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                            }else{
+                                  $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('taxes');?>', { type: "error" });                           
+                            }
                           
                        }
-                });<?php }else{ ?>
+                }); }else{
+                   $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields')." ".$this->lang->line('taxes');?>', { type: "error" });                           
+                }<?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
                     <?php }?>
         });
@@ -90,7 +94,7 @@ function posnic_add_new(){
 }
 function posnic_users_lists(){
       $('#edit_user_form').hide('hide');
-      $('#add_user_form').hide('hide');      
+      $('#add_user_form').hide('hide');  
       $("#user_list").show('slow');
       $('#delete').removeAttr("disabled");
       $('#active').removeAttr("disabled");
@@ -375,13 +379,13 @@ function reload_update_user(){
                                            <div class="step_info">
                                                     <label for="branch"><?php echo $this->lang->line('branch') ?></label>                                                                                                    
                                                     <select multiple id="branch" name="FromLJ"  class="form-control" style="width:150;height:128px;">
-                                                        <?php if($_SESSION['admin']==2){ 
+                                                        <?php if($_SESSION['admin']!=2){ 
                                                             foreach ($branch as $brow) {
 
-                                                     ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
+                                                     ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch()" > <?php echo $brow->store_name ?></option><?php 
                                                             }}else{ foreach ($branch as $brow) {
 
-                                                            ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->branch_name ?></option>
+                                                            ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch()" > <?php echo $brow->branch_name ?></option>
                                                       <?php }}?></select>
                                                 </div> 
                                       <input type="hidden" class="required" name="depa" id="depa">
@@ -389,16 +393,24 @@ function reload_update_user(){
                                        <div class="col col-sm-8" style="padding-right: 25px;">
                                            <div class="row">
                                                <div class="col col-sm-6">
-                                                    <div class="form_sep">
+                                                    <div class="form_sep" ">
                                                     <label for="phone"><?php echo $this->lang->line('department') ?></label>  
-                                                         <select multiple id="myDiv" class="form-control" name="ToLJ" style="width: 150;height:128px;">
+                                                    <div id="user_group_parent_div">  <select multiple id="user_groups_list" class="form-control" name="ToLJ" style="width: 150;height:128px;">
                                                          </select>
+                                                        </div>
                                                     </div> 
-                                                   </div>
+                                                <div id="parent_div"> 
+                                                <div id="hidden_user_group_list">
+                                                </div>    
+                                                <div id="hidden_selected_user_group_list">
+                                                </div>    
+                                                </div>
+                                                </div>
+                                               
                                                <div class="col col-sm-6">
                                                     <div class="form_sep">
                                                     <label for="phone"><?php echo $this->lang->line('selected_department') ?></label>  
-                                                    <select multiple  name="lang" size="7" class="form-control "  style="width: 250">
+                                                    <select multiple id="selected_user_group_list"  name="lang" size="7" class="form-control "  style="width: 250">
 
                                                     </select>
                                                    
@@ -408,14 +420,14 @@ function reload_update_user(){
                                            <div class="row">
                                                   <div class="col col-sm-6">
                                                     <div class="form_sep text-center">
-                                                        <button type="button" class="btn btn-success " onClick="move(this.form.ToLJ,this.form.lang),get_selected(this.form.lang)" 
+                                                        <button type="button" class="btn btn-success " onClick="select_user_group()" 
                                                            ><i class="icon icon-forward"></i></button>
                                                    
                                                     </div>
                                                    </div>
                                                    <div class="col col-sm-6">
                                                     <div class="form_sep text-center">
-                                                        <button type="button" class="btn btn-success " onClick="backmove(this.form.lang,this.form.ToLJ),get_selected(this.form.lang)"  
+                                                        <button type="button" class="btn btn-success " onClick="remove_select_user_group()"  
                                                            ><i class="icon icon-backward"></i></button>
                                                     
                                                     </div>
@@ -729,7 +741,9 @@ function reload_update_user(){
                                                             foreach ($branch as $brow) {
 
                                                      ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch_for_edit(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 
-                                                            }}else{ foreach ($branch as $brow) {
+                                                            }
+                                                            
+                                                            }else{ foreach ($branch as $brow) {
 
                                                             ?> <option name="<?php echo $brow->branch_id ?>" value="<?php echo $brow->branch_id ?>" onClick="select_branch_for_edit(this.form.lang)" > <?php echo $brow->branch_name ?></option>
                                                       <?php }}?></select>
@@ -741,7 +755,7 @@ function reload_update_user(){
                                                <div class="col col-sm-6">
                                                     <div class="form_sep">
                                                     <label for="phone"><?php echo $this->lang->line('department') ?></label>  
-                                                         <select multiple id="myDiv_depart" class="form-control" name="ToLJ" style="width: 150;height:128px;">
+                                                         <select multiple id="user_groups_list" class="form-control" name="ToLJ" style="width: 150;height:128px;">
                                                          </select>
                                                     </div> 
                                                    </div>
@@ -1001,28 +1015,88 @@ function reload_update_user(){
 			}
 		});
     });
-function select_branch(tbTo)
+function select_branch()
 {    
- var arrLU="";
-    for (i = 0;i < tbTo.options.length; i++) 
- {
-  arrLU =arrLU+" "+tbTo.options[i].value;           
- } 
-var jibi = document.getElementById("branch").value;
-var xmlhttp;
-if (window.XMLHttpRequest)
-  {
-  xmlhttp=new XMLHttpRequest();
-  }
-else
-  {
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-  }
-xmlhttp.open("GET","<?php echo base_url() ?>index.php/user_groupsselecting/add/"+jibi+"/"+arrLU,false);
-
-xmlhttp.send();
-document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+    var guid=$('#posnic_user_2 select[id="branch"] option:selected').val();
+    var name=$('#posnic_user_2 select[id="branch"] option:selected').text();
+  $.ajax({                                      
+     url: "<?php echo base_url() ?>index.php/users/get_users_groups/",   
+    type: "POST",
+    data: {branch_id:guid}, 
+    dataType: 'json',               
+    success: function(data)        
+    {    
+        $('#posnic_user_2 #hidden_user_group_list').remove();
+        $('#posnic_user_2 #parent_div').append('<div id="hidden_user_group_list"></div>');
+        $('#posnic_user_2 #user_groups_list').remove();
+        $('#posnic_user_2 #user_group_parent_div').append(' <select multiple id="user_groups_list" class="form-control" name="ToLJ" style="width: 150;height:128px;"></select>');
+         for(var i=0;i<data.length;i++){
+           if($('#hidden_selected_user_group_list #group_id_'+data[i]['guid']).length == 0){                
+            $('#posnic_user_2 #user_groups_list').append($('<option >', {
+                 value:data[i]['guid'],
+                 text: data[i]['group_name'],
+                 id:'opstion_'+data[i]['guid']
+             }));
+            $('#posnic_user_2 #parent_div #hidden_user_group_list').append(' \n\
+           <input type="hidden" id="group_id_'+data[i]['guid']+'" value="'+data[i]['guid']+'" >\n\
+           <input type="hidden" id="group_name_'+data[i]['guid']+'" value="'+data[i]['group_name']+'" >\n\
+           <input type="hidden" id="group_branch_id_'+data[i]['guid']+'" value="'+guid+'" >\n\
+           <input type="hidden" id="group_branch_name_'+data[i]['guid']+'" value="'+name+'" >\n\
+          ');
+           }
+    }
+      $('#posnic_user_2 #parent_div #hidden_user_group_list').append('<input type="hidden" id="selected_branch_id_'+guid+'" value="'+guid+'" >'); 
+     }
+    });
 }
+
+function select_user_group(){
+   var group=$('#posnic_user_2 select[id="user_groups_list"] option:selected').val();
+   var group_name=$('#posnic_user_2 #hidden_user_group_list #group_name_'+group).val();
+   var branch_id=$('#posnic_user_2 #hidden_user_group_list #group_branch_id_'+group).val();
+   var branch_name=$('#posnic_user_2 #hidden_user_group_list #group_branch_name_'+group).val();
+   $('#posnic_user_2 #selected_user_group_list').append($('<option >', {
+                 value:group,
+                 text: group_name+" ("+branch_name+")"
+             }));
+           $('#posnic_user_2 #parent_div #hidden_selected_user_group_list').append(' \n\
+           <input type="hidden" name="user_groups[]" id="group_id_'+group+'" value="'+group+'" >\n\
+           <input type="hidden" id="group_name_'+group+'" value="'+group_name+'" >\n\
+           <input type="hidden" name="user_branchs[]" id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
+           <input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
+          ');
+        $('#posnic_user_2 #hidden_user_group_list #group_id_'+group).remove();
+        $('#posnic_user_2 #hidden_user_group_list #group_name_'+group).remove();
+        $('#posnic_user_2 #hidden_user_group_list #group_branch_id_'+group).remove();
+        $('#posnic_user_2 #hidden_user_group_list #group_branch_name_'+group).remove();   
+   
+        $("#posnic_user_2 #user_groups_list option[value='"+group+"']").remove();
+   }
+function remove_select_user_group(){
+   var group=$('#posnic_user_2 select[id="selected_user_group_list"] option:selected').val();
+     
+   var group_name=$('#posnic_user_2 #hidden_selected_user_group_list #group_name_'+group).val();
+   var branch_id=$('#posnic_user_2 #hidden_selected_user_group_list #group_branch_id_'+group).val();
+   var branch_name=$('#posnic_user_2 #hidden_selected_user_group_list #group_branch_name_'+group).val();
+      $('#posnic_user_2 #user_groups_list').append($('<option>', {
+                 value:group,
+                 text: group_name
+             }));
+              if($('#hidden_selected_user_group_list #selected_branch_id_'+branch_id).length == 0){  
+           $('#posnic_user_2 #parent_div #hidden_user_group_list').append(' \n\
+           <input type="hidden" id="group_id_'+group+'" value="'+group+'" >\n\
+           <input type="hidden" id="group_name_'+group+'" value="'+group_name+'" >\n\
+           <input type="hidden" id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
+           <input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
+          ');
+           }
+        $('#posnic_user_2 #hidden_selected_user_group_list #group_id_'+group).remove();
+        $('#posnic_user_2 #hidden_selected_user_group_list #group_name_'+group).remove();
+        $('#posnic_user_2 #hidden_selected_user_group_list #group_branch_id_'+group).remove();
+        $('#posnic_user_2 #hidden_selected_user_group_list #group_branch_name_'+group).remove();   
+   
+        $("#posnic_user_2 #selected_user_group_list option[value='"+group+"']").remove();
+   }
 function select_branch_for_edit(tbTo)
 {    
  var arrLU="";

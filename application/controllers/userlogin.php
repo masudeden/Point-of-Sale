@@ -59,7 +59,7 @@ function testlogin(){
                      $_SESSION['admin']=2;
                       echo '22';
                 }else{
-               if($this->logindetails->is_in_active_branchs($_SESSION['Uid'])!=0){
+               if($this->logindetails->is_in_active_branches($_SESSION['Uid'])!=0){
                     $_SESSION['admin']=0;
                      echo '22';
                }else{

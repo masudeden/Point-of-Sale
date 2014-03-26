@@ -5,7 +5,7 @@ class Logindetails extends CI_Model{
     }
     function login($username,$password){ 
         $pass=  md5($password);
-        $this->db->select()->from('users')->where('user_id',$username)->where('password',$pass);
+        $this->db->select()->from('users')->where('username',$username)->where('password',$pass);
         $sql=$this->db->get();
         if($sql->num_rows()>0){
             return TRUE;
@@ -15,14 +15,14 @@ class Logindetails extends CI_Model{
     }
     function loginid($username,$password){ 
         $pass=  md5($password);
-        $this->db->select()->from('users')->where('user_id',$username)->where('password',$pass);
+        $this->db->select()->from('users')->where('username',$username)->where('password',$pass);
         $sql=$this->db->get();
         foreach ($sql->result() as $row){
            return $row->guid;
         }        
     }
-    function is_in_active_branchs($Uid){                
-        $this->db->select()->from('users_x_branchs')->where('emp_id',$Uid);
+    function is_in_active_branches($Uid){                
+        $this->db->select()->from('users_x_branches')->where('user_id',$Uid);
         $sql_b=  $this->db->get();
         $data=array();
         $value=0;
@@ -30,7 +30,7 @@ class Logindetails extends CI_Model{
             $data[]=$brow->branch_id ;
         }
         for($i=0;$i<count($data);$i++){
-           $this->db->select()->from('branchs')->where('guid',$data[$i])->where('active_status',0);
+           $this->db->select()->from('branches')->where('guid',$data[$i])->where('active_status',1);
            $sql=  $this->db->get();
            if($sql->num_rows()>0){
                $value=$value+1;
@@ -50,7 +50,7 @@ class Logindetails extends CI_Model{
         }
     }
     function check_user_is_active_or_not($id){
-        $this->db->select()->from('users_x_branchs')->where('emp_id',$id)->where('user_active',0)->where('user_delete ',0);
+        $this->db->select()->from('users_x_branches')->where('user_id',$id)->where('user_active',0)->where('user_delete ',0);
         $sql=$this->db->get();
         if($sql->num_rows()>0){
             return TRUE;

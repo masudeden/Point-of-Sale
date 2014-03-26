@@ -5,7 +5,7 @@ class Supplier extends CI_Model{
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name as c_name')->from('suppliers')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',0)->where('suppliers.active',0)->where('suppliers.delete_status',0);
+                $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name as c_name')->from('suppliers')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',1)->where('suppliers.active',0)->where('suppliers.delete_status',1);
                 $this->db->join('suppliers_category', 'suppliers.category=suppliers_category.guid','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
@@ -15,7 +15,7 @@ class Supplier extends CI_Model{
     }
     function supplier_vs_items($end,$start,$like,$branch,$suplier){
         
-                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',0)->where('suppliers.active',0)->where('suppliers.delete_status',0)->where('suppliers_x_items.active_status',0)->where('suppliers_x_items.delete_status',0);
+                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',1)->where('suppliers.active',0)->where('suppliers.delete_status',1)->where('suppliers_x_items.active_status',1)->where('suppliers_x_items.delete_status',1);
                 $this->db->join('items', 'items.guid=suppliers_x_items.item_id','left');
                 $this->db->join('suppliers', 'suppliers.guid=suppliers_x_items.supplier_id','left');
                 $this->db->where('suppliers_x_items.supplier_id',$suplier);
@@ -48,17 +48,17 @@ class Supplier extends CI_Model{
         $this->db->delete('supplier_contacts');
     }
     function count($branch){
-        $this->db->select()->from('suppliers')->where('branch_id',$branch)->where('active_status',0)->where('active',0)->where('delete_status',0);
+        $this->db->select()->from('suppliers')->where('branch_id',$branch)->where('active_status',1)->where('active',0)->where('delete_status',1);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }
     function supplier_vs_items_count($branch,$guid){
-        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',0)->where('delete_status',0);
+        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',1)->where('delete_status',1);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }
     function search_items($search,$branch){
-          $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch)->where('items.active_status',0)->where('items.delete_status',0);
+          $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch)->where('items.active_status',1)->where('items.delete_status',1);
                 $this->db->join('items_category', 'items.category_id=items_category.guid','left');
                 $this->db->join('brands', 'items.brand_id=brands.guid','left');
                 $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
@@ -85,7 +85,7 @@ class Supplier extends CI_Model{
         return $data;
     }
     function supplier_like($like,$bid){
-          $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name')->from('suppliers')->where('suppliers.branch_id',$bid)->where('suppliers.active_status',0)->where('suppliers.active',0)->where('suppliers.delete_status',0);
+          $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name')->from('suppliers')->where('suppliers.branch_id',$bid)->where('suppliers.active_status',1)->where('suppliers.active',0)->where('suppliers.delete_status',1);
           $this->db->join('suppliers_category', 'suppliers_category.guid=suppliers.category','left');
           $this->db->or_like($like);
           $sql=  $this->db->get();

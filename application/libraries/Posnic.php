@@ -356,7 +356,7 @@ class Posnic{
          $branch=$_SESSION['Bid'];
          return $CI->posnic_model->posnic_data_table($end,$start,$order,$like,$table,$branch);;
     }
-    function branchs(){
+    function branches(){
         $CI=  get_instance();
         $CI->load->model('setting');
         $CI->load->model('branch');        
@@ -367,7 +367,7 @@ class Posnic{
         
         }else{
         
-        $data['row']=$CI->branch->get_active_user_branchs($_SESSION['Uid']);
+        $data['row']=$CI->branch->get_active_user_branches($_SESSION['Uid']);
         }
         return $data;
     }

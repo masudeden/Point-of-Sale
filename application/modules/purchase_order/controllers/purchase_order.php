@@ -8,7 +8,7 @@ class Purchase_order extends CI_Controller{
            //   $this->get_list();
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
-        $this->load->view('template/branch',$this->posnic->branchs());
+        $this->load->view('template/branch',$this->posnic->branches());
         $data['active']='purchase_order';
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());

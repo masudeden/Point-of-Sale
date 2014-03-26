@@ -36,7 +36,7 @@ class Posmain extends CI_Controller{
              $this->acl_session_for_user($data);        
              redirect('home');            
         }else{
-            $id =$this->branch->is_in_active_branchs($_SESSION['Uid']);
+            $id =$this->branch->is_in_active_branches($_SESSION['Uid']);
             $this->acl_session_for_user($id);        
             redirect('home');           
         }

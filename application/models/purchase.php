@@ -6,7 +6,7 @@ class Purchase extends CI_Model{
     function get_purchase_order_user($id){
             $this->db->where('branch_id',$id);
             $this->db->where('active',0);
-            $this->db->where('active_status',0);
+            $this->db->where('active_status',1);
             $this->db->from('purchase_order');
             return $this->db->count_all_results();
     }
@@ -14,7 +14,7 @@ class Purchase extends CI_Model{
             $this->db->limit($limit, $start);   
             $this->db->where('branch_id',$branch);
             $this->db->where('active',0);
-            $this->db->where('active_status',0);
+            $this->db->where('active_status',1);
             $query = $this->db->get('purchase_order');
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
@@ -29,12 +29,12 @@ class Purchase extends CI_Model{
        return $this->db->get();
    }
    function get_selected_branch_for_view(){
-       $this->db->select()->from('branchs');
+       $this->db->select()->from('branches');
        return $this->db->get();
    }
    function get_selected_supplier($data,$bid){
         
-        $this->db->select()->from('suppliers')->like('company_name',$data)->where('active_status',0)->where('branch_id',$bid);
+        $this->db->select()->from('suppliers')->like('company_name',$data)->where('active_status',1)->where('branch_id',$bid);
         $sql=  $this->db->get();
         $name=array();
         $companany=array();
@@ -56,7 +56,7 @@ class Purchase extends CI_Model{
         return $sasi;        
     }
     function get_selected_item($data,$bid){
-        $this->db->select()->from('items')->like('code',$data)->where('active_status',0)->where('branch_id',$bid)->where('delete_status',0);
+        $this->db->select()->from('items')->like('code',$data)->where('active_status',1)->where('branch_id',$bid)->where('delete_status',1);
         $sql=  $this->db->get();
         $name=array();
         $companany=array();
@@ -84,7 +84,7 @@ class Purchase extends CI_Model{
         return $sasi;  
     }
     function get_selected_item_view($id,$bid){
-        $this->db->select()->from('items')->where('code',$id)->where('branch_id',$bid)->where('active_status',0);
+        $this->db->select()->from('items')->where('code',$id)->where('branch_id',$bid)->where('active_status',1);
         $sql=$this->db->get();
         $data=array();
         if($sql->num_rows()>0){

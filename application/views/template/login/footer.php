@@ -71,7 +71,7 @@
                                                       submitBt.enableBt();
                                                     }
                                                     if(response==1){
-                                                      $('#login-block').removeBlockMessages().blockMessage('Your Branchs Are Not corrently Active Please Contact With Admin', {type: 'error'});  
+                                                      $('#login-block').removeBlockMessages().blockMessage('Your branches Are Not corrently Active Please Contact With Admin', {type: 'error'});  
                                                       submitBt.enableBt();
                                                     }
                                                     if(response==11){

@@ -12,7 +12,7 @@ class Items_department extends CI_Controller
      function get_items_department(){
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
-        $this->load->view('template/branch',$this->posnic->branchs());
+        $this->load->view('template/branch',$this->posnic->branches());
         $data['active']='items_department';
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());

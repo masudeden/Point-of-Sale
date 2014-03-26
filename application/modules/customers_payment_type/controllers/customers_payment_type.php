@@ -12,7 +12,7 @@ class Customers_payment_type extends CI_Controller
      function get(){
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
-        $this->load->view('template/branch',$this->posnic->branchs());
+        $this->load->view('template/branch',$this->posnic->branches());
         $data['active']='customers_payment_type';
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());

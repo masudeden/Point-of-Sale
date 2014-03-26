@@ -6,22 +6,22 @@ class Pos_users_model extends CI_Model{
     }
     
     function pos_users_count($id,$branch){       
-            $this->db->where('emp_id <>',$id);
+            $this->db->where('user_id <>',$id);
             $this->db->where('admin <>','101');
             $this->db->where('user_delete ',0);
             $this->db->where('user_active',0);        
             $this->db->where('branch_id ',$branch);         
-            $this->db->from('users_x_branchs');
+            $this->db->from('users_x_branches');
             return $this->db->count_all_results();
         
     }
      public function get_pos_users_details($limit,$start,$id,$branch) {
             $this->db->limit($limit, $start);
-            $this->db->where('emp_id <>',$id);
+            $this->db->where('user_id <>',$id);
             $this->db->where('user_delete ',0);
             $this->db->where('user_active',0);        
             $this->db->where('branch_id ',$branch); 
-       $query = $this->db->get('users_x_branchs');
+       $query = $this->db->get('users_x_branches');
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $data[] = $row;
@@ -30,15 +30,17 @@ class Pos_users_model extends CI_Model{
            }
           return false;  
    }
-   function deactive_pos_users($id){
-       $value=array('active'=>1); 
-       $this->db->where('guid',$id);
-       $this->db->update('users',$value);
+   function deactive_pos_users($id,$bid){
+       $value=array('user_active'=>0); 
+       $this->db->where('user_id',$id);
+       $this->db->where('branch_id',$bid);
+       $this->db->update('users_x_branches',$value);
    }
-   function active_pos_users($id){
-       $value=array('active'=>0); 
-       $this->db->where('guid',$id);
-       $this->db->update('users',$value);
+   function active_pos_users($id,$bid){
+       $value=array('user_active'=>1); 
+       $this->db->where('user_id',$id);
+       $this->db->where('branch_id',$bid);
+       $this->db->update('users_x_branches',$value);
    }
    function get_user_details_for_user($id){
             $this->db->select()->from('users')->where('id <>',$id)->where('user_type <>',2);
@@ -48,14 +50,14 @@ class Pos_users_model extends CI_Model{
    function pos_users_count_for_admin($branch){  
             $this->db->where('branch_id ',$branch);
             $this->db->where('user_delete',0);
-            $this->db->from('users_x_branchs');
+            $this->db->from('users_x_branches');
             return $this->db->count_all_results();
    }
    function get_pos_users_details_for_admin($limit, $start,$branch) {
             $this->db->limit($limit, $start);   
             $this->db->where('branch_id',$branch);
             $this->db->where('user_delete',0);
-            $query = $this->db->get('users_x_branchs');
+            $query = $this->db->get('users_x_branches');
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $data[] = $row;
@@ -75,19 +77,17 @@ class Pos_users_model extends CI_Model{
         $sql=$this->db->get();       
         return $sql->result();
    }
-   function edit_pos_users_ajax($id){
-      $this->db->select()->from('users');
-		$this->db->where('guid',$id);
-		$data=array();
-		 $sql=$this->db->get();
-		 foreach($sql->result() as $row){
-			$data[]=$row;
-			}
-		 foreach($sql->result() as $row){
-			$data[]=date('n.j.Y', strtotime('+0 year, +0 days',$row->dob));
-			}
-                        
-                        
+   function get_user_details($id){
+                $this->db->select('users.*,user_groups.group_name,users_x_user_groups.user_group_id')->from('users')->where('users.guid',$id);
+                $this->db->join('users_x_user_groups', 'users_x_user_groups.user_id=users.guid','left');
+                $this->db->join('user_groups', 'user_groups.guid=users_x_user_groups.user_group_id AND users_x_user_groups.user_id=users.guid','left');
+		$sql=$this->db->get();
+                $data=array();
+                foreach ($sql->result_array() as $row)                    
+                {
+                    $row['dob']= date('d-m-Y',$row['dob']);
+                    $data[]=$row;
+                } 
 		 return $data;
    }
    function get_file_name($upload_data){
@@ -98,13 +98,13 @@ class Pos_users_model extends CI_Model{
     }    
     }
    }
-   function update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$emp_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password){
+   function update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$user_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password){
        $data=array(
            'blood'=>$blood,
            'image'=>$file_name,
            'age'=>$age,
            'sex'=>$sex,
-           'user_id' =>$emp_id,	          	
+           'user_id' =>$user_id,	          	
            'first_name' =>$first_name,           
            'last_name '	=>$last_name,
            'address '=>$address,	
@@ -122,18 +122,13 @@ class Pos_users_model extends CI_Model{
        $this->db->update('users',$data);
    }
    function delete_pos_users($id,$deleted_by,$branch){          
-       $value=array('user_active'=>1,'deleted_by'=>$deleted_by);
-       $this->db->where('emp_id',$id); 
+       $value=array('user_delete'=>0,'user_active'=>0,'deleted_by'=>$deleted_by);
+       $this->db->where('user_id',$id); 
        $this->db->where('branch_id',$branch);
-       $this->db->update('users_x_branchs',$value);       
+       $this->db->update('users_x_branches',$value);       
    }
-   function delete_pos_users_for_admin($id,$branch){       
-       $this->db->where('emp_id',$id); 
-       $value=array('user_active'=>1,'user_delete'=>1);
-       $this->db->where('branch_id',$branch);
-       $this->db->update('users_x_branchs',$value);
-   }
-   function adda_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$emp_id,$password,$address,$city,$state,$zip,$country,$email,$phone,$image_name){
+   
+   function add_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$username,$password,$address,$city,$state,$zip,$country,$email,$phone,$image_name){
             
        $pass=md5($password);
        $data=array(
@@ -141,7 +136,7 @@ class Pos_users_model extends CI_Model{
            'sex' =>$sex,
            'blood'=>$blood,
            'age'=>$age,
-           'user_id' =>$emp_id,	
+           'username' =>$username,	
            'password' =>$pass, 
            'first_name' =>$first_name,           
            'last_name '	=>$last_name,
@@ -167,8 +162,8 @@ class Pos_users_model extends CI_Model{
        function get(){
          return TRUE;
        }
-       function user_checking($email,$emp_id,$dob,$phone){
-       $this->db->select()->from('users')->or_where('email',$email)->or_where('user_id',$emp_id)->or_where('phone',$phone);
+       function user_checking($email,$user_id,$dob,$phone){
+       $this->db->select()->from('users')->or_where('email',$email)->or_where('username',$user_id)->or_where('phone',$phone);
        $sql=$this->db->get();
        if($sql->num_rows()>0){
                return TRUE;
@@ -190,21 +185,35 @@ class Pos_users_model extends CI_Model{
        }
        function activate_user($id,$branch){                
                 $value=array('user_active'=>0);
-                $this->db->where('emp_id',$id); 
+                $this->db->where('user_id',$id); 
                 $this->db->where('branch_id',$branch);
-                $this->db->update('users_x_branchs',$value);
+                $this->db->update('users_x_branches',$value);
        }
        function deactivate_user($id,$branch){                   
                 $value=array('user_active'=>1);
-                $this->db->where('emp_id',$id);
+                $this->db->where('user_id',$id);
                 $this->db->where('branch_id',$branch);                
-                $this->db->update('users_x_branchs',$value);
+                $this->db->update('users_x_branches',$value);
        }
        function delete_user_for_admin($id,$branch){                
                 $value=array('user_delete'=>1,'user_active'=>1);
-                $this->db->where('emp_id',$id);
+                $this->db->where('user_id',$id);
                 $this->db->where('branch_id',$branch);
-                $this->db->update('users_x_branchs',$value);
+                $this->db->update('users_x_branches',$value);
+       }
+       function get_user_grous($guid){
+           
+           $this->db->select()->from('user_groups')->where('active_status',1)->where('delete_status',1)->where('branch_id',$guid);
+           $sql=  $this->db->get();
+           return $sql->result();
+       }
+       function add_user_groups_for_user($user_groups,$id){
+           $this->db->insert('users_x_user_groups',array('user_group_id'=>$user_groups,'user_id'=>$id));
+           
+       }
+       function add_user_branchs_for_user($user_groups,$id){
+           $this->db->insert('users_x_branches',array('branch_id'=>$user_groups,'user_id'=>$id));
+           
        }
 }
 ?>
