@@ -284,7 +284,7 @@ class posnic_model extends CI_model{
             
     }
     function data_table_count($table,$branch){
-        $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',1);
+        $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0);
         $sql=  $this->db->get();
         return  $sql->num_rows();
     }
