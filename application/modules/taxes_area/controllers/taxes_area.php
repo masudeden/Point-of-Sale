@@ -114,7 +114,7 @@ class Taxes_area extends CI_Controller
            }
     }
     function inactive_taxes_area($guid){
-        if($_SESSION['Posnic_User']=='admin'){
+        if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_deactive($guid);
               redirect('taxes_area');
           }else{
@@ -161,7 +161,7 @@ class Taxes_area extends CI_Controller
         }
     }
     function restore($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('taxes_area');
           }else{

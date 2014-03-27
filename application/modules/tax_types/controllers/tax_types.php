@@ -114,7 +114,7 @@ class Tax_types extends CI_Controller
            }
     }
     function inactive_tax_types($guid){
-        if($_SESSION['Posnic_User']=='admin'){
+        if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_deactive($guid);
               redirect('tax_types');
           }else{
@@ -161,7 +161,7 @@ class Tax_types extends CI_Controller
         }
     }
     function restore($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('tax_types');
           }else{

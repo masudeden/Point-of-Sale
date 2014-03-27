@@ -3,7 +3,7 @@ echo form_open('tax_commodity/tax_com');
 echo "<table>";
 if($count>0){$i=0;
 echo $links;
-if($_SESSION['Posnic_User']=='admin'){
+if($this->session->userdata['Posnic_User']=='admin'){
     
      echo "<tr><td>SL NO</td><td>Code</td><td>Description </td><td>Part </td>";
     foreach ($row as $prow){

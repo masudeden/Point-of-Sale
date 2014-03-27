@@ -170,7 +170,7 @@ class Tax_commodity extends CI_Controller{
               redirect('tax_commodity');
         }
         function restore_tax($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('tax_commodity');
           }else{
