@@ -51,11 +51,11 @@ class Direct_grn extends CI_Controller{
 					   
 			$this->load->model('purchase')	   ;
                         
-			 $rResult1 = $this->purchase->get($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->purchase->get($end,$start,$like,$this->session->userdata['branch_id']);
 		   
-		$iFilteredTotal =$this->purchase->count($_SESSION['Bid']);
+		$iFilteredTotal =$this->purchase->count($this->session->userdata['branch_id']);
 		
-		$iTotal =$this->purchase->count($_SESSION['Bid']);
+		$iTotal =$this->purchase->count($this->session->userdata['branch_id']);
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -93,7 +93,7 @@ class Direct_grn extends CI_Controller{
     }
     function annan(){
                 $this->load->model('core_model');
-                $name=$this->core_model->posnic_join_like('suppliers_x_items',$_SESSION['Bid']);
+                $name=$this->core_model->posnic_join_like('suppliers_x_items',$this->session->userdata['branch_id']);
                 for($i=0;$i<count($name);$i++){
                     echo $name[$i]."<br>";
                 }
@@ -346,7 +346,7 @@ function direct_grn_approve(){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
             $this->purchase->deactive_order($id);
-            $this->purchase->direct_grn_stock($id,$_SESSION['Bid']);
+            $this->purchase->direct_grn_stock($id,$this->session->userdata['branch_id']);
             echo 'TRUE';
      }else{
          echo 'FALSE';
@@ -361,7 +361,7 @@ function search_items(){
        $guid= $this->input->post('suppler');
          if($search!=""){
             $this->load->model('purchase');
-            $data= $this->purchase->serach_items($search,$_SESSION['Bid'],$guid);      
+            $data= $this->purchase->serach_items($search,$this->session->userdata['branch_id'],$guid);      
             echo json_encode($data);
         }
         

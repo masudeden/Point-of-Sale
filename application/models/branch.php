@@ -236,26 +236,28 @@ class Branch extends CI_Model{
        $this->db->where('branch_id',$id);
        $this->db->update('users_x_branches',$data);
    }
-   function check_branch_is_in_active($id,$eid){
-        $this->db->select()->from('users_x_branches')->where('branch_id',$id)->where('user_id',$eid)->where('active_status',1)->where('delete_status',0);
-        $sql=$this->db->get();
-        if($sql->num_rows()>0){
+   
+   //This function checks where user had permission for given branch id
+   function check_user_branch_active($branch_id,$user_id){
+	   $this->db->select()->from('users_x_branches')->where('branch_id',$branch_id)->where('user_id',$user_id);
+	   $sql=$this->db->get();
+	   if($sql->num_rows()>0){
             return TRUE;
         }else{
             return FALSE;
         }
    }
-   function is_in_active_branches($Uid){                
-        $this->db->select()->from('users_x_branches')->where('user_id',$Uid)->where('active_status',1);
-        $sql_b=  $this->db->get();
+   
+   function select_any_active_branch($user_id){                
+        $this->db->select()->from('users_x_branches')->where('user_id',$user_id);
+        $sql=  $this->db->get();
         $data="";
-        foreach ($sql_b->result() as $brow){
-            $data=$brow->branch_id  ;
+        foreach ($sql->result() as $brow){
+            $data=$brow->branch_id;
         }       
         return $data;
     }
     function get_active_user_branches($id){
-        
         $this->db->select('branches.*');
         $this->db->from('branches');  
         $this->db->join('users_x_branches', " users_x_branches.branch_id= branches.guid ",'left');

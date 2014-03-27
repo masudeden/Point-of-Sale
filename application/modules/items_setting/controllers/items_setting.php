@@ -44,7 +44,7 @@ class Items_setting extends CI_Controller{
                 $like =array('upc_ean_code'=>  $this->input->get_post('sSearch'),'items.name'=>  $this->input->get_post('sSearch'),'code'=>  $this->input->get_post('sSearch'));
             }
         $this->load->model('core_model')		   ;
-        $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$_SESSION['Bid']);
+        $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$this->session->userdata['branch_id']);
         $iFilteredTotal =$this->posnic->data_table_count('items');
         $iTotal =$this->posnic->data_table_count('items');
         $output1 = array(
@@ -75,8 +75,8 @@ class Items_setting extends CI_Controller{
     
     function get_items_setting_details($guid){
         $this->load->model('core_model');
-        $data[0]=  $this->core_model->get_items_details_for_update($_SESSION['Bid'],$guid);
-        $data[1]=  $this->core_model->get_items_setting_details($_SESSION['Bid'],$guid);
+        $data[0]=  $this->core_model->get_items_details_for_update($this->session->userdata['branch_id'],$guid);
+        $data[1]=  $this->core_model->get_items_setting_details($this->session->userdata['branch_id'],$guid);
         echo json_encode($data);       
     }
     

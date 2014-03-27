@@ -38,7 +38,7 @@ class Home extends CI_Controller
         $modules['active']="home";
         $this->load->model('modules_model')  ;
         $modules['cate']= $this->modules_model->get_module_category();      
-        $modules['row']=  $this->modules_model->get_modules($_SESSION['Bid']);
+        $modules['row']=  $this->modules_model->get_modules($this->session->userdata['branch_id']);
         $this->load->view('home');  
         $this->load->view('template/app/navigation',$modules);
         $this->load->view('template/app/footer');   
@@ -51,7 +51,7 @@ class Home extends CI_Controller
       function home_main($module){
           
           $this->load->model('modules_model');
-          $data=  $this->modules_model->get_modulenames($_SESSION["Bid"]);
+          $data=  $this->modules_model->get_modulenames($this->session->userdata['branch_id']);
           for($i=0;$i<count($data);$i++){
             if($data[$i]==$module){
                 $_SESSION['posnic_module']=$data[$i];

@@ -49,7 +49,7 @@ class Suppliers extends CI_Controller{
 			}
                         $this->load->model('supplier')	   ;
                         
-			 $rResult1 = $this->supplier->get($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->supplier->get($end,$start,$like,$this->session->userdata['branch_id']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('suppliers');
 		
