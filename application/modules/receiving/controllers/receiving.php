@@ -13,7 +13,7 @@ class Receiving extends CI_Controller{
                 $this->poslanguage->set_language();
     }
     function index(){  
-          if(!isset($_SESSION['Uid'])){// check user is login or not
+          if(!isset($this->session->userdata['guid'])){// check user is login or not
                 redirect('home');// if user is didnt login then redirect to login page
         }else{
            $this->get_items();
@@ -22,8 +22,8 @@ class Receiving extends CI_Controller{
     }
     function get_items(){
         $this->load->model('receiving_items');
-        $data['i_row']=  $this->receiving_items->get_items($_SESSION['Bid']);
-        $data['de_row']=  $this->receiving_items->get_item_details($_SESSION['Bid']);
+        $data['i_row']=  $this->receiving_items->get_items($this->session->userdata['branch_id']);
+        $data['de_row']=  $this->receiving_items->get_item_details($this->session->userdata['branch_id']);
                 $this->load->view('template/header');
                 $this->load->view('receiving_items',$data);
                 $this->load->view('template/footer');
@@ -34,7 +34,7 @@ class Receiving extends CI_Controller{
        $this->load->model('receiving_items');
            $qo = mysql_real_escape_string( $_REQUEST['query'] );
 
-        $value=  $this->receiving_items->get_selected_item_details($qo,$_SESSION['Bid']);
+        $value=  $this->receiving_items->get_selected_item_details($qo,$this->session->userdata['branch_id']);
 
 $data=$value[0];
 $stock=$value[2];

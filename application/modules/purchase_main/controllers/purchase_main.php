@@ -13,7 +13,7 @@ class Purchase_main extends CI_Controller{
                 $this->poslanguage->set_language();
     }
     function index(){  
-          if(!isset($_SESSION['Uid'])){
+          if(!isset($this->session->userdata['guid'])){
                 redirect('home');
         }else{
           $this->get_suppliers();
@@ -23,19 +23,19 @@ class Purchase_main extends CI_Controller{
     function get_suppliers(){
          if (!$_SERVER['HTTP_REFERER']){ redirect('home');} //check the function is call directly or not if yes then redirect to home
         else{
-            if($_SESSION['admin']==2){// check user is admin or not
+            if($this->session->userdata['user_type']==2){// check user is admin or not
                 $this->load->library("pagination"); 
                
                 $this->load->model('purchase');
 	        $config["base_url"] = base_url()."index.php/purchase_main/get_suppliers";
-	        $config["total_rows"] = $this->purchase->supplier_count_for_admin($_SESSION['Bid']);// get supplier count
+	        $config["total_rows"] = $this->purchase->supplier_count_for_admin($this->session->userdata['branch_id']);// get supplier count
 	        $config["per_page"] = 8;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
                 $data['branch']=$this->purchase->get_selected_branch_for_view();
-                $data['count']=$this->purchase->supplier_count_for_admin($_SESSION['Bid']);         
-	        $data["row"] = $this->purchase->get_supplier_details_for_admin($config["per_page"], $page,$_SESSION['Bid']);
+                $data['count']=$this->purchase->supplier_count_for_admin($this->session->userdata['branch_id']);         
+	        $data["row"] = $this->purchase->get_supplier_details_for_admin($config["per_page"], $page,$this->session->userdata['branch_id']);
                 $data['urow']= $this->purchase->get_suppliers();
 	        $data["links"] = $this->pagination->create_links();                 
                 $this->load->view('template/header');
@@ -46,14 +46,14 @@ class Purchase_main extends CI_Controller{
                 
                 $this->load->model('purchase');
 	        $config["base_url"] = base_url()."index.php/purchase_main/get_suppliers";
-                $config["total_rows"] = $this->purchase->get_purchase_order_user($_SESSION['Bid']);
+                $config["total_rows"] = $this->purchase->get_purchase_order_user($this->session->userdata['branch_id']);
 	        $config["per_page"] = 8;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
                 $data['branch']=$this->purchase->get_selected_branch_for_view();
-                $data['count']=$this->purchase->get_purchase_order_user($_SESSION['Bid']);             
-	        $data["row"] = $this->purchase->get_purchase_order_details_for_user($config["per_page"], $page,$_SESSION['Bid']);
+                $data['count']=$this->purchase->get_purchase_order_user($this->session->userdata['branch_id']);             
+	        $data["row"] = $this->purchase->get_purchase_order_details_for_user($config["per_page"], $page,$this->session->userdata['branch_id']);
                 $data['urow']=$this->purchase->get_suppliers();
 	        $data["links"] = $this->pagination->create_links(); 
                 
@@ -81,7 +81,7 @@ class Purchase_main extends CI_Controller{
        
       $q= addslashes($_REQUEST['term']);
                 $this->load->model('purchase');    
-                $value=  $this->purchase->get_selected_supplier($q,$_SESSION['Bid']);
+                $value=  $this->purchase->get_selected_supplier($q,$this->session->userdata['branch_id']);
                 $name=$value[0];
                 $company=$value[1];
                 $phone=$value[2];
@@ -106,7 +106,7 @@ class Purchase_main extends CI_Controller{
     function get_item_details(){
        $q= addslashes($_REQUEST['term']);
                 $this->load->model('purchase');    
-                $value=  $this->purchase->get_selected_item($q,$_SESSION['Bid']);
+                $value=  $this->purchase->get_selected_item($q,$this->session->userdata['branch_id']);
                 $name=$value[0];
                 $dis=$value[1];
                 $id=$value[2];
@@ -135,8 +135,8 @@ class Purchase_main extends CI_Controller{
         if ($iid=="pos") return;
             $this->load->model('purchase');     
             $id=urldecode($iid);
-            if($this->purchase->get_selected_item_view($id,$_SESSION['Bid'])!=FALSE){
-            $value=$this->purchase->get_selected_item_view($id,$_SESSION['Bid']);
+            if($this->purchase->get_selected_item_view($id,$this->session->userdata['branch_id'])!=FALSE){
+            $value=$this->purchase->get_selected_item_view($id,$this->session->userdata['branch_id']);
             echo "  <table> <tr><td >Name</td><td >Description</td><td >Cost</td><td >Selling Price</td><td > MRF</td></tr><tr><td><input type=text value=$value[0] class=items_div disabled ></td><td ><input type=text value =$value[1] class=items_div disabled ></td><td ><input type=text value =$value[2] class=items_div disabled ></td><td ><input type=text value =$value[3] class=items_div disabled ></td><td ><input type=text value= $value[4] class=items_div  disabled ></td></tr></table>";
              
 }

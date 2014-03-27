@@ -14,8 +14,11 @@ class Userlogin extends CI_Controller
         $this->load->library('poslanguage');                 
         $this->poslanguage->set_language();     
     }
-    function index(){       
-        if(!isset($_SESSION['Uid'])){
+    function index(){    
+	
+
+   
+        if(!isset($this->session->userdata['guid'])){
             $this->load->view('template/login/header');
             $this->load->view('login');
             $this->load->view('template/login/footer');
@@ -25,58 +28,29 @@ class Userlogin extends CI_Controller
             $this->load->view('template/footer');
         }     
         } 
-function employee()
-{
-    redirect('/employees');
-}
-function testlogin(){
-    echo mysql_real_escape_string($_POST['username']);;
-}
- function login(){
-    $this->load->library('form_validation');
-   
-    if($this->input->post('login')){
-        $this->form_validation->set_rules('username',$this->lang->line('user_name'), 'required');
-        $this->form_validation->set_rules('password',$this->lang->line('password'),'required');
-        if($this->form_validation->run()!=FALSE){
-            $username=  $this->input->post('username');
-            $password=$this->input->post('password');
-            $this->load->model('logindetails');
-            if($this->logindetails->login($username,$password)){
-              
-                $_SESSION['Uid']= $this->logindetails->loginid($username,$password);
-                if(!$this->logindetails->check_user_is_active_or_not($_SESSION['Uid']))
-                {
-                    if($this->logindetails->check_admin($_SESSION['Uid'])){
-                     $_SESSION['admin']=2;
-                     echo '22'; 
-                }else{
-                   echo "11";
-                }
-                   
-                }else{
-                if($this->logindetails->check_admin($_SESSION['Uid'])){
-                     $_SESSION['admin']=2;
-                      echo '22';
-                }else{
-               if($this->logindetails->is_in_active_branches($_SESSION['Uid'])!=0){
-                    $_SESSION['admin']=0;
-                     echo '22';
-               }else{
-                   echo "1";
-                  
-               }}}
-            }else{
-                echo "2";                
-                               
-            }           
-            }  else {          
-              
-             echo "3";
-        }
-    }
-   
-}
+	function employee()
+	{
+		redirect('/employees');
+	}
+	function login(){
+		$this->load->library('form_validation');
+		if($this->input->post('login')){
+			$this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+			if($this->form_validation->run()!=FALSE){
+				$username	=  $this->input->post('username');
+				$password	=  $this->input->post('password');
+				$this->load->model('logindetails');
+				if($this->logindetails->user_validation($username,$password) === true )
+					echo "1";
+				else 
+					echo $this->lang->line($this->logindetails->user_validation($username,$password));
+				
+			} // End If condition
+			
+		} // End If condition
+	   
+	} // End Login Function 
  
     function setlanguage($lang){
        $_SESSION['lang']=$lang;

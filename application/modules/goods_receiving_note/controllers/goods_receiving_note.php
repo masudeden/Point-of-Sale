@@ -53,11 +53,11 @@ class Goods_receiving_note extends CI_Controller{
 					   
 			$this->load->model('grn')	   ;
                         
-			 $rResult1 = $this->grn->get($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->grn->get($end,$start,$like,$this->session->userdata['branch_id']);
 		   
-		$iFilteredTotal =$this->grn->count($_SESSION['Bid']);
+		$iFilteredTotal =$this->grn->count($this->session->userdata['branch_id']);
 		
-		$iTotal =$this->grn->count($_SESSION['Bid']);
+		$iTotal =$this->grn->count($this->session->userdata['branch_id']);
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -121,7 +121,7 @@ function save(){
                         $this->posnic->posnic_add_record($item_value,'grn_x_items');
                         $this->load->model('grn');
                         $this->grn->update_item_receving($po_item[$i],$quty[$i],$free[$i]);
-                        //$this->grn->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$_SESSION['Bid']);
+                        //$this->grn->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$this->session->userdata['branch_id']);
                 }
                 $this->posnic->posnic_master_increment_max('grn')  ;
                  echo 'TRUE';
@@ -183,7 +183,7 @@ function search_purchase_order(){
        $search= $this->input->post('term');
          if($search!=""){
             $this->load->model('grn');
-            $data= $this->grn->search_purchase_order($search,$_SESSION['Bid'])    ;
+            $data= $this->grn->search_purchase_order($search,$this->session->userdata['branch_id'])    ;
             echo json_encode($data);
         }
         
@@ -230,7 +230,7 @@ function good_receiving_note_approve(){
         $this->load->model('grn');
         $report=$this->grn->change_grn_status($id);
      
-        $this->grn->add_stock($id,$po,$_SESSION['Bid']);
+        $this->grn->add_stock($id,$po,$this->session->userdata['branch_id']);
         if (!$report['error']) {
             echo 'TRUE';
         } else {
@@ -250,7 +250,7 @@ function search_items(){
        $guid= $this->input->post('suppler');
          if($search!=""){
             $this->load->model('purchase');
-            $data= $this->purchase->serach_items($search,$_SESSION['Bid'],$guid);      
+            $data= $this->purchase->serach_items($search,$this->session->userdata['branch_id'],$guid);      
             echo json_encode($data);
         }
         

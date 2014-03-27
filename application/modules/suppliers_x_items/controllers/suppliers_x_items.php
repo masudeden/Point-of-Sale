@@ -63,11 +63,11 @@ class Suppliers_x_items extends CI_Controller{
 					   
 			$this->load->model('supplier')	   ;
                         
-			 $rResult1 = $this->supplier->get($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->supplier->get($end,$start,$like,$this->session->userdata['branch_id']);
 		   
-		$iFilteredTotal =$this->supplier->count($_SESSION['Bid']);
+		$iFilteredTotal =$this->supplier->count($this->session->userdata['branch_id']);
 		
-		$iTotal =$this->supplier->count($_SESSION['Bid']);
+		$iTotal =$this->supplier->count($this->session->userdata['branch_id']);
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -135,11 +135,11 @@ class Suppliers_x_items extends CI_Controller{
 					   
 			$this->load->model('supplier')	   ;
                         
-			 $rResult1 = $this->supplier->supplier_vs_items($end,$start,$like,$_SESSION['Bid'],$guid);
+			 $rResult1 = $this->supplier->supplier_vs_items($end,$start,$like,$this->session->userdata['branch_id'],$guid);
 		   
-		$iFilteredTotal =$this->supplier->supplier_vs_items_count($_SESSION['Bid'],$guid);
+		$iFilteredTotal =$this->supplier->supplier_vs_items_count($this->session->userdata['branch_id'],$guid);
 		
-		$iTotal =$this->supplier->supplier_vs_items_count($_SESSION['Bid'],$guid);
+		$iTotal =$this->supplier->supplier_vs_items_count($this->session->userdata['branch_id'],$guid);
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -204,7 +204,7 @@ class Suppliers_x_items extends CI_Controller{
                             if ( $this->form_validation->run() !== false ) {
                                 
                                 
-                                $where=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>0);
+                                $where=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$this->session->userdata['branch_id'],'delete_status'=>0);
                                  if($this->posnic->check_record_unique($where,'suppliers_x_items')){
                    $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
                                      
@@ -238,7 +238,7 @@ class Suppliers_x_items extends CI_Controller{
                             if ( $this->form_validation->run() !== false ) {
                                 $guid=  $this->input->post('guid');
                                 
-                                $where=array('guid !='=>$guid,'supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$_SESSION['Bid'],'delete_status'=>0);
+                                $where=array('guid !='=>$guid,'supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$this->session->userdata['branch_id'],'delete_status'=>0);
                                  if($this->posnic->check_record_unique($where,'suppliers_x_items')){
                                      $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
                                      $update_where=array('guid'=>$guid);
@@ -381,7 +381,7 @@ class Suppliers_x_items extends CI_Controller{
                  $search= $this->input->post('term');
          if($search!=""){
              $this->load->model('supplier');
-            $data= $this->supplier->search_items($search,$_SESSION['Bid']);      
+            $data= $this->supplier->search_items($search,$this->session->userdata['branch_id']);      
             echo json_encode($data);
      }
      }
@@ -424,7 +424,7 @@ class Suppliers_x_items extends CI_Controller{
          if($search!=""){
             $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);
             $this->load->model('supplier');
-            $data= $this->supplier->supplier_like($like,$_SESSION['Bid']);      
+            $data= $this->supplier->supplier_like($like,$this->session->userdata['branch_id']);      
             echo json_encode($data);
         }
     }

@@ -49,7 +49,7 @@ class Items extends CI_Controller{
 				
 			}
 			$this->load->model('core_model')		   ;
-			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$this->session->userdata['branch_id']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('items');
 		
@@ -107,7 +107,7 @@ class Items extends CI_Controller{
          if($_SESSION['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               $this->load->model('core_model');
-              $this->core_model->restore_item_setting($guid,$_SESSION['Bid']);
+              $this->core_model->restore_item_setting($guid,$this->session->userdata['branch_id']);
               redirect('items');
           }else{
               redirect('items');
@@ -119,7 +119,7 @@ class Items extends CI_Controller{
              $guid=  $this->input->post('guid');             
               $this->posnic->posnic_delete($guid,'items');
               $this->load->model('core_model');
-              $this->core_model->delete_item_setting($guid,$_SESSION['Bid']);
+              $this->core_model->delete_item_setting($guid,$this->session->userdata['branch_id']);
               echo 'TRUE';
                // redirect('items');
             }
@@ -169,8 +169,8 @@ class Items extends CI_Controller{
                                      echo 'TRUE';
                                      $id=$this->posnic->posnic_add_record($data,'items');
                                      $this->load->model('core_model');
-                                     $this->core_model->item_setting($id,$_SESSION['Bid']);
-                                     $this->core_model->suppliers_x_items($id,$_SESSION['Bid'],$this->input->post('mrp_price'),$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost_price'));
+                                     $this->core_model->item_setting($id,$this->session->userdata['branch_id']);
+                                     $this->core_model->suppliers_x_items($id,$this->session->userdata['branch_id'],$this->input->post('mrp_price'),$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost_price'));
                                
                                      }else{
                                         echo "ALREADY";
@@ -189,7 +189,7 @@ class Items extends CI_Controller{
     function edit_items($guid){
         if($_SESSION['brands_per']['edit']==1){
         $this->load->model('core_model')		   ;
-	$data = $this->core_model->get_items_details_for_update($_SESSION['Bid'],$guid);
+	$data = $this->core_model->get_items_details_for_update($this->session->userdata['branch_id'],$guid);
         echo json_encode($data);
         }else{
             echo 'FALSE';
@@ -289,11 +289,11 @@ class Items extends CI_Controller{
         $this->load->model('core_model');
         $join_where='items.supplier_id=suppliers.guid ';
       
-       // $rResult1 = $this->core_model->posnic_data_table($end,$start,'items','suppliers',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
+       // $rResult1 = $this->core_model->posnic_data_table($end,$start,'items','suppliers',$join_where,$this->session->userdata['branch_id'],$this->session->userdata['guid'],$order,$like);
         $rResult1 = $this->posnic->posnic_data_table($end,$start,'items','suppliers',$join_where,$order,$like,'');
       
-	$iFilteredTotal =5;// $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
-	$iTotal =5;// $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
+	$iFilteredTotal =5;// $this->pos_users_model->pos_users_count($this->session->userdata['guid'],$this->session->userdata['branch_id']);	
+	$iTotal =5;// $this->pos_users_model->pos_users_count($this->session->userdata['guid'],$this->session->userdata['branch_id']);	
 	$output1 = array(
 		"sEcho" => intval($_GET['sEcho']),
 		"iTotalRecords" => $iTotal,
@@ -363,7 +363,7 @@ class Items extends CI_Controller{
          if($search!=""){
             $like=array('tax_types.type'=>$search);
             $this->load->model('core_model');
-            $data= $this->core_model->get_taxes($_SESSION['Bid'],$like);      
+            $data= $this->core_model->get_taxes($this->session->userdata['branch_id'],$like);      
             echo json_encode($data);
         }
     }

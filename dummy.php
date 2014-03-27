@@ -186,7 +186,7 @@ var arrLU="";
 }
 </script>
 <select id="branch" name="FromLJ" style="width:150">
-    <?php if($_SESSION['admin']==2){ 
+    <?php if($this->session->userdata['user_type']==2){ 
         foreach ($branch as $brow) {
         
  ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch(this.form.lang)" > <?php echo $brow->store_name ?></option><?php 

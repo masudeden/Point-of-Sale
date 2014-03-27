@@ -12,7 +12,7 @@ echo "<tr><td>";echo form_label($this->lang->line('fax'));echo "</td><td>";echo 
 echo "<tr><td>";echo form_label($this->lang->line('email'));echo "</td><td>";echo form_input('email',set_value('email'),'id=email autofocus');echo "</td></tr>";
 echo "<tr><td>";echo form_label($this->lang->line('tax1'));echo "</td><td>";echo form_input('tax1',set_value('tax1'),'id=tax1 autofocus');echo "</td></tr>";
 echo "<tr><td>";echo form_label($this->lang->line('tax1'));echo "</td><td>";echo form_input('tax2',set_value('tax2'),'id=tax2 autofocus');echo "</td></tr>";
-if($_SESSION['admin']!=2){
+if($this->session->userdata['user_type']!=2){
 echo "<tr><td>";echo form_label($this->lang->line('default_user_group'));echo "</td><td>";echo form_input('user_group',set_value('user_group'),'id="user_group" autofocus');echo "</td></tr>";
 }
 echo "<tr><td>";echo form_submit('save',$this->lang->line('save'));echo "</td><td>";echo form_submit('cancel',$this->lang->line('cancel'));echo "</td></tr>";

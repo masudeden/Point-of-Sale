@@ -77,7 +77,7 @@ class Users extends CI_Controller{
         $this->load->model('core_model');
         
       
-        $rResult1 = $this->core_model->posnic_data_table($end,$start,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
+        $rResult1 = $this->core_model->posnic_data_table($end,$start,$this->session->userdata['branch_id'],$this->session->userdata['guid'],$order,$like);
         $this->load->model('pos_users_model');
 	$iFilteredTotal =  count($rResult1);
 	$iTotal = count($rResult1);	
@@ -110,11 +110,11 @@ class Users extends CI_Controller{
         if($_SESSION['users_per']['access']==1){
          $this->load->model('user_groups');
                     $this->load->model('branch');
-                     if($_SESSION['admin']==2){ 
+                     if($this->session->userdata['user_type']==2){ 
         $data['branch']=$this->branch->get_user_for_branch_admin();
                      }
                      else{
-        $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
+        $data['branch']= $this->branch->get_user_for_branch($this->session->userdata['guid']);
                      }
         $data['depa']= $this->user_groups->get_user_groups();  
         $this->load->view('template/app/header'); 
@@ -259,7 +259,7 @@ class Users extends CI_Controller{
                 $data['selected_branch']=$this->branch->get_selected_branch($id);
                 $data['selected_depart']=$this->user_groups->get_user_depart($id);
                 
-                $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
+                $data['branch']= $this->branch->get_user_for_branch($this->session->userdata['guid']);
                 $data['depa']= $this->user_groups->get_user_groups(); 
                 $this->load->view('template/header');
                 $this->load->view('edit_pos_users_details',$data);
@@ -306,7 +306,7 @@ class Users extends CI_Controller{
                           $sex= $this->input->post('sex');
                           $blood= $this->input->post('blood');
                           $dob= strtotime($yourdatetime);
-                          $created_by=$_SESSION['Uid'];
+                          $created_by=$this->session->userdata['guid'];
                           $this->load->model('pos_users_model');
                           if($this->pos_users_model->user_checking($email,$username,$dob,$phone)==FALSE){
                           $id= $this->pos_users_model->add_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$username,$password,$address,$city,$state,$zip,$country,$email,$phone,$username);
@@ -355,7 +355,7 @@ class Users extends CI_Controller{
             if($_SESSION['users_per']['delete']==1){  
                 $id=  $this->input->post('guid');
                 $this->load->model('pos_users_model');
-                $this->pos_users_model->delete_pos_users($id,$_SESSION['Uid'],$_SESSION['Bid']);   
+                $this->pos_users_model->delete_pos_users($id,$this->session->userdata['guid'],$this->session->userdata['branch_id']);   
                 echo 'TRUE';
             }else{
                 redirect('home');
@@ -364,13 +364,13 @@ class Users extends CI_Controller{
     function deactive(){
             $id=  $this->input->post('guid');
             $this->load->model('pos_users_model');
-            $this->pos_users_model->deactive_pos_users($id,$_SESSION['Bid']);   
+            $this->pos_users_model->deactive_pos_users($id,$this->session->userdata['branch_id']);   
             echo 'TRUE';
         }
     function active(){
             $id=  $this->input->post('guid');
             $this->load->model('pos_users_model');
-            $this->pos_users_model->active_pos_users($id,$_SESSION['Bid']);   
+            $this->pos_users_model->active_pos_users($id,$this->session->userdata['branch_id']);   
             echo 'TRUE';
         }
    

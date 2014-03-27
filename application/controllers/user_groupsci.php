@@ -14,7 +14,7 @@ class user_groupsci extends CI_Controller{
                 $this->poslanguage->set_language();
     }
     function index(){
-        if(!isset($_SESSION['Uid'])){
+        if(!isset($this->session->userdata['guid'])){
                 $this->load->view('template/header');
                 $this->load->view('login');
                 $this->load->view('template/footer');
@@ -23,18 +23,18 @@ class user_groupsci extends CI_Controller{
         }
     }
     function get_user_groups(){
-        if($_SESSION['admin']==2){
+        if($this->session->userdata['user_type']==2){
             $this->load->model('user_groups');            
             $this->load->model('branch');
                 $this->load->library("pagination");                
 	        $config["base_url"] = base_url()."index.php/user_groupsci/get_user_groups";
-	        $config["total_rows"] = $this->user_groups->get_user_groups_admin_count($_SESSION['Bid']);
+	        $config["total_rows"] = $this->user_groups->get_user_groups_admin_count($this->session->userdata['branch_id']);
 	        $config["per_page"] = 5;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->user_groups->get_user_groups_admin_count($_SESSION['Bid']);         
-	        $data["depa"] = $this->user_groups->get_user_groups_admin_details($config["per_page"],$page,$_SESSION['Bid']);
+                $data['count']=$this->user_groups->get_user_groups_admin_count($this->session->userdata['branch_id']);         
+	        $data["depa"] = $this->user_groups->get_user_groups_admin_details($config["per_page"],$page,$this->session->userdata['branch_id']);
                 $data['branch']=$this->branch->get_branch();
 	        $data["links"] = $this->pagination->create_links();                 
                 $this->load->view('template/header');
@@ -46,13 +46,13 @@ class user_groupsci extends CI_Controller{
                 $this->load->library("pagination"); 
                 $this->load->model('branch');
 	        $config["base_url"] = base_url()."index.php/user_groupsci/get_user_groups";
-	        $config["total_rows"] = $this->user_groups->get_user_groups_count($_SESSION['Bid']);
+	        $config["total_rows"] = $this->user_groups->get_user_groups_count($this->session->userdata['branch_id']);
 	        $config["per_page"] = 5;
 	        $config["uri_segment"] = 3;
 	        $this->pagination->initialize($config);	 
 	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->user_groups->get_user_groups_count($_SESSION['Bid']);         
-	        $data["depa"] = $this->user_groups->get_user_groups_details($config["per_page"], $page,$_SESSION['Bid']);
+                $data['count']=$this->user_groups->get_user_groups_count($this->session->userdata['branch_id']);         
+	        $data["depa"] = $this->user_groups->get_user_groups_details($config["per_page"], $page,$this->session->userdata['branch_id']);
                 $data['all_depa']=$this->user_groups->get_user_groups();
                 $data['branch']=$this->branch->get_branch();
 	        $data["links"] = $this->pagination->create_links();                 
@@ -70,9 +70,9 @@ class user_groupsci extends CI_Controller{
                 redirect('home');
         }
         if($this->input->post('add')){
-             if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
+             if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){ 
                 $this->load->model('user_groups');      
-                $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
+                $data['row']=$this->user_groups->get_modules_permission($this->session->userdata['branch_id']);
                 $this->load->view('template/header');               
                 $this->load->view('add_user_groups',$data);
                 $this->load->view('template/footer');
@@ -143,7 +143,7 @@ class user_groupsci extends CI_Controller{
          }
     }    
     function add_user_groups(){
-        if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
+        if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){ 
                 $this->load->model('user_groups');            
                 $this->form_validation->set_rules("user_groups_name",$this->lang->line('user_groups_name'),"required"); 
                // $this->form_validation->set_rules('branches',$this->lang->line('branch'),"required");
@@ -151,33 +151,33 @@ class user_groupsci extends CI_Controller{
            if ($this->form_validation->run()) {
                 $this->load->model('branch');
                 $depart=$this->input->post('user_groups_name');
-             if($this->branch->check_deaprtment_is_already($depart,$_SESSION['Bid'])!=TRUE){
+             if($this->branch->check_deaprtment_is_already($depart,$this->session->userdata['branch_id'])!=TRUE){
                  
-                $id=$this->user_groups->add_user_groups($depart,$_SESSION['Bid']);
-                $this->add_user_groups_branch($id,$_SESSION['Bid']); 
+                $id=$this->user_groups->add_user_groups($depart,$this->session->userdata['branch_id']);
+                $this->add_user_groups_branch($id,$this->session->userdata['branch_id']); 
                 $this->load->model('user_groups');      
-                $data=$this->user_groups->get_modules_permission($_SESSION['Bid']);
+                $data=$this->user_groups->get_modules_permission($this->session->userdata['branch_id']);
                 for($i=0;$i<count($data);$i++){
                 $item_add=  $this->input->post($data[$i]."_read");
                 $item_read=$this->input->post($data[$i]."_add");
                 $item_edit=$this->input->post($data[$i]."_edit");
                 $item_delete=$this->input->post($data[$i]."_delete");
                 $item=$item_add+$item_delete+$item_edit+$item_read;             
-                $this->add_permission($data[$i],$item,$id,$_SESSION['Bid']);
+                $this->add_permission($data[$i],$item,$id,$this->session->userdata['branch_id']);
                 }
                redirect('posmain/user_groups');
                
                }else{
                    echo "This is user_groups is already added in this branch";
                 $this->load->model('user_groups');      
-                $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
+                $data['row']=$this->user_groups->get_modules_permission($this->session->userdata['branch_id']);
                 $this->load->view('template/header');               
                 $this->load->view('add_user_groups',$data);
                 $this->load->view('template/footer');
                }
            }else{
               $this->load->model('user_groups');      
-                $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
+                $data['row']=$this->user_groups->get_modules_permission($this->session->userdata['branch_id']);
                 $this->load->view('template/header');               
                 $this->load->view('add_user_groups',$data);
                 $this->load->view('template/footer');
@@ -194,7 +194,7 @@ class user_groupsci extends CI_Controller{
     }
    
     function add_permission($mode,$data,$user_group_id,$branchid){
-         if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
+         if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){ 
                 $this->load->model('permissions');
                 $this->permissions->set_modules_permission($mode.'_x_page_x_permissions',$data,$user_group_id,$branchid);
               
@@ -204,7 +204,7 @@ class user_groupsci extends CI_Controller{
          }
     }
      function add_user_groups_branch($id,$branch){
-         if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){                 
+         if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){                 
                 $this->load->model('user_groups');                
                 $this->user_groups->set_branch_user_groups($id,$branch);                
                 }else{
@@ -250,7 +250,7 @@ class user_groupsci extends CI_Controller{
                  $this->load->model('branch');
                  $depart=$this->input->post('user_groups');
                  $id=$this->input->post('id') ;
-             if($this->branch->check_deaprtment_is_already_for_update($depart,$_SESSION['Bid'],$id)!=TRUE){
+             if($this->branch->check_deaprtment_is_already_for_update($depart,$this->session->userdata['branch_id'],$id)!=TRUE){
                  $this->user_groups->update_user_groups($id,$depart);
                  $this->get_user_groups();
              }else{
@@ -267,18 +267,18 @@ class user_groupsci extends CI_Controller{
         }
         function edit_user_groups_permission($id){
             
-            if($_SESSION['full_per']==8888 or $_SESSION['admin']==2){
+            if($_SESSION['full_per']==8888 or $this->session->userdata['user_type']==2){
                  $this->load->model('user_groups');
                  $data['row']=$this->user_groups->get_seleted_user_groups_details($id);
                  $this->load->model('permissions');
-                 $data['user']=$this->permissions->get_users_permission($id,$_SESSION['Bid'],$id);
-                 $data['item']=$this->permissions->get_items_permission($id,$_SESSION['Bid'],$id);
-                 $data['depart']=$this->permissions->get_depart_permission($id,$_SESSION['Bid'],$id);
-                 $data['branch']=$this->permissions->get_branchCI_permission($id,$_SESSION['Bid'],$id);
-                 $data['supplier']=$this->permissions->get_suppliers_permissions($id,$_SESSION['Bid'],$id);
-                 $data['customer']=$this->permissions->get_customers_permission($id,$_SESSION['Bid'],$id);
-                 $data['item_kites']=$this->permissions->get_item_kites_permission($id,$_SESSION['Bid'],$id);
-                 $data['sales']=$this->permissions->get_sales_permission($id,$_SESSION['Bid'],$id);
+                 $data['user']=$this->permissions->get_users_permission($id,$this->session->userdata['branch_id'],$id);
+                 $data['item']=$this->permissions->get_items_permission($id,$this->session->userdata['branch_id'],$id);
+                 $data['depart']=$this->permissions->get_depart_permission($id,$this->session->userdata['branch_id'],$id);
+                 $data['branch']=$this->permissions->get_branchCI_permission($id,$this->session->userdata['branch_id'],$id);
+                 $data['supplier']=$this->permissions->get_suppliers_permissions($id,$this->session->userdata['branch_id'],$id);
+                 $data['customer']=$this->permissions->get_customers_permission($id,$this->session->userdata['branch_id'],$id);
+                 $data['item_kites']=$this->permissions->get_item_kites_permission($id,$this->session->userdata['branch_id'],$id);
+                 $data['sales']=$this->permissions->get_sales_permission($id,$this->session->userdata['branch_id'],$id);
                  
                
                  $this->load->view('template/header');
@@ -342,7 +342,7 @@ class user_groupsci extends CI_Controller{
                 
                         
                 $id=$this->input->post('id');
-                $this->update_permission($item,$user,$depa,$branch,$supplier,$customer,$sales,$itemkites,$id,$_SESSION['Bid']);
+                $this->update_permission($item,$user,$depa,$branch,$supplier,$customer,$sales,$itemkites,$id,$this->session->userdata['branch_id']);
                 $this->get_user_groups();
             }
         }
