@@ -21,7 +21,7 @@ class Taxes extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function data_table(){
-        $aColumns = array( 'guid','value','tax_type','value','value','active' );	
+        $aColumns = array( 'guid','value','tax_type','value','value','active_status' );	
 	          $start = "";
 		  $end="";
 		
