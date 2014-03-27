@@ -14,14 +14,7 @@ class Users extends CI_Controller{
         $this->poslanguage->set_language();
     }
     function index(){
-        $this->load->library('poslanguage');                 
-        $this->poslanguage->set_language();
-        
         $this->get_pos_users_details();
-     //$this->load->view('sample');
-       //$this->users_data_table();
-        
-       // $this->pos_users_testing();
     } 
     function photo_upload($name){
 		$config['upload_path'] = './uploads/';
@@ -44,22 +37,8 @@ class Users extends CI_Controller{
               
                       $upload_data = $this->upload->data();
                       return  $file_name =$upload_data['file_name'];
-	}
-   
-  
-    function pos_users_testing(){
-        $this->load->model('pos_users_model');
-        $test= $this->pos_users_model->get();
-        $expected_result ='is_true';
-
-        $test_name = 'Adds one plus one';
-       
-        $this->unit->run($test, $expected_result, $test_name);
-        return $this->unit->report();
-        
-        
-        
     }
+ 
     function users_data_table(){     
 	$aColumns = array( 'guid','email','username',  'first_name','last_name','phone', 'email',  'user_active', 'user_id','user_active', );	
 	$start = "";
@@ -96,9 +75,9 @@ class Users extends CI_Controller{
             
         }
         $this->load->model('core_model');
-        $join_where='users_x_branches.user_id=users.guid ';
+        
       
-        $rResult1 = $this->core_model->posnic_data_table($end,$start,'users','users_x_branches',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
+        $rResult1 = $this->core_model->posnic_data_table($end,$start,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
         $this->load->model('pos_users_model');
 	$iFilteredTotal =  count($rResult1);
 	$iTotal = count($rResult1);	
@@ -165,7 +144,7 @@ class Users extends CI_Controller{
                 $this->form_validation->set_rules('state',$this->lang->line('state'),"required");
                 $this->form_validation->set_rules('zip',$this->lang->line('zip'),"required");
                 $this->form_validation->set_rules('dob',$this->lang->line('date_of'),"required");                 
-                $this->form_validation->set_rules('department',$this->lang->line('user_groups'),"required");              
+                         
                 $this->form_validation->set_rules('pos_users_id','pos_users_id',"required");
                 $this->form_validation->set_rules('guid','guid',"required");
                 $this->form_validation->set_rules('country','country',"required");
@@ -182,8 +161,7 @@ class Users extends CI_Controller{
                           $city=$this->input->post('city');
                           $state=$this->input->post('state');
                           $zip=$this->input->post('zip');
-                          $country=$this->input->post('country');
-                          $user_groups=urldecode($this->input->post('department'));
+                          $country=$this->input->post('country');                        
                           $yourdatetime =$this->input->post('dob');
                           $image_name=$this->input->post('image_name');
                           $age=  $this->input->post('age');
@@ -195,15 +173,31 @@ class Users extends CI_Controller{
                            
                                            $file_name='';
                             $this->pos_users_model->update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$username,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password);
-                            $deleted_groups=$this->input->post('deleted_groups') ;
-                            $deleted_groups=  array_unique($deleted_groups);
+                            $deleted_group=$this->input->post('deleted_groups') ;
+                            if($this->input->post('deleted_groups')){
+                            $deleted_groups=array_unique($deleted_group);
+                           
                             for($j=0;$j<count($deleted_groups);$j++){
+                               
+                               
                                 $this->pos_users_model->remove_user_groups($deleted_groups[$j],$id);
-                            }        
+                            }  
+                            }
+                            
+                            $user_groups=$this->input->post('user_groups');
+                            if($this->input->post('user_groups')){
+                                for($i=0;$i<count($user_groups);$i++){
+                                   $user_groups[$i];
+                                    $this->pos_users_model->add_user_groups_for_user($user_groups[$i],$id);
+                                }
+                            }
+                            
                             $user_branchs=  $this->input->post('user_branchs');
-                            $user_branchs=  array_unique($user_branchs);
-                            for($j=0;$j<count($user_branchs);$j++){
-                                $this->pos_users_model->add_user_branchs_for_user($user_branchs[$j],$id);
+                            if($this->input->post('user_branchs')){
+                                $user_branchs=  array_unique($user_branchs);
+                                for($j=0;$j<count($user_branchs);$j++){
+                                    $this->pos_users_model->add_user_branchs_for_user($user_branchs[$j],$id);
+                                }
                             }
                                 echo 'TRUE';
                          
@@ -217,77 +211,16 @@ class Users extends CI_Controller{
            echo "NOOP";
          
        }
-       if(isset($_POST['Cancel'])){
-           redirect('users');
-       }
+      
 }
     function edit_users($id){
         $user_data=array();
         $this->load->model('pos_users_model');
         $user_data= $this->pos_users_model->get_user_details($id); 
-     
-    
-     echo json_encode($user_data);
-}
-    function update_user_branch($id,$depapartment){   
-     $this->load->model('branch');
-     $this->branch->delete_user_branch($id);
-              
-           $new_depa=array();
-           $branch=array();        
-           $bid=array();
-           $bid = explode(' ',$depapartment);
-           $l=0;
-           for($i=1;$i<count($bid);$i++){
-               $depart=array();
-               $depart=explode('.',$bid[$i]);
-                        $branch[$l]=$depart[0];
-                       $l++;               
-               }               
-               $arr=$branch;
-        $len = count($arr);
-        for ($i = 0; $i < $len; $i++) {
-        $temp = $arr[$i];
-        $j = $i;
-        for ($k = 0; $k < $len; $k++) {
-            if ($k != $j) {
-            if ($temp == $arr[$k]) {               
-                $arr[$k]=" ";                
-            }
-            }
-        }
-        }
-$r=0;
-        for ($i = 0; $i < $len; $i++) {
-       if($arr[$i]==" "){           
-       }
-       else{
-            $new_depa[$r]=$arr[$i];
-           $r++;
-       }
-        }           
-            for($k=0;$k<count($new_depa);$k++)
-            {
-               $this->branch->set_branch($id,$new_depa[$k]);
-            }
-}
-    function update_user_user_groups($id,$depapartment){
-     
-     $this->load->model('user_groups');
-     $this->user_groups->delete_user_depart($id);
-     
-           $bid=array();
-           $bid = explode(' ',$depapartment);
-           for($i=1;$i<count($bid);$i++){
-               $depart=array();
-               $depart=explode('.',$bid[$i]);
-                            
-               $this->user_groups->set_user_groups($id,$depart[1],$depart[0]);
-           }
-             
+        echo json_encode($user_data);
+    }
+ 
 
-    
-}
     function do_upload($id){
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
@@ -404,65 +337,8 @@ $r=0;
                echo "noop";
            }
         }
-    function add_user_user_groups($id,$depapartment){
-           
-           $this->load->model('user_groups');
-           $bid=array();
-           $bid = explode(' ',$depapartment);
-           for($i=1;$i<count($bid);$i++){
-               $depart=array();
-               $depart=explode('.',$bid[$i]);
-                            
-               $this->user_groups->set_user_groups($id,$depart[1],$depart[0]);
-           }
-        }
-    function add_user_branches($id,$depapartment){
-           $this->load->model('branch');
-           $new_depa=array();
-           $branch=array();
-           $this->load->model('user_groups');
-           $bid=array();
-           $bid = explode(' ',$depapartment);
-           $l=0;
-           for($i=1;$i<count($bid);$i++){
-               $depart=array();
-               $depart=explode('.',$bid[$i]);
-                        $branch[$l]=$depart[0];
-                       $l++;
-               
-               }
-               
-               $arr=$branch;
-
-         $len = count($arr);
-        for ($i = 0; $i < $len; $i++) {
-        $temp = $arr[$i];
-        $j = $i;
-        for ($k = 0; $k < $len; $k++) {
-            if ($k != $j) {
-            if ($temp == $arr[$k]) {
-               
-                $arr[$k]=" ";
-                
-            }
-            }
-        }
-        }
-        $r=0;
-        for ($i = 0; $i < $len; $i++) {
-       if($arr[$i]==" "){
-           
-       }
-       else{
-            $new_depa[$r]=$arr[$i];
-           $r++;
-       }
-        }            
-            for($k=0;$k<count($new_depa);$k++)
-            {
-               $this->branch->set_branch($id,$new_depa[$k]);                
-            }
-        }       
+  
+          
     function add_pos_users_image(){
               $uploaddir = './uploads/'; 
                $file = $uploaddir . basename($_FILES['uploadfile']['name']); 
@@ -474,18 +350,7 @@ $r=0;
                         echo "error";
                 }
         }
-    function to_deactivate_user(){  
-            $id=  $this->input->post('guid');
-                $this->load->model('pos_users_model');
-                $this->pos_users_model->deactivate_user($id,$_SESSION['Bid']);   
-               // redirect('users');
-               echo 'TRUE';
-        }
-    function to_activate_user($id){
-                $this->load->model('pos_users_model');
-                $this->pos_users_model->activate_user($id,$_SESSION['Bid']);   
-                redirect('users');
-        }
+   
     function delete(){
             if($_SESSION['users_per']['delete']==1){  
                 $id=  $this->input->post('guid');
@@ -508,68 +373,7 @@ $r=0;
             $this->pos_users_model->active_pos_users($id,$_SESSION['Bid']);   
             echo 'TRUE';
         }
-    function add_new_user(){
-       if($_SESSION['users_per']['add']==1){  
-             $this->load->model('user_groups');
-             $this->load->model('branch');
-             if($_SESSION['admin']==2){ 
-                 $data['branch']=$this->branch->get_user_for_branch_admin();
-             }
-             else{
-                $data['branch']= $this->branch->get_user_for_branch($_SESSION['Uid']);
-             }
-             $data['depa']= $this->user_groups->get_user_groups();  
-             $this->load->view('template/app/header'); 
-             $this->load->view('template/table/header');         
-             $this->load->view('template/branch',$this->posnic->branches());
-             $this->load->view('add_new_pos_users',$data);
-             $this->load->view('template/app/navigation',$this->posnic->modules());
-             $this->load->view('template/app/footer');          
-             }else{
-                 echo "U have No Permission to Add New User";
-                $this->get_pos_users_details();
-             }
-           }
-    function selected_user_group($id){
-        $this->load->model('pos_users_model');
-        $this->load->model('branch');
-        $this->load->model('user_groups');
-        $data=  $this->pos_users_model->edit_pos_users($id); 
-        $deapart="";
-        foreach ($data as $b_row){
-            $selected_branch=$this->branch->get_selected_branch($id);
-            $selected_depart=$this->user_groups->get_user_depart($id);
-              foreach ($selected_depart as $s_b_row) {
-                foreach ($selected_branch as $b_row){
-                   if($b_row->branch_id==$s_b_row->branch_id ){
-                        $deapart=$deapart.' '.$b_row->branch_id.'.'.$s_b_row->user_group_id;          
-                        echo "<option value='$s_b_row->branch_id.$s_b_row->user_group_id'>$b_row->branch_name($s_b_row->depart_name)</option>";
-                    } 
-
-                }                 
-              }
-        }
-    }  
-    function selected_user_branch($id){
-     $this->load->model('pos_users_model');
-        $this->load->model('branch');
-        $this->load->model('user_groups');
-        $data=  $this->pos_users_model->edit_pos_users($id); 
-        $deapart="";
-        foreach ($data as $b_row){
-            $selected_branch=$this->branch->get_selected_branch($id);
-            $selected_depart=$this->user_groups->get_user_depart($id);
-              foreach ($selected_depart as $s_b_row) {
-                foreach ($selected_branch as $b_row){
-                   if($b_row->branch_id==$s_b_row->branch_id ){
-                        $deapart=$deapart.' '.$b_row->branch_id.'.'.$s_b_row->user_group_id;          
-                        echo "<option value='$s_b_row->branch_id.$s_b_row->user_group_id'>$s_b_row->depart_name</option>";
-                    } 
-
-                }                 
-              }
-        }
-    }
+   
     function get_users_groups(){
         $this->load->model('pos_users_model');
         $guid=  $this->input->post('branch_id');

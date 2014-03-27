@@ -105,7 +105,7 @@ class Pos_users_model extends CI_Model{
            'image'=>$file_name,
            'age'=>$age,
            'sex'=>$sex,
-           'user_id' =>$user_id,	          	
+           'username' =>$user_id,	          	
            'first_name' =>$first_name,           
            'last_name '	=>$last_name,
            'address '=>$address,	
@@ -123,7 +123,7 @@ class Pos_users_model extends CI_Model{
        $this->db->update('users',$data);
    }
    function delete_pos_users($id,$deleted_by,$branch){          
-       $value=array('user_delete'=>0,'user_active'=>0,'deleted_by'=>$deleted_by);
+       $value=array('user_delete'=>1,'user_active'=>0,'deleted_by'=>$deleted_by);
        $this->db->where('user_id',$id); 
        $this->db->where('branch_id',$branch);
        $this->db->update('users_x_branches',$value);       
@@ -215,6 +215,11 @@ class Pos_users_model extends CI_Model{
        function add_user_branchs_for_user($user_groups,$id){
            $this->db->insert('users_x_branches',array('branch_id'=>$user_groups,'user_id'=>$id));
            
+       }
+       function remove_user_groups($deleted_groups,$id){
+           $this->db->where('user_group_id',$deleted_groups);
+           $this->db->where('user_id',$id);
+           $this->db->delete('users_x_user_groups');
        }
 }
 ?>

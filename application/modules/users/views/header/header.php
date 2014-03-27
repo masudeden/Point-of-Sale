@@ -139,6 +139,14 @@
                         }
                        function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
+                            $('#parsley_reg #selected_user_group_list').remove();
+                            $('#parsley_reg #selected_user_group_parent_div').append(' <select multiple id="selected_user_group_list" class="form-control" name="ToLJ" style="width: 150;height:128px;"></select>');
+                            $('#parsley_reg #hidden_user_group_list').remove();
+                            $('#parsley_reg #parent_div').append('<div id="hidden_user_group_list"></div>');
+                            $('#parsley_reg #user_groups_list').remove();
+                            $('#parsley_reg #user_group_parent_div').append(' <select multiple id="user_groups_list" class="form-control" name="ToLJ" style="width: 150;height:128px;"></select>');
+
+        
                         <?php if($_SESSION['users_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/users/edit_users/"+guid,                      
@@ -173,6 +181,7 @@
                                     var group_name=data[i]['group_name'];
                                     var branch_id=data[i]['branch_guid'];
                                     var branch_name=data[i]['branch_name'];
+                                
                                      $('#parsley_reg #selected_user_group_list').append($('<option >', {
                                             value:group,
                                             text: group_name+" ("+branch_name+")"
@@ -183,6 +192,12 @@
                                       <input type="hidden"  id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
                                       <input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
                                      ');
+                                       
+                                        if(!$('#orginal_branch_id_'+branch_id).length){
+                                     
+                                         $('#parsley_reg #parent_div #hidden_selected_user_group_list').append(' <input type="hidden"  id="orginal_branch_id_'+branch_id+'" value="'+branch_id+'" >');
+
+                                        }
                                 }
                              } 
                            });
