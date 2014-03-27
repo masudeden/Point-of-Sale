@@ -267,20 +267,23 @@ function reload_update_user(){
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
-                          if(posnic[i].checked==true){                             
+                      for (var j=0 ; j < posnic.length-1; j++){
+                          
+                          if(posnic[j].checked==true){ 
+                               var guid=posnic[j].value;
+                               var name=$('#brand_name_'+guid).val();
                               $.ajax({
                                 url: '<?php echo base_url() ?>/index.php/brands/active',
                                 type: "POST",
                                 data: {
-                                    guid:posnic[i].value
+                                    guid:guid
 
                                 },
                                 success: function(response)
                                 {
                                     if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('activated');?>', { type: "success" });
-                                        $("#dt_table_tools").dataTable().fnDraw();
+                                       $.bootstrapGrowl('<?php echo $this->lang->line('brands')." ".$this->lang->line('activated');?>', { type: "success" });
+                                       $("#dt_table_tools").dataTable().fnDraw();
                                     }
                                 }
                             });
@@ -323,7 +326,7 @@ function reload_update_user(){
                                 success: function(response)
                                 {
                                     if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('deleted');?>', { type: "success" });
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('brands')." ".$this->lang->line('deleted');?>', { type: 'danger' });
                                         $("#dt_table_tools").dataTable().fnDraw();
                                     }
                                 }
@@ -366,7 +369,7 @@ function reload_update_user(){
                                     success: function(response)
                                     {
                                         if(response){
-                                             $.bootstrapGrowl('<?php echo $this->lang->line('deactivated');?>', { type: "danger" });
+                                             $.bootstrapGrowl('<?php echo $this->lang->line('brands')." ".$this->lang->line('deactivated');?>', { type: "danger" });
                                             $("#dt_table_tools").dataTable().fnDraw();
                                         }
                                     }

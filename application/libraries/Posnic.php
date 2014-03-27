@@ -270,7 +270,7 @@ class Posnic{
     function posnic_delete($guid,$table){
         $CI=  get_instance();        
         $branch=$_SESSION['Bid'];  
-             $CI->posnic_model->user_delete($guid,$table,$branch,$_SESSION['Uid']);
+             $CI->posnic_model->delete_record($guid,$table,$branch,$_SESSION['Uid']);
     }
     function posnic_module_delete($guid,$module1){
         $CI=  get_instance();

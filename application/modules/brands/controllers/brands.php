@@ -19,7 +19,7 @@ class Brands extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function brands_data_table(){
-        $aColumns = array( 'guid','name','name','name','name','active' );	
+        $aColumns = array( 'guid','name','name','name','name','active_status' );	
 	$start = "";
 			$end="";
 		
@@ -54,7 +54,7 @@ class Brands extends CI_Controller
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('brands');
 		
-		$iTotal =$this->posnic->data_table_count('brands');
+		$iTotal =$iFilteredTotal;
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -113,14 +113,7 @@ class Brands extends CI_Controller
                echo "NOOP";
            }
     }
-    function inactive_brands($guid){
-        if($_SESSION['Posnic_User']=='admin'){
-              $this->posnic->posnic_deactive($guid);
-              redirect('brands');
-          }else{
-              redirect('brands');
-          }
-    }
+    
     function active(){
             $id=  $this->input->post('guid');
             $report= $this->posnic->posnic_module_active($id,'brands'); 
