@@ -17,7 +17,7 @@ class Suppliers extends CI_Controller{
         $this->load->view('template/app/footer');
     }
     function suppliers_data_table(){
-        $aColumns = array( 'guid','first_name','first_name','company_name','c_name','phone','email','email','active' );	
+        $aColumns = array( 'guid','first_name','first_name','company_name','c_name','phone','email','email','active_status' );	
 	$start = "";
 			$end="";
 		

@@ -107,6 +107,7 @@
         $('#add_new_supplier').click(function() { 
                 <?php if($_SESSION['suppliers_per']['add']==1){ ?>
                 var inputs = $('#add_supplier_form').serialize();
+                if($('#add_supplier_form').valid()){
                       $.ajax ({
                             url: "<?php echo base_url('index.php/suppliers/add_suppliers')?>",
                             data: inputs,
@@ -125,13 +126,17 @@
                                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('supplier');?>', { type: "error" });                           
                                     }
                        }
-                });<?php }else{ ?>
+                });
+                }else{
+                    $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                }<?php }else{ ?>
                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('supplier');?>', { type: "error" });                       
                     <?php }?>
         });
          $('#update_suppliers').click(function() { 
                 <?php if($_SESSION['suppliers_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
+                                if($('#parsley_reg').valid()){
                       $.ajax ({
                             url: "<?php echo base_url('index.php/suppliers/update_suppliers')?>",
                             data: inputs,
@@ -151,6 +156,9 @@
                                     }
                        }
                  });
+                 }else{
+                    $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                }
                  <?php }else{ ?>
                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('brand');?>', { type: "error" });                        
                     <?php }?>

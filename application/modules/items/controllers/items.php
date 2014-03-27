@@ -170,7 +170,7 @@ class Items extends CI_Controller{
                                      $id=$this->posnic->posnic_add_record($data,'items');
                                      $this->load->model('core_model');
                                      $this->core_model->item_setting($id,$this->session->userdata['branch_id']);
-                                     $this->core_model->suppliers_x_items($id,$this->session->userdata['branch_id'],$this->input->post('mrp_price'),$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost_price'));
+                                     $this->core_model->suppliers_x_items($id,$this->session->userdata['branch_id'],$this->input->post('mrp'),$this->input->post('supplier'),$this->input->post('selling_price'),$this->input->post('cost'));
                                
                                      }else{
                                         echo "ALREADY";
