@@ -18,7 +18,9 @@
     padding:1px 1px 1px 3px;
     transition: none 0s ease 0s;
     }
- 
+  table td + td + td + td + td + td + td + td + td {
+ width: 120px !important;
+}
 </style>	
 <script type="text/javascript">
      $(document).ready( function () {
