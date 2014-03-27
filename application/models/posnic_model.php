@@ -157,8 +157,8 @@ class posnic_model extends CI_model{
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
     }
-    function user_delete($guid,$module,$branch,$uid){
-        $data=array('active_status'=>0,'deleted_by'=>$uid);
+    function delete_record($guid,$module,$branch,$uid){
+        $data=array('delete_status'=>1,'active_status'=>0,'deleted_by'=>$uid);
         $this->db->where('guid',$guid);
         $this->db->where('branch_id',$branch);
         $this->db->update($module,$data);
@@ -260,7 +260,6 @@ class posnic_model extends CI_model{
         if($where!=null){
         $this->db->where($where);
         }
-        //$this->db->where('users.guid <>',2);
         $this->db->or_like($like);
         $join_where=$join_where."AND $table2.branch_id ='".$branch." ' AND $table2.delete_status=0";
         $this->db->join($table2, "$join_where".'','left');
@@ -291,7 +290,7 @@ class posnic_model extends CI_model{
     }
     function posnic_module_active($id,$table,$branch){
         $this->db->where('guid',$id);
-        $this->db->update($table,array('active'=>1));
+        $this->db->update($table,array('active_status'=>1));
         $report = array();
         $report['error'] = $this->db->_error_number();
         $report['message'] = $this->db->_error_message();
@@ -299,7 +298,7 @@ class posnic_model extends CI_model{
     }
     function posnic_module_deactive($id,$table,$branch){
         $this->db->where('guid',$id);
-        $this->db->update($table,array('active'=>0));
+        $this->db->update($table,array('active_status'=>0));
         $report = array();
         $report['error'] = $this->db->_error_number();
         $report['message'] = $this->db->_error_message();
@@ -311,7 +310,7 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function posnic_data_table($end,$start,$order,$like,$table,$branch){
-         $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0)->where('active_status',1);  
+         $this->db->select()->from($table)->where('branch_id',$branch)->where('delete_status',0);  
          $this->db->limit($end,$start); 
          $this->db->order_by($order);
          $this->db->or_like($like);     
