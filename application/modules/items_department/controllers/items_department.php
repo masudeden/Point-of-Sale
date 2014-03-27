@@ -19,7 +19,7 @@ class Items_department extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function items_department_data_table(){
-        $aColumns = array( 'guid','department_name','department_name','department_name','department_name','active' );	
+        $aColumns = array( 'guid','department_name','department_name','department_name','department_name','active_status' );	
 	$start = "";
 			$end="";
 		

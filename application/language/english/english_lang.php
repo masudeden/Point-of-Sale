@@ -489,5 +489,7 @@ $lang['credit_days']='Credit Days';
   // purchase invoice
   $lang['invoice']='Invoice';
   
+  //item department
+  $lang['items_department_name']='Department Name';
   
 ?>﻿

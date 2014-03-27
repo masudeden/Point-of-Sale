@@ -323,7 +323,7 @@ function reload_update_user(){
                                 success: function(response)
                                 {
                                     if(response){
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('items_department').' '. $this->lang->line('deleted');?>', { type: "success" });
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('items_department').' '. $this->lang->line('deleted');?>', { type: "danger" });
                                         $("#dt_table_tools").dataTable().fnDraw();
                                     }
                                 }
@@ -350,12 +350,13 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('brand');?>', { type: "warning" });
+                                               $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('items_department');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
                       for (i = 0; i < posnic.length-1; i++){
-                          if(posnic[i].checked==true){                             
+                          if(posnic[i].checked==true){  
+                              
                                  $.ajax({
                                     url: '<?php echo base_url() ?>/index.php/items_department/deactive',
                                     type: "POST",
