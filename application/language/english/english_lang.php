@@ -492,5 +492,13 @@ $lang['credit_days']='Credit Days';
   //item department
   $lang['items_department_name']='Department Name';
   $lang['items_category_name']='Category Name';
+   
+   
+    //Validations
+  $lang['up_invalid']='Username or Password not correct';
+  $lang['user_not_active']='User Not Active';
+  $lang['user_has_nobranch']='User Does not have any active branch';
+  $lang['user_deleted']='User deleted';
+
   
 ?>﻿

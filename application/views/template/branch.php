@@ -41,7 +41,7 @@
 echo form_open('home/change_branch') ; ?>
                                                     <select id="branch" class="select form-control">
 <?php
-if($_SESSION['admin']==2){
+if($this->session->userdata['user_type']==2){
     foreach ($row as $brow){ ?>
         <option onclick="change_branch()" value="<?php echo $brow->guid ?>" ><?php echo $brow->store_name  ?></option>
    <?php }

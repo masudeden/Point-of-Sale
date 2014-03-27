@@ -8,11 +8,10 @@ class Posmain extends CI_Controller{
         $this->load->library('unit_test');
         $this->load->library('poslanguage');                 
         $this->poslanguage->set_language();
-        
     }
-    function index()
-    
-    { if(!isset($_SESSION['Uid'])){
+    function index()  { 
+	
+	if(!isset($this->session->userdata['guid'])){
             $this->load->view('template/header');
             $this->load->view('login');
             $this->load->view('template/footer');
@@ -22,32 +21,36 @@ class Posmain extends CI_Controller{
             
         
     }
-    function set_user_default_branch(){
+	
+	
+   function set_user_default_branch(){
      
         $this->load->model('branch');
-        $data=$this->branch->get_user_default_branch($_SESSION['Uid']);
+        $data=$this->branch->get_user_default_branch($this->session->userdata['guid']);
         $this->pos_setting();       
-        if($_SESSION['admin']==2){
+        if($this->session->userdata('user_type')==2){
              $admin=  $this->branch->branch_for_admin();         
              $this->acl_session_for_user($admin);  
              redirect('home');
         }else{
-             if($this->branch->check_branch_is_in_active($data,$_SESSION['Uid'])){
-             $this->acl_session_for_user($data);        
-             redirect('home');            
-            }else{
-                $id =$this->branch->is_in_active_branches($_SESSION['Uid']);
-                $this->acl_session_for_user($id);        
-                redirect('home');           
-            }
+             if($this->branch->check_branch_is_in_active($data,$this->session->userdata['guid'])){
+				 $this->acl_session_for_user($data);        
+				 redirect('home');            
+        	 }else{
+				$id =$this->branch->is_in_active_branchs($this->session->userdata['guid']);
+				$this->acl_session_for_user($id);        
+				redirect('home');           
+        	}
         }
         
-    }
+    } // End Set user Function 
+	
+	
    function acl_session_for_user($b_id){
        $_SESSION['Bid']=$b_id;
         $this->load->model('modules_model')  ;
         $this->load->library('acluser'); 
-        if($_SESSION['admin']==2){
+        if($this->session->userdata['user_type']==2){
             $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
             for($i=0;$i<count($modules);$i++){
                 $this->acluser->admin_module_permissions($modules[$i]);
@@ -57,7 +60,7 @@ class Posmain extends CI_Controller{
         $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
             for($i=0;$i<count($modules);$i++){
                 
-                $this->acluser->module_permissions($modules[$i],$b_id ,$_SESSION['Uid']);
+                $this->acluser->module_permissions($modules[$i],$b_id ,$this->session->userdata['guid']);
                
                 
             }
@@ -78,10 +81,10 @@ class Posmain extends CI_Controller{
     }
     function change_user_branch($brnch){
         $this->load->model('aclpermissionmodel');
-        if($_SESSION['admin']==2){
+        if($this->session->userdata['user_type']==2){
             $this->acl_session_for_user($brnch);
         }else{
-        if($this->aclpermissionmodel->check_user_branch($brnch,$_SESSION['Uid'])){
+        if($this->aclpermissionmodel->check_user_branch($brnch,$this->session->userdata['guid'])){
             $this->acl_session_for_user($brnch);
         }}
         

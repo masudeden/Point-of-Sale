@@ -289,11 +289,11 @@ class Items extends CI_Controller{
         $this->load->model('core_model');
         $join_where='items.supplier_id=suppliers.guid ';
       
-       // $rResult1 = $this->core_model->posnic_data_table($end,$start,'items','suppliers',$join_where,$_SESSION['Bid'],$_SESSION['Uid'],$order,$like);
+       // $rResult1 = $this->core_model->posnic_data_table($end,$start,'items','suppliers',$join_where,$_SESSION['Bid'],$this->session->userdata['guid'],$order,$like);
         $rResult1 = $this->posnic->posnic_data_table($end,$start,'items','suppliers',$join_where,$order,$like,'');
       
-	$iFilteredTotal =5;// $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
-	$iTotal =5;// $this->pos_users_model->pos_users_count($_SESSION['Uid'],$_SESSION['Bid']);	
+	$iFilteredTotal =5;// $this->pos_users_model->pos_users_count($this->session->userdata['guid'],$_SESSION['Bid']);	
+	$iTotal =5;// $this->pos_users_model->pos_users_count($this->session->userdata['guid'],$_SESSION['Bid']);	
 	$output1 = array(
 		"sEcho" => intval($_GET['sEcho']),
 		"iTotalRecords" => $iTotal,

@@ -4,7 +4,7 @@ echo $links;
     
     
 if($count!=0){
-      if($_SESSION['admin']==2){ ?><table><?php
+      if($this->session->userdata['user_type']==2){ ?><table><?php
           foreach ($row as $erow ){?>
              
 
