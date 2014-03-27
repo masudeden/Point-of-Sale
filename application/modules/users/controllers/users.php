@@ -77,7 +77,7 @@ class Users extends CI_Controller{
         $this->load->model('core_model');
         
       
-        $rResult1 = $this->core_model->posnic_data_table($end,$start,$_SESSION['Bid'],$this->session->userdata['guid'],$order,$like);
+        $rResult1 = $this->core_model->posnic_data_table($end,$start,$this->session->userdata['branch_id'],$this->session->userdata['guid'],$order,$like);
         $this->load->model('pos_users_model');
 	$iFilteredTotal =  count($rResult1);
 	$iTotal = count($rResult1);	
@@ -355,7 +355,7 @@ class Users extends CI_Controller{
             if($_SESSION['users_per']['delete']==1){  
                 $id=  $this->input->post('guid');
                 $this->load->model('pos_users_model');
-                $this->pos_users_model->delete_pos_users($id,$this->session->userdata['guid'],$_SESSION['Bid']);   
+                $this->pos_users_model->delete_pos_users($id,$this->session->userdata['guid'],$this->session->userdata['branch_id']);   
                 echo 'TRUE';
             }else{
                 redirect('home');
@@ -364,13 +364,13 @@ class Users extends CI_Controller{
     function deactive(){
             $id=  $this->input->post('guid');
             $this->load->model('pos_users_model');
-            $this->pos_users_model->deactive_pos_users($id,$_SESSION['Bid']);   
+            $this->pos_users_model->deactive_pos_users($id,$this->session->userdata['branch_id']);   
             echo 'TRUE';
         }
     function active(){
             $id=  $this->input->post('guid');
             $this->load->model('pos_users_model');
-            $this->pos_users_model->active_pos_users($id,$_SESSION['Bid']);   
+            $this->pos_users_model->active_pos_users($id,$this->session->userdata['branch_id']);   
             echo 'TRUE';
         }
    

@@ -3,7 +3,7 @@
     
 <?php  echo  form_open('user_groupsci/user_groups');
   foreach ($branch as $branch_row){
-      if($branch_row->guid== $_SESSION['Bid']){
+      if($branch_row->guid== $this->session->userdata['branch_id']){
           echo $branch_row->store_name."<br><br>";
       }
   }

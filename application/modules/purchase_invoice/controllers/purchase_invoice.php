@@ -53,11 +53,11 @@ class Purchase_invoice extends CI_Controller{
 					   
 			$this->load->model('invoice')	   ;
                         
-			 $rResult1 = $this->invoice->get($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->invoice->get($end,$start,$like,$this->session->userdata['branch_id']);
 		   
-		$iFilteredTotal =$this->invoice->count($_SESSION['Bid']);
+		$iFilteredTotal =$this->invoice->count($this->session->userdata['branch_id']);
 		
-		$iTotal =$this->invoice->count($_SESSION['Bid']);
+		$iTotal =$this->invoice->count($this->session->userdata['branch_id']);
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -123,7 +123,7 @@ function save(){
                         $this->posnic->posnic_add_record($item_value,'grn_x_items');
                         $this->load->model('invoice');
                         $this->invoice->update_item_receving($po_item[$i],$quty[$i],$free[$i]);
-                        //$this->invoice->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$_SESSION['Bid']);
+                        //$this->invoice->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$this->session->userdata['branch_id']);
                 }
                 $this->posnic->posnic_master_increment_max('invoice')  ;
                  echo 'TRUE';
@@ -193,7 +193,7 @@ function search_grn_order(){
        $search= $this->input->post('term');
          if($search!=""){
             $this->load->model('invoice');
-            $data= $this->invoice->search_grn_order($search,$_SESSION['Bid'])    ;
+            $data= $this->invoice->search_grn_order($search,$this->session->userdata['branch_id'])    ;
             echo json_encode($data);
         }
         
@@ -239,7 +239,7 @@ function good_receiving_note_approve(){
         $po=  $this->input->post('po');
         $report= $this->posnic->posnic_module_deactive($id,'invoice'); 
         $this->load->model('invoice');
-        $this->invoice->add_stock($id,$po,$_SESSION['Bid']);
+        $this->invoice->add_stock($id,$po,$this->session->userdata['branch_id']);
         if (!$report['error']) {
             echo 'TRUE';
         } else {
@@ -256,7 +256,7 @@ function group_approve(){
         $po= $this->invoice->get_order_chnage_order($guid);
         $report= $this->posnic->posnic_module_deactive($id,'invoice'); 
         
-        $this->invoice->add_stock($id,$po,$_SESSION['Bid']);
+        $this->invoice->add_stock($id,$po,$this->session->userdata['branch_id']);
         if (!$report['error']) {
             echo 'TRUE';
         } else {
@@ -275,7 +275,7 @@ function search_items(){
        $guid= $this->input->post('suppler');
          if($search!=""){
             $this->load->model('purchase');
-            $data= $this->purchase->serach_items($search,$_SESSION['Bid'],$guid);      
+            $data= $this->purchase->serach_items($search,$this->session->userdata['branch_id'],$guid);      
             echo json_encode($data);
         }
         

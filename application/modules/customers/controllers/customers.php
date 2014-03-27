@@ -50,7 +50,7 @@ class Customers extends CI_Controller
 				
 			}
 			$this->load->model('customer')		   ;
-			 $rResult1 = $this->customer->get($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->customer->get($end,$start,$like,$this->session->userdata['branch_id']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('customers');
 		

@@ -26,19 +26,18 @@ class Posmain extends CI_Controller{
    function set_user_default_branch(){
      
         $this->load->model('branch');
-        $data=$this->branch->get_user_default_branch($this->session->userdata['guid']);
         $this->pos_setting();       
         if($this->session->userdata('user_type')==2){
              $admin=  $this->branch->branch_for_admin();         
              $this->acl_session_for_user($admin);  
              redirect('home');
         }else{
-             if($this->branch->check_branch_is_in_active($data,$this->session->userdata['guid'])){
-				 $this->acl_session_for_user($data);        
+             if($this->branch->check_user_branch_active($this->session->userdata['guid'],$this->session->userdata['default_branch'])){
+				 $this->acl_session_for_user($this->session->userdata['default_branch']);        
 				 redirect('home');            
         	 }else{
-				$id =$this->branch->is_in_active_branchs($this->session->userdata['guid']);
-				$this->acl_session_for_user($id);        
+				$branch_id =$this->branch->select_any_active_branch($this->session->userdata['guid']);
+				$this->acl_session_for_user($branch_id);        
 				redirect('home');           
         	}
         }
@@ -46,28 +45,28 @@ class Posmain extends CI_Controller{
     } // End Set user Function 
 	
 	
-   function acl_session_for_user($b_id){
-       $_SESSION['Bid']=$b_id;
+   function acl_session_for_user($branch_id){
+      
+	    $this->session->set_userdata('branch_id', $branch_id);
         $this->load->model('modules_model')  ;
         $this->load->library('acluser'); 
         if($this->session->userdata['user_type']==2){
-            $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
+            $modules=  $this->modules_model->get_module_permission($this->session->userdata['branch_id']); 
             for($i=0;$i<count($modules);$i++){
                 $this->acluser->admin_module_permissions($modules[$i]);
-            }
+            } // End for loop
         }else{
        
-        $modules=  $this->modules_model->get_module_permission($_SESSION['Bid']); 
+        	$modules=  $this->modules_model->get_module_permission($this->session->userdata['branch_id']); 
             for($i=0;$i<count($modules);$i++){
-                
-                $this->acluser->module_permissions($modules[$i],$b_id ,$this->session->userdata['guid']);
-               
-                
-            }
+                $this->acluser->module_permissions($modules[$i],$branch_id ,$this->session->userdata['guid']);
+        	}  // End for loop
         
-        }
-        $_SESSION['Bid']=$b_id;
-    }
+        } // End if condition
+		
+    } //End ACL function 
+	
+	
     function pos_setting(){
         $this->load->model('setting');
         $data=  $this->setting->get_setting();

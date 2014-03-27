@@ -48,7 +48,7 @@ class Item_code extends CI_Controller{
 				
 			}
 			$this->load->model('core_model')		   ;
-			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->core_model->items_data_table($end,$start,$order,$like,$this->session->userdata['branch_id']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('items');
 		
@@ -146,8 +146,8 @@ class Item_code extends CI_Controller{
                $this->form_validation->set_rules("code",$this->lang->line('code'),'required');                                             
               if ($this->form_validation->run() !== false ) {       
                     $code=$this->input->post('code');
-                    if($this->item_setting->check_code_for_update($code,$id,$_SESSION['Bid'])){
-                        $this->item_setting->update_code_for_item($code,$id,$_SESSION['Bid']);
+                    if($this->item_setting->check_code_for_update($code,$id,$this->session->userdata['branch_id'])){
+                        $this->item_setting->update_code_for_item($code,$id,$this->session->userdata['branch_id']);
                         redirect('item_code');
                     }else{
                         echo "this code is alreay added for one item";
