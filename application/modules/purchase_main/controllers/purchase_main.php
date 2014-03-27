@@ -13,7 +13,7 @@ class Purchase_main extends CI_Controller{
                 $this->poslanguage->set_language();
     }
     function index(){  
-          if(!isset($_SESSION['Uid'])){
+          if(!isset($this->session->userdata['guid'])){
                 redirect('home');
         }else{
           $this->get_suppliers();
@@ -23,7 +23,7 @@ class Purchase_main extends CI_Controller{
     function get_suppliers(){
          if (!$_SERVER['HTTP_REFERER']){ redirect('home');} //check the function is call directly or not if yes then redirect to home
         else{
-            if($_SESSION['admin']==2){// check user is admin or not
+            if($this->session->userdata['user_type']==2){// check user is admin or not
                 $this->load->library("pagination"); 
                
                 $this->load->model('purchase');

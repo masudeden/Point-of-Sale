@@ -3,7 +3,7 @@
     
 <?php  echo  form_open('purchase_main/purchase_order_details'); 
 if($count!=0){
-      if($_SESSION['admin']==2){?><table >
+      if($this->session->userdata['user_type']==2){?><table >
           <?php foreach ($row as $b_row){
           foreach ($urow as $erow){ if($b_row->supplier_id==$erow->id){
               ?>

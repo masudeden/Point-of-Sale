@@ -14,7 +14,7 @@ class user_groupsci extends CI_Controller{
                 $this->poslanguage->set_language();
     }
     function index(){
-        if(!isset($_SESSION['Uid'])){
+        if(!isset($this->session->userdata['guid'])){
                 $this->load->view('template/header');
                 $this->load->view('login');
                 $this->load->view('template/footer');
@@ -23,7 +23,7 @@ class user_groupsci extends CI_Controller{
         }
     }
     function get_user_groups(){
-        if($_SESSION['admin']==2){
+        if($this->session->userdata['user_type']==2){
             $this->load->model('user_groups');            
             $this->load->model('branch');
                 $this->load->library("pagination");                
@@ -70,7 +70,7 @@ class user_groupsci extends CI_Controller{
                 redirect('home');
         }
         if($this->input->post('add')){
-             if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
+             if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){ 
                 $this->load->model('user_groups');      
                 $data['row']=$this->user_groups->get_modules_permission($_SESSION['Bid']);
                 $this->load->view('template/header');               
@@ -143,7 +143,7 @@ class user_groupsci extends CI_Controller{
          }
     }    
     function add_user_groups(){
-        if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
+        if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){ 
                 $this->load->model('user_groups');            
                 $this->form_validation->set_rules("user_groups_name",$this->lang->line('user_groups_name'),"required"); 
                // $this->form_validation->set_rules('branches',$this->lang->line('branch'),"required");
@@ -194,7 +194,7 @@ class user_groupsci extends CI_Controller{
     }
    
     function add_permission($mode,$data,$user_group_id,$branchid){
-         if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){ 
+         if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){ 
                 $this->load->model('permissions');
                 $this->permissions->set_modules_permission($mode.'_x_page_x_permissions',$data,$user_group_id,$branchid);
               
@@ -204,7 +204,7 @@ class user_groupsci extends CI_Controller{
          }
     }
      function add_user_groups_branch($id,$branch){
-         if($_SESSION['user_groupsci_per']['add']==1 or $_SESSION['admin']==2){                 
+         if($_SESSION['user_groupsci_per']['add']==1 or $this->session->userdata['user_type']==2){                 
                 $this->load->model('user_groups');                
                 $this->user_groups->set_branch_user_groups($id,$branch);                
                 }else{
@@ -267,7 +267,7 @@ class user_groupsci extends CI_Controller{
         }
         function edit_user_groups_permission($id){
             
-            if($_SESSION['full_per']==8888 or $_SESSION['admin']==2){
+            if($_SESSION['full_per']==8888 or $this->session->userdata['user_type']==2){
                  $this->load->model('user_groups');
                  $data['row']=$this->user_groups->get_seleted_user_groups_details($id);
                  $this->load->model('permissions');

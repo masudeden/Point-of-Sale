@@ -9,7 +9,7 @@ class Pos_users_model extends CI_Model{
             $this->db->where('user_id <>',$id);
             $this->db->where('admin <>','101');
             $this->db->where('user_delete ',0);
-            $this->db->where('user_active',0);        
+            $this->db->where('user_active',1);        
             $this->db->where('branch_id ',$branch);         
             $this->db->from('users_x_branches');
             return $this->db->count_all_results();
@@ -19,7 +19,7 @@ class Pos_users_model extends CI_Model{
             $this->db->limit($limit, $start);
             $this->db->where('user_id <>',$id);
             $this->db->where('user_delete ',0);
-            $this->db->where('user_active',0);        
+            $this->db->where('user_active',1);        
             $this->db->where('branch_id ',$branch); 
        $query = $this->db->get('users_x_branches');
         if ($query->num_rows() > 0) {

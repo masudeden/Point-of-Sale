@@ -13,7 +13,7 @@ class Receiving extends CI_Controller{
                 $this->poslanguage->set_language();
     }
     function index(){  
-          if(!isset($_SESSION['Uid'])){// check user is login or not
+          if(!isset($this->session->userdata['guid'])){// check user is login or not
                 redirect('home');// if user is didnt login then redirect to login page
         }else{
            $this->get_items();

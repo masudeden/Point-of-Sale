@@ -12,8 +12,7 @@ class Home extends CI_Controller
         $this->poslanguage->set_language();               
     }
     function index(){
-       
-        if(!isset($_SESSION['Uid'])){
+        if(!isset($this->session->userdata['guid'])){
             redirect('userlogin');            
         }
         $this->pos_home();        
@@ -22,14 +21,14 @@ class Home extends CI_Controller
         $this->load->model('setting');
         $this->load->model('branch');        
         $data['branch_settings']=$this->setting->get_branch_setting();
-        if($_SESSION['admin']==2){
+        if($this->session->userdata['user_type']==2){
             $_SESSION['Posnic_User']='admin';
             $data['row']=  $this->branch->get_branch();
         
         }else{
         $_SESSION['Posnic_User']='user';
         
-        $data['row']=$this->branch->get_active_user_branches($_SESSION['Uid']);
+        $data['row']=$this->branch->get_active_user_branches($this->session->userdata['guid']);
         }
        
         $this->load->view('template/app/header');
@@ -53,7 +52,6 @@ class Home extends CI_Controller
           
           $this->load->model('modules_model');
           $data=  $this->modules_model->get_modulenames($_SESSION["Bid"]);
-         
           for($i=0;$i<count($data);$i++){
             if($data[$i]==$module){
                 $_SESSION['posnic_module']=$data[$i];
@@ -85,8 +83,15 @@ class Home extends CI_Controller
            }
        }
        if($this->input->post('logout')){
-           session_destroy();
-           redirect('userlogin');
+           	$user_data = $this->session->all_userdata();
+		   
+			foreach ($user_data as $key => $value) {
+				if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {
+					$this->session->unset_userdata($key);
+				}
+			}
+			$this->session->sess_destroy();
+			redirect('home');
        }
        if($this->input->post('branch')){
            if($_SESSION['branchCI_per']['read']==1){
@@ -167,8 +172,18 @@ class Home extends CI_Controller
     }
     function logout(){
        
-           session_destroy();
-           redirect('userlogin');
+	 $user_data = $this->session->all_userdata();
+		   
+			foreach ($user_data as $key => $value) {
+				if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {
+					$this->session->unset_userdata($key);
+				}
+			}
+			$this->session->sess_destroy();
+			redirect('home');
+
+          /* session_destroy();
+           redirect('userlogin');*/
         
     }
 }

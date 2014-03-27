@@ -383,7 +383,7 @@ function reload_update_user(){
                                            <div class="step_info">
                                                     <label for="branch"><?php echo $this->lang->line('branch') ?></label>                                                                                                    
                                                     <select multiple id="branch" name="FromLJ"  class="form-control" style="width:150;height:128px;">
-                                                        <?php if($_SESSION['admin']==2){ 
+                                                        <?php if($this->session->userdata['user_type']==2){ 
                                                             foreach ($branch as $brow) {
 
                                                      ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch()" > <?php echo $brow->store_name ?></option><?php 
@@ -741,7 +741,7 @@ function reload_update_user(){
                                            <div class="step_info">
                                                     <label for="branch"><?php echo $this->lang->line('branch') ?></label>                                                                                                    
                                                     <select multiple id="branch" name="FromLJ"  class="form-control" style="width:150;height:128px;">
-                                                        <?php if($_SESSION['admin']==2){ 
+                                                        <?php if($this->session->userdata['user_type']==2){ 
                                                             foreach ($branch as $brow) {
 
                                                      ?> <option name="<?php echo $brow->guid ?>" value="<?php echo $brow->guid ?>" onClick="select_branch_for_update()" > <?php echo $brow->store_name ?></option><?php 

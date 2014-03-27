@@ -62,25 +62,12 @@
 						success: function(response,textStatus, XMLHttpRequest)
 						{
                                                  
-                                                    if(response==3){
-                                                      $('#login-block').removeBlockMessages().blockMessage('Username And Password Is Wrong Format', {type: 'error'});  
-                                                      submitBt.enableBt();
-                                                    }
-                                                    if(response==2){
-                                                      $('#login-block').removeBlockMessages().blockMessage('Invalid Username And Password', {type: 'error'});  
-                                                      submitBt.enableBt();
-                                                    }
-                                                    if(response==1){
-                                                      $('#login-block').removeBlockMessages().blockMessage('Your branches Are Not corrently Active Please Contact With Admin', {type: 'error'});  
-                                                      submitBt.enableBt();
-                                                    }
-                                                    if(response==11){
-                                                      $('#login-block').removeBlockMessages().blockMessage('Your Account Has Been Deactivated Please contact with Admin', {type: 'error'});    
-                                                      submitBt.enableBt();
-                                                    }
-                                                    if(response==22){
-                                                     window.location.assign("<?php echo base_url()?>index.php/posmain/set_user_default_branch")
-                                                    }
+                             if(response==1){
+                               window.location.assign("<?php echo base_url()?>index.php/posmain/set_user_default_branch")
+                             }else {
+							    $('#login-block').removeBlockMessages().blockMessage(response, {type: 'error'});  
+                           		submitBt.enableBt();
+							 }
 						},
 						error: function(XMLHttpRequest, textStatus, errorThrown)
 						{
