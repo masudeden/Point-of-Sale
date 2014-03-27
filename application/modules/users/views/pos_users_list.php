@@ -775,9 +775,11 @@ function reload_update_user(){
                                                <div class="col col-sm-6">
                                                     <div class="form_sep">
                                                     <label for="phone"><?php echo $this->lang->line('selected_department') ?></label>  
-                                                    <select multiple id="selected_user_group_list"  name="lang" size="7" class="form-control "  style="width: 250">
+                                                   <div id="selected_user_group_parent_div"> 
+                                                       <select multiple id="selected_user_group_list"  name="lang" size="7" class="form-control "  style="width: 250">
 
                                                     </select>
+                                                    </div>
                                                    
                                                     </div> 
                                                    </div>
@@ -896,11 +898,11 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                         bootbox.alert("<?php echo $this->lang->line('Select Atleast One User') ?>");
+                        $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('users');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
+                      for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
                                 url: '<?php echo base_url() ?>/index.php/users/active',
@@ -936,7 +938,7 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                         bootbox.alert("<?php echo $this->lang->line('Select Atleast One User') ?>");
+                          $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('users');?>', { type: "warning" });
                       
                       }else{
                             bootbox.confirm("Are you Sure To Delete This Users ", function(result) {
@@ -983,11 +985,11 @@ function reload_update_user(){
 
                       }
                       if (flag<1) {
-                         bootbox.alert("<?php echo $this->lang->line('Select Atleast One User') ?>");
+                         $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('users');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
-                      for (i = 0; i < posnic.length-1; i++){
+                      for (i = 0; i < posnic.length; i++){
                           if(posnic[i].checked==true){                             
                                  $.ajax({
                                     url: '<?php echo base_url() ?>/index.php/users/deactive',
@@ -1044,7 +1046,7 @@ function select_branch()
         $('#posnic_user_2 #user_groups_list').remove();
         $('#posnic_user_2 #user_group_parent_div').append(' <select multiple id="user_groups_list" class="form-control" name="ToLJ" style="width: 150;height:128px;"></select>');
          for(var i=0;i<data.length;i++){
-           if($('#hidden_selected_user_group_list #group_id_'+data[i]['guid']).length == 0){                
+           if($('#posnic_user_2 #hidden_selected_user_group_list #group_id_'+data[i]['guid']).length == 0){                
             $('#posnic_user_2 #user_groups_list').append($('<option >', {
                  value:data[i]['guid'],
                  text: data[i]['group_name'],
@@ -1128,7 +1130,7 @@ function select_branch_for_update()
         $('#parsley_reg #user_groups_list').remove();
         $('#parsley_reg #user_group_parent_div').append(' <select multiple id="user_groups_list" class="form-control" name="ToLJ" style="width: 150;height:128px;"></select>');
          for(var i=0;i<data.length;i++){
-           if($('#hidden_selected_user_group_list #group_id_'+data[i]['guid']).length == 0){                
+           if($('#parsley_reg #hidden_selected_user_group_list #group_id_'+data[i]['guid']).length == 0){                
             $('#parsley_reg #user_groups_list').append($('<option >', {
                  value:data[i]['guid'],
                  text: data[i]['group_name'],
@@ -1142,8 +1144,8 @@ function select_branch_for_update()
           ');
            }
     }
-      $('#parsley_reg #parent_div #hidden_user_group_list').append('<input type="hidden" id="selected_branch_id_'+guid+'" value="'+guid+'" >'); 
-     }
+    
+    }
     });
 }
 
@@ -1159,10 +1161,16 @@ function select_user_group_for_update(){
              }));
            $('#parsley_reg #parent_div #hidden_selected_user_group_list').append(' \n\
            <input type="hidden" name="user_groups[]" id="group_id_'+group+'" value="'+group+'" >\n\
-           <input type="hidden" id="group_name_'+group+'" value="'+group_name+'" >\n\
-           <input type="hidden" name="user_branchs[]" id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
-           <input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
+           <input type="hidden"  id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
+           <input type="hidden" id="group_name_'+group+'" value="'+group_name+'" ><input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
           ');
+            if(!$('#orginal_branch_id_'+branch_id).length){
+                    $('#parsley_reg #parent_div #hidden_selected_user_group_list').append(' <input type="text" name="user_branchs[]" id="group_branch_id_'+group+'" value="'+branch_id+'" >');
+
+            } 
+       
+        
+        
         $('#parsley_reg #hidden_user_group_list #group_id_'+group).remove();
         $('#parsley_reg #hidden_user_group_list #group_name_'+group).remove();
         $('#parsley_reg #hidden_user_group_list #group_branch_id_'+group).remove();
@@ -1189,7 +1197,7 @@ function remove_select_user_group_for_update(){
                 <input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
                 ');
            }
-        $('#parsley_reg #deleted_selected_group').append('<input type="text" name="deleted_groups[]" value="'+group+'">');
+        $('#parsley_reg #deleted_selected_group').append('<input type="hidden" name="deleted_groups[]" value="'+group+'">');
         $('#parsley_reg #hidden_selected_user_group_list #group_id_'+group).remove();
         $('#parsley_reg #hidden_selected_user_group_list #group_name_'+group).remove();
         $('#parsley_reg #hidden_selected_user_group_list #group_branch_id_'+group).remove();

@@ -72,9 +72,9 @@ class Core_model extends CI_Model{
                 $query = $this->db->get('ajax');
                 return $query->result_array();
     }
-      function posnic_data_table($start,$end,$table2,$table1,$join_where,$branch,$uid,$order,$like){
-        
-        $this->db->select('users.*, users_x_branches.user_active  as user_active , users_x_branches.user_id as user_id')->from($table1);  
+      function posnic_data_table($start,$end,$branch,$uid,$order,$like){
+         
+        $this->db->select('users.*, users_x_branches.user_active  as user_active , users_x_branches.user_id as user_id')->from('users_x_branches');  
         $this->db->limit($start,$end);  
         $this->db->order_by($order);
         $this->db->where('users.guid <>',$uid);
@@ -82,8 +82,7 @@ class Core_model extends CI_Model{
       //  $this->db->where('users_x_branches.user_active ',0 );
         
         $this->db->or_like($like);
-        $join_where=$join_where."AND  $table1.user_delete=1 AND users.user_type!=2 ";
-        $this->db->join($table2, "$join_where".'','left');
+        $this->db->join('users', "users_x_branches.user_id=users.guid AND  users_x_branches.user_delete=0 AND users.user_type!=2 ".'','left');
         $query=$this->db->get();
         return $query->result_array();
             
