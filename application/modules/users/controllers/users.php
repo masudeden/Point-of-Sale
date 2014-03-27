@@ -165,7 +165,7 @@ class Users extends CI_Controller{
                 $this->form_validation->set_rules('state',$this->lang->line('state'),"required");
                 $this->form_validation->set_rules('zip',$this->lang->line('zip'),"required");
                 $this->form_validation->set_rules('dob',$this->lang->line('date_of'),"required");                 
-                $this->form_validation->set_rules('department',$this->lang->line('user_groups'),"required");              
+              //  $this->form_validation->set_rules('department',$this->lang->line('user_groups'),"required");              
                 $this->form_validation->set_rules('pos_users_id','pos_users_id',"required");
                 $this->form_validation->set_rules('guid','guid',"required");
                 $this->form_validation->set_rules('country','country',"required");
@@ -195,8 +195,8 @@ class Users extends CI_Controller{
                            
                                            $file_name='';
                             $this->pos_users_model->update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$username,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password);
-                            $deleted_groups=$this->input->post('deleted_groups') ;
-                            $deleted_groups=  array_unique($deleted_groups);
+                            $deleted_group=$this->input->post('deleted_groups') ;
+                            $deleted_groups=array_unique($deleted_group);
                             for($j=0;$j<count($deleted_groups);$j++){
                                 $this->pos_users_model->remove_user_groups($deleted_groups[$j],$id);
                             }        
