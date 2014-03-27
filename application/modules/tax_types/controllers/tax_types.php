@@ -19,7 +19,7 @@ class Tax_types extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function tax_types_data_table(){
-        $aColumns = array( 'guid','type','type','type','type','active' );	
+        $aColumns = array( 'guid','type','type','type','type','active_status' );	
 	$start = "";
 			$end="";
 		
@@ -54,7 +54,7 @@ class Tax_types extends CI_Controller
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('tax_types');
 		
-		$iTotal =$this->posnic->data_table_count('tax_types');
+		$iTotal =$iFilteredTotal;
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),

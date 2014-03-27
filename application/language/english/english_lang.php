@@ -492,5 +492,7 @@ $lang['credit_days']='Credit Days';
   //item department
   $lang['items_department_name']='Department Name';
   $lang['items_category_name']='Category Name';
+  $lang['schedule']='Schedule';
+  $lang['value']='Value';
   
 ?>﻿

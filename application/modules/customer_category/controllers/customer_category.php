@@ -19,7 +19,7 @@ class Customer_category extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function customer_category_data_table(){
-        $aColumns = array( 'guid','category_name','category_name','category_name','category_name','active' );	
+        $aColumns = array( 'guid','category_name','category_name','category_name','category_name','active_status' );	
 	$start = "";
 			$end="";
 		
@@ -52,9 +52,8 @@ class Customer_category extends CI_Controller
 					   
 			 $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'customer_category');
 		   
-		$iFilteredTotal =$this->posnic->data_table_count('customer_category');
-		
-		$iTotal =$this->posnic->data_table_count('customer_category');
+		$iFilteredTotal =$this->posnic->data_table_count('customer_category');		
+		$iTotal =$iFilteredTotal;
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -113,14 +112,7 @@ class Customer_category extends CI_Controller
                echo "NOOP";
            }
     }
-    function inactive_customer_category($guid){
-        if($_SESSION['Posnic_User']=='admin'){
-              $this->posnic->posnic_deactive($guid);
-              redirect('customer_category');
-          }else{
-              redirect('customer_category');
-          }
-    }
+  
     function active(){
             $id=  $this->input->post('guid');
             $report= $this->posnic->posnic_module_active($id,'customer_category'); 
@@ -160,14 +152,7 @@ class Customer_category extends CI_Controller
             echo 'FALSE';
         }
     }
-    function restore($guid){
-          if($_SESSION['Posnic_User']=='admin'){
-              $this->posnic->posnic_restore($guid);
-              redirect('customer_category');
-          }else{
-              redirect('customer_category');
-          }
-    }        
+         
     
     function add_customer_category(){
             if($_SESSION['customer_category_per']['add']==1){
@@ -194,16 +179,7 @@ class Customer_category extends CI_Controller
            }
          
     }
-    function delete_customer_category($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
-              $this->posnic->posnic_delete($guid);
-               }
-            else{
-                echo "you have no Permissions to add  new record";
-                $this->get_customers_payment_type();
-            } 
-        
-    }
+    
    
 }
 ?>

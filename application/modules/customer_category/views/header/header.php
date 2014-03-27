@@ -28,7 +28,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							return "<input type=checkbox value='"+oObj.aData[0]+"' >";
+                   							return "<input type=checkbox value='"+oObj.aData[0]+"' ><input type='hidden' id='name_"+oObj.aData[0]+"' value='"+oObj.aData[2]+"'>";
 								},
 								
 								
@@ -41,7 +41,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[5]==0){
+                   							if(oObj.aData[5]==1){
                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="label label-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
@@ -55,7 +55,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[5]==0){
+                                                                if(oObj.aData[5]==1){
                    							return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
 								}else{
                                                                         return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
@@ -76,8 +76,9 @@
                                    
 			}
     function user_function(guid){
+             var name=$('#name_'+guid).val();
     <?php if($_SESSION['customer_category_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete This')." ".$this->lang->line('customer_category') ?>", function(result) {
+             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete This')." ".$this->lang->line('customer_category') ?> "+$('#name_'+guid).val(), function(result) {
              if(result){
             $.ajax({
                 url: '<?php echo base_url() ?>/index.php/customer_category/delete',
@@ -89,7 +90,7 @@
                 success: function(response)
                 {
                     if(response){
-                           $.bootstrapGrowl('<?php echo $this->lang->line('customer_category') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                        $.bootstrapGrowl('<?php echo $this->lang->line('customer_category') ?> '+name+' <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }}
             });
@@ -112,7 +113,7 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl('<?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
+                         $.bootstrapGrowl($('#name_'+guid).val()+' <?php echo $this->lang->line('isdeactivated');?>', { type: "danger" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }
@@ -129,7 +130,7 @@
                 success: function(response)
                 {
                     if(response){
-                         $.bootstrapGrowl('<?php echo $this->lang->line('isactivated');?>', { type: "success" });
+                         $.bootstrapGrowl($('#name_'+guid).val()+' <?php echo $this->lang->line('isactivated');?>', { type: "success" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }
                 }

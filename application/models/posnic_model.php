@@ -24,7 +24,7 @@ class posnic_model extends CI_model{
         return $sql->result();
   }
  function get_aa_data_as_result_admin($table,$bid){
-        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid)->where('active',0)->where('active_status',1);
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
   }
@@ -223,7 +223,7 @@ class posnic_model extends CI_model{
         return $sql->result();
     }
     function module_result_user($table,$bid){
-        $this->db->select()->from($table)->where('delete_status',0)->where('active_status',1)->where('branch_id',$bid);
+        $this->db->select()->from($table)->where('delete_status',0)->where('branch_id',$bid);
         $sql=  $this->db->get();
         return $sql->result();
     }
