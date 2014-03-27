@@ -19,44 +19,34 @@ class Items_category extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function items_category_data_table(){
-        $aColumns = array( 'guid','category_name','category_name','category_name','category_name','active' );	
+        $aColumns = array( 'guid','category_name','category_name','category_name','category_name','active_status' );	
 	$start = "";
-			$end="";
-		
-		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
-			$start = $this->input->get_post('iDisplayStart');
-			$end=	 $this->input->get_post('iDisplayLength');              
-		}	
-		$order="";
-		if ( isset( $_GET['iSortCol_0'] ) )
-		{	
-			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
-			{
-				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
-				{
-					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
-				}
-			}
-			
-					$order = substr_replace( $order, "", -1 );
-					
-		}
-		
-		$like = array();
-		
-			if ( $_GET['sSearch'] != "" )
-		{
-		$like =array('category_name'=>  $this->input->get_post('sSearch'));
-				
-			}
-					   
-			 $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'items_category');
-		   
-		$iFilteredTotal =$this->posnic->data_table_count('items_category');
-		
-		$iTotal =$this->posnic->data_table_count('items_category');
-		
-		$output1 = array(
+	$end="";
+	if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+            $start = $this->input->get_post('iDisplayStart');
+            $end=	 $this->input->get_post('iDisplayLength');              
+        }	
+        $order="";
+        if ( isset( $_GET['iSortCol_0'] ) )
+        {	
+            for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+            {
+                if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+                {
+                        $order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+                }
+            }
+            $order = substr_replace( $order, "", -1 );
+        }
+	$like = array();
+	if ( $_GET['sSearch'] != "" )
+            {
+                $like =array('category_name'=>  $this->input->get_post('sSearch'));
+            }
+            $rResult1 = $this->posnic->posnic_data_table($end,$start,$order,$like,'items_category');
+            $iFilteredTotal =$this->posnic->data_table_count('items_category');
+            $iTotal =$iFilteredTotal;
+            $output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iFilteredTotal,
@@ -73,17 +63,13 @@ class Items_category extends CI_Controller
 				}
 				else if ( $aColumns[$i] != ' ' )
 				{
-					/* General output */
 					$row[] = $aRow[$aColumns[$i]];
-				}
-				
-			}
-				
+				}				
+			}				
 		$output1['aaData'][] = $row;
 		}
-                
-		
-		   echo json_encode($output1);
+        
+        echo json_encode($output1);
     }
    
    
