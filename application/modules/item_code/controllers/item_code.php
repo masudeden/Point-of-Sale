@@ -17,7 +17,7 @@ class Item_code extends CI_Controller{
         $this->load->view('template/app/footer');
     }
         function data_table(){
-        $aColumns = array( 'name','upc_ean_code', 'code','name','location','b_name','c_name','guid','active','guid' );	
+        $aColumns = array( 'name','upc_ean_code', 'code','name','location','b_name','c_name','guid','active_status','guid' );	
 	$start = "";
 			$end="";
 		
@@ -102,11 +102,7 @@ class Item_code extends CI_Controller{
              redirect('item_code');
          }
     }
-    function items_details(){
-             if($this->input->post('cancel')){
-                redirect('home');
-            }
-    }
+   
    
     function set_item_code(){
              if($this->input->post('guid')){  
@@ -127,22 +123,13 @@ class Item_code extends CI_Controller{
                 }
              }
     }
-    function edit_item($id){
-         if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
-    $this->load->model('item_setting');
-    $data['row']=  $this->item_setting->get_item_details($id);
-    $data['set']=  $this->item_setting->get_item_details_for_edit($id);
-                $this->load->view('template/header');
-                $this->load->view('item_code/edit_code',$data);
-                $this->load->view('template/footer');
-          }
-    }
+   
     function get_items_details(){
         $search= $this->input->post('term');
         if($search!=""){
         $like=array('code'=>$search,'barcode'=>$search,'name'=>$search,'upc_ean_code'=>$search);
        $data= $this->posnic->posnic_or_like('items',$like);
-      //  echo '[{"name":"Organisation 1","ID":2},{"name":"Organisation 2","ID":1}]';
+     
        echo json_encode($data);
         }
     }
