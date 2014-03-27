@@ -19,7 +19,7 @@ class Customers extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function customers_data_table(){
-        $aColumns = array( 'guid','guid','first_name','company_name','phone','email','c_name','type','type','active' );	
+        $aColumns = array( 'guid','guid','first_name','company_name','phone','email','c_name','type','type','active_status' );	
 	$start = "";
 			$end="";
 		
@@ -54,7 +54,7 @@ class Customers extends CI_Controller
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('customers');
 		
-		$iTotal =$this->posnic->data_table_count('customers');
+		$iTotal =$iFilteredTotal;
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),

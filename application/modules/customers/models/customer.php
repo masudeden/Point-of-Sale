@@ -5,7 +5,7 @@ class Customer extends CI_Model{
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('customers.* ,customer_category.guid as c_guid,customer_category.category_name as c_name,customers_payment_type.guid as p_guid,customers_payment_type.type as type')->from('customers')->where('customers.branch_id',$branch)->where('customers.active_status',1)->where('customers.delete_status',1);
+                $this->db->select('customers.* ,customer_category.guid as c_guid,customer_category.category_name as c_name,customers_payment_type.guid as p_guid,customers_payment_type.type as type')->from('customers')->where('customers.branch_id',$branch)->where('customers.delete_status',0);
                 $this->db->join('customer_category', 'customers.category_id=customer_category.guid','left');
                 $this->db->join('customers_payment_type', 'customers.payment=customers_payment_type.guid','left');
                  $this->db->limit($end,$start); 

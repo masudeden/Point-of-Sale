@@ -23,8 +23,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
           $('#add_customer_details_form #customer_category').change(function() {
-                   var guid = $('#add_customer_details_form #customer_category').select2('data').id;
-                   alert(guid);
+                var guid = $('#add_customer_details_form #customer_category').select2('data').id;                  
                 $('#add_customer_details_form #category').val(guid);
           });
           $('#add_customer_details_form #customer_category').select2({
@@ -98,8 +97,7 @@
             });
         
           $('#parsley_reg #customer_category').change(function() {
-                   var guid = $('#parsley_reg #customer_category').select2('data').id;
-                   alert(guid);
+                var guid = $('#parsley_reg #customer_category').select2('data').id;                
                 $('#parsley_reg #category').val(guid);
           });
           $('#parsley_reg #customer_category').select2({
