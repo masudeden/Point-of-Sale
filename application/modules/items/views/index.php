@@ -19,7 +19,7 @@
     transition: none 0s ease 0s;
     }
  table td + td + td + td + td + td + td + td + td {
- width: 100px !important;
+ width: 150px !important;
 }
 </style>	
 <script type="text/javascript">
@@ -528,6 +528,7 @@
         $('#add_new_item').click(function() { 
                 <?php if($_SESSION['items_per']['add']==1){ ?>
                 var inputs = $('#add_item').serialize();
+                if($('#add_item').valid()){
                       $.ajax ({
                             url: "<?php echo base_url('index.php/items/add_new_item')?>",
                             data: inputs,
@@ -546,13 +547,16 @@
                                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('item');?>', { type: "error" });                           
                                     }
                        }
-                });<?php }else{ ?>
+                });}else{
+                        $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                }<?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
                     <?php }?>
         });
          $('#update_items').click(function() { 
                 <?php if($_SESSION['items_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
+                 if($('#parsley_reg').valid()){
                       $.ajax ({
                             url: "<?php echo base_url('index.php/items/update_items')?>",
                             data: inputs,
@@ -572,6 +576,9 @@
                                     }
                        }
                  });
+                 }else{
+                        $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                }
                  <?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO permission To Edit This Records')?>");  
                     <?php }?>
