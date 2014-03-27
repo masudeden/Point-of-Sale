@@ -104,7 +104,7 @@ class Items extends CI_Controller{
               }
     }
     function restore_items($guid){
-         if($_SESSION['Posnic_User']=='admin'){
+         if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               $this->load->model('core_model');
               $this->core_model->restore_item_setting($guid,$this->session->userdata['branch_id']);

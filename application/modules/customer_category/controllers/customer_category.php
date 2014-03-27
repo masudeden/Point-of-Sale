@@ -112,7 +112,7 @@ class Customer_category extends CI_Controller
                echo "NOOP";
            }
     }
-  
+
     function active(){
             $id=  $this->input->post('guid');
             $report= $this->posnic->posnic_module_active($id,'customer_category'); 
@@ -152,7 +152,10 @@ class Customer_category extends CI_Controller
             echo 'FALSE';
         }
     }
+
          
+      
+
     
     function add_customer_category(){
             if($_SESSION['customer_category_per']['add']==1){

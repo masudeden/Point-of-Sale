@@ -151,6 +151,7 @@ class Tax_commodity extends CI_Controller
                 }else{
                     echo "FALSE";
                 }
+
                 	             
            }else{
                echo "NOOP";
@@ -176,21 +177,5 @@ class Tax_commodity extends CI_Controller
                 echo 'FALSE';
               }
     }
-  
-            
-    
-    function delete(){
-        if($_SESSION['tax_commodity_per']['delete']==1){
-            if($this->input->post('guid')){
-             $guid=  $this->input->post('guid');
-              $this->posnic->posnic_delete($guid,'tax_commodity');
-             echo 'TRUE';
-            }
-           }else{
-            echo 'FALSE';
-        }
-    }
-      
-   
 }
 ?>

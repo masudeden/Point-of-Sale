@@ -100,7 +100,7 @@ class Items_category extends CI_Controller
            }
     }
     function inactive_items_category($guid){
-        if($_SESSION['Posnic_User']=='admin'){
+        if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_deactive($guid);
               redirect('items_category');
           }else{
@@ -147,7 +147,7 @@ class Items_category extends CI_Controller
         }
     }
     function restore($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('items_category');
           }else{

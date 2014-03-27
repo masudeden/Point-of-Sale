@@ -114,7 +114,7 @@ class Suppliers_category extends CI_Controller
            }
     }
     function inactive_suppliers_category($guid){
-        if($_SESSION['Posnic_User']=='admin'){
+        if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_deactive($guid);
               redirect('suppliers_category');
           }else{
@@ -161,7 +161,7 @@ class Suppliers_category extends CI_Controller
         }
     }
     function restore($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('suppliers_category');
           }else{

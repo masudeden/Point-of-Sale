@@ -114,7 +114,7 @@ class Customers_payment_type extends CI_Controller
            }
     }
     function inactive_customers_payment_type($guid){
-        if($_SESSION['Posnic_User']=='admin'){
+        if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_deactive($guid);
               redirect('customers_payment_type');
           }else{
@@ -161,7 +161,7 @@ class Customers_payment_type extends CI_Controller
         }
     }
     function restore($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('customers_payment_type');
           }else{

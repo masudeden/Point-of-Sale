@@ -154,7 +154,7 @@ class Brands extends CI_Controller
         }
     }
     function restore($guid){
-          if($_SESSION['Posnic_User']=='admin'){
+          if($this->session->userdata['Posnic_User']=='admin'){
               $this->posnic->posnic_restore($guid);
               redirect('brands');
           }else{

@@ -6,34 +6,36 @@ class Home extends CI_Controller
         parent::__construct();
          session_start();
         $this->load->helper('form');
-       
         $this->load->library('session');
         $this->load->library('poslanguage');                                       
         $this->poslanguage->set_language();               
     }
+	
     function index(){
         if(!isset($this->session->userdata['guid'])){
             redirect('userlogin');            
         }
         $this->pos_home();        
-    }    
+    }
+	    
     function pos_home(){             
         $this->load->model('setting');
         $this->load->model('branch');        
         $data['branch_settings']=$this->setting->get_branch_setting();
         if($this->session->userdata['user_type']==2){
-            $_SESSION['Posnic_User']='admin';
+            $this->session->set_userdata('Posnic_User','admin');
+			//$this->session->userdata['Posnic_User']='admin';
             $data['row']=  $this->branch->get_branch();
         
         }else{
-        $_SESSION['Posnic_User']='user';
-        
-        $data['row']=$this->branch->get_active_user_branches($this->session->userdata['guid']);
+			//$this->session->userdata['Posnic_User']='user';
+			$this->session->set_userdata('Posnic_User','admin');
+			$data['row']=$this->branch->get_active_user_branches($this->session->userdata['guid']);
         }
        
         $this->load->view('template/app/header');
         if($_SESSION['Setting']['Branch']==1){
-        $this->load->view('template/branch',$data);
+        	$this->load->view('template/branch',$data);
           }
         $modules['active']="home";
         $this->load->model('modules_model')  ;
@@ -45,10 +47,8 @@ class Home extends CI_Controller
         
        
     }
-    function set_branches($branch){
-       // $_SESSION['user_branch']=$branch;        
-    }    
-      function home_main($module){
+	
+     function home_main($module){
           
           $this->load->model('modules_model');
           $data=  $this->modules_model->get_modulenames($this->session->userdata['branch_id']);
@@ -64,112 +64,9 @@ class Home extends CI_Controller
                 
             }  
           }
-          
-          
-       if($this->input->post('pos_users')){           
-           if($_SESSION['users_per']['read']==1){
-               redirect('pos_users');
-           }else{
-               echo "U have No Permission to View  users Details";
-               $this->pos_home();
-           }
-       }
-       if($this->input->post('user_groups')){          
-           if($_SESSION['user_groupsci_per']['read']==1){
-                redirect('user_groupsci');
-           }else{
-               echo "U have No Permission to View user_groups Details";
-               $this->pos_home();
-           }
-       }
-       if($this->input->post('logout')){
-           	$user_data = $this->session->all_userdata();
-		   
-			foreach ($user_data as $key => $value) {
-				if ($key != 'session_id' && $key != 'ip_address' && $key != 'user_agent' && $key != 'last_activity') {
-					$this->session->unset_userdata($key);
-				}
-			}
-			$this->session->sess_destroy();
-			redirect('home');
-       }
-       if($this->input->post('branch')){
-           if($_SESSION['branchCI_per']['read']==1){
-               redirect('branchCI');
-           }else{
-               echo "U have No Permission to View Branch Details";
-               $this->pos_home();
-           }
-       }
-       if($this->input->post('customers')){
-           if($_SESSION['customers_per']['read']==1){
-               redirect('customers');
-           }else{
-               echo "you Have no permission to read Customer Deatils";
-               $this->pos_home();
-           }
-       }
-       if($this->input->post('suppliers')){
-           if($_SESSION['suppliers_per']['read']==1){
-               redirect('suppliers');
-           }else{
-               echo "you Have no permission to read supplierDeatils";
-               $this->pos_home();
-           }
-       }
-       if($this->input->post('Items')){
-            if($_SESSION['items_per']['read']==1){
-               redirect('items');
-           }else{
-               echo "you Have no permission to read supplierDeatils";
-               $this->pos_home();
-           }
-       }
-       if($this->input->post('Gifts')){
-           redirect('gifts');
-       }
-       if($this->input->post('receiving')){
-           
-           redirect('purchase_main');
-       }
-      
-       if($this->input->post('brand')){
-            redirect('brands');
-       }
-       if($this->input->post('categorys')){
-           redirect('item_category');
-       }
-       
-           
-           if($this->input->post('tax_area')){
-               redirect('taxes_ci/tax_area');
-           }
-           if($this->input->post('taxes')){
-               redirect('taxes_ci/taxes');
-           }
-           if($this->input->post('commodity')){
-              redirect('taxes_ci/get_tax_commodity');
-           }
-           if($this->input->post('tax_types')){
-              redirect('taxes_ci/get_tax_types');
-           }
-           if($this->input->post('item_setting')){
-               redirect('items_setting');
-           }
-           if($this->input->post('item_code')){
-               redirect('item_code');
-           }
-           if($this->input->post('customer_cate')){
-               redirect('customer_category');
-           }
-           if($this->input->post('supplier_items')){
-               redirect('supplier_vs_items');
-           }
                
     }
-     function user_groups(){
-        redirect('user_groupsci');
-    }
+
     function logout(){
        
 	 $user_data = $this->session->all_userdata();

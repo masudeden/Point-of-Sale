@@ -9,17 +9,15 @@ class Posmain extends CI_Controller{
         $this->load->library('poslanguage');                 
         $this->poslanguage->set_language();
     }
-    function index()  { 
 	
-	if(!isset($this->session->userdata['guid'])){
+    function index()  { 
+		if(!isset($this->session->userdata['guid'])){
             $this->load->view('template/header');
             $this->load->view('login');
             $this->load->view('template/footer');
         }else{
             $this->set_user_default_branch();             
-            }
-            
-        
+        }
     }
 	
 	
