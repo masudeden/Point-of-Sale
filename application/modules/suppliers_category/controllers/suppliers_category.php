@@ -19,7 +19,7 @@ class Suppliers_category extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function suppliers_category_data_table(){
-        $aColumns = array( 'guid','category_name','category_name','category_name','category_name','active' );	
+        $aColumns = array( 'guid','category_name','category_name','category_name','category_name','active_status' );	
 	$start = "";
 			$end="";
 		

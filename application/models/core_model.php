@@ -37,7 +37,9 @@ class Core_model extends CI_Model{
     function suppliers_x_items($id,$bid,$mrp,$supplier,$selling_price,$cost_price){
             $data=array('item_id'=>$id,'mrp'=>$mrp,'supplier_id'=>$supplier,'price'=>$selling_price,'cost'=>$cost_price,'branch_id'=>$bid);
             $this->db->insert('suppliers_x_items',$data);
-            
+            $id=  $this->db->insert_id();
+            $this->db->where('id',$id);
+            $this->db->update('suppliers_x_items',array('guid'=>md5($id.'supplier_x_items')));
     }
    function posnic_join_like($table,$bid){
        
@@ -116,7 +118,7 @@ class Core_model extends CI_Model{
                 return $query->result_array();  
     }
     function get_taxes($branch,$like){
-         $this->db->select('taxes.* ,taxes.guid as guid,tax_types.type as name,tax_types.guid as t_guid')->from('taxes')->where('taxes.branch_id',$branch)->where('taxes.active_status',1)->where('taxes.delete_status',1);
+         $this->db->select('taxes.* ,taxes.guid as guid,tax_types.type as name,tax_types.guid as t_guid')->from('taxes')->where('taxes.branch_id',$branch)->where('taxes.active_status',1)->where('taxes.delete_status',0);
                 $this->db->join('tax_types', 'taxes.type=tax_types.guid','left');
                 $this->db->like($like);
                 $query=$this->db->get();

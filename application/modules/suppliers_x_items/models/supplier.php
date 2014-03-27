@@ -5,7 +5,7 @@ class Supplier extends CI_Model{
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name as c_name')->from('suppliers')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',1)->where('suppliers.active',0)->where('suppliers.delete_status',1);
+                $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name as c_name')->from('suppliers')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',1)->where('suppliers.delete_status',0);
                 $this->db->join('suppliers_category', 'suppliers.category=suppliers_category.guid','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
@@ -15,7 +15,7 @@ class Supplier extends CI_Model{
     }
     function supplier_vs_items($end,$start,$like,$branch,$suplier){
         
-                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',1)->where('suppliers.active',0)->where('suppliers.delete_status',1)->where('suppliers_x_items.active_status',1)->where('suppliers_x_items.delete_status',1);
+                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',1)->where('suppliers.delete_status',0)->where('suppliers_x_items.delete_status',0);
                 $this->db->join('items', 'items.guid=suppliers_x_items.item_id','left');
                 $this->db->join('suppliers', 'suppliers.guid=suppliers_x_items.supplier_id','left');
                 $this->db->where('suppliers_x_items.supplier_id',$suplier);
@@ -48,7 +48,7 @@ class Supplier extends CI_Model{
         $this->db->delete('supplier_contacts');
     }
     function count($branch){
-        $this->db->select()->from('suppliers')->where('branch_id',$branch)->where('active_status',1)->where('active',0)->where('delete_status',0);
+        $this->db->select()->from('suppliers')->where('branch_id',$branch)->where('active_status',1)->where('delete_status',0);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }
@@ -63,7 +63,7 @@ class Supplier extends CI_Model{
                 $this->db->join('brands', 'items.brand_id=brands.guid','left');
                 $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
                // $this->db->join('supplier', 'stock.supplier=supplier.id','left');
-                $like=array('items.name'=>$search,'items.code'=>$search,'items.barcode'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
+                $like=array('items.guid'=>1,'items.code'=>$search,'items.barcode'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search,'items.name'=>$search);
                 $this->db->or_like($like);     
                 $query=$this->db->get();
                 return $query->result();

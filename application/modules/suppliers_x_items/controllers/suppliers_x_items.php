@@ -28,9 +28,8 @@ class Suppliers_x_items extends CI_Controller{
                 $this->load->view('supplier_list',$data);
     }
     // supplier data table
-    // supplier data table
       function suppliers_data_table(){
-        $aColumns = array( 'guid','first_name','first_name','company_name','c_name','phone','email','email','active' );	
+        $aColumns = array( 'guid','first_name','first_name','company_name','c_name','phone','email','email','active_status','active_status' );	
 	$start = "";
 			$end="";
 		
@@ -100,7 +99,7 @@ class Suppliers_x_items extends CI_Controller{
     }
     // supplier  vs item data table
       function suppliers_x_items_table($guid){
-        $aColumns = array( 'guid','i_name','i_name','i_code','quty','cost','price','mrp','active','active','i_guid','guid' );	
+        $aColumns = array( 'guid','i_name','i_name','i_code','quty','cost','price','mrp','active_status','active_status','i_guid','guid' );	
 	$start = "";
 			$end="";
 		
@@ -135,7 +134,7 @@ class Suppliers_x_items extends CI_Controller{
 					   
 			$this->load->model('supplier')	   ;
                         
-			 $rResult1 = $this->supplier->supplier_vs_items($end,$start,$like,$this->session->userdata['branch_id'],$guid);
+		$rResult1 = $this->supplier->supplier_vs_items($end,$start,$like,$this->session->userdata['branch_id'],$guid);
 		   
 		$iFilteredTotal =$this->supplier->supplier_vs_items_count($this->session->userdata['branch_id'],$guid);
 		
@@ -170,61 +169,35 @@ class Suppliers_x_items extends CI_Controller{
 		
 		   echo json_encode($output1);
     }
-    function supplier_magement(){
-        if($this->input->post('cancel')){
-            redirect('home');
-        }
-            if($this->input->post('active')){
-              $data=  $this->input->post('posnic')  ;
-              for($i=0;$i<count($data);$i++){
-                  $where=array('supplier_id'=>$data[$i]);
-                  $this->posnic->posnic_active_where($where);
-              }
-              redirect('suppliers_x_items');
-            }
-            if($this->input->post('deactive')){
-              $data=  $this->input->post('posnic')  ;
-              for($i=0;$i<count($data);$i++){
-                  $where=array('supplier_id'=>$data[$i]);
-                  $this->posnic->posnic_deactive_where($where);
-              }
-              redirect('suppliers_x_items');
-            }
-    }
+    
             
     function add_items(){
         if($_SESSION['customers_per']['add']==1){
               if($this->input->post('supplier')){
-                 $this->form_validation->set_rules('item', 'item', 'required');
-                        $this->form_validation->set_rules('cost', 'cost', 'required');
-                        $this->form_validation->set_rules('price', 'price', 'required');
-                        $this->form_validation->set_rules('quty', 'items', 'required');
-                        $this->form_validation->set_rules('supplier', 'supplier', 'required');
-                        $this->form_validation->set_rules('mrp', 'items', 'required'); 
-                            if ( $this->form_validation->run() !== false ) {
-                                
-                                
-                                $where=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$this->session->userdata['branch_id'],'delete_status'=>0);
-                                 if($this->posnic->check_record_unique($where,'suppliers_x_items')){
-                   $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
-                                     
-                                     
-                                     
-                                          $this->posnic->posnic_add_record($values,'suppliers_x_items');
-                                        echo 'TRUE';
-                                    }else{
-                                            echo "ALREADY";
-                                    }
-                            }else{
-                                echo 'FALSE';
-                            }
+                    $this->form_validation->set_rules('item', 'item', 'required');
+                    $this->form_validation->set_rules('cost', 'cost', 'required');
+                    $this->form_validation->set_rules('price', 'price', 'required');
+                    $this->form_validation->set_rules('quty', 'items', 'required');
+                    $this->form_validation->set_rules('supplier', 'supplier', 'required');
+                    $this->form_validation->set_rules('mrp', 'items', 'required'); 
+                    if ( $this->form_validation->run() !== false ) {
+                        $where=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'branch_id'=>$this->session->userdata['branch_id'],'delete_status'=>0);
+                        if($this->posnic->check_record_unique($where,'suppliers_x_items')){
+                        $values=array('supplier_id'=>$this->input->post('supplier'),'item_id'=>$this->input->post('item'),'quty'=>$this->input->post('quty'),'cost'=>$this->input->post('cost'),'price'=>$this->input->post('price'),'mrp'=>$this->input->post('mrp'));
+                               $this->posnic->posnic_add_record($values,'suppliers_x_items');
+                                echo 'TRUE';
+                        }else{
+                                echo "ALREADY";
+                        }
+                    }else{
+                        echo 'FALSE';
+                    }
                 }else{
                     echo 'FALSE';
                 }
-
             }else{
                  echo 'FALSE';
-            }
+        }
     }
     function update_items(){
         if($_SESSION['customers_per']['edit']==1){
@@ -367,11 +340,7 @@ class Suppliers_x_items extends CI_Controller{
             
         }
      }
-     function deactive_supplier($guid){
-              $where=array('supplier_id'=>$guid);
-              $this->posnic->posnic_deactive_where($where);
-              redirect('suppliers_x_items');
-     }
+    
      function active_supplier($guid){
          $where=array('supplier_id'=>$guid);
               $this->posnic->posnic_active_where($where);

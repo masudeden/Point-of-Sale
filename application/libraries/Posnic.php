@@ -175,9 +175,8 @@ class Posnic{
           return $CI->posnic_model->get_two_values($value1,$value2,$table,$where,$this->CI->session->userdata['branch_id']);
     }
     function check_unique($data,$table){
-          $module=$_SESSION['posnic_module'];
           $CI=  get_instance();
-          return $CI->posnic_model->check_unique_data($data,$module,$this->CI->session->userdata['branch_id'],$table);
+          return $CI->posnic_model->check_unique_data($data,$table,$this->CI->session->userdata['branch_id']);
     }
     function check_record_unique($data,$table){
           $module=$table;
