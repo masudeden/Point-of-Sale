@@ -238,21 +238,19 @@ class posnic_model extends CI_model{
     }
     return $data;
     }
-    function posnic_join_like($table1,$table2,$like,$where,$branch){
-        
-          $this->db->select()->from($table1)->like($like);    
-          $where=$where."AND $table2.branch_id ='".$branch." '";
-          $this->db->join($table2, "$where".'','left');
-          $this->db->group_by("$table2".'.guid');
-         
-          $sql=$this->db->get();
-              $data=array();
-                    $j=0;
-               foreach ($sql->result() as $row){
-                        $data[$j] = $row;
-                                                   $j++; 
-               }
-               return $data;
+    function posnic_join_like($table1,$table2,$like,$where,$branch){        
+            $this->db->select()->from($table1)->like($like);    
+            $where=$where."AND $table2.branch_id ='".$branch." '";
+            $this->db->join($table2, "$where".'','left');
+            $this->db->group_by("$table2".'.guid');         
+            $sql=$this->db->get();
+                $data=array();
+                $j=0;
+                foreach ($sql->result() as $row){
+                    $data[$j] = $row;
+                    $j++; 
+                }
+            return $data;
     }
     function posnic_data_table_with_join($end,$start,$table1,$table2,$join_where,$branch,$order,$like,$where){
         $this->db->select()->from($table1);  
@@ -262,10 +260,9 @@ class posnic_model extends CI_model{
         }
         $this->db->or_like($like);
         $join_where=$join_where."AND $table2.branch_id ='".$branch." ' AND $table2.delete_status=0";
-        $this->db->join($table2, "$join_where".'','left');
-        
-          $query=$this->db->get();
-             return $query->result_array();
+        $this->db->join($table2, "$join_where".'','left');        
+        $query=$this->db->get();
+        return $query->result_array();
             
     }
     function data_table_with_multi_table($end,$start,$table,$join_table,$select,$join_where,$order,$like,$where,$branch){
