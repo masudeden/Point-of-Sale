@@ -1,193 +1,181 @@
-<?php 
-class Tax_commodity extends CI_Controller{
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+class Tax_commodity extends CI_Controller
+{
     function __construct() {
-                parent::__construct();
-                $this->load->library('posnic'); 
+        parent::__construct();
+          $this->load->library('posnic');              
     }
-    function index(){  
-        $this->get_tax();
+    function index(){
+       $this->get(); 
     }
-       function get_tax(){
+     function get(){
+        $this->load->view('template/app/header'); 
+        $this->load->view('header/header');         
+        $this->load->view('template/branch',$this->posnic->branches());
+        $data['active']='brands';
+        $where="'active',0";
+        $this->load->model('tax');
       
-                $config["base_url"] = base_url()."index.php/tax_commodity/get_tax";
-	        $config["total_rows"] =$this->posnic->posnic_count(); 
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;               
-                $data['count']=$this->posnic->posnic_count();                 
-	        $data["row"] = $this->posnic->posnic_limit_result($config["per_page"], $page);           
-	        $data["links"] = $this->pagination->create_links();  
-                $data['trow']=$this->posnic->posnic_module('tax_types');
-                $this->load->view('tax_commodity_list',$data);
-           
-        }
-        function tax_com(){
-            if($this->input->post('cancel')){
-                redirect('home');
-            }
-            if($this->input->post('add')){
-                 if($_SESSION['Posnic_Add']==="Add"){
-                     $data['row']=$this->posnic->posnic_module('tax_types');
-                     $data['area']=$this->posnic->posnic_module('taxes_area');
-                     $data['tax']=$this->posnic->posnic_module('taxes');
-                     $data['tax_t']=$this->posnic->posnic_module('tax_types');
-                     $this->load->view('add_new_tax_commodity',$data);
-                 }else{
-                     redirect('tax_commodity');
-                 }
-            }
-            if($this->input->post('active')){
-                $data=  $this->input->post('posnic');
-                 if($data!=""){
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_active($guid);
-                    }
-               }
-               redirect('tax_commodity');
-            }
-            if($this->input->post('deactive')){
-                $data=  $this->input->post('posnic');
-                if($data!=""){
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_deactive($guid);
-                }
-                }
-                redirect('tax_commodity');
-            }
-            if($this->input->post('delete')){
-                $data=  $this->input->post('posnic');
-                if($data!=""){
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_delete($guid);
-                }
-                }
-                redirect('tax_commodity');
-            }
-        }
-        function add_new_tax_commodity(){
-            if($this->input->post('cancel')){
-                redirect('tax_commodity');
-            }
-            if($this->input->post('save')){
-                if($_SESSION['Posnic_Add']==="Add"){
-                    $this->form_validation->set_rules('Code',$this->lang->line('tax'),'required');
-                    $this->form_validation->set_rules('tax_value',$this->lang->line('tax'),'required');
-                    $this->form_validation->set_rules('tax_area',$this->lang->line('tax_area'),'required');
-                          if ( $this->form_validation->run() !== false ) {
-                                $type=  $this->input->post('rate');
-                                    $data=array('code'=>  $this->input->post('Code'),
-                                        'tax'=>  $this->input->post('Code')
-                                        );
-                                 if($this->posnic->check_unique($data)){
-                                        $value=array('schedule'=>  $this->input->post('Schedule'),
-                                        'tax_area'=>  $this->input->post('tax_area'),
-                                        'part'=>  $this->input->post('Part'),
-                                        'code'=>  $this->input->post('Code'),
-                                        'tax'=>  $this->input->post('Code'),
-                                        'description'=>$this->input->post('Description'));
-                                        $this->posnic->posnic_add($value);
-                                        redirect('tax_commodity');
-                                }else{
-                                     echo "this tax commodity is already added";
-                                        $data['row']=$this->posnic->posnic_module('tax_types');
-                                        $data['area']=$this->posnic->posnic_module('taxes_area');
-                                        $data['tax']=$this->posnic->posnic_module('taxes');
-                                        $data['tax_t']=$this->posnic->posnic_module('tax_value');
-                                        $this->load->view('add_new_tax_commodity',$data);
-                                    }                                    
-                          }
-                         else{
-                                        $data['row']=$this->posnic->posnic_module('tax_types');
-                                        $data['area']=$this->posnic->posnic_module('taxes_area');
-                                        $data['tax']=$this->posnic->posnic_module('taxes');
-                                        $data['tax_t']=$this->posnic->posnic_module('tax_types');
-                                        $this->load->view('add_new_tax_commodity',$data);
-                            }
-                 }else{
-                     redirect('tax_commodity');
-                 }
-            }
-        }
-        function edit_tax($guid){
-            if($_SESSION['Posnic_Edit']==="Edit"){
-                 $where=array('guid'=>$guid);          
-                 $data['row']=$this->posnic->posnic_module('tax_types');
-                 $data['area']=$this->posnic->posnic_module('taxes_area');
-                 $data['tax']=$this->posnic->posnic_module('taxes');
-                 $data['tax_t']=$this->posnic->posnic_module('tax_types');
-                 $data['c_row']=$this->posnic->posnic_result($where);
-                 $this->load->view('edit_new_tax_commodity',$data);
-            }else{
-                redirect('tax_commodity');
-            }
-        }
-        function update_tax_commodity(){
-            if($this->input->post('cancel')){
-                redirect('tax_commodity');
-            }
-            if($this->input->post('save')){
-                 if($_SESSION['Posnic_Edit']==="Edit"){
-                     $guid=  $this->input->post('guid');
-                        $this->form_validation->set_rules('Code',$this->lang->line('tax'),'required');
-                    $this->form_validation->set_rules('tax_value',$this->lang->line('tax'),'required');
-                    $this->form_validation->set_rules('tax_area',$this->lang->line('tax_area'),'required');
-                          if ( $this->form_validation->run() !== false ) {
-                                $type=  $this->input->post('rate');
-                                    $data=array('code'=>  $this->input->post('Code'),
-                                        'tax'=>  $this->input->post('Code'),
-                                        'guid !='=>$guid
-                                        );
-                                 if($this->posnic->check_unique($data)){
-                                        $value=array('schedule'=>  $this->input->post('Schedule'),
-                                        'tax_area'=>  $this->input->post('tax_area'),
-                                        'part'=>  $this->input->post('Part'),
-                                        'code'=>  $this->input->post('Code'),
-                                        'tax'=>  $this->input->post('tax_value'),
-                                        'description'=>$this->input->post('Description'));
-                                        $where=array('guid'=>$guid);
-                                        $this->posnic->posnic_update($value,$where);
-                                        redirect('tax_commodity');
-                                }else{
-                                    echo "this area is already added";
-                                    $this->edit_tax($guid);
-                                    }                                    
-                          }
-                         else{
-                                    $this->edit_tax($guid);
-                            }
-                 }else{
-                     redirect('tax_commodity');
-                 }
-            }
-        }
-        function deactive_tax($guid){
-              $this->posnic->posnic_deactive($guid);
-              redirect('tax_commodity');         
-        }
-        function active_tax($guid){         
-              $this->posnic->posnic_active($guid);
-              redirect('tax_commodity');
-        }
-        function restore_tax($guid){
-          if($this->session->userdata['Posnic_User']=='admin'){
-              $this->posnic->posnic_restore($guid);
-              redirect('tax_commodity');
-          }else{
-              redirect('tax_commodity');
-          }
-        }
-        function admin_delete($guid){
-          if($_SESSION['Posnic_Delete']==="Delete"){
-              $this->posnic->posnic_delete($guid);
-              redirect('tax_commodity');
-            }else{
-             redirect('tax_commodity');
-            }
-        }
+        $data['taxes']=  $this->tax->get_taxes();
+        $data['area']=  $this->posnic->posnic_all_module_data('taxes_area');
+        $this->load->view('index',$data);
+        $this->load->view('template/app/navigation',$this->posnic->modules());
+        $this->load->view('template/app/footer');
+    }
+    function data_table(){
+        $aColumns = array( 'guid','schedule','code','schedule','description','taxes_area_name','tax_type','tax_value','active_status','active_status','guid' );	
+	          $start = "";
+		  $end="";
+		
+		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+			$start = $this->input->get_post('iDisplayStart');
+			$end=	 $this->input->get_post('iDisplayLength');              
+		}	
+		$order="";
+		if ( isset( $_GET['iSortCol_0'] ) )
+		{	
+			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+			{
+				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+				{
+					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+				}
+			}
+			
+					$order = substr_replace( $order, "", -1 );
+					
+		}
+		
+		$like = array();
+		
+			if ( $_GET['sSearch'] != "" )
+		{
+		$like =array('name'=>  $this->input->get_post('sSearch'));
+				
+			}
+                        $select='taxes.*,tax_types.type as tax_type';
+			 $join_where='taxes.type=tax_types.guid ';	 
+                         $this->load->model('tax');
+			 $rResult1 = $this->tax->data_table($end,$start,$like,$_SESSION['Bid']);
+		   
+		$iFilteredTotal =$this->posnic->data_table_count('taxes');
+		
+		$iTotal =$this->posnic->data_table_count('taxes');
+		
+		$output1 = array(
+			"sEcho" => intval($_GET['sEcho']),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iFilteredTotal,
+			"aaData" => array()
+		);
+		foreach ($rResult1 as $aRow )
+		{
+			$row = array();
+			for ( $i=0 ; $i<count($aColumns) ; $i++ )
+			{
+				if ( $aColumns[$i] == "id" )
+				{
+					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
+				}
+				else if ( $aColumns[$i] != ' ' )
+				{
+					/* General output */
+					$row[] = $aRow[$aColumns[$i]];
+				}
+				
+			}
+				
+		$output1['aaData'][] = $row;
+		}
+                
+		
+		   echo json_encode($output1);
+    }
    
-    
+    function edit_tax_commodity($guid){
+        if($_SESSION['tax_commodity_per']['edit']==1){
+            $this->load->model('tax');
+            $data=  $this->tax->edit_tax_commodity($guid);
+            echo json_encode($data);
+        }else{
+                echo 'FALSE';
+        }
+    }
+   
+    function update_tax_commodity(){
+            if($_SESSION['tax_commodity_per']['edit']==1){
+                $this->form_validation->set_rules("guid",$this->lang->line('guid'),'required'); 
+                $this->form_validation->set_rules("code",$this->lang->line('code'),'required'); 
+                $this->form_validation->set_rules("schedule",$this->lang->line('schedule'),'required'); 
+                $this->form_validation->set_rules("part",$this->lang->line('part'),'required'); 
+                $this->form_validation->set_rules("tax_area",$this->lang->line('tax_area'),'required'); 
+                $this->form_validation->set_rules("taxes",$this->lang->line('taxes'),'required'); 
+                if ( $this->form_validation->run() !== false ) { 
+                                
+                      $where=array('guid !='=>$this->input->post('guid'),'code'=>$this->input->post('code'),'tax'=>$this->input->post('taxes'),'part'=>$this->input->post('part'));
+                if($this->posnic->check_record_unique($where,'tax_commodity')){
+                    $value=array('schedule'=>  $this->input->post('schedule'),'code'=>$this->input->post('code'),'tax'=>$this->input->post('taxes'),'part'=>$this->input->post('part'),'tax_area'=>$this->input->post('tax_area'),'description'=>$this->input->post('description'));
+                    $update_where=array('guid'=>$this->input->post('guid'));
+                    $this->posnic->posnic_update_record($value,$update_where,'tax_commodity');
+                    echo 'TRUE';
+                }else{
+                        echo "ALREADY";
+                }
+                }else{
+                    echo "FALSE";
+                }
+               	             
+           }else{
+               echo "NOOP";
+           }
+    }
+        function add_tax_commodity(){
+            if($_SESSION['tax_commodity_per']['add']==1){
+         
+                $this->form_validation->set_rules("code",$this->lang->line('code'),'required'); 
+                $this->form_validation->set_rules("schedule",$this->lang->line('schedule'),'required'); 
+                $this->form_validation->set_rules("part",$this->lang->line('part'),'required'); 
+                $this->form_validation->set_rules("tax_area",$this->lang->line('tax_area'),'required'); 
+                $this->form_validation->set_rules("taxes",$this->lang->line('taxes'),'required'); 
+                if ($this->form_validation->run() !== false ) { 
+                                    
+                      $where=array('code'=>$this->input->post('code'),'tax'=>$this->input->post('taxes'),'part'=>$this->input->post('part'));
+                if($this->posnic->check_record_unique($where,'tax_commodity')){
+                    $value=array('schedule'=>  $this->input->post('schedule'),'code'=>$this->input->post('code'),'tax'=>$this->input->post('taxes'),'part'=>$this->input->post('part'),'tax_area'=>$this->input->post('tax_area'),'description'=>$this->input->post('description'));
+                    $this->posnic->posnic_add_record($value,'tax_commodity');
+                    echo 'TRUE';
+                }else{
+                        echo "ALREADY";
+                }
+                }else{
+                    echo "FALSE";
+                }
+
+                	             
+           }else{
+               echo "NOOP";
+           }
+         
+    }
+   
+    function active(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_active($id,'tax_commodity'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
+    function deactive(){
+            $id=  $this->input->post('guid');
+            $report= $this->posnic->posnic_module_deactive($id,'tax_commodity'); 
+            if (!$report['error']) {
+                echo 'TRUE';
+              } else {
+                echo 'FALSE';
+              }
+    }
 }
 ?>
-
-

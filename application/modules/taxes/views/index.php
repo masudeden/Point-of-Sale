@@ -109,11 +109,11 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_taxes" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
-                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
-                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
-                        <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
-                        <a href="javascript:posnic_taxes_lists()" class="btn btn-success" id="taxes_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('taxes') ?></a>
+                        <a href="javascript:posnic_add_new()" id="posnic_add_taxes" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
+                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-default" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
+                        <a href="javascript:posnic_group_active()" class="btn btn-default" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
+                        <a href="javascript:posnic_delete()" class="btn btn-default" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
+                        <a href="javascript:posnic_taxes_lists()" class="btn btn-default" id="taxes_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('taxes') ?></a>
                 </div>
             </div>
     </div>
@@ -211,8 +211,8 @@ function reload_update_user(){
                     <div class="row">
                                 <div class="col-lg-4"></div>
                                   <div class="col col-lg-4 text-center"><br><br>
-                                      <button id="add_new_taxes"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
-                                      <a href="javascript:clear_add_taxes()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
+                                      <button id="add_new_taxes"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_taxes()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
                                   </div>
                               </div>
                 </div>
@@ -279,8 +279,8 @@ function reload_update_user(){
                    <div class="row">
                         <div class="col-lg-4"></div>
                       <div class="col col-lg-4 text-center"><br><br>
-                          <button id="update_taxes"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
-                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
+                          <button id="update_taxes"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
+                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
                       </div>
                   </div>
                 </div>

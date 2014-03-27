@@ -205,11 +205,11 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_suppliers" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
-                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
+                        <a href="javascript:posnic_add_new()" id="posnic_add_suppliers" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
+                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-default" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
                    
                        
-                        <a href="javascript:posnic_suppliers_lists()" class="btn btn-success" id="suppliers_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('suppliers') ?></a>
+                        <a href="javascript:posnic_suppliers_lists()" class="btn btn-default" id="suppliers_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('suppliers') ?></a>
                 </div>
             </div>
     </div>
@@ -664,13 +664,13 @@ function clear_inputs(){
                                                </td>
                                                <td>  
                                                     <label for="mrp" ><?php echo $this->lang->line('save') ?></label>
-                                                    <a class="btn btn-success" href="javascript:copy_items()"><i class="icon icon-save"></i></a>
+                                                    <a class="btn btn-default" href="javascript:copy_items()"><i class="icon icon-save"></i></a>
                                                   
                                                   </td>
                                                <td>  
                                                     <label for="mrp" ><?php echo $this->lang->line('clear') ?></label>
                                                   
-                                                   <a class="btn btn-warning pull-right" href="javascript:clear_inputs()"><i class="icon icon-refresh"></i></a>
+                                                   <a class="btn btn-default pull-right" href="javascript:clear_inputs()"><i class="icon icon-refresh"></i></a>
                                                  </td>
                                                </tr>
                                                
@@ -688,9 +688,9 @@ function clear_inputs(){
             <div class="row">
                 <div class="col col-lg-7">
                       
-                        <a href="javascript:posnic_group_item_deactive()" id="1active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
-                        <a href="javascript:posnic_group_item_active()" class="btn btn-success" id="1deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
-                        <a href="javascript:posnic_item_delete()" class="btn btn-danger" id="1delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
+                        <a href="javascript:posnic_group_item_deactive()" id="1active" class="btn btn-default" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
+                        <a href="javascript:posnic_group_item_active()" class="btn btn-default" id="1deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
+                        <a href="javascript:posnic_item_delete()" class="btn btn-default" id="1delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
                         
                 </div>
             </div>
