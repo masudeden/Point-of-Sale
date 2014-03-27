@@ -266,7 +266,7 @@ class posnic_model extends CI_model{
             
     }
     function data_table_with_multi_table($end,$start,$table,$join_table,$select,$join_where,$order,$like,$where,$branch){
-        $this->db->select($select)->from($table)->where($table.'.active_status',1)->where($table.'.delete_status',1);  
+        $this->db->select($select)->from($table)->where($table.'.delete_status',0);  
         $this->db->limit($end,$start); 
         if($where!=null){
         $this->db->where($where);
