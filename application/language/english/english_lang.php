@@ -502,6 +502,9 @@ $lang['credit_days']='Credit Days';
   $lang['user_not_active']='User Not Active';
   $lang['user_has_nobranch']='User Does not have any active branch';
   $lang['user_deleted']='User deleted';
+  //commodity_code
+  $lang['commodity_code']='Commodity Code';
+  $lang['commodity_part']='Part';
 
 
   

@@ -816,11 +816,11 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_goods_receiving_note" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
+                        <a href="javascript:posnic_add_new()" id="posnic_add_goods_receiving_note" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
                       
-                        <a href="javascript:posnic_group_approve()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
-                        <a href="javascript:grn_group_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
-                        <a href="javascript:posnic_goods_receiving_note_lists()" class="btn btn-success" id="goods_receiving_note_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('goods_receiving_note') ?></a>
+                        <a href="javascript:posnic_group_approve()" class="btn btn-default" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
+                        <a href="javascript:grn_group_delete()" class="btn btn-default" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
+                        <a href="javascript:posnic_goods_receiving_note_lists()" class="btn btn-default" id="goods_receiving_note_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('goods_receiving_note') ?></a>
                         
                 </div>
             </div>
@@ -1167,21 +1167,21 @@ function reload_update_user(){
                                           <div class="col col-sm-3" style="padding-top: 50px" >
                                               <div class="form_sep " id="save_button" style="padding-left: 50px">
                                                        <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:save_new_grn()" class="btn btn-success"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
+                                                       <a href="javascript:save_new_grn()" class="btn btn-default"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_button" style=" margin-top: 0 !important;padding-left: 50px">
                                                        <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:update_order()" class="btn btn-success"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
+                                                       <a href="javascript:update_order()" class="btn btn-default"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
                                                   </div>
                                                </div>
                                           <div class="col col-sm-3" style="padding-top: 50px"  >
                                                    <div class="form_sep " id="save_clear">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_add_goods_receiving_note()" class="btn btn-warning"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_add_goods_receiving_note()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_clear" style="margin-top:0 !important">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_update_goods_receiving_note()" class="btn btn-warning"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_update_goods_receiving_note()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                                </div>
                                          

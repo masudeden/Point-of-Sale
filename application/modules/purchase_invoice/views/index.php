@@ -685,9 +685,9 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_purchase_invoice" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew')." ".$this->lang->line('invoice') ?></a>  
+                        <a href="javascript:posnic_add_new()" id="posnic_add_purchase_invoice" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew')." ".$this->lang->line('invoice') ?></a>  
                       
-                        <a href="javascript:posnic_purchase_invoice_lists()" class="btn btn-success" id="purchase_invoice_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('purchase_invoice') ?></a>
+                        <a href="javascript:posnic_purchase_invoice_lists()" class="btn btn-default" id="purchase_invoice_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('purchase_invoice') ?></a>
                         
                 </div>
             </div>
@@ -1030,21 +1030,21 @@ function reload_update_user(){
                                           <div class="col col-sm-3" style="padding-top: 50px" >
                                               <div class="form_sep " id="save_button" style="padding-left: 50px">
                                                        <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:save_new_grn()" class="btn btn-success"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
+                                                       <a href="javascript:save_new_grn()" class="btn btn-default"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_button" style=" margin-top: 0 !important;padding-left: 50px">
                                                        <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:update_order()" class="btn btn-success"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
+                                                       <a href="javascript:update_order()" class="btn btn-default"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
                                                   </div>
                                                </div>
                                           <div class="col col-sm-3" style="padding-top: 50px"  >
                                                    <div class="form_sep " id="save_clear">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_add_purchase_invoice()" class="btn btn-warning"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_add_purchase_invoice()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_clear" style="margin-top:0 !important">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_update_purchase_invoice()" class="btn btn-warning"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_update_purchase_invoice()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                                </div>
                                          

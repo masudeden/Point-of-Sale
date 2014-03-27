@@ -55,7 +55,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                                                                if(oObj.aData[8]==1){
+                                                                if(oObj.aData[9]==1){
                    							return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit'); ?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete') ?>'><i class='icon-trash'></i></span> </a>";
 								}else{
                                                                         return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit') ?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php  echo $this->lang->line('delete'); ?>'><i class='icon-trash'></i></span> </a>";
@@ -156,8 +156,12 @@
                                  $('#deactive').attr("disabled", "disabled");
                                  $('#tax_commodity_lists').removeAttr("disabled");
                                  $('#parsley_reg #guid').val(data[0]['guid']);
-                                 $('#parsley_reg #tax_value').val(data[0]['value']);
-                                 $('#parsley_reg #tax_commodity_type').val(data[0]['type']);
+                                 $('#parsley_reg #code').val(data[0]['code']);
+                                 $('#parsley_reg #schedule').val(data[0]['schedule']);
+                                 $('#parsley_reg #part').val(data[0]['part']);
+                                 $('#parsley_reg #tax_area').val(data[0]['tax_area']);
+                                 $('#parsley_reg #tax_commodity_type').val(data[0]['tax_guid']);
+                                 $('#parsley_reg #description').val(data[0]['description']);
                                
                              } 
                            });

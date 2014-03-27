@@ -25,18 +25,19 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_tax_commodity').click(function() { 
-                <?php if($_SESSION['tax_commodity_per']['add']==1){ ?>
+                <?php if($_SESSION['tax_commodity_per']['edit']==1){ ?>
                 var inputs = $('#add_tax_commodity').serialize();
+                if($('#add_tax_commodity').valid()){
                       $.ajax ({
                             url: "<?php echo base_url('index.php/tax_commodity/add_tax_commodity')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                 if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('tax_commodity').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
-                                       $("#dt_table_tools").dataTable().fnDraw();
-                                       $("#add_tax_commodity").trigger('reset');
-                                       posnic_tax_commodity_lists();
+                                    $.bootstrapGrowl('<?php echo $this->lang->line('tax_commodity').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
+                                    $("#dt_table_tools").dataTable().fnDraw();
+                                    $("#add_tax_commodity").trigger('reset');
+                                    posnic_tax_commodity_lists();
                                     }else  if(response['responseText']=='ALREADY'){
                                            $.bootstrapGrowl($('#tax_commodity_name').val()+' <?php echo $this->lang->line('tax_commodity').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
@@ -45,13 +46,17 @@
                                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('tax_commodity');?>', { type: "error" });                           
                                     }
                        }
-                });<?php }else{ ?>
+                });
+                }else{
+                      $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                }<?php }else{ ?>
                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('tax_commodity');?>', { type: "error" });                       
                     <?php }?>
         });
          $('#update_tax_commodity').click(function() { 
                 <?php if($_SESSION['tax_commodity_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
+                if($('#parsley_reg').valid()){
                       $.ajax ({
                             url: "<?php echo base_url('index.php/tax_commodity/update_tax_commodity')?>",
                             data: inputs,
@@ -70,7 +75,9 @@
                                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('tax_commodity');?>', { type: "error" });                           
                                     }
                        }
-                 });
+                 }); }else{
+                       $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                 }
                  <?php }else{ ?>
                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('tax_commodity');?>', { type: "error" });                        
                     <?php }?>
@@ -111,11 +118,11 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_tax_commodity" class="btn btn-success" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
-                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-warning" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
-                        <a href="javascript:posnic_group_active()" class="btn btn-success" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
-                        <a href="javascript:posnic_delete()" class="btn btn-danger" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
-                        <a href="javascript:posnic_tax_commodity_lists()" class="btn btn-success" id="tax_commodity_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('tax_commodity') ?></a>
+                        <a href="javascript:posnic_add_new()" id="posnic_add_tax_commodity" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
+                        <a href="javascript:posnic_group_deactive()" id="active" class="btn btn-default" ><i class="icon icon-pause"></i> <?php echo $this->lang->line('deactive') ?></a>
+                        <a href="javascript:posnic_group_active()" class="btn btn-default" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('active') ?></a>
+                        <a href="javascript:posnic_delete()" class="btn btn-default" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
+                        <a href="javascript:posnic_tax_commodity_lists()" class="btn btn-default" id="tax_commodity_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('tax_commodity') ?></a>
                 </div>
             </div>
     </div>
@@ -165,8 +172,8 @@ function reload_update_user(){
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                  <div class="row">
-                     <div class="col-lg-4"></div>
-                     <div class="col-lg-4">
+                     <div class="col-lg-2"></div>
+                     <div class="col-lg-8">
                           <div class="panel panel-default">
                                <div class="panel-heading">
                                      <h4 class="panel-title"><?php echo $this->lang->line('tax_commodity') ?></h4>   
@@ -174,17 +181,49 @@ function reload_update_user(){
                                </div>
                               <br>
                               <div class="row">
-                                       <div class="col col-lg-12" >
+                                       <div class="col col-lg-4" >
                                            <div class="row">
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="tax_commodity_name" class="req"><?php echo $this->lang->line('tax_value') ?></label>                                                                                                       
-                                                           <?php $tax_value=array('name'=>'tax_value',
+                                                         <label for="code" class="req"><?php echo $this->lang->line('commodity_code') ?></label>                                                                                                       
+                                                           <?php $code=array('name'=>'code',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'tax_value',
-                                                                                    'value'=>set_value('tax_value'));
-                                                           echo form_input($tax_value)?> 
+                                                                                    'id'=>'code',
+                                                                                    'value'=>set_value('code'));
+                                                           echo form_input($code)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="schedule" class="req"><?php echo $this->lang->line('schedule') ?></label>                                                                                                       
+                                                           <?php $schedule=array('name'=>'schedule',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'schedule',
+                                                                                    'value'=>set_value('schedule'));
+                                                           echo form_input($schedule)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="part" class="req"><?php echo $this->lang->line('commodity_part') ?></label>                                                                                                       
+                                                           <?php $part=array('name'=>'part',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'part',
+                                                                                    'value'=>set_value('part'));
+                                                           echo form_input($part)?> 
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -192,18 +231,51 @@ function reload_update_user(){
                                         </div>                              
                               </div>
                               <div class="row">
-                                       <div class="col col-lg-12" >
+                                       <div class="col col-lg-4" >
                                            <div class="row">
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="tax_commodity_type" class="req"><?php echo $this->lang->line('tax_commodity_type') ?></label>                                                                                                       
-                                                         <select name="tax_commodity_type" id="tax_commodity_type" class="form-control">
+                                                         <label for="tax_area" class="req"><?php echo $this->lang->line('tax_area') ?></label>                                                                                                       
+                                                         <select name="tax_area" id="tax_commodity_type" class="required form-control">
                                                           
-                                                            <?php foreach ($type as $row){ ?>
-                                                             <option value="<?php echo $row->guid ?>"><?php echo $row->type ?></option>
+                                                            <?php foreach ($area as $row){ ?>
+                                                             <option value="<?php echo $row->guid ?>"><?php echo $row->name ?></option>
                                                              <?php } ?>
                                                          </select>
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="tax" class="req"><?php echo $this->lang->line('taxes') ?></label>                                                                                                       
+                                                         <select name="taxes"  id="tax_commodity_type" class="required form-control">
+                                                          
+                                                            <?php foreach ($taxes as $row){ ?>
+                                                             <option value="<?php echo $row->guid ?>"><?php echo $row->type." : ".$row->value ?></option>
+                                                             <?php } ?>
+                                                         </select>
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="description" ><?php echo $this->lang->line('description') ?></label>                                                                                                       
+                                                         <?php $description=array('name'=>'description',
+                                                                           'class'=>'form-control',
+                                                                           'id'=>'description',
+                                                                           'rows'=>2 );
+                                                         echo form_textarea($description)?>
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -217,8 +289,8 @@ function reload_update_user(){
                     <div class="row">
                                 <div class="col-lg-4"></div>
                                   <div class="col col-lg-4 text-center"><br><br>
-                                      <button id="add_new_tax_commodity"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
-                                      <a href="javascript:clear_add_tax_commodity()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
+                                      <button id="add_new_tax_commodity"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_tax_commodity()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
                                   </div>
                               </div>
                 </div>
@@ -233,26 +305,58 @@ function reload_update_user(){
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                 <div class="row">
-                     <div class="col-lg-4"></div>
-                     <div class="col-lg-4">
+                     <div class="col-lg-2"></div>
+                     <div class="col-lg-8">
                           <div class="panel panel-default">
                                <div class="panel-heading">
                                     <h4 class="panel-title"><?php echo $this->lang->line('tax_commodity') ?></h4>  
                                      <input type="hidden" name="guid" id="guid" >
                                </div>
                               <br>
-                              <div class="row">
-                                       <div class="col col-lg-12" >
+                               <div class="row">
+                                       <div class="col col-lg-4" >
                                            <div class="row">
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="tax_value" class="req"><?php echo $this->lang->line('tax_value') ?></label>                                                                                                       
-                                                           <?php $tax_value=array('name'=>'tax_value',
+                                                         <label for="code" class="req"><?php echo $this->lang->line('commodity_code') ?></label>                                                                                                       
+                                                           <?php $code=array('name'=>'code',
                                                                                     'class'=>'required form-control',
-                                                                                    'id'=>'tax_value',
-                                                                                    'value'=>set_value('tax_value'));
-                                                           echo form_input($tax_value)?> 
+                                                                                    'id'=>'code',
+                                                                                    'value'=>set_value('code'));
+                                                           echo form_input($code)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="schedule" class="req"><?php echo $this->lang->line('schedule') ?></label>                                                                                                       
+                                                           <?php $schedule=array('name'=>'schedule',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'schedule',
+                                                                                    'value'=>set_value('schedule'));
+                                                           echo form_input($schedule)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="part" class="req"><?php echo $this->lang->line('commodity_part') ?></label>                                                                                                       
+                                                           <?php $part=array('name'=>'part',
+                                                                                    'class'=>'required form-control',
+                                                                                    'id'=>'part',
+                                                                                    'value'=>set_value('part'));
+                                                           echo form_input($part)?> 
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -260,18 +364,51 @@ function reload_update_user(){
                                         </div>                              
                               </div>
                               <div class="row">
-                                       <div class="col col-lg-12" >
+                                       <div class="col col-lg-4" >
                                            <div class="row">
                                                <div class="col col-lg-1"></div>
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
-                                                         <label for="tax_commodity_type" class="req"><?php echo $this->lang->line('tax_commodity_type') ?></label>                                                                                                       
-                                                         <select name="tax_commodity_type" id="tax_commodity_type" class="form-control">
+                                                         <label for="tax_area" class="req"><?php echo $this->lang->line('tax_area') ?></label>                                                                                                       
+                                                         <select name="tax_area" id="tax_area" class="required form-control">
                                                           
-                                                            <?php foreach ($type as $row){ ?>
-                                                             <option value="<?php echo $row->guid ?>"><?php echo $row->type ?></option>
+                                                            <?php foreach ($area as $row){ ?>
+                                                             <option value="<?php echo $row->guid ?>"><?php echo $row->name ?></option>
                                                              <?php } ?>
                                                          </select>
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="tax" class="req"><?php echo $this->lang->line('taxes') ?></label>                                                                                                       
+                                                         <select name="taxes"  id="tax_commodity_type" class="required form-control">
+                                                          
+                                                            <?php foreach ($taxes as $row){ ?>
+                                                             <option value="<?php echo $row->guid ?>"><?php echo $row->type." : ".$row->value ?></option>
+                                                             <?php } ?>
+                                                         </select>
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-4" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="description" ><?php echo $this->lang->line('description') ?></label>                                                                                                       
+                                                         <?php $description=array('name'=>'description',
+                                                                           'class'=>'form-control',
+                                                                           'id'=>'description',
+                                                                           'rows'=>2 );
+                                                         echo form_textarea($description)?>
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -285,8 +422,8 @@ function reload_update_user(){
                    <div class="row">
                         <div class="col-lg-4"></div>
                       <div class="col col-lg-4 text-center"><br><br>
-                          <button id="update_tax_commodity"  type="submit" name="save" class="btn btn-success"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
-                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-warning"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
+                          <button id="update_tax_commodity"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
+                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
                       </div>
                   </div>
                 </div>
