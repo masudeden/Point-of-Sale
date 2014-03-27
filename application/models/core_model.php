@@ -88,14 +88,11 @@ class Core_model extends CI_Model{
             
     }
     function items_data_table($end,$start,$order,$like,$branch){
-                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch)->where('items.active_status',1)->where('items.delete_status',1);
+                $this->db->select('items.* ,items_category.guid as c_guid,items_category.category_name as c_name,brands.guid as b_guid,brands.name as b_name,items_department.department_name as d_name')->from('items')->where('items.branch_id',$branch)->where('items.delete_status',0);
                 $this->db->join('items_category', 'items.category_id=items_category.guid','left');
                 $this->db->join('brands', 'items.brand_id=brands.guid','left');
                 $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
-               // $this->db->join('supplier', 'stock.supplier=supplier.id','left');
                 $this->db->limit($end,$start); 
-               //$this->db->order_by($order);
-               // $this->db->like('stage',$stage);
                 $this->db->or_like($like);     
                 $query=$this->db->get();
                 return $query->result_array(); 

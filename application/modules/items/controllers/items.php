@@ -18,7 +18,7 @@ class Items extends CI_Controller{
         $this->load->view('template/app/footer');
     }
         function data_table(){
-        $aColumns = array( 'guid','name','code','name','location','b_name','c_name','d_name','guid','active' );	
+        $aColumns = array( 'guid','name','code','name','location','b_name','c_name','d_name','guid','active_status' );	
 	$start = "";
 			$end="";
 		
@@ -84,50 +84,7 @@ class Items extends CI_Controller{
 		
 		   echo json_encode($output1);
     }
-    function item_magement(){
-       if($this->input->post('add')){
-             if($_SESSION['Posnic_Add']==="Add"){
-                    $data['brands']=$this->posnic->posnic_module('brands');
-                    $data['taxes']=$this->posnic->posnic_module('taxes');
-                    $data['area']=  $this->posnic->posnic_module('taxes_area');
-                    $data['crow']=$this->posnic->posnic_module('items_category');
-                    $data['tax_type']=  $this->posnic->posnic_module('tax_types');
-                    $data['srow']=$this->posnic->posnic_module('suppliers');                   
-                    $this->load->view('add_item',$data);
-            }
-     }
-            if($this->input->post('cancel')){
-                redirect('home');
-            }
-            if($this->input->post('active')){               
-                        $data = $this->input->post('posnic'); 
-                            if(!$data==''){        
-                            foreach( $data as $key => $value){  
-                                $this->posnic->posnic_active($value);
-                            }
-                            }
-                 redirect('items');
-            }
-            if($this->input->post('deactive')){
-                 $data = $this->input->post('posnic'); 
-                            if(!$data==''){              
-                            foreach( $data as $key => $value){  
-                                $this->posnic->posnic_deactive($value);
-                            }
-                            }
-                 redirect('items');
-             
-            }
-            if($this->input->post('delete')){
-                 $data = $this->input->post('posnic'); 
-                            if(!$data==''){ 
-                            foreach( $data as $key => $value){  
-                                $this->posnic->posnic_delete($value);
-                            }
-                            }
-                 redirect('items'); 
-            }
-    }
+   
     function active(){
             $id=  $this->input->post('guid');
             $report= $this->posnic->posnic_module_active($id,'items'); 
