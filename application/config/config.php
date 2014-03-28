@@ -14,7 +14,7 @@
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://localhost/Point-of-Sale/';
+$config['base_url']	= 'http://localhost/posnic/';
 
 /*
 |--------------------------------------------------------------------------
