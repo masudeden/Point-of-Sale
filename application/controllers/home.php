@@ -4,7 +4,7 @@ class Home extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-         session_start();
+       
         $this->load->helper('form');
         $this->load->library('poslanguage');                                       
         $this->poslanguage->set_language();               
@@ -14,7 +14,8 @@ class Home extends CI_Controller
         if(!isset($this->session->userdata['guid'])){
             redirect('userlogin');            
         }
-        $this->pos_home();        
+       $this->pos_home();   
+         
     }
 	    
     function pos_home(){             

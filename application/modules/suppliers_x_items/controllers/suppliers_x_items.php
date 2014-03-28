@@ -172,7 +172,7 @@ class Suppliers_x_items extends CI_Controller{
     
             
     function add_items(){
-        if($_SESSION['customers_per']['add']==1){
+        if($this->session->userdata['customers_per']['add']==1){
               if($this->input->post('supplier')){
                     $this->form_validation->set_rules('item', 'item', 'required');
                     $this->form_validation->set_rules('cost', 'cost', 'required');
@@ -200,7 +200,7 @@ class Suppliers_x_items extends CI_Controller{
         }
     }
     function update_items(){
-        if($_SESSION['customers_per']['edit']==1){
+        if($this->session->userdata['customers_per']['edit']==1){
               if($this->input->post('guid')){
                  $this->form_validation->set_rules('item', 'item', 'required');
                         $this->form_validation->set_rules('cost', 'cost', 'required');
@@ -235,9 +235,9 @@ class Suppliers_x_items extends CI_Controller{
   
     function save_items(){
         if($this->input->post('save')){       
-        if($_SESSION['Posnic_Add']==="Add"){
+        if($this->session->userdata['Posnic_Add']==="Add"){
               $sguid=  $this->input->post('s_guid');
-             if($_SESSION['Posnic_Delete']==="Delete"){
+             if($this->session->userdata['Posnic_Delete']==="Delete"){
                 $where=array('supplier_id'=>$sguid);
                 $data=$this->posnic->posnic_array_module_where('suppliers_x_items',$where);
             
@@ -378,7 +378,7 @@ class Suppliers_x_items extends CI_Controller{
         echo json_encode($data);
     }
     function item_delete(){
-      if($_SESSION['suppliers_x_items_per']['delete']==1){
+      if($this->session->userdata['suppliers_x_items_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'suppliers_x_items');

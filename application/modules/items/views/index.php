@@ -526,7 +526,7 @@
        
         
         $('#add_new_item').click(function() { 
-                <?php if($_SESSION['items_per']['add']==1){ ?>
+                <?php if($this->session->userdata['items_per']['add']==1){ ?>
                 var inputs = $('#add_item').serialize();
                 if($('#add_item').valid()){
                       $.ajax ({
@@ -554,7 +554,7 @@
                     <?php }?>
         });
          $('#update_items').click(function() { 
-                <?php if($_SESSION['items_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['items_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                  if($('#parsley_reg').valid()){
                       $.ajax ({
@@ -585,7 +585,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['items_per']['add']==1){ ?>
+    <?php if($this->session->userdata['items_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_item_form').show('slow');
       $('#delete').attr("disabled", "disabled");

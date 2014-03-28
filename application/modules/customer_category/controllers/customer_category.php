@@ -87,7 +87,7 @@ class Customer_category extends CI_Controller
    
    
     function update_customer_category(){
-           if($_SESSION['customer_category_per']['edit']==1){
+           if($this->session->userdata['customer_category_per']['edit']==1){
            if($this->input->post('customer_category')){
                 $this->form_validation->set_rules('customer_category',$this->lang->line('customer_category'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -132,7 +132,7 @@ class Customer_category extends CI_Controller
               }
     }
     function edit_customer_category($guid){
-        if($_SESSION['customer_category_per']['edit']==1){
+        if($this->session->userdata['customer_category_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'customer_category');
         echo json_encode($data);
         }else{
@@ -142,7 +142,7 @@ class Customer_category extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['customer_category_per']['delete']==1){
+        if($this->session->userdata['customer_category_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'customer_category');
@@ -158,7 +158,7 @@ class Customer_category extends CI_Controller
 
     
     function add_customer_category(){
-            if($_SESSION['customer_category_per']['add']==1){
+            if($this->session->userdata['customer_category_per']['add']==1){
            if($this->input->post('customer_category')){
                 $this->form_validation->set_rules("customer_category",$this->lang->line('customer_category'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 

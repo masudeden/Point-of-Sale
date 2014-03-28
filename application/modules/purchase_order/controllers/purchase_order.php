@@ -98,7 +98,7 @@ class Purchase_order extends CI_Controller{
                 }
     }
     function  set_seleted_item_suppier($suid){
-        $_SESSION['supplier_guid']=$suid;
+        $this->session->userdata['supplier_guid']=$suid;
     }
             function get_selected_supplier()
     {       
@@ -127,7 +127,7 @@ class Purchase_order extends CI_Controller{
        $q= addslashes($_REQUEST['term']);
                 $like=array('code'=>$q);    
                
-                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$_SESSION['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
+                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$this->session->userdata['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
                 $data=$this->posnic-> posnic_join_like('suppliers_x_items','items',$like,$where);
         echo json_encode($data);
     }   
@@ -148,7 +148,7 @@ class Purchase_order extends CI_Controller{
     
   
 function save(){      
-     if($_SESSION['purchase_order_per']['add']==1){
+     if($this->session->userdata['purchase_order_per']['add']==1){
         $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
         $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
         $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
@@ -207,7 +207,7 @@ function save(){
     }
     function update(){
             if(isset($_POST['purchase_order_guid'])){
-      if($_SESSION['purchase_order_per']['edit']==1){
+      if($this->session->userdata['purchase_order_per']['edit']==1){
         $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
         $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
         $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
@@ -313,7 +313,7 @@ function search_supplier(){
         
 }
 function delete(){
-   if($_SESSION['brands_per']['delete']==1){
+   if($this->session->userdata['brands_per']['delete']==1){
             if($this->input->post('guid')){
                 $this->load->model('purchase');
                 $guid=$this->input->post('guid');
@@ -333,7 +333,7 @@ function delete(){
     
 }
 function  get_purchase_order($guid){
-    if($_SESSION['purchase_order_per']['edit']==1){
+    if($this->session->userdata['purchase_order_per']['edit']==1){
     $this->load->model('purchase');
     $data=  $this->purchase->get_purchase_order($guid);
     echo json_encode($data);
@@ -341,7 +341,7 @@ function  get_purchase_order($guid){
 }
 
 function purchase_order_approve(){
-     if($_SESSION['purchase_order_per']['approve']==1){
+     if($this->session->userdata['purchase_order_per']['approve']==1){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
             $this->purchase->deactive_order($id);

@@ -114,7 +114,7 @@ class Items extends CI_Controller{
           }
     }
     function delete($guid){
-         if($_SESSION['brands_per']['delete']==1){
+         if($this->session->userdata['brands_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');             
               $this->posnic->posnic_delete($guid,'items');
@@ -128,7 +128,7 @@ class Items extends CI_Controller{
     function add_new_item(){
         
         if($this->input->post('cost')){
-              if($_SESSION['items_per']['add']===1){
+              if($this->session->userdata['items_per']['add']===1){
                   
                             $this->form_validation->set_rules("name",$this->lang->line('name'),"required");
                             $this->form_validation->set_rules("sku",$this->lang->line('sku'),'required');                           
@@ -187,7 +187,7 @@ class Items extends CI_Controller{
     
   
     function edit_items($guid){
-        if($_SESSION['brands_per']['edit']==1){
+        if($this->session->userdata['brands_per']['edit']==1){
         $this->load->model('core_model')		   ;
 	$data = $this->core_model->get_items_details_for_update($this->session->userdata['branch_id'],$guid);
         echo json_encode($data);
@@ -197,7 +197,7 @@ class Items extends CI_Controller{
     }
     function update_items(){
        
-        if($_SESSION['items_per']['edit']==1){
+        if($this->session->userdata['items_per']['edit']==1){
              $guid=$this->input->post('guid');
                           $this->form_validation->set_rules("name",$this->lang->line('name'),"required");
                             $this->form_validation->set_rules("sku",$this->lang->line('sku'),'required');                           

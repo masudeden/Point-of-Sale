@@ -92,7 +92,7 @@ class Items_setting extends CI_Controller{
     }
     
     function set_items_setting(){
-        if($_SESSION['items_setting_per']['set']==1){
+        if($this->session->userdata['items_setting_per']['set']==1){
             $guid=$this->input->post('guid');
                $this->form_validation->set_rules("min_qty",$this->lang->line('min_qty'),'max_length[15]|regex_match[/^[0-9]+$/]|xss_clean');                                             
                $this->form_validation->set_rules("max_qty",$this->lang->line('max_qty'),'max_length[15]|regex_match[/^[0-9]+$/]|xss_clean');                           

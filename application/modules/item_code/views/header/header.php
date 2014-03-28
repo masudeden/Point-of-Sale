@@ -69,7 +69,7 @@
           
            function set_item_code(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['item_code_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['item_code_per']['edit']==1){ ?>
                                                                
                             $.ajax({                                      
                               url: "<?php echo base_url() ?>index.php/items/edit_items/"+guid,                     

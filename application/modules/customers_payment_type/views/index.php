@@ -23,7 +23,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_customers_payment_type').click(function() { 
-                <?php if($_SESSION['customers_payment_type_per']['add']==1){ ?>
+                <?php if($this->session->userdata['customers_payment_type_per']['add']==1){ ?>
                 var inputs = $('#add_customers_payment_type').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/customers_payment_type/add_customers_payment_type')?>",
@@ -48,7 +48,7 @@
                     <?php }?>
         });
          $('#update_customers_payment_type').click(function() { 
-                <?php if($_SESSION['customers_payment_type_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['customers_payment_type_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/customers_payment_type/update_customers_payment_type')?>",
@@ -75,7 +75,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['customers_payment_type_per']['add']==1){ ?>
+    <?php if($this->session->userdata['customers_payment_type_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_customers_payment_type_form').show('slow');
       $('#delete').attr("disabled", "disabled");

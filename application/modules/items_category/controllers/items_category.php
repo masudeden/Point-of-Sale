@@ -74,7 +74,7 @@ class Items_category extends CI_Controller
    
    
     function update_items_category(){
-           if($_SESSION['items_category_per']['edit']==1){
+           if($this->session->userdata['items_category_per']['edit']==1){
            if($this->input->post('items_category_name')){
                 $this->form_validation->set_rules("items_category_name",$this->lang->line('items_category_name'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -126,7 +126,7 @@ class Items_category extends CI_Controller
               }
     }
     function edit_items_category($guid){
-        if($_SESSION['items_category_per']['edit']==1){
+        if($this->session->userdata['items_category_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'items_category');
         echo json_encode($data);
         }else{
@@ -136,7 +136,7 @@ class Items_category extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['items_category_per']['delete']==1){
+        if($this->session->userdata['items_category_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'items_category');
@@ -159,7 +159,7 @@ class Items_category extends CI_Controller
              redirect('home');
          }
          if($this->input->post('add_tax')){
-                if($_SESSION['Posnic_Add']==="Add"){
+                if($this->session->userdata['Posnic_Add']==="Add"){
                 $this->load->view('items_category/add_brand');
                 }else{
                     echo "you have no permision to add items_category";
@@ -168,7 +168,7 @@ class Items_category extends CI_Controller
                
          }
          if($this->input->post('delete_ad')){
-              if($_SESSION['Posnic_Delete']==="Delete"){
+              if($this->session->userdata['Posnic_Delete']==="Delete"){
                 $data1 = $this->input->post('mycheck'); 
                  if(!$data1==''){         
                  foreach( $data1 as $key => $guid){                        
@@ -181,7 +181,7 @@ class Items_category extends CI_Controller
               }
          }
          if($this->input->post('delete')){
-              if($_SESSION['Posnic_Delete']==="Delete"){
+              if($this->session->userdata['Posnic_Delete']==="Delete"){
                 $data1 = $this->input->post('mycheck'); 
                 $this->load->model('item_items_category');
                     if(!$data1==''){         
@@ -213,7 +213,7 @@ class Items_category extends CI_Controller
         
     }
     function add_items_category(){
-            if($_SESSION['items_category_per']['add']==1){
+            if($this->session->userdata['items_category_per']['add']==1){
            if($this->input->post('items_category_name')){
                 $this->form_validation->set_rules("items_category_name",$this->lang->line('items_category_name'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 
@@ -238,7 +238,7 @@ class Items_category extends CI_Controller
          
     }
     function delete_items_category($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
+           if($this->session->userdata['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
                }
             else{

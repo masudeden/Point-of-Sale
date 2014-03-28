@@ -88,7 +88,7 @@ class Taxes_area extends CI_Controller
    
    
     function update_taxes_area(){
-           if($_SESSION['taxes_area_per']['edit']==1){
+           if($this->session->userdata['taxes_area_per']['edit']==1){
            if($this->input->post('taxes_area')){
                 $this->form_validation->set_rules('taxes_area',$this->lang->line('taxes_area'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -140,7 +140,7 @@ class Taxes_area extends CI_Controller
               }
     }
     function edit_taxes_area($guid){
-        if($_SESSION['taxes_area_per']['edit']==1){
+        if($this->session->userdata['taxes_area_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'taxes_area');
         echo json_encode($data);
         }else{
@@ -150,7 +150,7 @@ class Taxes_area extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['taxes_area_per']['delete']==1){
+        if($this->session->userdata['taxes_area_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'taxes_area');
@@ -170,7 +170,7 @@ class Taxes_area extends CI_Controller
     }        
     
     function add_taxes_area(){
-            if($_SESSION['taxes_area_per']['add']==1){
+            if($this->session->userdata['taxes_area_per']['add']==1){
            if($this->input->post('taxes_area')){
                 $this->form_validation->set_rules("taxes_area",$this->lang->line('taxes_area'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 
@@ -195,7 +195,7 @@ class Taxes_area extends CI_Controller
          
     }
     function delete_taxes_area($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
+           if($this->session->userdata['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
                }
             else{

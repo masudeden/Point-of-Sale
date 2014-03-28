@@ -122,7 +122,7 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['purchase_order_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['purchase_order_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
@@ -153,7 +153,7 @@
           
         
 function purchase_order_approve(guid){
-        <?php if($_SESSION['purchase_order_per']['approve']==1){ ?>
+        <?php if($this->session->userdata['purchase_order_per']['approve']==1){ ?>
             $.ajax({
                 url: '<?php echo base_url() ?>index.php/purchase_order/purchase_order_approve',
                 type: "POST",
@@ -181,7 +181,7 @@ function purchase_order_approve(guid){
            function edit_function(guid){
            
         
-                        <?php if($_SESSION['purchase_order_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['purchase_order_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
                             $('#parent_items').append('<div id="deleted"></div>');

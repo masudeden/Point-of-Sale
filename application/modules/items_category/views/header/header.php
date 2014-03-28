@@ -77,7 +77,7 @@
 			}
     function user_function(guid){
     var items_category=$('#name_'+guid).val();
-    <?php if($_SESSION['items_category_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['items_category_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This items_category ("+items_category+")", function(result) {
              if(result){
             $.ajax({
@@ -141,7 +141,7 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['items_category_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['items_category_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/items_category/edit_items_category/"+guid,                      
                              data: "", 

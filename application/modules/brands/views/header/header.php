@@ -76,7 +76,7 @@
                                    
 			}
     function user_function(brands,guid){
-    <?php if($_SESSION['brands_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['brands_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This brands ("+brands+")", function(result) {
              if(result){
             $.ajax({
@@ -137,7 +137,7 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['brands_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['brands_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/brands/edit_brands/"+guid,                      
                              data: "", 

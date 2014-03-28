@@ -88,7 +88,7 @@ class Tax_types extends CI_Controller
    
    
     function update_tax_types(){
-           if($_SESSION['tax_types_per']['edit']==1){
+           if($this->session->userdata['tax_types_per']['edit']==1){
            if($this->input->post('tax_types')){
                 $this->form_validation->set_rules('tax_types',$this->lang->line('tax_types'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -140,7 +140,7 @@ class Tax_types extends CI_Controller
               }
     }
     function edit_tax_types($guid){
-        if($_SESSION['tax_types_per']['edit']==1){
+        if($this->session->userdata['tax_types_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'tax_types');
         echo json_encode($data);
         }else{
@@ -150,7 +150,7 @@ class Tax_types extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['tax_types_per']['delete']==1){
+        if($this->session->userdata['tax_types_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'tax_types');
@@ -170,7 +170,7 @@ class Tax_types extends CI_Controller
     }        
     
     function add_tax_types(){
-            if($_SESSION['tax_types_per']['add']==1){
+            if($this->session->userdata['tax_types_per']['add']==1){
            if($this->input->post('tax_types')){
                 $this->form_validation->set_rules("tax_types",$this->lang->line('tax_types'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 
@@ -195,7 +195,7 @@ class Tax_types extends CI_Controller
          
     }
     function delete_tax_types($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
+           if($this->session->userdata['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
                }
             else{

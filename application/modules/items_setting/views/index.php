@@ -25,7 +25,7 @@
          
 
          $('#set_new_code').click(function() { 
-                <?php if($_SESSION['items_setting_per']['set']==1){ ?>
+                <?php if($this->session->userdata['items_setting_per']['set']==1){ ?>
                 var inputs = $('#add_item').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/items_setting/set_items_setting')?>",
@@ -50,7 +50,7 @@
                     <?php }?>
         });
          $('#update_items').click(function() { 
-                <?php if($_SESSION['items_setting_per']['set']==1){ ?>
+                <?php if($this->session->userdata['items_setting_per']['set']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                        $.ajax ({
                             url: "<?php echo base_url('index.php/items_setting/set_items_setting')?>",
@@ -77,7 +77,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['items_setting_per']['set']==1){ ?>
+    <?php if($this->session->userdata['items_setting_per']['set']==1){ ?>
              $("#add_item").trigger('reset');
               $('#add_item_form #item_name_data').val('');
                  $("#add_item_form #item_name_data").select2('data', {id:'',text:''});

@@ -23,7 +23,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_suppliers_category').click(function() { 
-                <?php if($_SESSION['suppliers_category_per']['add']==1){ ?>
+                <?php if($this->session->userdata['suppliers_category_per']['add']==1){ ?>
                 var inputs = $('#add_suppliers_category').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/suppliers_category/add_suppliers_category')?>",
@@ -48,7 +48,7 @@
                     <?php }?>
         });
          $('#update_suppliers_category').click(function() { 
-                <?php if($_SESSION['suppliers_category_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['suppliers_category_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/suppliers_category/update_suppliers_category')?>",
@@ -75,7 +75,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['suppliers_category_per']['add']==1){ ?>
+    <?php if($this->session->userdata['suppliers_category_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_suppliers_category_form').show('slow');
       $('#delete').attr("disabled", "disabled");

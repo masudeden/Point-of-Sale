@@ -23,7 +23,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_brand').click(function() { 
-                <?php if($_SESSION['items_department_per']['add']==1){ ?>
+                <?php if($this->session->userdata['items_department_per']['add']==1){ ?>
                 var inputs = $('#add_brand').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/items_department/add_items_department')?>",
@@ -48,7 +48,7 @@
                     <?php }?>
         });
          $('#update_items_department').click(function() { 
-                <?php if($_SESSION['items_department_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['items_department_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/items_department/update_items_department')?>",
@@ -75,7 +75,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['items_department_per']['add']==1){ ?>
+    <?php if($this->session->userdata['items_department_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_brand_form').show('slow');
       $('#delete').attr("disabled", "disabled");

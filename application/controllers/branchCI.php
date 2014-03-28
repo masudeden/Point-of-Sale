@@ -27,131 +27,13 @@ class BranchCI extends CI_Controller{
         }
          }
     }
-    function get_branch(){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
-        if($this->session->userdata['user_type']==2){
-        $this->load->library("pagination"); 
-                $this->load->model('branch');
-	        $config["base_url"] = base_url()."index.php/branchCI/get_branch";
-	        $config["total_rows"] = $this->branch->branchcount_for_admin();
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;                
-                $data['count']=$this->branch->branchcount_for_admin();             
-	        $data["row"] = $this->branch->get_branch_details_for_admin($config["per_page"], $page);
-                
-	        $data["links"] = $this->pagination->create_links(); 
-                $this->load->view('template/header');
-                $this->load->view('branch',$data);
-                $this->load->view('template/footer');
-        }else{
-         if($_SESSION['branchCI_per']['read']==1){
-                $this->load->library("pagination"); 
-                $this->load->model('branch');
-	        $config["base_url"] = base_url()."index.php/branchCI/get_branch";
-	        $config["total_rows"] = $this->branch->branchcount($this->session->userdata['guid']);
-	        $config["per_page"] = 8;
-	        $config["uri_segment"] = 3;
-	        $this->pagination->initialize($config);	 
-	        $page = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;                
-                $data['count']=$this->branch->branchcount($this->session->userdata['guid']);             
-	        $data["row"] = $this->branch->get_branch_details($config["per_page"], $page,$this->session->userdata['guid']);
-	        $data["links"] = $this->pagination->create_links(); 
-                $data['br_row']=$this->branch->get_branch();
-                $this->load->view('template/header');
-                $this->load->view('branch',$data);
-                $this->load->view('template/footer');
-         }
-         else{
-             echo "You have no permission To read Branch details";
-             redirect('home');
-         }
-    }
-    }}
-    function edit_branch_details($id){
-       if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-       if($_SESSION['branchCI_per']['edit']==1){
-           $this->load->model('branch');
-           $data['row']=  $this->branch->get_branch_details_for_edit($id);
-           $this->load->view('template/header');
-           $this->load->view('edit_branch',$data);
-           $this->load->view('template/footer');           
-       }else{
-           echo "you have no permission To edit Branch";
-           redirect('branchCI');
-       }       
-    }
-    }
-    function branch_details(){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-        if($this->input->post('BacktoHome')){
-            redirect('home');            
-        }if($this->input->post('delete_admin')){
-           if($this->session->userdata['user_type']==2){
-             $data = $this->input->post('mycheck'); 
-              if(!$data==''){
-              $this->load->model('branch');
-              foreach( $data as $key => $value){ 
-                 $this->branch->delete_branch_for_admin($value) ;
-              }
-              }
-        }
-        redirect('branchCI');
-        }  if($this->input->post('activate')) {
-              if($this->session->userdata['user_type']==2){
-              $data = $this->input->post('mycheck'); 
-              if(!$data==''){
-              $this->load->model('branch');        
-              foreach( $data as $key => $value){ 
-                   $this->branch->activate_branch($value);
-              }
-              }           
-              }
-              redirect('branchCI');
-         }
-        if($this->input->post('deactivate'))  {
-             if($this->session->userdata['user_type']==2){
-              $data = $this->input->post('mycheck'); 
-              if(!$data==''){
-              $this->load->model('branch');        
-              foreach( $data as $key => $value){ 
-                   $this->branch->deactivate_branch($value);
-              }
-              }              
-              }
-              redirect('branchCI');
-        }
-        if($this->input->post('delete_all')){
-            if($_SESSION['branchCI_per']['delete']==1){
-              $deleted_by=$this->session->userdata['guid'];                  
-              $data = $this->input->post('mycheck'); 
-              if(!$data==''){
-              $this->load->model('branch');        
-              foreach( $data as $key => $value){ 
-                   $this->branch->delete_branch($value,$deleted_by);
-              }
-              }  
-            }
-            redirect('branchCI');
-        }
-        if($this->input->post('Add_branch')){
-           if($_SESSION['branchCI_per']['add']==1){
-              $this->load->view('template/header');
-              $this->load->view('add_branch');
-              $this->load->view('template/footer');
-           }else{
-               redirect('branchCI') ;
-           }
-        }
-        }
-    }
+   
+  
+    
     function update_branch_details(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
         if($_SESSION['branchCI_per']['edit']==1){
-        if($this->input->post('cancel')){
-            redirect('branchCI');
-        }
+    
         if($this->input->post('update')){
             $id= $this->input->post('id');
             $this->load->library('form_validation');
@@ -199,39 +81,14 @@ class BranchCI extends CI_Controller{
            }
         }
     }
-    function admin_delete_branch($id){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-        if($this->session->userdata['user_type']==2){
-        $this->load->model('branch');
-        $this->branch->delete_branch_for_admin($id) ;
-        redirect('branchCI');
-        }else{
-            redirect('branchCI') ;
-        }
-    }}
+   
     function directing(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
         $this->get_branch();
         }
     }
-    function activate_branch_details($id){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-         if($this->session->userdata['user_type']==2){
-         $this->load->model('branch');
-         $this->branch->activate_branch($id);
-         }
-         redirect('branchCI');
-        }
-    }
-    function deactivate_branch_details($id){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-         if($this->session->userdata['user_type']==2){
-         $this->load->model('branch');
-         $this->branch->deactivate_branch($id);
-         }
-         redirect('branchCI');
-        }
-    }
+   
+   
     function add_new_branch(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
             if($this->input->post('save')){

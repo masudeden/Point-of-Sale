@@ -84,7 +84,7 @@ class Item_code extends CI_Controller{
 		   echo json_encode($output1);
     }
     function set_item($guid){
-         if($_SESSION['Posnic_Add']==="Add"){
+         if($this->session->userdata['Posnic_Add']==="Add"){
              $data['row']=$guid;
              $this->load->view('add_code',$data);
          }
@@ -93,7 +93,7 @@ class Item_code extends CI_Controller{
          }
     }
     function reset_item($guid){
-         if($_SESSION['Posnic_Edit']==="Edit"){
+         if($this->session->userdata['Posnic_Edit']==="Edit"){
              $data['guid']=$guid;
              $data['row']=  $this->posnic->posnic_module('items');
              $this->load->view('edit_code',$data);
@@ -106,7 +106,7 @@ class Item_code extends CI_Controller{
    
     function set_item_code(){
              if($this->input->post('guid')){  
-                   if($_SESSION['Posnic_Add']==="Add"){
+                   if($this->session->userdata['Posnic_Add']==="Add"){
                $guid=  $this->input->post('guid');
                $this->form_validation->set_rules("ean_upc_code",$this->lang->line('ean_upc_code'),'required');                                             
               if ($this->form_validation->run() !== false ) {  

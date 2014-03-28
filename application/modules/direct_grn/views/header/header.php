@@ -122,7 +122,7 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['direct_grn_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['direct_grn_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
@@ -153,7 +153,7 @@
           
         
 function direct_grn_approve(guid){
-        <?php if($_SESSION['direct_grn_per']['approve']==1){ ?>
+        <?php if($this->session->userdata['direct_grn_per']['approve']==1){ ?>
             $.ajax({
                 url: '<?php echo base_url() ?>index.php/direct_grn/direct_grn_approve',
                 type: "POST",
@@ -181,7 +181,7 @@ function direct_grn_approve(guid){
            function edit_function(guid){
            
         
-                        <?php if($_SESSION['direct_grn_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['direct_grn_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
                             $('#parent_items').append('<div id="deleted"></div>');

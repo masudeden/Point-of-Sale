@@ -99,7 +99,7 @@ class Direct_grn extends CI_Controller{
                 }
     }
     function  set_seleted_item_suppier($suid){
-        $_SESSION['supplier_guid']=$suid;
+        $this->session->userdata['supplier_guid']=$suid;
     }
             function get_selected_supplier()
     {       
@@ -128,7 +128,7 @@ class Direct_grn extends CI_Controller{
        $q= addslashes($_REQUEST['term']);
                 $like=array('code'=>$q);    
                
-                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$_SESSION['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
+                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$this->session->userdata['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
                 $data=$this->posnic-> posnic_join_like('suppliers_x_items','items',$like,$where);
         echo json_encode($data);
     }   
@@ -138,7 +138,7 @@ class Direct_grn extends CI_Controller{
     
   
 function save(){      
-     if($_SESSION['direct_grn_per']['add']==1){
+     if($this->session->userdata['direct_grn_per']['add']==1){
         $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
         $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
         $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
@@ -195,7 +195,7 @@ function save(){
     }
     function update(){
             if(isset($_POST['direct_grn_guid'])){
-      if($_SESSION['direct_grn_per']['edit']==1){
+      if($this->session->userdata['direct_grn_per']['edit']==1){
         $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
         $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
         $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
@@ -300,7 +300,7 @@ function search_supplier(){
         
 }
 function delete(){
-   if($_SESSION['brands_per']['delete']==1){
+   if($this->session->userdata['brands_per']['delete']==1){
             if($this->input->post('guid')){
                 $this->load->model('purchase');
                 $guid=$this->input->post('guid');
@@ -320,7 +320,7 @@ function delete(){
     
 }
 function  get_direct_grn($guid){
-    if($_SESSION['direct_grn_per']['edit']==1){
+    if($this->session->userdata['direct_grn_per']['edit']==1){
     $this->load->model('purchase');
     $data=  $this->purchase->get_direct_grn($guid);
     echo json_encode($data);
@@ -328,7 +328,7 @@ function  get_direct_grn($guid){
 }
 
 function direct_grn_approve(){
-     if($_SESSION['direct_grn_per']['approve']==1){
+     if($this->session->userdata['direct_grn_per']['approve']==1){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
             $this->purchase->deactive_order($id);

@@ -23,7 +23,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_user').click(function() { 
-                <?php if($_SESSION['users_per']['add']==1){ ?>
+                <?php if($this->session->userdata['users_per']['add']==1){ ?>
                         if($('#posnic_user_2').valid()){
                 var inputs = $('#posnic_user_2').serialize();
                       $.ajax ({
@@ -52,7 +52,7 @@
                     <?php }?>
         });
  $('#update_users').click(function() { 
-        <?php if($_SESSION['users_per']['edit']==1){ ?>
+        <?php if($this->session->userdata['users_per']['edit']==1){ ?>
            if($('#parsley_reg').valid()){
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
@@ -84,7 +84,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['users_per']['add']==1){ ?>
+    <?php if($this->session->userdata['users_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_user_form').show('slow');
       $('#delete').attr("disabled", "disabled");
