@@ -6,8 +6,8 @@ class Purchase extends CI_Model{
     }
     function get($end,$start,$like,$branch){
                 $this->db->select('purchase_order.* ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
-              // $this->db->select("date('Y-m-d',purchase_order.po_date) as poo_date");
-                $this->db->from('purchase_order')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',1)->where('purchase_order.delete_status',1);
+             
+                $this->db->from('purchase_order')->where('purchase_order.branch_id',$branch)->where('purchase_order.delete_status',0);
                 $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
@@ -102,7 +102,7 @@ class Purchase extends CI_Model{
          $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."'",'left');
          $this->db->join('brands', 'items.brand_id=brands.guid','left');
          $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
-          $like=array('items.name'=>$search,'items.code'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
+          $like=array('items.guid'=>$search,'items.name'=>$search,'items.code'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
                 $this->db->or_like($like); 
                // $this->db->like('suppliers_x_items.supplier_id',$guid); 
          $sql=  $this->db->get();
@@ -111,7 +111,7 @@ class Purchase extends CI_Model{
      }
      function get_purchase_order($guid){
          $this->db->select('items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,purchase_order.*,purchase_order_items.discount_per as dis_per ,purchase_order_items.discount_amount as item_dis_amt ,purchase_order_items.tax as dis_amt ,purchase_order_items.tax as order_tax,purchase_order_items.item ,purchase_order_items.quty ,purchase_order_items.free ,purchase_order_items.cost ,purchase_order_items.sell ,purchase_order_items.mrp,purchase_order_items.guid as o_i_guid ,purchase_order_items.amount ,purchase_order_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('purchase_order')->where('purchase_order.guid',$guid);
-         $this->db->join('purchase_order_items', 'purchase_order_items.order_id = purchase_order.guid AND purchase_order_items.delete_status=0','left');
+         $this->db->join('purchase_order_items', "purchase_order_items.order_id = purchase_order.guid  AND  purchase_order_items.delete_status=0",'left');
          $this->db->join('items', "items.guid=purchase_order_items.item AND purchase_order_items.order_id='".$guid."' AND purchase_order_items.delete_status=0",'left');
          $this->db->join('taxes', "items.tax_id=taxes.guid AND items.guid=purchase_order_items.item  AND purchase_order_items.delete_status=0",'left');
          $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=purchase_order_items.item  AND purchase_order_items.delete_status=0",'left');

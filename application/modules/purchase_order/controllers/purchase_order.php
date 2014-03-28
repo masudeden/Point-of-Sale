@@ -5,7 +5,6 @@ class Purchase_order extends CI_Controller{
                 $this->load->library('posnic');               
     }
     function index(){     
-           //   $this->get_list();
         $this->load->view('template/app/header'); 
         $this->load->view('header/header');         
         $this->load->view('template/branch',$this->posnic->branches());
@@ -13,13 +12,10 @@ class Purchase_order extends CI_Controller{
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());
         $this->load->view('template/app/footer');
-        
-        //$this->load->model('purchase');
-       // $this->purchase->get_purchase_order('be0e9618297967699deb19956c7567cc');
     }
     // purchase order data table
     function data_table(){
-        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active','order_status' );	
+        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active_status','order_status' );	
 	$start = "";
 			$end="";
 		

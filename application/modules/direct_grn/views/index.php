@@ -1565,6 +1565,7 @@ theNode.setAttribute('id','new_item_row_id_'+items_id)
     $("#parsley_reg #grand_total").val(0)
 if($('#parsley_reg #total_amount').val()==0){
       $('#parsley_reg #total_amount').val(total);
+     
 }else{
     $('#parsley_reg #total_amount').val(parseFloat($('#parsley_reg #total_amount').val())+(total));
 }
