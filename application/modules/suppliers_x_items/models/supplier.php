@@ -85,7 +85,7 @@ class Supplier extends CI_Model{
         return $data;
     }
     function supplier_like($like,$bid){
-          $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name')->from('suppliers')->where('suppliers.branch_id',$bid)->where('suppliers.active_status',1)->where('suppliers.active',0)->where('suppliers.delete_status',1);
+          $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name')->from('suppliers')->where('suppliers.branch_id',$bid)->where('suppliers.active_status',1)->where('suppliers.delete_status',1);
           $this->db->join('suppliers_category', 'suppliers_category.guid=suppliers.category','left');
           $this->db->or_like($like);
           $sql=  $this->db->get();
