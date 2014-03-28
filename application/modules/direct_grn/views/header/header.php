@@ -213,10 +213,10 @@ function direct_grn_approve(guid){
                                 $("#parsley_reg #company").val(data[0]['c_name']);
                                 $("#parsley_reg #address").val(data[0]['address']);
                                 $("#parsley_reg #direct_grn_guid").val(guid);
-                                $("#parsley_reg #demo_order_number").val(data[0]['po_no']);
-                                $("#parsley_reg #order_number").val(data[0]['po_no']);
-                                $("#parsley_reg #order_date").val(data[0]['po_date']);
-                                $("#parsley_reg #expiry_date").val(data[0]['exp_date']);
+                                $("#parsley_reg #demo_order_number").val(data[0]['grn_no']);
+                                $("#parsley_reg #order_number").val(data[0]['grn_no']);
+                                $("#parsley_reg #order_date").val(data[0]['grn_date']);
+                        
                                 
                                 $("#parsley_reg #id_discount").val(data[0]['discount']);
                                 $("#parsley_reg #note").val(data[0]['note']);

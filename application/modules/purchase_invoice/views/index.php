@@ -397,7 +397,7 @@
     return  "<p >"+sup.text+"    <br>"+sup.order_date+" "+sup.company+"   "+sup.supplier+"</p> ";
             }
         $('#parsley_reg #demo_order_number').change(function() {
-            if($('#parsley_reg #demo_order_number').select2('data').expired==0){
+           
                refresh_items_table();
              $('#loading').modal('show');
                    var guid = $('#parsley_reg #demo_order_number').select2('data').id;
@@ -413,7 +413,7 @@
                  $('#parsley_reg #freight').val($('#parsley_reg #demo_order_number').select2('data').freight);
                  $('#parsley_reg #round_off_amount').val($('#parsley_reg #demo_order_number').select2('data').round);
                  $('#parsley_reg #supplier_guid').val(guid);
-               
+               console.log($('#parsley_reg #demo_order_number').select2('data').po);
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/purchase_invoice/get_grn/"+guid,                      
                              data: "", 
@@ -548,14 +548,7 @@
                        document.getElementById('order_date').focus();
                        $('#loading').modal('hide');
                     }, 0);  
-                    }else{
-                     $('#parsley_reg #demo_order_number').select2('open');
-                     $("#parsley_reg").trigger('reset');
-                     $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('was_expired');?>', { type: "error" });                         
-                     $('#grn_no').val(grn_number);
-                     $('#demo_grn_no').val(grn_number);
-                     
-                    }
+                    
           });
           $('#parsley_reg #demo_order_number').select2({
               dropdownCssClass : 'supplier_select',
@@ -581,22 +574,18 @@
                         };
                     },
                     results: function (data) {
+                       
                       var results = [];
                       $.each(data, function(index, item){
+                          
                         results.push({
                           id: item.guid,
-                          text: item.po_no,
-                          company: item.c_name,
-                          supplier: item.s_name,
-                          order_date: item.po_date,
-                          expiry: item.exp_date,
-                          discount: item.discount,
-                          dis_amount: item.discount_amt,
-                          freight: item.freight,
-                          round: item.round_amt,
-                          expired: item.expired,
+                          text: item.grn_no,
+                          
+                          po:item.po
                         });
                       });
+                  
                       return {
                           results: results
                       };
