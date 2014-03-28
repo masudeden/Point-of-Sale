@@ -6,7 +6,6 @@ class Home extends CI_Controller
         parent::__construct();
          session_start();
         $this->load->helper('form');
-        $this->load->library('session');
         $this->load->library('poslanguage');                                       
         $this->poslanguage->set_language();               
     }
@@ -34,7 +33,7 @@ class Home extends CI_Controller
         }
        
         $this->load->view('template/app/header');
-        if($_SESSION['Setting']['Branch']==1){
+        if($this->session->userdata['Setting']['Branch']==1){
         	$this->load->view('template/branch',$data);
           }
         $modules['active']="home";
