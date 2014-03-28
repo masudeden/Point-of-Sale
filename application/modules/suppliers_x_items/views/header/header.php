@@ -252,13 +252,14 @@
                                  $('#deactive').attr("disabled", "disabled");
                                  $('#suppliers_lists').removeAttr("disabled");
                                 
-                                 $('#parsley_reg #first_name').val(data[0]['first_name']);
+                                 //$('#parsley_reg #first_name').val(data[0]['first_name']);
                                  $('#parsley_reg #company').val(data[0]['company_name']);
                                  $('#parsley_reg #email').val(data[0]['email']);
                                  $('#parsley_reg #phone').val(data[0]['phone']);
                                 $('#parsley_reg #category').val(data[0]['c_name']);
                                 $('#edit_brand_form #supplier_guid').val(guid);
                                 $('#loading').modal('hide');
+                                  $("#parsley_reg #first_name").select2('data', {id:'1',text: data[0]['first_name']});
                              } 
                            });
                            $('#edit_brand_form #supplier_guid').val(guid);
