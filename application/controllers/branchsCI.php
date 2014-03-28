@@ -14,7 +14,7 @@ class BranchCI extends CI_Controller{
     }
     function index(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-        if($_SESSION['Setting']['Branch']==1){
+        if($this->session->userdata['Setting']['Branch']==1){
          if(!isset($this->session->userdata['guid'])){
                 $this->load->view('template/header');
                 $this->load->view('login');

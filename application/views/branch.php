@@ -1,4 +1,4 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); if($_SESSION['Setting']['Branch']==1){
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); if($this->session->userdata['Setting']['Branch']==1){
 echo $links; 
  echo form_open('branchCI/branch_details');
     
