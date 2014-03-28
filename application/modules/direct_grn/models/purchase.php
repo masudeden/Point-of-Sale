@@ -6,8 +6,8 @@ class Purchase extends CI_Model{
     }
     function get($end,$start,$like,$branch){
                 $this->db->select('direct_grn.* ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
-              // $this->db->select("date('Y-m-d',direct_grn.po_date) as poo_date");
-                $this->db->from('direct_grn')->where('direct_grn.branch_id',$branch)->where('direct_grn.active_status',1)->where('direct_grn.delete_status',1);
+              
+                $this->db->from('direct_grn')->where('direct_grn.branch_id',$branch)->where('direct_grn.delete_status',0);
                 $this->db->join('suppliers', 'suppliers.guid=direct_grn.supplier_id','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     

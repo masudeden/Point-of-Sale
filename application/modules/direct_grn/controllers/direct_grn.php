@@ -16,7 +16,7 @@ class Direct_grn extends CI_Controller{
     }
     // Direct G R N Data table
     function data_table(){
-        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active','order_status' );	
+        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active_status','order_status' );	
 	$start = "";
 			$end="";
 		
@@ -55,7 +55,7 @@ class Direct_grn extends CI_Controller{
 		   
 		$iFilteredTotal =$this->purchase->count($this->session->userdata['branch_id']);
 		
-		$iTotal =$this->purchase->count($this->session->userdata['branch_id']);
+		$iTotal =$iFilteredTotal;
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),

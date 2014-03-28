@@ -1385,12 +1385,11 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(5)').html(free);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(6)').html(cost);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(7)').html(price);
-  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(8)').html(mrp);
-  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(9)').html(date);
-  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(10)').html(parseFloat(quty)*parseFloat(cost));
-  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(11)').html(((parseFloat(quty)*parseFloat(cost))*tax_value/100) +''+' : '+tax_type+'('+type+')');
-  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(12)').html(discount);
-  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(13)').html(total);
+  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(8)').html(date);
+  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(9').html(parseFloat(quty)*parseFloat(cost));
+  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(10)').html(((parseFloat(quty)*parseFloat(cost))*tax_value/100) +''+' : '+tax_type+'('+type+')');
+  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(11)').html(discount);
+  $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(12)').html(total);
  
   $('#newly_added #new_item_id_'+items_id).val(items_id);
   $('#newly_added #new_item_quty_'+items_id).val(quty);
@@ -1507,6 +1506,10 @@ $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
 <input type="hidden" name="new_item_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="new_item_total_'+items_id+'">\n\
 </div>');
  
+   total=total.toFixed(point);
+   
+   var sub_total= parseFloat(quty)*parseFloat(cost);
+   sub_total=sub_total.toFixed(point);
    var addId = $('#selected_item_table').dataTable().fnAddData( [
       null,
       name,
@@ -1515,9 +1518,8 @@ $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
       free,
       cost,
       price,
-      mrp,
       date,
-      parseFloat(quty)*parseFloat(cost),
+      sub_total,
       tax+' : '+tax_type+'('+type+')',
       discount,
       total,
@@ -1540,7 +1542,7 @@ $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
 <input type="hidden" name="items_tax_inclusive[]" value="'+tax_Inclusive+'" id="items_tax_inclusive">\n\
 <input type="hidden" name="items_discount[]" value="'+discount+'" id="items_discount">\n\
 <input type="hidden" name="items_discount_per[]" value="'+per+'" id="items_discount_per">\n\
-<input type="hidden" name="items_sub_total[]"  value="'+parseFloat(quty)*parseFloat(cost)+'" id="items_sub_total">\n\
+<input type="hidden" name="items_sub_total[]"  value="'+sub_total+'" id="items_sub_total">\n\
 <input type="hidden" name="items_total[]"  value="'+total+'" id="items_total">\n\
         <a href=javascript:edit_order_item("'+items_id+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:delete_order_item('"+items_id+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>" ] );
 
@@ -1565,8 +1567,9 @@ theNode.setAttribute('id','new_item_row_id_'+items_id)
     $("#parsley_reg #grand_total").val(0)
 if($('#parsley_reg #total_amount').val()==0){
       $('#parsley_reg #total_amount').val(total);
+     
 }else{
-    $('#parsley_reg #total_amount').val(parseFloat($('#parsley_reg #total_amount').val())+(total));
+    $('#parsley_reg #total_amount').val(parseFloat($('#parsley_reg #total_amount').val())+parseFloat(total));
 }
 $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
    new_discount_amount();
@@ -2138,14 +2141,13 @@ function new_discount_amount(){
                                     <thead>
                                         <tr>
                                             
-                                     <th><?php echo $this->lang->line('sl_no') ?></th>
+                                     <th><?php echo $this->lang->line('no') ?></th>
                                     <th><?php echo $this->lang->line('name') ?></th>
                                         <th><?php echo $this->lang->line('sku') ?></th>
                                     <th><?php echo $this->lang->line('quantity') ?></th>
                                     <th><?php echo $this->lang->line('free') ?></th>
                                     <th><?php echo $this->lang->line('cost') ?></th>
                                     <th><?php echo $this->lang->line('price') ?></th>
-                                    <th><?php echo $this->lang->line('mrp') ?></th>
                                     <th><?php echo $this->lang->line('delivery_date') ?></th>
                                     <th><?php echo $this->lang->line('sub_total') ?></th>
                                     <th><?php echo $this->lang->line('tax') ?></th>

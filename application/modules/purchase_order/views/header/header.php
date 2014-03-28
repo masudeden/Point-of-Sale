@@ -245,6 +245,7 @@ function purchase_order_approve(guid){
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 var tax;
                                 for(i=0;i<data.length;i++){
+                                      if(!$('#'+data[i]['o_i_guid']).length){
                                   
                                     var  name=data[i]['items_name'];
                                     var  sku=data[i]['i_code'];
@@ -295,13 +296,12 @@ function purchase_order_approve(guid){
                                     free,
                                     cost,
                                     price,
-                                    mrp,
                                     date,
                                     parseFloat(quty)*parseFloat(cost),
                                     tax+' : '+tax_type+'('+type+')',
                                     discount,
                                     total,
-                                    '<input type="hidden" name="index" id="index">\n\
+                                    '<input type="hidden" name="index" id="index"><input type="hidden" id="'+o_i_guid+'">\n\
                                 <input type="hidden" name="item_name" id="row_item_name" value="'+name+'">\n\
                                 <input type="hidden" name="item_limit" id="item_limit" value="'+limit+'">\n\
                                 <input type="hidden" name="items_id[]" id="items_id" value="'+items_id+'">\n\
@@ -326,7 +326,7 @@ function purchase_order_approve(guid){
                               var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
                               theNode.setAttribute('id','new_item_row_id_'+items_id)
                                 }
-                                
+                                }
                              } 
                            });
                       

@@ -250,14 +250,7 @@
             total=total+item_total;
         }
         var discount;
-        if(isNaN($('#id_discount').val()))
-            $('#id_discount').val(0)
-        
-        if(isNaN($('#freight').val()))
-            $('#freight').val(0)
-        
-        if(isNaN($('#round_off_amount').val()))
-            $('#round_off_amount').val(0)
+      
         
        
         
@@ -270,15 +263,26 @@
             discount=discount.toFixed(point);
             $('#discount_amount').val(discount);
         }
-        $('#demo_total_amount').val(total);
         var freight=parseFloat($('#freight').val());
         var round=parseFloat($('#round_off_amount').val());
+        if(isNaN(freight))
+            freight=0;
+        
+        if(isNaN(round))
+           round=0;
+        if(isNaN(discount))
+           discount=0;
+        $('#demo_total_amount').val(total);
+       
         var total = parseFloat(total)+freight+round;
         total=total.toFixed(point);
     
         $('#demo_grand_total').val(total-discount);
         var total = parseFloat($('#demo_grand_total').val());
         $('#demo_grand_total').val(total.toFixed(point));
+        var total = parseFloat($('#demo_total_amount').val());
+        $('#demo_total_amount').val(total.toFixed(point));
+        console.log(total);
        
     }
     function receive_free_items_update(i)
