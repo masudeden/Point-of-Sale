@@ -41,8 +41,7 @@ class Acluser{
         $second_array = array($module_name => $permission);
         $item = array_merge((array)$item, (array)$second_array);
         $CI->session->set_userdata(array($module_name.'_per'=>$item,$module_name=>'On'));
-        echo '<pre>'. var_export($module_name,true).'</pre>';
-        echo '<pre>'. var_export($item,true).'</pre>';
+      
      
     }  
     function admin_module_permissions($mod){
@@ -62,8 +61,7 @@ class Acluser{
         $item = array_merge((array)$item, (array)$second_array);
         $CI->session->set_userdata(array($module_name.'_per'=>$item,$module_name=>'On'));  
 
-        echo '<pre>'. var_export($module_name,true).'</pre>';
-        echo '<pre>'. var_export($item,true).'</pre>';
+    
         
        
     }
