@@ -1161,11 +1161,11 @@ function select_user_group_for_update(){
              }));
            $('#parsley_reg #parent_div #hidden_selected_user_group_list').append(' \n\
            <input type="hidden" name="user_groups[]" id="group_id_'+group+'" value="'+group+'" >\n\
-           <input type="hidden"  id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
+           <input type="hidden" name="user_branchs[]" id="group_branch_id_'+group+'" value="'+branch_id+'" >\n\
            <input type="hidden" id="group_name_'+group+'" value="'+group_name+'" ><input type="hidden" id="group_branch_name_'+group+'" value="'+branch_name+'" >\n\
           ');
             if(!$('#orginal_branch_id_'+branch_id).length){
-                    $('#parsley_reg #parent_div #hidden_selected_user_group_list').append(' <input type="text" name="user_branchs[]" id="group_branch_id_'+group+'" value="'+branch_id+'" >');
+                    $('#parsley_reg #parent_div #hidden_selected_user_group_list').append(' <input type="text" name="new_user_branchs[]" id="group_branch_id_'+group+'" value="'+branch_id+'" >');
 
             } 
        
