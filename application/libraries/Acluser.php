@@ -15,7 +15,9 @@ class Acluser{
           
           $acl_list =$CI->config->item('M_ACL');
           //$permission=$CI->aclpermissionmodel->get_admin_permission($mod);
-         
+         echo "<pre>".$module_name;
+         print_r($acl_list);
+         echo "</pre>";
   
           
          $deaprt=$CI->aclpermissionmodel->get_user_groups($id,$bid);

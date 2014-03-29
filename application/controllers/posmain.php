@@ -59,7 +59,7 @@ class Posmain extends CI_Controller{
             for($i=0;$i<count($modules);$i++){
                 $this->acluser->module_permissions($modules[$i],$branch_id ,$this->session->userdata['guid']);
         	}  // End for loop
-        
+                exit();
         } // End if condition
 		
     } //End ACL function 
