@@ -397,7 +397,7 @@
     return  "<p >"+sup.text+"    <br>"+sup.order_date+" "+sup.company+"   "+sup.supplier+"</p> ";
             }
         $('#parsley_reg #demo_order_number').change(function() {
-           
+           if($('#parsley_reg #demo_order_number').select2('data').po);
                refresh_items_table();
              $('#loading').modal('show');
                    var guid = $('#parsley_reg #demo_order_number').select2('data').id;
@@ -552,8 +552,6 @@
           });
           $('#parsley_reg #demo_order_number').select2({
               dropdownCssClass : 'supplier_select',
-               formatResult: format_purchase_order,
-                formatSelection: format_purchase_order,
                 
                 escapeMarkup: function(m) { return m; },
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('purchase_order') ?>",
