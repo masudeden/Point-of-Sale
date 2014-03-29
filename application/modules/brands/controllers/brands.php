@@ -21,12 +21,11 @@ class Brands extends CI_Controller
     function brands_data_table(){
         $aColumns = array( 'guid','name','name','name','name','active_status' );	
 	$start = "";
-			$end="";
-		
-		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
-			$start = $this->input->get_post('iDisplayStart');
-			$end=	 $this->input->get_post('iDisplayLength');              
-		}	
+	$end="";
+	if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+                $start = $this->input->get_post('iDisplayStart');
+                $end=	 $this->input->get_post('iDisplayLength');              
+        }	
 		$order="";
 		if ( isset( $_GET['iSortCol_0'] ) )
 		{	
@@ -83,7 +82,7 @@ class Brands extends CI_Controller
 		}
                 
 		
-		   echo json_encode($output1);
+	echo json_encode($output1);
     }
    
    
