@@ -19,12 +19,12 @@
                                                 <?php                                          
                                                    foreach ($row as $mode){
                                                    if($m_cate->guid==$mode->cate_id){?>
-							<li <?php if($active===$mode->module_name){ ?> class="link_active" <?php }?> ><a href="<?php echo base_url()?>index.php/home/home_main/<?php echo $mode->module_name?>"><?php echo $this->lang->line($mode->module_name) ?></a></li>							
+							<li <?php if($active===$mode->module_name){ ?> class="link_active" <?php }?> ><a href="<?php echo base_url()?><?php echo $mode->module_name?>"><?php echo $this->lang->line($mode->module_name) ?></a></li>							
                                                         <?php } } ?>
 						</ul>
                                                 <?php }else{
                                                     ?>
-                                        <a href="<?php echo base_url()?>index.php/home/home_main/<?php echo $mode->module_name?>"><span class="icon-dashboard"></span><?php echo $this->lang->line($m_cate->Category_name) ?></a>
+                                        <a href="<?php echo base_url()?>index.php<?php echo $mode->module_name?>"><span class="icon-dashboard"></span><?php echo $this->lang->line($m_cate->Category_name) ?></a>
                                                         <?php
                                                 } ?>
 					</li>

@@ -32,7 +32,7 @@ class BranchCI extends CI_Controller{
     
     function update_branch_details(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-        if($_SESSION['branchCI_per']['edit']==1){
+        if($this->session->userdata['branchCI_per']['edit']==1){
     
         if($this->input->post('update')){
             $id= $this->input->post('id');
@@ -72,7 +72,7 @@ class BranchCI extends CI_Controller{
     }}
     function delete_branch($id){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
-           if($_SESSION['branchCI_per']['delete']==1){
+           if($this->session->userdata['branchCI_per']['delete']==1){
                $this->load->model('branch');
                $this->branch->delete_branch($id,$this->session->userdata['guid']);
                redirect('branchCI');
@@ -92,7 +92,7 @@ class BranchCI extends CI_Controller{
     function add_new_branch(){
         if (!$_SERVER['HTTP_REFERER']){ redirect('branchCI');}  else{
             if($this->input->post('save')){
-            if($_SESSION['branchCI_per']['add']==1){
+            if($this->session->userdata['branchCI_per']['add']==1){
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules("name",$this->lang->line('branch_name'),"required"); 
                 $this->form_validation->set_rules('phone', $this->lang->line('phone'), 'required|max_length[10]|regex_match[/^[0-9]+$/]|xss_clean');

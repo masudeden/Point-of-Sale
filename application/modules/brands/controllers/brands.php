@@ -153,72 +153,7 @@ class Brands extends CI_Controller
             echo 'FALSE';
         }
     }
-    function restore($guid){
-          if($this->session->userdata['Posnic_User']=='admin'){
-              $this->posnic->posnic_restore($guid);
-              redirect('brands');
-          }else{
-              redirect('brands');
-          }
-    }        
-    function brands_manage(){
-         if($this->input->post('cancel'))   {
-             redirect('home');
-         }
-         if($this->input->post('add_tax')){
-                if($this->session->userdata['Posnic_Add']==="Add"){
-                $this->load->view('brands/add_brand');
-                }else{
-                    echo "you have no permision to add brands";
-                    $this->get_brands();
-                }
-               
-         }
-         if($this->input->post('delete_ad')){
-              if($this->session->userdata['Posnic_Delete']==="Delete"){
-                $data1 = $this->input->post('mycheck'); 
-                 if(!$data1==''){         
-                 foreach( $data1 as $key => $guid){                        
-                     $this->posnic->posnic_delete($guid);
-                 }
-                 }redirect('brands/get_brands');
-              }else{
-                  echo "you have no permision to delete brands";
-                    $this->get_brands();
-              }
-         }
-         if($this->input->post('delete')){
-              if($this->session->userdata['Posnic_Delete']==="Delete"){
-                $data1 = $this->input->post('mycheck'); 
-                $this->load->model('item_brands');
-                    if(!$data1==''){         
-                     foreach( $data1 as $key => $guid){                        
-                        $this->posnic->posnic_delete($guid);
-                    }
-                    }redirect('brands/get_brands');
-              }else{
-                  echo "you have no permision to delete brands";
-                    $this->get_brands();
-              }
-         }
-         if($this->input->post('activate')){
-              $data1 = $this->input->post('mycheck'); 
-                 if(!$data1==''){         
-                 foreach( $data1 as $key => $guid){                        
-                      $this->posnic->posnic_active($guid);
-                 }
-                 }redirect('brands/get_brands');
-         }
-         if($this->input->post('deactivate')){
-              $data1 = $this->input->post('mycheck'); 
-                 if(!$data1==''){         
-                 foreach( $data1 as $key => $guid){                        
-                    $this->posnic->posnic_deactive($guid);
-                 }
-                 }redirect('brands/get_brands');
-         }
-        
-    }
+    
     function add_brands(){
             if($this->session->userdata['brands_per']['add']==1){
            if($this->input->post('brands_name')){
@@ -244,16 +179,7 @@ class Brands extends CI_Controller
            }
          
     }
-    function delete_brands($guid){
-           if($this->session->userdata['Posnic_Delete']==="Delete"){
-              $this->posnic->posnic_delete($guid);
-               }
-            else{
-                echo "you have no Permissions to add  new record";
-                $this->get_customers_payment_type();
-            } 
-        
-    }
+   
    
 }
 ?>

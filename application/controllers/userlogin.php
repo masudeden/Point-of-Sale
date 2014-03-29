@@ -52,8 +52,8 @@ class Userlogin extends CI_Controller
 	   
 	} // End Login Function 
  
-    function setlanguage($lang){
-       $_SESSION['lang']=$lang;
+    function setlanguage($lang){     
+       $this->session->userdata('lang',$lang); // set langauge 
     }
     
 

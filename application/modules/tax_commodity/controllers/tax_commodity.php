@@ -49,7 +49,7 @@ class Tax_commodity extends CI_Controller
 		
 		$like = array();
 		
-			if ( $_GET['sSearch'] != "" )
+			if ($this->input->get_post('sSearch') != "" )
 		{
 		$like =array('name'=>  $this->input->get_post('sSearch'));
 				
@@ -57,7 +57,7 @@ class Tax_commodity extends CI_Controller
                         $select='taxes.*,tax_types.type as tax_type';
 			 $join_where='taxes.type=tax_types.guid ';	 
                          $this->load->model('tax');
-			 $rResult1 = $this->tax->data_table($end,$start,$like,$this->session->userdata['Bid']);
+			 $rResult1 = $this->tax->data_table($end,$start,$like,$this->session->userdata['branch_id']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('taxes');
 		

@@ -70,7 +70,7 @@ class Posmain extends CI_Controller{
         $data=  $this->setting->get_setting();
         $setting=array('Branch'=>$data[0],
             'Depart'=>$data[1]);
-       // $_SESSION['Setting']=$setting;
+       // $this->session->userdata['Setting']=$setting;
 		$this->session->set_userdata('Setting',$setting);
     }
   
