@@ -122,11 +122,10 @@ class Pos_users_model extends CI_Model{
        $this->db->where('guid',$id);
        $this->db->update('users',$data);
    }
-   function delete_pos_users($id,$deleted_by,$branch){          
-       $value=array('user_delete'=>1,'user_active'=>0,'deleted_by'=>$deleted_by);
+   function delete_pos_users($id,$branch){ 
        $this->db->where('user_id',$id); 
        $this->db->where('branch_id',$branch);
-       $this->db->update('users_x_branches',$value);       
+       $this->db->delete('users_x_branches');       
    }
    
    function add_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$username,$password,$address,$city,$state,$zip,$country,$email,$phone,$image_name){

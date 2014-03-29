@@ -84,7 +84,7 @@ class Core_model extends CI_Model{
       //  $this->db->where('users_x_branches.user_active ',0 );
         
         $this->db->or_like($like);
-        $this->db->join('users', "users_x_branches.user_id=users.guid AND  users_x_branches.user_delete=0 AND users.user_type!=2 ".'','left');
+        $this->db->join('users', "users_x_branches.user_id=users.guid AND  users.user_type!=2 ".'','left');
         $query=$this->db->get();
         return $query->result_array();
             
