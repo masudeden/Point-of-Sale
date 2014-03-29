@@ -49,21 +49,9 @@ class Home extends CI_Controller
     }
 	
      function home_main($module){
-          
-          $this->load->model('modules_model');
-          $data=  $this->modules_model->get_modulenames($this->session->userdata['branch_id']);
-          for($i=0;$i<count($data);$i++){
-            if($data[$i]==$module){
-                $_SESSION['posnic_module']=$data[$i];
-                $_SESSION[$data[$i].'_per']['read']==1?$_SESSION['Posnic_Read']="Read":$_SESSION['Posnic_Read']="null";
-                $_SESSION[$data[$i].'_per']['add']==1?$_SESSION['Posnic_Add']="Add":$_SESSION['Posnic_Add']="null";
-                $_SESSION[$data[$i].'_per']['edit']==1?$_SESSION['Posnic_Edit']="Edit":$_SESSION['Posnic_Edit']="null";              
-                $_SESSION[$data[$i].'_per']['delete']==1?$_SESSION['Posnic_Delete']="Delete":$_SESSION['Posnic_Delete']="null";
-                $_SESSION['active_module']=$data[$i];
+         
                 redirect($module);
-                
-            }  
-          }
+          
                
     }
 

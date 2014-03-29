@@ -8,11 +8,7 @@ class Customers extends CI_Controller
          
     }
     function index(){
-       // $this->get(); 
-    //  echo '<pre>'. var_export($_SESSION,true).'</pre>';
-     echo '<pre>'. var_export($this->session->userdata,true).'</pre>';
-        exit;
-       
+        $this->get(); 
     }
      function get(){
         $this->load->view('template/app/header'); 

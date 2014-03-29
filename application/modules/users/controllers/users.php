@@ -110,6 +110,7 @@ class Users extends CI_Controller{
         if($this->session->userdata['users_per']['access']==1){
          $this->load->model('user_groups');
                     $this->load->model('branch');
+        $data['active']='users';
                      if($this->session->userdata['user_type']==2){ 
         $data['branch']=$this->branch->get_user_for_branch_admin();
                      }

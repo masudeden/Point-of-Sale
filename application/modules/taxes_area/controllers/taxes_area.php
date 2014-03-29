@@ -19,7 +19,7 @@ class Taxes_area extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function taxes_area_data_table(){
-        $aColumns = array( 'guid','name','name','name','name','active' );	
+        $aColumns = array( 'guid','name','name','name','name','active_status' );	
 	$start = "";
 			$end="";
 		

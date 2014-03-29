@@ -48,13 +48,8 @@ class Invoice extends CI_Model{
         $sql=$this->db->get();
        
         foreach($sql->result_array() as $row){
-            
             $row['grn_date']=date('d-m-Y',$row['grn_date']);
-
-           
-
-             $data[]=$row;
-
+            $data[]=$row;
         }
          return $data;
                

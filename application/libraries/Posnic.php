@@ -26,8 +26,8 @@ class Posnic{
    
     function posnic_result_array($value){
          $CI=  get_instance();
-         $module=$_SESSION['posnic_module'];
-        if($_SESSION[$module.'_per']['read']==1){
+         $module=$this->session->userdata['posnic_module'];
+        if($this->session->userdata[$module.'_per']['read']==1){
              if($this->CI->session->userdata['user_type']==2){
             return $CI->posnic_model->get_data_as_result_array_admin($module,$value,$this->CI->session->userdata['branch_id']);     
             }else{
@@ -39,7 +39,7 @@ class Posnic{
     }  
     function module_result(){
          $CI=  get_instance();
-         $module=$_SESSION['posnic_module'];
+         $module=$this->session->userdata['posnic_module'];
        if($this->CI->session->userdata['user_type']==2){
                    return $CI->posnic_model->module_result_admin($module,$this->CI->session->userdata['branch_id']);     
             }else{
@@ -48,8 +48,8 @@ class Posnic{
     }
     function  posnic_result($value){
          $CI=  get_instance();
-         $module=$_SESSION['posnic_module'];
-        if($_SESSION[$module.'_per']['read']==1){
+         $module=$this->session->userdata['posnic_module'];
+        if($this->session->userdata[$module.'_per']['read']==1){
              if($this->CI->session->userdata['user_type']==2){
                 return $CI->posnic_model->get_data_as_result_admin($module,$value,$this->CI->session->userdata['branch_id']);
             }else{
@@ -61,15 +61,15 @@ class Posnic{
     }
     function  posnic_module_result($value,$module){
          $CI=  get_instance();
-         $mod=$_SESSION['posnic_module'];
+         $mod=$this->session->userdata['posnic_module'];
                 return $CI->posnic_model->get_data_as_result_user($module,$value,$this->CI->session->userdata['branch_id']); 
             
     }
   
     function posnic_count(){
          $CI=  get_instance();
-         $module=$_SESSION['posnic_module'];
-        if($_SESSION[$module.'_per']['read']==1){
+         $module=$this->session->userdata['posnic_module'];
+        if($this->session->userdata[$module.'_per']['read']==1){
             if($this->CI->session->userdata['user_type']==2){
                 return $CI->posnic_model->get_data_count_for_admin($this->CI->session->userdata['branch_id'],$module);
             }else{
@@ -81,8 +81,8 @@ class Posnic{
     }
     function posnic_module_count($module){
          $CI=  get_instance();
-         $mod=$_SESSION['posnic_module'];
-        if($_SESSION[$mod.'_per']['read']==1){
+         $mod=$this->session->userdata['posnic_module'];
+        if($this->session->userdata[$mod.'_per']['read']==1){
            
                 return $CI->posnic_model->get_data_count_for_user($this->CI->session->userdata['branch_id'],$module);
                  
@@ -92,8 +92,8 @@ class Posnic{
     }
     function posnic_limit_result($limit,$start){
          $CI=  get_instance();
-         $module=$_SESSION['posnic_module'];
-         if($_SESSION[$module.'_per']['read']==1){
+         $module=$this->session->userdata['posnic_module'];
+         if($this->session->userdata[$module.'_per']['read']==1){
             if($this->CI->session->userdata['user_type']==2){
                 return $CI->posnic_model->get_data_for_admin_with_limit($limit, $start,$module,$this->CI->session->userdata['branch_id']);
             }else{
@@ -105,8 +105,8 @@ class Posnic{
     }
     function posnic_module_limit_result($module,$limit,$start){
          $CI=  get_instance();
-         $mod=$_SESSION['posnic_module'];
-         if($_SESSION[$mod.'_per']['read']==1){
+         $mod=$this->session->userdata['posnic_module'];
+         if($this->session->userdata[$mod.'_per']['read']==1){
             
                  return $CI->posnic_model->get_data_for_user_with_limit($limit, $start,$module,$this->CI->session->userdata['branch_id']);
                  
@@ -115,9 +115,9 @@ class Posnic{
         }
     }
     function posnic_limit_result_array($limit,$page){
-         $module=$_SESSION['posnic_module'];
+         $module=$this->session->userdata['posnic_module'];
           $CI=  get_instance();
-         if($_SESSION[$module.'_per']['read']==1){
+         if($this->session->userdata[$module.'_per']['read']==1){
             if($this->CI->session->userdata['user_type']==2){
                 return $CI->posnic_model->get_data_array_for_admin_with_limit($limit, $start,$table,$this->CI->session->userdata['branch_id']);
             }else{
@@ -128,13 +128,13 @@ class Posnic{
         }
     }
     function posnic_module($table){
-        if($_SESSION[$table]==='On'){
+        if($this->session->userdata[$table]==='On'){
              $CI=  get_instance();
              return $CI->posnic_model->module_result($table,$this->CI->session->userdata['branch_id']);
         }
     }
     function posnic_module_where($table,$where){
-        if($_SESSION[$table]==='On'){
+        if($this->session->userdata[$table]==='On'){
              $CI=  get_instance();
              return $CI->posnic_model->module_result_where($table,$where,$this->CI->session->userdata['branch_id']);
         }
@@ -146,7 +146,7 @@ class Posnic{
        
     }
     function posnic_array_module_where($table,$where){
-        if($_SESSION[$table]==='On'){
+        if($this->session->userdata[$table]==='On'){
              $CI=  get_instance();
              return $CI->posnic_model->module_result_array_where($table,$where,$this->CI->session->userdata['branch_id']);
         }
@@ -164,7 +164,7 @@ class Posnic{
         
     }
     function posnic_one_field_module_where($field,$table,$where){
-        if($_SESSION[$table]==='On'){
+        if($this->session->userdata[$table]==='On'){
              $CI=  get_instance();
              return $CI->posnic_model->module_result_one_field_where($field,$table,$where,$this->CI->session->userdata['branch_id']);
         }
@@ -187,7 +187,7 @@ class Posnic{
           return $CI->posnic_model->check_unique_data($data,$module,$this->CI->session->userdata['branch_id']);
     }
     function posnic_update($value,$where){
-          $module=$_SESSION['posnic_module'];
+          $module=$this->session->userdata['posnic_module'];
           $CI=  get_instance();
                $CI->posnic_model->update($module,$value,$where);
           
@@ -199,13 +199,13 @@ class Posnic{
           
     }
     function posnic_module_update($module,$value,$where){
-          $mod=$_SESSION['posnic_module'];
+          $mod=$this->session->userdata['posnic_module'];
           $CI=  get_instance();
                $CI->posnic_model->update($module,$value,$where);
           
     }
     function posnic_module_add($module,$value){
-          $mod=$_SESSION['posnic_module'];
+          $mod=$this->session->userdata['posnic_module'];
           $CI=  get_instance();
           $branch=array('branch_id'=>$this->CI->session->userdata['branch_id']);
                $CI->posnic_model->add_module($module,$value,$branch);
@@ -220,7 +220,7 @@ class Posnic{
           
     }
     function posnic_add($value){
-          $module=$_SESSION['posnic_module'];
+          $module=$this->session->userdata['posnic_module'];
           $CI=  get_instance();
           $branch=array('branch_id'=>$this->CI->session->userdata['branch_id']);
                return $CI->posnic_model->add($module,$value,$branch,$this->CI->session->userdata['guid']);
@@ -229,35 +229,35 @@ class Posnic{
     }
     function posnic_deactive_where($where){
         $CI=  get_instance();        
-        $module=$_SESSION['posnic_module'];
+        $module=$this->session->userdata['posnic_module'];
         $branch=$this->CI->session->userdata['branch_id'];
         echo "1";
         $CI->posnic_model->deactive_where($where,$module,$branch);
     }
     function posnic_active_where($where){
         $CI=  get_instance();        
-        $module=$_SESSION['posnic_module'];
+        $module=$this->session->userdata['posnic_module'];
         $branch=$this->CI->session->userdata['branch_id'];
         
         $CI->posnic_model->active_where($where,$module,$branch);
     }
     function posnic_deactive($guid){
         $CI=  get_instance();        
-        $module=$_SESSION['posnic_module'];
+        $module=$this->session->userdata['posnic_module'];
         $branch=$this->CI->session->userdata['branch_id'];
         
         $CI->posnic_model->deactive($guid,$module,$branch);
     }
     function posnic_active($guid){
         $CI=  get_instance();        
-        $module=$_SESSION['posnic_module'];
+        $module=$this->session->userdata['posnic_module'];
         $branch=$this->CI->session->userdata['branch_id'];
         
         $CI->posnic_model->active($guid,$module,$branch);
     }
     function posnic_restore($guid){
         $CI=  get_instance();        
-        $module=$_SESSION['posnic_module'];
+        $module=$this->session->userdata['posnic_module'];
         $branch=$this->CI->session->userdata['branch_id'];  
     if($this->CI->session->userdata['user_type']==2){
         $CI->posnic_model->restore($guid,$module,$branch);
@@ -271,8 +271,8 @@ class Posnic{
     function posnic_module_delete($guid,$module1){
         $CI=  get_instance();
         $branch=$this->CI->session->userdata['branch_id']; 
-          $module=$_SESSION['posnic_module'];
-         if( $_SESSION[$module.'_per']['delete']==1){
+          $module=$this->session->userdata['posnic_module'];
+         if( $this->session->userdata[$module.'_per']['delete']==1){
             if($this->CI->session->userdata['user_type']==2){
            
         $CI->posnic_model->admin_where_delete($guid,$module1,$branch,$this->CI->session->userdata['guid']);
@@ -284,9 +284,9 @@ class Posnic{
     }
     function posnic_where_delete($where){
         $CI=  get_instance();        
-        $module=$_SESSION['posnic_module'];
+        $module=$this->session->userdata['posnic_module'];
         $branch=$this->CI->session->userdata['branch_id'];  
-         if( $_SESSION[$module.'_per']['delete']==1){
+         if( $this->session->userdata[$module.'_per']['delete']==1){
             if($this->CI->session->userdata['user_type']==2){
            
         $CI->posnic_model->admin_where_delete($where,$module,$branch,$this->CI->session->userdata['guid']);
@@ -373,7 +373,7 @@ class Posnic{
         
         $data['cate']= $CI->modules_model->get_module_category();      
         $data['row']=  $CI->modules_model->get_modules($this->CI->session->userdata['branch_id']);
-        $data['active']=$_SESSION['active_module'];
+       
         return $data;
     }
     function posnic_all_module_data($table){

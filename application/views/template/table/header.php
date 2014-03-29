@@ -74,7 +74,7 @@
                                    
 			}
     function user_function(users,guid){
-    <?php if($_SESSION['users_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['users_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This Users ("+users+")", function(result) {
              if(result){
             $.ajax({
@@ -135,7 +135,7 @@
                         }
                        function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['users_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['users_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/users/edit_users/"+guid,                      
                              data: "", 
