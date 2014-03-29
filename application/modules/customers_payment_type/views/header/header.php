@@ -76,7 +76,7 @@
                                    
 			}
     function user_function(guid){
-    <?php if($_SESSION['customers_payment_type_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['customers_payment_type_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete This')." ".$this->lang->line('customers_payment_type') ?>", function(result) {
              if(result){
             $.ajax({
@@ -137,7 +137,7 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['customers_payment_type_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['customers_payment_type_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/customers_payment_type/edit_customers_payment_type/"+guid,                      
                              data: "", 

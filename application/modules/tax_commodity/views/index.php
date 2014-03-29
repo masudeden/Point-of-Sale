@@ -25,7 +25,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_tax_commodity').click(function() { 
-                <?php if($_SESSION['tax_commodity_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['tax_commodity_per']['edit']==1){ ?>
                 var inputs = $('#add_tax_commodity').serialize();
                 if($('#add_tax_commodity').valid()){
                       $.ajax ({
@@ -54,7 +54,7 @@
                     <?php }?>
         });
          $('#update_tax_commodity').click(function() { 
-                <?php if($_SESSION['tax_commodity_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['tax_commodity_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                 if($('#parsley_reg').valid()){
                       $.ajax ({
@@ -84,7 +84,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['tax_commodity_per']['add']==1){ ?>
+    <?php if($this->session->userdata['tax_commodity_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_tax_commodity_form').show('slow');
       $('#delete').attr("disabled", "disabled");

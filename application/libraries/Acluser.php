@@ -40,8 +40,10 @@ class Acluser{
          }
         $second_array = array($module_name => $permission);
         $item = array_merge((array)$item, (array)$second_array);
-        $_SESSION[$module_name.'_per']=$item;
-        $_SESSION[$module_name]='On';   
+        $CI->session->set_userdata(array($module_name.'_per'=>$item,$module_name=>'On'));
+        echo '<pre>'. var_export($module_name,true).'</pre>';
+        echo '<pre>'. var_export($item,true).'</pre>';
+     
     }  
     function admin_module_permissions($mod){
          $CI=  get_instance();
@@ -58,15 +60,14 @@ class Acluser{
          }
         $second_array = array($module_name =>  count($acl_list));
         $item = array_merge((array)$item, (array)$second_array);
-        $_SESSION[$module_name.'_per']=$item;
-        $_SESSION[$module_name]='On';    
-       
+        $CI->session->set_userdata(array($module_name.'_per'=>$item,$module_name=>'On'));  
+
+        echo '<pre>'. var_export($module_name,true).'</pre>';
+        echo '<pre>'. var_export($item,true).'</pre>';
+        
        
     }
-    function user_full_permissions(){
-        $user=$_SESSION['user_groupsci_per']['depa']+ $_SESSION['branchCI_per']['branch']+$_SESSION['users_per']['user']+$_SESSION['items_per']['item'];
-        $_SESSION['full_per']=$user;
-    }
+   
     
     
 }

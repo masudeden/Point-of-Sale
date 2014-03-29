@@ -79,7 +79,7 @@
           }
     }
     function save_new_order(){
-         <?php if($_SESSION['purchase_order_per']['add']==1){ ?>
+         <?php if($this->session->userdata['purchase_order_per']['add']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -116,7 +116,7 @@
                     <?php }?>
     }
     function update_order(){
-         <?php if($_SESSION['purchase_order_per']['edit']==1){ ?>
+         <?php if($this->session->userdata['purchase_order_per']['edit']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -341,7 +341,7 @@ $('#parent_items').append('<div id="deleted"></div>');
 $('#newly_added').remove();
 $('#parent_items').append('<div id="newly_added"></div>');
 $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
-    <?php if($_SESSION['purchase_order_per']['add']==1){ ?>
+    <?php if($this->session->userdata['purchase_order_per']['add']==1){ ?>
              $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/purchase_order/order_number/",                      
                              data: "", 
@@ -2284,7 +2284,7 @@ function new_discount_amount(){
 	
                 <script type="text/javascript">
                     function purchase_order_group_approve(){
-              <?php if($_SESSION['purchase_order_per']['approve']==1){ ?>
+              <?php if($this->session->userdata['purchase_order_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2372,7 +2372,7 @@ function new_discount_amount(){
                       }    
                       }
      function posnic_delete(){
-            <?php if($_SESSION['purchase_order_per']['delete']==1){ ?>
+            <?php if($this->session->userdata['purchase_order_per']['delete']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2429,7 +2429,7 @@ function new_discount_amount(){
                     
                     
     function purchase_order_group_approve(){
-         <?php if($_SESSION['purchase_order_per']['approve']==1){ ?>
+         <?php if($this->session->userdata['purchase_order_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){

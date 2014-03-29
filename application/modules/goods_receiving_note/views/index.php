@@ -349,7 +349,7 @@
             }
     }
     function save_new_grn(){
-         <?php if($_SESSION['goods_receiving_note_per']['add']==1){ ?>
+         <?php if($this->session->userdata['goods_receiving_note_per']['add']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -390,7 +390,7 @@
                     <?php }?>
     }
     function update_order(){
-         <?php if($_SESSION['goods_receiving_note_per']['edit']==1){ ?>
+         <?php if($this->session->userdata['goods_receiving_note_per']['edit']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -744,7 +744,7 @@
 function posnic_add_new(){
 refresh_items_table();
    $("#parsley_reg").trigger('reset');
-    <?php if($_SESSION['goods_receiving_note_per']['add']==1){ ?>
+    <?php if($this->session->userdata['goods_receiving_note_per']['add']==1){ ?>
             $('#update_button').hide();
             $(".supplier_select_2").show();
             $(".porchase_order_for_grn").hide();
@@ -1243,7 +1243,7 @@ function reload_update_user(){
 	
     <script type="text/javascript">
         function posnic_group_approve(){
-              <?php if($_SESSION['goods_receiving_note_per']['approve']==1){ ?>
+              <?php if($this->session->userdata['goods_receiving_note_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -1294,7 +1294,7 @@ function reload_update_user(){
                       
                    
     function grn_group_delete(){
-                     <?php if($_SESSION['goods_receiving_note_per']['delete']==1){ ?>
+                     <?php if($this->session->userdata['goods_receiving_note_per']['delete']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){

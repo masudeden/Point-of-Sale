@@ -78,7 +78,7 @@
                                    
 			}
     function user_function(guid){
-    <?php if($_SESSION['suppliers_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['suppliers_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('supplier') ?> "+$('#supplier_name_'+guid).val(), function(result) {
              if(result){
             $.ajax({
@@ -142,7 +142,7 @@
                        $("#parsley_reg #contact_details").remove();
                        $("#parsley_reg #cover_div").append(' <div id="contact_details"></div>');
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['suppliers_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['suppliers_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/suppliers/edit_suppliers/"+guid,                      
                              data: "", 

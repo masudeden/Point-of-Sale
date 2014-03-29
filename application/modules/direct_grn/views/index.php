@@ -79,7 +79,7 @@
           }
     }
     function save_new_order(){
-         <?php if($_SESSION['direct_grn_per']['add']==1){ ?>
+         <?php if($this->session->userdata['direct_grn_per']['add']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -116,7 +116,7 @@
                     <?php }?>
     }
     function update_order(){
-         <?php if($_SESSION['direct_grn_per']['edit']==1){ ?>
+         <?php if($this->session->userdata['direct_grn_per']['edit']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -341,7 +341,7 @@ $('#parent_items').append('<div id="deleted"></div>');
 $('#newly_added').remove();
 $('#parent_items').append('<div id="newly_added"></div>');
 $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
-    <?php if($_SESSION['direct_grn_per']['add']==1){ ?>
+    <?php if($this->session->userdata['direct_grn_per']['add']==1){ ?>
              $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/direct_grn/order_number/",                      
                              data: "", 
@@ -792,8 +792,13 @@ function new_order_date(e){
                   if (unicode!=13 && unicode!=9){
         }
        else{
-           $('#parsley_reg #expiry_date').focus();
-            
+           
+              
+               window.setTimeout(function ()
+    {
+       //$('#parsley_reg #delivery_date').focus();
+      document.getElementById("id_discount").focus();
+    }, 1000);
         }
          if (unicode!=27){
         }
@@ -809,36 +814,7 @@ function new_order_date(e){
         }
 
     }
-function new_expiry_date(e){
-    if($('#parsley_reg #supplier_guid').val()!=""){
 
-     var unicode=e.charCode? e.charCode : e.keyCode
-   if($('#parsley_reg #expiry_date').value!=""){
-        
-                  if (unicode!=13 && unicode!=9){
-        }
-       else{
-                  window.setTimeout(function ()
-    {
-           $('#parsley_reg #id_discount').focus();
-            }, 0);
-           
-           
-        }
-         if (unicode!=27){
-        }
-       else{
-          
-           $('#parsley_reg #order_date').focus();
-        }
-        }
-        }else{
- $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
-         $('#parsley_reg #first_name').select2('open');
-
-        }
-
-    }
 function new_discount(e){
     if($('#parsley_reg #supplier_guid').val()!=""){
 
@@ -855,7 +831,7 @@ function new_discount(e){
         }
        else{
             
-          document.getElementById("expiry_date").focus();
+          document.getElementById("order_date").focus();
         }
         
         }else{
@@ -1861,24 +1837,7 @@ function new_discount_amount(){
                                                                 </div>
                                                        </div>
                                                    </div>
-                                               <div class="col col-sm-2" >
-                                                     <div class="form_sep">
-                                                            <label for="expiry_date" ><?php echo $this->lang->line('expiry_date') ?></label>													
-                                                                     <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                           <?php $expiry_date=array('name'=>'expiry_date',
-                                                                                            'class'=>'required form-control',
-                                                                                            'id'=>'expiry_date',
-                                                                                            'onKeyPress'=>"new_expiry_date(event)", 
-                                                                                            'value'=>set_value('expiry_date'));
-                                                                             echo form_input($expiry_date)?>
-                                                                <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                       </div>
-                                                   </div>
-                                              
-                                              
-                                               </div>
-                                           <div class="row">
+                                             
                                                 <div class="col col-sm-2" >
                                                    <div class="form_sep">
                                                             <label for="discount" ><?php echo $this->lang->line('discount') ?>%</label>													
@@ -1892,6 +1851,10 @@ function new_discount_amount(){
                                                                          echo form_input($discount)?>
                                                        </div>
                                                     </div>
+                                              
+                                               </div>
+                                           <div class="row">
+                                              
                                           
                                                 
                                                 <div class="col col-sm-2" >
@@ -2277,7 +2240,7 @@ function new_discount_amount(){
 	
                 <script type="text/javascript">
                     function direct_grn_group_approve(){
-              <?php if($_SESSION['direct_grn_per']['approve']==1){ ?>
+              <?php if($this->session->userdata['direct_grn_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2365,7 +2328,7 @@ function new_discount_amount(){
                       }    
                       }
      function posnic_delete(){
-            <?php if($_SESSION['direct_grn_per']['delete']==1){ ?>
+            <?php if($this->session->userdata['direct_grn_per']['delete']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2422,7 +2385,7 @@ function new_discount_amount(){
                     
                     
     function direct_grn_group_approve(){
-         <?php if($_SESSION['direct_grn_per']['approve']==1){ ?>
+         <?php if($this->session->userdata['direct_grn_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){

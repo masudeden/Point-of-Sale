@@ -4,7 +4,7 @@ class Grn extends CI_Model{
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('purchase_order.*,grn.grn_no,grn.active_status as grn_active_status,grn.guid as grn_guid,grn.grn_status as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
+                $this->db->select('purchase_order.*,grn.delete_status as grn_delete_status,grn.grn_no,grn.active_status as grn_active_status,grn.guid as grn_guid,grn.grn_status as grn_active, grn.date as grn_date,grn.grn_no ,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
                 $this->db->from('grn')->where('purchase_order.branch_id',$branch)->where('purchase_order.active_status',1)->where('purchase_order.delete_status',0)->where('grn.delete_status',0);
                 $this->db->join('purchase_order', 'purchase_order.guid=grn.po AND grn.delete_status=0','left');
                 $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id AND purchase_order.guid=grn.po','left');
@@ -13,7 +13,7 @@ class Grn extends CI_Model{
                 $query=$this->db->get();
                 $data=array();
                 foreach ($query->result_array() as $row){
-                    if($row['grn_active_status']==1){
+                    if($row['grn_delete_status']==0){
                     $row['grn_date']=date('d-m-Y',$row['grn_date']);
                     $data[]=$row;
                     }
@@ -26,7 +26,6 @@ class Grn extends CI_Model{
         $this->db->from('purchase_order')->where('purchase_order.branch_id',$branch)->where('purchase_order.order_status',1)->where('purchase_order.active_status',1)->where('purchase_order.delete_status',0);
         $or_like=array('po_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
         $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id ','left');
-
         $this->db->or_like($or_like);     
         $sql=$this->db->get();
         $data=array();

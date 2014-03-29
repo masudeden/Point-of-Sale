@@ -77,7 +77,7 @@
 			}
     function user_function(guid){
      var taxes=$('#name_'+guid).val();
-    <?php if($_SESSION['taxes_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['taxes_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This taxes ("+taxes+")", function(result) {
              if(result){
             $.ajax({
@@ -141,7 +141,7 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['taxes_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['taxes_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/taxes/edit_taxes/"+guid,                      
                              data: "", 

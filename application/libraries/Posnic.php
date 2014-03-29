@@ -6,8 +6,7 @@ class Posnic{
     { 
         $this->CI =& get_instance();
         $this->CI->load->library('session');
-        
-         $this->CI->load->helper('url');
+        $this->CI->load->helper('url');
       
                 $this->CI->load->helper('form');
                 $this->CI->load->helper('url');

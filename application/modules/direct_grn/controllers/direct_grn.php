@@ -16,7 +16,7 @@ class Direct_grn extends CI_Controller{
     }
     // Direct G R N Data table
     function data_table(){
-        $aColumns = array( 'guid','po_no','po_no','c_name','s_name','po_date','total_items','total_amt','active_status','order_status' );	
+        $aColumns = array( 'guid','grn_no','grn_no','c_name','s_name','grn_date','total_items','total_amt','active_status','order_status' );	
 	$start = "";
 			$end="";
 		
@@ -72,7 +72,7 @@ class Direct_grn extends CI_Controller{
 				{
 					$row[] = ($aRow[ $aColumns[$i] ]=="0") ? '-' : $aRow[ $aColumns[$i] ];
 				}
-				else if ( $aColumns[$i]== 'po_date' )
+				else if ( $aColumns[$i]== 'grn_date' )
 				{
 					/* General output */
 					$row[] = date('d-m-Y',$aRow[$aColumns[$i]]);
@@ -99,7 +99,7 @@ class Direct_grn extends CI_Controller{
                 }
     }
     function  set_seleted_item_suppier($suid){
-        $_SESSION['supplier_guid']=$suid;
+        $this->session->userdata['supplier_guid']=$suid;
     }
             function get_selected_supplier()
     {       
@@ -128,30 +128,18 @@ class Direct_grn extends CI_Controller{
        $q= addslashes($_REQUEST['term']);
                 $like=array('code'=>$q);    
                
-                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$_SESSION['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
+                $where='suppliers_x_items.item_id=items.guid AND suppliers_x_items.active = 0  AND suppliers_x_items.item_active  = 0 AND suppliers_x_items.supplier_id ="'.$this->session->userdata['supplier_guid'].'" AND items.active_status=0  AND items.active=0  ';
                 $data=$this->posnic-> posnic_join_like('suppliers_x_items','items',$like,$where);
         echo json_encode($data);
     }   
     
-    function get_item_details_for_view($iid){
-        if ($iid=="pos") return;
-            $this->load->model('purchase');     
-            $id=urldecode($iid);
-            $where=array('code'=>$id);
-            $data=$this->posnic->posnic_one_array_module_where('items',$where);
-           foreach ($data as $value){ 
-            echo "  <table> <tr><td >Name  </td><td >Cost</td><td >Price</td><td > MRF</td></tr><tr><td ><input type=text style=width:150px disabled value =$value[description]   ></td><td ><input type=text value =$value[cost_price] class=items_div disabled ></td><td ><input type=text value =$value[selling_price] class=items_div disabled ></td><td ><input type=text value= $value[mrp] class=items_div  disabled ></td></tr></table>";
-            
-            
-        }
-     }
+ 
  
     
   
 function save(){      
-     if($_SESSION['direct_grn_per']['add']==1){
+     if($this->session->userdata['direct_grn_per']['add']==1){
         $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
-        $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
         $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
         $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
         $this->form_validation->set_rules('grand_total', $this->lang->line('grand_total'), 'required');                      
@@ -159,7 +147,6 @@ function save(){
            
             if ( $this->form_validation->run() !== false ) {    
                 $supplier=  $this->input->post('supplier_guid');
-                $expdate=strtotime($this->input->post('expiry_date'));
                 $pono= $this->input->post('order_number');
                 $podate= strtotime($this->input->post('order_date'));
                 $discount=  $this->input->post('discount');
@@ -173,7 +160,7 @@ function save(){
                 $grand_total=  $this->input->post('grand_total');
   
      
-              $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_no'=>$pono,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
+              $value=array('supplier_id'=>$supplier,'grn_no'=>$pono,'grn_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'order_status'=>0,'total_item_amt'=>$total_amount);
               $guid=   $this->posnic->posnic_add_record($value,'direct_grn');
           
                 $item=  $this->input->post('new_item_id');
@@ -208,9 +195,8 @@ function save(){
     }
     function update(){
             if(isset($_POST['direct_grn_guid'])){
-      if($_SESSION['direct_grn_per']['edit']==1){
+      if($this->session->userdata['direct_grn_per']['edit']==1){
         $this->form_validation->set_rules('supplier_guid',$this->lang->line('supplier_guid'), 'required');
-        $this->form_validation->set_rules('expiry_date',$this->lang->line('expiry_date'), 'required');
         $this->form_validation->set_rules('order_number', $this->lang->line('order_number'), 'required');
         $this->form_validation->set_rules('order_date', $this->lang->line('order_date'), 'required');                      
         $this->form_validation->set_rules('grand_total', $this->lang->line('grand_total'), 'required');                      
@@ -218,7 +204,7 @@ function save(){
            
             if ( $this->form_validation->run() !== false ) {    
                 $supplier=  $this->input->post('supplier_guid');
-                $expdate=strtotime($this->input->post('expiry_date'));
+             
                 $pono= $this->input->post('order_number');
                 $podate= strtotime($this->input->post('order_date'));
                 $discount=  $this->input->post('discount');
@@ -232,7 +218,7 @@ function save(){
                 $grand_total=  $this->input->post('grand_total');
   
      
-              $value=array('supplier_id'=>$supplier,'exp_date'=>$expdate,'po_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'total_item_amt'=>$total_amount);
+              $value=array('supplier_id'=>$supplier,'grn_date'=>$podate,'discount'=>$discount,'discount_amt'=>$discount_amount,'freight'=>$freight,'round_amt'=>$round_amt,'total_items'=>$total_items,'total_amt'=>$grand_total,'remark'=>$remark,'note'=>$note,'total_item_amt'=>$total_amount);
               $guid=  $this->input->post('direct_grn_guid');
               $update_where=array('guid'=>$guid);
               $this->posnic->posnic_update_record($value,$update_where,'direct_grn');
@@ -314,7 +300,7 @@ function search_supplier(){
         
 }
 function delete(){
-   if($_SESSION['brands_per']['delete']==1){
+   if($this->session->userdata['brands_per']['delete']==1){
             if($this->input->post('guid')){
                 $this->load->model('purchase');
                 $guid=$this->input->post('guid');
@@ -334,7 +320,7 @@ function delete(){
     
 }
 function  get_direct_grn($guid){
-    if($_SESSION['direct_grn_per']['edit']==1){
+    if($this->session->userdata['direct_grn_per']['edit']==1){
     $this->load->model('purchase');
     $data=  $this->purchase->get_direct_grn($guid);
     echo json_encode($data);
@@ -342,7 +328,7 @@ function  get_direct_grn($guid){
 }
 
 function direct_grn_approve(){
-     if($_SESSION['direct_grn_per']['approve']==1){
+     if($this->session->userdata['direct_grn_per']['approve']==1){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
             $this->purchase->deactive_order($id);

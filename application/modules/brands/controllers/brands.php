@@ -88,7 +88,7 @@ class Brands extends CI_Controller
    
    
     function update_brands(){
-           if($_SESSION['brands_per']['edit']==1){
+           if($this->session->userdata['brands_per']['edit']==1){
            if($this->input->post('brands_name')){
                 $this->form_validation->set_rules("brands_name",$this->lang->line('brands_name'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -133,7 +133,7 @@ class Brands extends CI_Controller
               }
     }
     function edit_brands($guid){
-        if($_SESSION['brands_per']['edit']==1){
+        if($this->session->userdata['brands_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'brands');
         echo json_encode($data);
         }else{
@@ -143,7 +143,7 @@ class Brands extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['brands_per']['delete']==1){
+        if($this->session->userdata['brands_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'brands');
@@ -166,7 +166,7 @@ class Brands extends CI_Controller
              redirect('home');
          }
          if($this->input->post('add_tax')){
-                if($_SESSION['Posnic_Add']==="Add"){
+                if($this->session->userdata['Posnic_Add']==="Add"){
                 $this->load->view('brands/add_brand');
                 }else{
                     echo "you have no permision to add brands";
@@ -175,7 +175,7 @@ class Brands extends CI_Controller
                
          }
          if($this->input->post('delete_ad')){
-              if($_SESSION['Posnic_Delete']==="Delete"){
+              if($this->session->userdata['Posnic_Delete']==="Delete"){
                 $data1 = $this->input->post('mycheck'); 
                  if(!$data1==''){         
                  foreach( $data1 as $key => $guid){                        
@@ -188,7 +188,7 @@ class Brands extends CI_Controller
               }
          }
          if($this->input->post('delete')){
-              if($_SESSION['Posnic_Delete']==="Delete"){
+              if($this->session->userdata['Posnic_Delete']==="Delete"){
                 $data1 = $this->input->post('mycheck'); 
                 $this->load->model('item_brands');
                     if(!$data1==''){         
@@ -220,7 +220,7 @@ class Brands extends CI_Controller
         
     }
     function add_brands(){
-            if($_SESSION['brands_per']['add']==1){
+            if($this->session->userdata['brands_per']['add']==1){
            if($this->input->post('brands_name')){
                 $this->form_validation->set_rules("brands_name",$this->lang->line('brands_name'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 
@@ -245,7 +245,7 @@ class Brands extends CI_Controller
          
     }
     function delete_brands($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
+           if($this->session->userdata['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
                }
             else{

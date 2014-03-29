@@ -23,7 +23,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_customer_category').click(function() { 
-                <?php if($_SESSION['customer_category_per']['add']==1){ ?>
+                <?php if($this->session->userdata['customer_category_per']['add']==1){ ?>
                 var inputs = $('#add_customer_category').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/customer_category/add_customer_category')?>",
@@ -48,7 +48,7 @@
                     <?php }?>
         });
          $('#update_customer_category').click(function() { 
-                <?php if($_SESSION['customer_category_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['customer_category_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/customer_category/update_customer_category')?>",
@@ -75,7 +75,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['customer_category_per']['add']==1){ ?>
+    <?php if($this->session->userdata['customer_category_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_customer_category_form').show('slow');
       $('#delete').attr("disabled", "disabled");

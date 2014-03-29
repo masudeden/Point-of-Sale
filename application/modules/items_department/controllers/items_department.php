@@ -88,7 +88,7 @@ class Items_department extends CI_Controller
    
    
     function update_items_department(){
-           if($_SESSION['items_department_per']['edit']==1){
+           if($this->session->userdata['items_department_per']['edit']==1){
            if($this->input->post('items_department_name')){
                 $this->form_validation->set_rules("items_department_name",$this->lang->line('items_department_name'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -140,7 +140,7 @@ class Items_department extends CI_Controller
               }
     }
     function edit_items_department($guid){
-        if($_SESSION['items_department_per']['edit']==1){
+        if($this->session->userdata['items_department_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'items_department');
         echo json_encode($data);
         }else{
@@ -150,7 +150,7 @@ class Items_department extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['items_department_per']['delete']==1){
+        if($this->session->userdata['items_department_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'items_department');
@@ -173,7 +173,7 @@ class Items_department extends CI_Controller
              redirect('home');
          }
          if($this->input->post('add_tax')){
-                if($_SESSION['Posnic_Add']==="Add"){
+                if($this->session->userdata['Posnic_Add']==="Add"){
                 $this->load->view('items_department/add_brand');
                 }else{
                     echo "you have no permision to add items_department";
@@ -182,7 +182,7 @@ class Items_department extends CI_Controller
                
          }
          if($this->input->post('delete_ad')){
-              if($_SESSION['Posnic_Delete']==="Delete"){
+              if($this->session->userdata['Posnic_Delete']==="Delete"){
                 $data1 = $this->input->post('mycheck'); 
                  if(!$data1==''){         
                  foreach( $data1 as $key => $guid){                        
@@ -195,7 +195,7 @@ class Items_department extends CI_Controller
               }
          }
          if($this->input->post('delete')){
-              if($_SESSION['Posnic_Delete']==="Delete"){
+              if($this->session->userdata['Posnic_Delete']==="Delete"){
                 $data1 = $this->input->post('mycheck'); 
                 $this->load->model('item_items_department');
                     if(!$data1==''){         
@@ -227,7 +227,7 @@ class Items_department extends CI_Controller
         
     }
     function add_items_department(){
-            if($_SESSION['items_department_per']['add']==1){
+            if($this->session->userdata['items_department_per']['add']==1){
            if($this->input->post('items_department_name')){
                 $this->form_validation->set_rules("items_department_name",$this->lang->line('items_department_name'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 
@@ -252,7 +252,7 @@ class Items_department extends CI_Controller
          
     }
     function delete_items_department($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
+           if($this->session->userdata['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
                }
             else{

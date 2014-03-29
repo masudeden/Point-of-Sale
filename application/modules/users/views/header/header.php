@@ -78,7 +78,7 @@
                                    
 			}
     function user_function(users,guid){
-    <?php if($_SESSION['users_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['users_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This Users ("+users+")", function(result) {
              if(result){
             $.ajax({
@@ -147,7 +147,7 @@
                             $('#parsley_reg #user_group_parent_div').append(' <select multiple id="user_groups_list" class="form-control" name="ToLJ" style="width: 150;height:128px;"></select>');
 
         
-                        <?php if($_SESSION['users_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['users_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/users/edit_users/"+guid,                      
                              data: "", 

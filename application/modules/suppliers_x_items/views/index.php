@@ -171,7 +171,7 @@
      }
 function posnic_add_new(){
 $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
-    <?php if($_SESSION['suppliers_x_items_per']['add']==1){ ?>
+    <?php if($this->session->userdata['suppliers_x_items_per']['add']==1){ ?>
       $("#user_list").hide();
     $('#edit_brand_form').show('slow');
       $('#delete').attr("disabled", "disabled");

@@ -95,7 +95,7 @@ class Goods_receiving_note extends CI_Controller{
     }
  
 function save(){      
-     if($_SESSION['purchase_order_per']['add']==1){
+     if($this->session->userdata['purchase_order_per']['add']==1){
         $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
         $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
         $this->form_validation->set_rules('grn_no', $this->lang->line('grn_no'), 'required');                     
@@ -136,7 +136,7 @@ function save(){
     }
     function update(){
             
-      if($_SESSION['purchase_order_per']['edit']==1){
+      if($this->session->userdata['purchase_order_per']['edit']==1){
         $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
         $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
         //$this->form_validation->set_rules('grn_no', $this->lang->line('grn_no'), 'required');                         
@@ -189,7 +189,7 @@ function search_purchase_order(){
         
 }
 function delete(){
-   if($_SESSION['goods_receiving_note_per']['delete']==1){
+   if($this->session->userdata['goods_receiving_note_per']['delete']==1){
         if($this->input->post('guid')){
             $guid=  $this->input->post('guid');
             $this->load->model('grn');
@@ -210,21 +210,21 @@ function delete(){
     
 }
 function  get_purchase_order($guid){
-    if($_SESSION['purchase_order_per']['edit']==1){
+    if($this->session->userdata['purchase_order_per']['edit']==1){
     $this->load->model('grn');
     $data=  $this->grn->get_purchase_order($guid);
     echo json_encode($data);
     }
 }
 function  get_goods_receiving_note($guid){
-    if($_SESSION['purchase_order_per']['edit']==1){
+    if($this->session->userdata['purchase_order_per']['edit']==1){
     $this->load->model('grn');
     $data=  $this->grn->get_goods_receiving_note($guid);
     echo json_encode($data);
     }
 }
 function good_receiving_note_approve(){
-    if($_SESSION['goods_receiving_note_per']['approve']==1){
+    if($this->session->userdata['goods_receiving_note_per']['approve']==1){
         $id=  $this->input->post('guid');
         $po=  $this->input->post('po');
         $this->load->model('grn');

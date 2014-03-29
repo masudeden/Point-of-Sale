@@ -22,29 +22,45 @@ class Invoice extends CI_Model{
         
     }
     function search_grn_order($like,$branch){
-        $this->db->select('grn.*,direct_grn.*,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
-        $this->db->from('grn')->where('grn.branch_id',$branch)->where('grn.grn_status',1);
+        $this->db->select('direct_grn.*,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
+        $this->db->from('direct_grn')->where('direct_grn.branch_id',$branch)->where('direct_grn.order_status',1)->where('direct_grn.active_status',1)->where('direct_grn.delete_status',0);
         $or_like=array('grn_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
-        $this->db->join('purchase_order', 'purchase_order.guid=grn.po ','left');
-        $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id ','left');
-    
-$this->db->join('direct_grn', '','left');
+        $this->db->join('suppliers', 'suppliers.guid=direct_grn.supplier_id ','left');
+
         $this->db->or_like($or_like);     
         $sql=$this->db->get();
         $data=array();
         foreach($sql->result_array() as $row){
-              $row['expired']=0;
-            if($row['exp_date'] < strtotime(date("Y/m/d"))){  
-                $row['expired']=1;
-            }
-            $row['po_date']=date('d-m-Y',$row['po_date']);
-            $row['exp_date']=date('d-m-Y',$row['exp_date']);
-            $data[]=$row;
+            $row['grn_date']=date('d-m-Y',$row['grn_date']);
+          
+             $data[]=$row;
+
+        }
+        
+        // get data from grn
+        
+        $this->db->select('grn.grn_no,grn.date as grn_date ,grn.po,purchase_order.*,suppliers.guid as s_guid');
+        $this->db->from('grn')->where('grn.branch_id',$branch)->where('grn.grn_status',1)->where('grn.delete_status',0);
+        $or_like=array('grn_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
+        $this->db->join('purchase_order', 'purchase_order.guid=grn.po ','left');
+        $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id ','left');
+        $this->db->or_like($or_like);     
+        $sql=$this->db->get();
+       
+        foreach($sql->result_array() as $row){
+            
+            $row['grn_date']=date('d-m-Y',$row['grn_date']);
+
+           
+
+             $data[]=$row;
 
         }
          return $data;
                
-        
+      
+
+
     }
     function supplier_vs_items($end,$start,$like,$branch,$suplier){
         

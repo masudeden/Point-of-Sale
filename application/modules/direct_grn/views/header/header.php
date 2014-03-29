@@ -122,7 +122,7 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['direct_grn_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['direct_grn_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
@@ -153,7 +153,7 @@
           
         
 function direct_grn_approve(guid){
-        <?php if($_SESSION['direct_grn_per']['approve']==1){ ?>
+        <?php if($this->session->userdata['direct_grn_per']['approve']==1){ ?>
             $.ajax({
                 url: '<?php echo base_url() ?>index.php/direct_grn/direct_grn_approve',
                 type: "POST",
@@ -181,7 +181,7 @@ function direct_grn_approve(guid){
            function edit_function(guid){
            
         
-                        <?php if($_SESSION['direct_grn_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['direct_grn_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
                             $('#parent_items').append('<div id="deleted"></div>');
@@ -213,10 +213,10 @@ function direct_grn_approve(guid){
                                 $("#parsley_reg #company").val(data[0]['c_name']);
                                 $("#parsley_reg #address").val(data[0]['address']);
                                 $("#parsley_reg #direct_grn_guid").val(guid);
-                                $("#parsley_reg #demo_order_number").val(data[0]['po_no']);
-                                $("#parsley_reg #order_number").val(data[0]['po_no']);
-                                $("#parsley_reg #order_date").val(data[0]['po_date']);
-                                $("#parsley_reg #expiry_date").val(data[0]['exp_date']);
+                                $("#parsley_reg #demo_order_number").val(data[0]['grn_no']);
+                                $("#parsley_reg #order_number").val(data[0]['grn_no']);
+                                $("#parsley_reg #order_date").val(data[0]['grn_date']);
+                        
                                 
                                 $("#parsley_reg #id_discount").val(data[0]['discount']);
                                 $("#parsley_reg #note").val(data[0]['note']);

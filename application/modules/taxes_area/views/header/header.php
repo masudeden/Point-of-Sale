@@ -76,7 +76,7 @@
                                    
 			}
     function user_function(guid){
-    <?php if($_SESSION['taxes_area_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['taxes_area_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This Aaxes Area ", function(result) {
              if(result){
             $.ajax({
@@ -137,7 +137,7 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['taxes_area_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['taxes_area_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/taxes_area/edit_taxes_area/"+guid,                      
                              data: "", 

@@ -78,7 +78,7 @@
 			}
     function user_function(guid){
      var items=$('#name_'+guid).val();
-    <?php if($_SESSION['items_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['items_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This Items ("+items+")", function(result) {
              if(result){
             $.ajax({
@@ -141,7 +141,7 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['items_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['items_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/items/edit_items/"+guid,                      
                              data: "", 
@@ -205,7 +205,7 @@
                        }
            function add_image_function(guid){
                        $("#add_image_form").trigger('reset');
-                        <?php if($_SESSION['items_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['items_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/items/edit_items/"+guid,                      
                              data: "", 

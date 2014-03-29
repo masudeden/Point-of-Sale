@@ -88,7 +88,7 @@ class Suppliers_category extends CI_Controller
    
    
     function update_suppliers_category(){
-           if($_SESSION['suppliers_category_per']['edit']==1){
+           if($this->session->userdata['suppliers_category_per']['edit']==1){
            if($this->input->post('suppliers_category')){
                 $this->form_validation->set_rules('suppliers_category',$this->lang->line('suppliers_category'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -140,7 +140,7 @@ class Suppliers_category extends CI_Controller
               }
     }
     function edit_suppliers_category($guid){
-        if($_SESSION['suppliers_category_per']['edit']==1){
+        if($this->session->userdata['suppliers_category_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'suppliers_category');
         echo json_encode($data);
         }else{
@@ -150,7 +150,7 @@ class Suppliers_category extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['suppliers_category_per']['delete']==1){
+        if($this->session->userdata['suppliers_category_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'suppliers_category');
@@ -170,7 +170,7 @@ class Suppliers_category extends CI_Controller
     }        
     
     function add_suppliers_category(){
-            if($_SESSION['suppliers_category_per']['add']==1){
+            if($this->session->userdata['suppliers_category_per']['add']==1){
            if($this->input->post('suppliers_category')){
                 $this->form_validation->set_rules("suppliers_category",$this->lang->line('suppliers_category'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 
@@ -195,7 +195,7 @@ class Suppliers_category extends CI_Controller
          
     }
     function delete_suppliers_category($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
+           if($this->session->userdata['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
                }
             else{

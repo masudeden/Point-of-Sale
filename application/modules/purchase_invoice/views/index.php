@@ -208,7 +208,7 @@
             }
     }
     function save_new_grn(){
-         <?php if($_SESSION['purchase_invoice_per']['add']==1){ ?>
+         <?php if($this->session->userdata['purchase_invoice_per']['add']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -249,7 +249,7 @@
                     <?php }?>
     }
     function update_order(){
-         <?php if($_SESSION['purchase_invoice_per']['edit']==1){ ?>
+         <?php if($this->session->userdata['purchase_invoice_per']['edit']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
@@ -397,7 +397,7 @@
     return  "<p >"+sup.text+"    <br>"+sup.order_date+" "+sup.company+"   "+sup.supplier+"</p> ";
             }
         $('#parsley_reg #demo_order_number').change(function() {
-            if($('#parsley_reg #demo_order_number').select2('data').expired==0){
+           
                refresh_items_table();
              $('#loading').modal('show');
                    var guid = $('#parsley_reg #demo_order_number').select2('data').id;
@@ -413,7 +413,7 @@
                  $('#parsley_reg #freight').val($('#parsley_reg #demo_order_number').select2('data').freight);
                  $('#parsley_reg #round_off_amount').val($('#parsley_reg #demo_order_number').select2('data').round);
                  $('#parsley_reg #supplier_guid').val(guid);
-               
+               console.log($('#parsley_reg #demo_order_number').select2('data').po);
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/purchase_invoice/get_grn/"+guid,                      
                              data: "", 
@@ -548,14 +548,7 @@
                        document.getElementById('order_date').focus();
                        $('#loading').modal('hide');
                     }, 0);  
-                    }else{
-                     $('#parsley_reg #demo_order_number').select2('open');
-                     $("#parsley_reg").trigger('reset');
-                     $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('was_expired');?>', { type: "error" });                         
-                     $('#grn_no').val(grn_number);
-                     $('#demo_grn_no').val(grn_number);
-                     
-                    }
+                    
           });
           $('#parsley_reg #demo_order_number').select2({
               dropdownCssClass : 'supplier_select',
@@ -581,22 +574,18 @@
                         };
                     },
                     results: function (data) {
+                       
                       var results = [];
                       $.each(data, function(index, item){
+                          
                         results.push({
                           id: item.guid,
-                          text: item.po_no,
-                          company: item.c_name,
-                          supplier: item.s_name,
-                          order_date: item.po_date,
-                          expiry: item.exp_date,
-                          discount: item.discount,
-                          dis_amount: item.discount_amt,
-                          freight: item.freight,
-                          round: item.round_amt,
-                          expired: item.expired,
+                          text: item.grn_no,
+                          
+                          po:item.po
                         });
                       });
+                  
                       return {
                           results: results
                       };
@@ -609,7 +598,7 @@
 function posnic_add_new(){
 refresh_items_table();
    $("#parsley_reg").trigger('reset');
-    <?php if($_SESSION['purchase_invoice_per']['add']==1){ ?>
+    <?php if($this->session->userdata['purchase_invoice_per']['add']==1){ ?>
             $('#update_button').hide();
             $(".supplier_select_2").show();
             $(".porchase_order_for_grn").hide();
@@ -1102,7 +1091,7 @@ function reload_update_user(){
 	
     <script type="text/javascript">
         function posnic_group_approve(){
-              <?php if($_SESSION['purchase_invoice_per']['approve']==1){ ?>
+              <?php if($this->session->userdata['purchase_invoice_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -1152,7 +1141,7 @@ function reload_update_user(){
                       
                    
     function grn_group_delete(){
-                     <?php if($_SESSION['purchase_invoice_per']['delete']==1){ ?>
+                     <?php if($this->session->userdata['purchase_invoice_per']['delete']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){

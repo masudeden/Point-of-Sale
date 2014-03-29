@@ -4,10 +4,15 @@ class Customers extends CI_Controller
 {
     function __construct() {
         parent::__construct();
-          $this->load->library('posnic');              
+          $this->load->library('posnic'); 
+         
     }
     function index(){
-        $this->get(); 
+       // $this->get(); 
+    //  echo '<pre>'. var_export($_SESSION,true).'</pre>';
+     echo '<pre>'. var_export($this->session->userdata,true).'</pre>';
+        exit;
+       
     }
      function get(){
         $this->load->view('template/app/header'); 
@@ -104,7 +109,7 @@ class Customers extends CI_Controller
               }
     }
    function delete(){
-        if($_SESSION['customers_per']['delete']==1){
+        if($this->session->userdata['customers_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'customers');
@@ -115,7 +120,7 @@ class Customers extends CI_Controller
         }
     }
     function add_customers(){
-                  if($_SESSION['customers_per']['add']=="1"){
+                  if($this->session->userdata['customers_per']['add']=="1"){
                        if($this->input->post('country')){
                     $this->load->library('form_validation');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
@@ -203,7 +208,7 @@ class Customers extends CI_Controller
     }
             
     function edit_customers($guid){
-           if($_SESSION['customers_per']['edit']=="1"){
+           if($this->session->userdata['customers_per']['edit']=="1"){
                   $this->load->model('customer')		   ;
 		  $data = $this->customer->edit_customer($guid);
                   echo json_encode($data);
@@ -215,7 +220,7 @@ class Customers extends CI_Controller
     function update_customers(){        
             
         
-                 if($_SESSION['customers_per']['edit']==1){
+                 if($this->session->userdata['customers_per']['edit']==1){
                          if($this->input->post('guid')){
                     $guid=  $this->input->post('guid');
                           $this->load->library('form_validation');

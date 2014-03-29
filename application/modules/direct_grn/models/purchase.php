@@ -121,11 +121,9 @@ class Purchase extends CI_Model{
          $data=array();
          foreach($sql->result_array() as $row){
              
-          $row['po_date']=date('d-m-Y',$row['po_date']);
+          $row['grn_date']=date('d-m-Y',$row['grn_date']);
        
-          $row['exp_date']=date('d-m-Y',$row['exp_date']);
-         
-          $row['date']=date('d-m-Y',$row['date']);
+      
          
           $data[]=$row;
          }

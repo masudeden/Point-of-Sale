@@ -138,7 +138,7 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['suppliers_x_items_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['suppliers_x_items_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#item_name_'+guid).val(), function(result) {
              if(result){
             $.ajax({
@@ -237,7 +237,7 @@
            $('#edit_brand_form').show();
                       
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['suppliers_x_items_per']['add']==1){ ?>
+                        <?php if($this->session->userdata['suppliers_x_items_per']['add']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/suppliers/edit_suppliers/"+guid,                      
                              data: "", 
@@ -275,7 +275,7 @@
         
            $('#loading').modal('show');
         
-                        <?php if($_SESSION['suppliers_x_items_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['suppliers_x_items_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/suppliers_x_items/get_suppliers_x_items/"+guid,                      
                              data: "", 

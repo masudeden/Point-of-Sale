@@ -123,7 +123,7 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['purchase_invoice_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['purchase_invoice_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('purchase_invoice') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
@@ -153,7 +153,7 @@
 ?>
                         }
         function good_receiving_note_approve(guid,po){
-            <?php if($_SESSION['purchase_invoice_per']['approve']==1){ ?>
+            <?php if($this->session->userdata['purchase_invoice_per']['approve']==1){ ?>
                 $.ajax({
                 url: '<?php echo base_url() ?>index.php/purchase_invoice/good_receiving_note_approve',
                 type: "POST",
@@ -199,7 +199,7 @@
         }
           
         function edit_function(guid){
-                        <?php if($_SESSION['purchase_invoice_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['purchase_invoice_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
                             $('#parent_items').append('<div id="deleted"></div>');

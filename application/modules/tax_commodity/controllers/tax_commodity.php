@@ -57,7 +57,7 @@ class Tax_commodity extends CI_Controller
                         $select='taxes.*,tax_types.type as tax_type';
 			 $join_where='taxes.type=tax_types.guid ';	 
                          $this->load->model('tax');
-			 $rResult1 = $this->tax->data_table($end,$start,$like,$_SESSION['Bid']);
+			 $rResult1 = $this->tax->data_table($end,$start,$like,$this->session->userdata['Bid']);
 		   
 		$iFilteredTotal =$this->posnic->data_table_count('taxes');
 		
@@ -94,7 +94,7 @@ class Tax_commodity extends CI_Controller
     }
    
     function edit_tax_commodity($guid){
-        if($_SESSION['tax_commodity_per']['edit']==1){
+        if($this->session->userdata['tax_commodity_per']['edit']==1){
             $this->load->model('tax');
             $data=  $this->tax->edit_tax_commodity($guid);
             echo json_encode($data);
@@ -104,7 +104,7 @@ class Tax_commodity extends CI_Controller
     }
    
     function update_tax_commodity(){
-            if($_SESSION['tax_commodity_per']['edit']==1){
+            if($this->session->userdata['tax_commodity_per']['edit']==1){
                 $this->form_validation->set_rules("guid",$this->lang->line('guid'),'required'); 
                 $this->form_validation->set_rules("code",$this->lang->line('code'),'required'); 
                 $this->form_validation->set_rules("schedule",$this->lang->line('schedule'),'required'); 
@@ -131,7 +131,7 @@ class Tax_commodity extends CI_Controller
            }
     }
         function add_tax_commodity(){
-            if($_SESSION['tax_commodity_per']['add']==1){
+            if($this->session->userdata['tax_commodity_per']['add']==1){
          
                 $this->form_validation->set_rules("code",$this->lang->line('code'),'required'); 
                 $this->form_validation->set_rules("schedule",$this->lang->line('schedule'),'required'); 

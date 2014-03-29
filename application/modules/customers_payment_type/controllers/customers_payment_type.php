@@ -79,7 +79,7 @@ class Customers_payment_type extends CI_Controller
    
    
     function update_customers_payment_type(){
-        if($_SESSION['customers_payment_type_per']['edit']==1){
+        if($this->session->userdata['customers_payment_type_per']['edit']==1){
            if($this->input->post('customers_payment_type')){
                 $this->form_validation->set_rules('customers_payment_type',$this->lang->line('customers_payment_type'),'required'); 
                 if ( $this->form_validation->run() !== false ) {  
@@ -131,7 +131,7 @@ class Customers_payment_type extends CI_Controller
               }
     }
     function edit_customers_payment_type($guid){
-        if($_SESSION['customers_payment_type_per']['edit']==1){
+        if($this->session->userdata['customers_payment_type_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'customers_payment_type');
         echo json_encode($data);
         }else{
@@ -141,7 +141,7 @@ class Customers_payment_type extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['customers_payment_type_per']['delete']==1){
+        if($this->session->userdata['customers_payment_type_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'customers_payment_type');
@@ -161,7 +161,7 @@ class Customers_payment_type extends CI_Controller
     }        
     
     function add_customers_payment_type(){
-            if($_SESSION['customers_payment_type_per']['add']==1){
+            if($this->session->userdata['customers_payment_type_per']['add']==1){
            if($this->input->post('customers_payment_type')){
                 $this->form_validation->set_rules("customers_payment_type",$this->lang->line('customers_payment_type'),'required'); 
                 if ( $this->form_validation->run() !== false ) { 
@@ -186,7 +186,7 @@ class Customers_payment_type extends CI_Controller
          
     }
     function delete_customers_payment_type($guid){
-           if($_SESSION['Posnic_Delete']==="Delete"){
+           if($this->session->userdata['Posnic_Delete']==="Delete"){
               $this->posnic->posnic_delete($guid);
                }
             else{

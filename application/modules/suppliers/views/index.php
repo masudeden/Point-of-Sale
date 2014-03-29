@@ -105,7 +105,7 @@
         
         
         $('#add_new_supplier').click(function() { 
-                <?php if($_SESSION['suppliers_per']['add']==1){ ?>
+                <?php if($this->session->userdata['suppliers_per']['add']==1){ ?>
                 var inputs = $('#add_supplier_form').serialize();
                 if($('#add_supplier_form').valid()){
                       $.ajax ({
@@ -134,7 +134,7 @@
                     <?php }?>
         });
          $('#update_suppliers').click(function() { 
-                <?php if($_SESSION['suppliers_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['suppliers_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                                 if($('#parsley_reg').valid()){
                       $.ajax ({
@@ -165,7 +165,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['suppliers_per']['add']==1){ ?>
+    <?php if($this->session->userdata['suppliers_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_supplier_details_form').show('slow');
       $('#delete').attr("disabled", "disabled");

@@ -8,6 +8,8 @@ class Taxes extends CI_Controller
     }
     function index(){
         $this->get_brands(); 
+        
+      
     }
      function get_brands(){
         $this->load->view('template/app/header'); 
@@ -90,7 +92,7 @@ class Taxes extends CI_Controller
     }
    
     function edit_taxes($guid){
-        if($_SESSION['taxes_per']['edit']==1){
+        if($this->session->userdata['taxes_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'taxes');
         echo json_encode($data);
         }else{
@@ -99,7 +101,7 @@ class Taxes extends CI_Controller
     }
    
     function update_taxes(){
-            if($_SESSION['taxes_per']['edit']==1){
+            if($this->session->userdata['taxes_per']['edit']==1){
            if($this->input->post('guid')){
                 $this->form_validation->set_rules("tax_value",$this->lang->line('tax_value'),'required'); 
                 $this->form_validation->set_rules("taxes_type",$this->lang->line('taxes_type'),'required'); 
@@ -125,7 +127,7 @@ class Taxes extends CI_Controller
            }
     }
         function add_taxes(){
-            if($_SESSION['taxes_per']['add']==1){
+            if($this->session->userdata['taxes_per']['add']==1){
            if($this->input->post('tax_value')){
                 $this->form_validation->set_rules("tax_value",$this->lang->line('tax_value'),'required'); 
                 $this->form_validation->set_rules("taxes_type",$this->lang->line('taxes_type'),'required'); 
@@ -170,7 +172,7 @@ class Taxes extends CI_Controller
               }
     }
     function edit_brands($guid){
-        if($_SESSION['brands_per']['edit']==1){
+        if($this->session->userdata['brands_per']['edit']==1){
         $data=  $this->posnic->get_module_details_for_update($guid,'taxes');
         echo json_encode($data);
         }else{
@@ -180,7 +182,7 @@ class Taxes extends CI_Controller
             
     
     function delete(){
-        if($_SESSION['taxes_per']['delete']==1){
+        if($this->session->userdata['taxes_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'taxes');

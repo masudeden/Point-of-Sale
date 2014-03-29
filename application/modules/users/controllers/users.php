@@ -107,7 +107,7 @@ class Users extends CI_Controller{
     }
     function get_pos_users_details(){         
            
-        if($_SESSION['users_per']['access']==1){
+        if($this->session->userdata['users_per']['access']==1){
          $this->load->model('user_groups');
                     $this->load->model('branch');
                      if($this->session->userdata['user_type']==2){ 
@@ -131,7 +131,7 @@ class Users extends CI_Controller{
 
    
     function upadate_pos_users_details(){
-       if($_SESSION['users_per']['edit']==1){ 
+       if($this->session->userdata['users_per']['edit']==1){ 
        $this->load->library('form_validation');
                
                 $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
@@ -269,7 +269,7 @@ class Users extends CI_Controller{
    
     function add_pos_users_details(){
             
-           if($_SESSION['users_per']['add']==1){                     
+           if($this->session->userdata['users_per']['add']==1){                     
                 $this->load->library('form_validation');
                
                 $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
@@ -342,7 +342,7 @@ class Users extends CI_Controller{
     function add_pos_users_image(){
               $uploaddir = './uploads/'; 
                $file = $uploaddir . basename($_FILES['uploadfile']['name']); 
-               $_SESSION['image_name']=basename($_FILES['uploadfile']['name']); 
+               $this->session->userdata['image_name']=basename($_FILES['uploadfile']['name']); 
                
                 if (move_uploaded_file($_FILES['uploadfile']['tmp_name'], $file)) { 
                 echo "success"; 
@@ -352,7 +352,7 @@ class Users extends CI_Controller{
         }
    
     function delete(){
-            if($_SESSION['users_per']['delete']==1){  
+            if($this->session->userdata['users_per']['delete']==1){  
                 $id=  $this->input->post('guid');
                 $this->load->model('pos_users_model');
                 $this->pos_users_model->delete_pos_users($id,$this->session->userdata['guid'],$this->session->userdata['branch_id']);   

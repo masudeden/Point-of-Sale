@@ -104,7 +104,7 @@ class Suppliers extends CI_Controller{
               }
     }
    function delete(){
-        if($_SESSION['suppliers_per']['delete']==1){
+        if($this->session->userdata['suppliers_per']['delete']==1){
             if($this->input->post('guid')){
              $guid=  $this->input->post('guid');
               $this->posnic->posnic_delete($guid,'suppliers');
@@ -115,7 +115,7 @@ class Suppliers extends CI_Controller{
         }
     }
     function add_suppliers(){
-            if($_SESSION['customers_per']['add']=="1"){
+            if($this->session->userdata['customers_per']['add']=="1"){
                     $this->load->library('form_validation');
                             $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
                             $this->form_validation->set_rules("category",$this->lang->line('category'),"required"); 
@@ -165,7 +165,7 @@ class Suppliers extends CI_Controller{
     function update_suppliers(){        
      
             if($this->input->post('guid')){
-               if($_SESSION['suppliers_per']['edit']==1){
+               if($this->session->userdata['suppliers_per']['edit']==1){
                     $this->load->library('form_validation');
                          $this->form_validation->set_rules("first_name",$this->lang->line('first_name'),"required"); 
                          $this->form_validation->set_rules("category",$this->lang->line('category'),"required"); 
@@ -239,7 +239,7 @@ class Suppliers extends CI_Controller{
                  redirect('suppliers');  
         }
     function admin_delete($guid){
-       if($_SESSION['Posnic_Delete']==="Delete"){
+       if($this->session->userdata['Posnic_Delete']==="Delete"){
                  $this->posnic->posnic_delete($guid);
        }
                  redirect('suppliers');  
@@ -260,7 +260,7 @@ class Suppliers extends CI_Controller{
                redirect('suppliers');
         }
         if($this->input->post('add')){
-             if($_SESSION['Posnic_Add']==="Add"){
+             if($this->session->userdata['Posnic_Add']==="Add"){
                  $this->load->view('add_supplier');
              }else{
                  echo "You hava no permission to add new supplier";
@@ -268,7 +268,7 @@ class Suppliers extends CI_Controller{
              }
         }
         if($this->input->post('delete')){
-              if($_SESSION['Posnic_Delete']==="Delete"){
+              if($this->session->userdata['Posnic_Delete']==="Delete"){
                   $data=  $this->input->post('posnic'); 
                     foreach( $data as $key => $guid){
                     $this->posnic->posnic_delete($guid);
@@ -284,7 +284,7 @@ class Suppliers extends CI_Controller{
         }
     }
     function edit_suppliers($guid){
-      if($_SESSION['suppliers_per']['edit']==1){
+      if($this->session->userdata['suppliers_per']['edit']==1){
                   
                   $this->load->model('supplier');
                   $data=$this->supplier->edit_supplier($guid);

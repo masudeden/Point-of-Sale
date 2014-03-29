@@ -79,7 +79,7 @@
 			}
     function user_function(guid){
          var name=$('#name_'+guid).val();
-    <?php if($_SESSION['customers_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['customers_per']['delete']==1){ ?>
              bootbox.confirm("Are you Sure To Delete This customers ", function(result) {
              if(result){
             $.ajax({
@@ -143,7 +143,7 @@
            function edit_function(guid){
            $('#loading').modal('show');
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['customers_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['customers_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/customers/edit_customers/"+guid,                      
                              data: "", 

@@ -23,7 +23,7 @@
 <script type="text/javascript">
      $(document).ready( function () {
          $('#add_new_taxes').click(function() { 
-                <?php if($_SESSION['taxes_per']['add']==1){ ?>
+                <?php if($this->session->userdata['taxes_per']['add']==1){ ?>
                 var inputs = $('#add_taxes').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/taxes/add_taxes')?>",
@@ -48,7 +48,7 @@
                     <?php }?>
         });
          $('#update_taxes').click(function() { 
-                <?php if($_SESSION['taxes_per']['edit']==1){ ?>
+                <?php if($this->session->userdata['taxes_per']['edit']==1){ ?>
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/taxes/update_taxes')?>",
@@ -75,7 +75,7 @@
         });
      });
 function posnic_add_new(){
-    <?php if($_SESSION['taxes_per']['add']==1){ ?>
+    <?php if($this->session->userdata['taxes_per']['add']==1){ ?>
       $("#user_list").hide();
       $('#add_taxes_form').show('slow');
       $('#delete').attr("disabled", "disabled");

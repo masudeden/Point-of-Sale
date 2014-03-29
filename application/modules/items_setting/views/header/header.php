@@ -165,7 +165,7 @@
           
            function set_items_setting(guid){
                        $("#parsley_reg").trigger('reset');
-                        <?php if($_SESSION['items_setting_per']['set']==1){ ?>
+                        <?php if($this->session->userdata['items_setting_per']['set']==1){ ?>
                                                                
                             $.ajax({                                      
                               url: "<?php echo base_url() ?>index.php/items_setting/get_items_setting_details/"+guid,                     

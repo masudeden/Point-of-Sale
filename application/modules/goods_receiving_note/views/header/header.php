@@ -123,7 +123,7 @@
                                    
 			}
  function user_function(guid){
-    <?php if($_SESSION['goods_receiving_note_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['goods_receiving_note_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('goods_receiving_note') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
@@ -154,7 +154,7 @@
                         }
         function good_receiving_note_approve(guid){
             var po=$('#purchase_order__number_'+guid).val();
-            <?php if($_SESSION['goods_receiving_note_per']['approve']==1){ ?>
+            <?php if($this->session->userdata['goods_receiving_note_per']['approve']==1){ ?>
                 $.ajax({
                 url: '<?php echo base_url() ?>index.php/goods_receiving_note/good_receiving_note_approve',
                 type: "POST",
@@ -200,7 +200,7 @@
         }
           
         function edit_function(guid){
-                        <?php if($_SESSION['goods_receiving_note_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['goods_receiving_note_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
                             $('#parent_items').append('<div id="deleted"></div>');
