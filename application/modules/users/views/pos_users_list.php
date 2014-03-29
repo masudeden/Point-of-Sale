@@ -37,11 +37,11 @@
                              $("#posnic_user_2").trigger('reset');
                              posnic_users_lists();
                             }else  if(response['responseText']=='already'){
-                                   $.bootstrapGrowl($('#taxes_name').val()+' <?php echo $this->lang->line('taxes').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                   $.bootstrapGrowl($('#taxes_name').val()+' <?php echo $this->lang->line('users').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                             }else  if(response['responseText']=='false'){
                                    $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                             }else{
-                                  $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('taxes');?>', { type: "error" });                           
+                                  $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('users');?>', { type: "error" });                           
                             }
                           
                        }
@@ -66,11 +66,11 @@
                                        $("#parsley_reg").trigger('reset');
                                        posnic_users_lists();
                                 }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('item_code').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('users').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('item_code');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('users');?>', { type: "error" });                           
                                     }
                           }
                        

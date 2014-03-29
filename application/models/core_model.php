@@ -76,7 +76,7 @@ class Core_model extends CI_Model{
     }
       function posnic_data_table($start,$end,$branch,$uid,$order,$like){
          
-        $this->db->select('users.*, users_x_branches.user_active  as user_active , users_x_branches.user_id as user_id')->from('users_x_branches');  
+        $this->db->select('users.*, users_x_branches.user_active  as user_active , users_x_branches.user_id as user_id')->from('users_x_branches')->where('users_x_branches.branch_id',$branch);  
         $this->db->limit($start,$end);  
         $this->db->order_by($order);
         $this->db->where('users.guid <>',$uid);

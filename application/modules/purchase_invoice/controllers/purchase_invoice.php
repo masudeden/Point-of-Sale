@@ -19,47 +19,39 @@ class Purchase_invoice extends CI_Controller{
     function data_table(){
         $aColumns = array( 'grn_guid','po_no','po_no','grn_no','c_name','s_name','grn_date','total_items','total_amt','grn_active','grn_active','guid' );	
 	$start = "";
-			$end="";
-		
-		if ( $this->input->get_post('iDisplayLength') != '-1' )	{
-			$start = $this->input->get_post('iDisplayStart');
-			$end=	 $this->input->get_post('iDisplayLength');              
-		}	
-		$order="";
-		if ( isset( $_GET['iSortCol_0'] ) )
-		{	
-			for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
-			{
-				if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
-				{
-					$order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
-				}
-			}
-			
-					$order = substr_replace( $order, "", -1 );
-					
-		}
-		
-		$like = array();
-		
-			if ( $_GET['sSearch'] != "" )
-		{
-		$like =array(
+	$end="";
+        if ( $this->input->get_post('iDisplayLength') != '-1' )	{
+                $start = $this->input->get_post('iDisplayStart');
+                $end=	 $this->input->get_post('iDisplayLength');              
+        }	
+        $order="";
+        if ( isset( $_GET['iSortCol_0'] ) )
+            {	
+                for ( $i=0 ; $i<intval($this->input->get_post('iSortingCols') ) ; $i++ )
+                {
+                    if ( $_GET[ 'bSortable_'.intval($this->input->get_post('iSortCol_'.$i)) ] == "true" )
+                    {
+                        $order.= $aColumns[ intval( $this->input->get_post('iSortCol_'.$i) ) ]." ".$this->input->get_post('sSortDir_'.$i ) .",";
+                    }
+                }
+                $order = substr_replace( $order, "", -1 );
+
+
+        }
+	$like = array();
+	if ( $_GET['sSearch'] != "" )
+            {
+                $like =array(
                     'po_no'=>  $this->input->get_post('sSearch'),
                     'grn_no'=>  $this->input->get_post('sSearch'),
-                        );
-				
-			}
-					   
-			$this->load->model('invoice')	   ;
-                        
-			 $rResult1 = $this->invoice->get($end,$start,$like,$this->session->userdata['branch_id']);
-		   
-		$iFilteredTotal =$this->invoice->count($this->session->userdata['branch_id']);
-		
-		$iTotal =$this->invoice->count($this->session->userdata['branch_id']);
-		
-		$output1 = array(
+                    );
+
+            }
+            $this->load->model('invoice')	   ;
+            $rResult1 = $this->invoice->get($end,$start,$like,$this->session->userdata['branch_id']);
+            $iFilteredTotal =$this->invoice->count($this->session->userdata['branch_id']);
+            $iTotal =$this->invoice->count($this->session->userdata['branch_id']);
+            $output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iFilteredTotal,
@@ -89,9 +81,7 @@ class Purchase_invoice extends CI_Controller{
 				
 		$output1['aaData'][] = $row;
 		}
-                
-		
-		   echo json_encode($output1);
+            echo json_encode($output1);
     }
  
 function save(){      

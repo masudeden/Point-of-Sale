@@ -311,8 +311,7 @@ class Users extends CI_Controller{
                           $this->load->model('pos_users_model');
                           if($this->pos_users_model->user_checking($email,$username,$dob,$phone)==FALSE){
                           $id= $this->pos_users_model->add_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$username,$password,$address,$city,$state,$zip,$country,$email,$phone,$username);
-                          $this->add_user_branches($id,$user_groups);
-                          $this->add_user_user_groups($id,$user_groups); 
+                         
                           $user_groups=$this->input->post('user_groups');
                           for($i=0;$i<count($user_groups);$i++){
                               $this->pos_users_model->add_user_groups_for_user($user_groups[$i],$id);
