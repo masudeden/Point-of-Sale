@@ -185,16 +185,15 @@ class Users extends CI_Controller{
                             }  
                             }
                             
-                            $user_groups=$this->input->post('user_groups');
-                            if($this->input->post('user_groups')){
-                                for($i=0;$i<count($user_groups);$i++){
-                                   $user_groups[$i];
-                                    $this->pos_users_model->add_user_groups_for_user($user_groups[$i],$id);
-                                }
-                            }
-                            
-                            $user_branchs=  $this->input->post('user_branchs');
+                           $user_groups=$this->input->post('user_groups');
+                           $branchs=$this->input->post('user_branchs');
                             if($this->input->post('user_branchs')){
+                            for($i=0;$i<count($user_groups);$i++){
+                              $this->pos_users_model->add_user_groups_for_user($user_groups[$i],$branchs[$i],$id);
+                           }
+                            }
+                            $user_branchs=  $this->input->post('new_user_branchs');
+                            if($this->input->post('new_user_branchs')){
                                 $user_branchs=  array_unique($user_branchs);
                                 for($j=0;$j<count($user_branchs);$j++){
                                     $this->pos_users_model->add_user_branchs_for_user($user_branchs[$j],$id);
@@ -313,8 +312,9 @@ class Users extends CI_Controller{
                           $id= $this->pos_users_model->add_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$username,$password,$address,$city,$state,$zip,$country,$email,$phone,$username);
                          
                           $user_groups=$this->input->post('user_groups');
+                          $branchs=$this->input->post('user_branchs');
                           for($i=0;$i<count($user_groups);$i++){
-                              $this->pos_users_model->add_user_groups_for_user($user_groups[$i],$id);
+                              $this->pos_users_model->add_user_groups_for_user($user_groups[$i],$branchs[$i],$id);
                           }
                          $user_branchs=  $this->input->post('user_branchs');
                          $user_branchs=  array_unique($user_branchs);

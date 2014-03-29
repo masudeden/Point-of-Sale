@@ -91,13 +91,7 @@ class Direct_grn extends CI_Controller{
 		
 		   echo json_encode($output1);
     }
-    function annan(){
-                $this->load->model('core_model');
-                $name=$this->core_model->posnic_join_like('suppliers_x_items',$this->session->userdata['branch_id']);
-                for($i=0;$i<count($name);$i++){
-                    echo $name[$i]."<br>";
-                }
-    }
+  
     function  set_seleted_item_suppier($suid){
         $this->session->userdata['supplier_guid']=$suid;
     }

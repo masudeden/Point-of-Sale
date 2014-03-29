@@ -6,7 +6,8 @@ class Items extends CI_Controller{
                
     }
     function index(){     
-            $this->get_items();
+      $this->get_items();
+       
     }
     function get_items(){                  
         $this->load->view('template/app/header'); 

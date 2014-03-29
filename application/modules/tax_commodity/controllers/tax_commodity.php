@@ -59,9 +59,9 @@ class Tax_commodity extends CI_Controller
                          $this->load->model('tax');
 			 $rResult1 = $this->tax->data_table($end,$start,$like,$this->session->userdata['branch_id']);
 		   
-		$iFilteredTotal =$this->posnic->data_table_count('taxes');
+		$iFilteredTotal =$this->posnic->data_table_count('tax_commodity');
 		
-		$iTotal =$this->posnic->data_table_count('taxes');
+		$iTotal =$iFilteredTotal;
 		
 		$output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
