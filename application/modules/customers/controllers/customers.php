@@ -9,6 +9,7 @@ class Customers extends CI_Controller
     }
     function index(){
         $this->get(); 
+        
     }
      function get(){
         $this->load->view('template/app/header'); 
