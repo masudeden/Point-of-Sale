@@ -355,7 +355,7 @@ class Users extends CI_Controller{
             if($this->session->userdata['users_per']['delete']==1){  
                 $id=  $this->input->post('guid');
                 $this->load->model('pos_users_model');
-                $this->pos_users_model->delete_pos_users($id,$this->session->userdata['guid'],$this->session->userdata['branch_id']);   
+                $this->pos_users_model->delete_pos_users($id,$this->session->userdata['branch_id']);   
                 echo 'TRUE';
             }else{
                 redirect('home');
