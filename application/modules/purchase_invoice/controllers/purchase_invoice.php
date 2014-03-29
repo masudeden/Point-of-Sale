@@ -17,7 +17,7 @@ class Purchase_invoice extends CI_Controller{
     }
     // goods Receiving Note data table
     function data_table(){
-        $aColumns = array( 'grn_guid','po_no','po_no','grn_no','c_name','s_name','grn_date','total_items','total_amt','grn_active','grn_active','guid' );	
+        $aColumns = array( 'guid','invoice','invoice','grn_no','c_name','s_name','date','invoice','invoice','invoice','invoice','guid' );	
 	$start = "";
 	$end="";
         if ( $this->input->get_post('iDisplayLength') != '-1' )	{
@@ -88,8 +88,7 @@ function save(){
      if($this->session->userdata['purchase_invoice_per']['add']==1){
         $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
         $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
-        $this->form_validation->set_rules('invoice_no', $this->lang->line('invoice_no'), 'required');                     
-         
+        $this->form_validation->set_rules('invoice_no', $this->lang->line('invoice_no'), 'required');
             if ( $this->form_validation->run() !== false ) {    
                 $grn=  $this->input->post('goods_receiving_note_guid');
                 $date=strtotime($this->input->post('grn_date'));
@@ -102,7 +101,7 @@ function save(){
                 }
                 $value=array('invoice'=>$invoice_no,'po'=>$po,'grn'=>$grn,'date'=>$date,'remark'=>$remark,'note'=>$note);
                 $this->posnic->posnic_add_record($value,'purchase_invoice');
-          
+                $this->posnic->posnic_master_increment_max('purchase_invoice')  ;
            ;
                  echo 'TRUE';
     
@@ -200,7 +199,7 @@ function save(){
     function  get_grn($guid){
         if($this->session->userdata['purchase_invoice_per']['add']==1){
             $this->load->model('invoice');
-            $data=  $this->invoice->get_grn($guid);
+            $data=  $this->invoice->get_goods_receiving_note($guid);
             echo json_encode($data);
         }
     }

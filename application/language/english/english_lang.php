@@ -491,6 +491,7 @@ $lang['credit_days']='Credit Days';
   $lang['received_date']='Received Date';
   $lang['invoice_date']='Invoice Date';
   $lang['invoice_no']='Invoice No';
+  $lang['print']='Print';
   
   //item department
   $lang['items_department_name']='Department Name';
