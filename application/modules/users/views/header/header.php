@@ -7,10 +7,6 @@
                   
      
                               posnic_table();
-                                posnic_user_2.onsubmit=function()
-                                { 
-                                  return false;
-                                } 
                                 parsley_reg.onsubmit=function()
                                 { 
                                   return false;
