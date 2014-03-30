@@ -96,8 +96,12 @@ function save(){
                 $remark=  $this->input->post('remark');
                 $note=  $this->input->post('note');
                 $po= $this->input->post('purchase_order');
+                $this->load->model('invoice');
                 if(!$this->input->post('purchase_order')) {
                     $po="non";
+                    $this->invoice->direct_grn_invoice_status($grn);
+                }else{
+                    $this->invoice->grn_invoice_status($grn);
                 }
                 $value=array('invoice'=>$invoice_no,'po'=>$po,'grn'=>$grn,'date'=>$date,'remark'=>$remark,'note'=>$note);
                 $this->posnic->posnic_add_record($value,'purchase_invoice');
