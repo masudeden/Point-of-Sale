@@ -74,9 +74,9 @@
                                                                 
                    						"fnRender": function (oObj) {
                    							if(oObj.aData[9]==1){
-                                                                             return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('approved') ?></span>'
+                                                                             return '<span  class="text-success " ><?php echo $this->lang->line('approved') ?></span>'
                                                                         }else{
-                                                                            return '<span data-toggle="tooltip"  class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('waiting') ?>" ><?php echo $this->lang->line('waiting') ?></span>';
+                                                                            return '<span   class="text-warning"  ><?php echo $this->lang->line('waiting') ?></span>';
                                                                         }
 								},
 								
@@ -88,7 +88,7 @@
                                                                 
                    						"fnRender": function (oObj) {
                                                                 if(oObj.aData[9]==1){
-                                                                         	 return '<span data-toggle="tooltip" class="label label-success hint--top hint--success" ><?php echo $this->lang->line('approved') ?></span>'
+                                                                         	 return '<a  ><span data-toggle="tooltip" class="label label-success hint--top hint--success"  ><i class="icon-play"></i></span></a>&nbsp<a  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" ><i class="icon-edit"></i></span></a>'+"&nbsp;<a><span data-toggle='tooltip' class='label label-danger hint--top hint--error' ><i class='icon-trash'></i></span> </a>"
 								}else{
                                                                         return '<a href=javascript:direct_grn_approve("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('approve') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="EDIT"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='DELETE'><i class='icon-trash'></i></span> </a>";
                                                                 }
@@ -245,7 +245,7 @@ function direct_grn_approve(guid){
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 var tax;
                                 for(i=0;i<data.length;i++){
-                                  
+                                  if(!$('#'+data[i]['o_i_guid']).length){
                                     var  name=data[i]['items_name'];
                                     var  sku=data[i]['i_code'];
                                     var  quty=data[i]['quty'];
@@ -260,7 +260,7 @@ function direct_grn_approve(guid){
                                     var  price=data[i]['sell'];
                                     var  mrp=data[i]['mrp'];
                                     var  o_i_guid=data[i]['o_i_guid'];
-                                    var  date=data[i]['date'];
+                                  
                                     var  items_id=data[i]['item'];
                                     if(data[i]['dis_per']!=0){
                                     var discount=(parseFloat(quty)*parseFloat(cost))*(data[i]['dis_per']/100);
@@ -287,6 +287,12 @@ function direct_grn_approve(guid){
                                       var num = parseFloat(total);
                                       total=num.toFixed(point);
                                   }
+                                  if(discount==""){
+                                    discount=0;
+                                    }
+                                  if(per==""){
+                                    per=0;
+                                    }
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
                                     name,
@@ -295,13 +301,11 @@ function direct_grn_approve(guid){
                                     free,
                                     cost,
                                     price,
-                                    mrp,
-                                    date,
                                     parseFloat(quty)*parseFloat(cost),
                                     tax+' : '+tax_type+'('+type+')',
                                     discount,
                                     total,
-                                    '<input type="hidden" name="index" id="index">\n\
+                                    '<input type="hidden" name="index" id="index"><input type="hidden" id="'+data[i]['o_i_guid']+'">\n\
                                 <input type="hidden" name="item_name" id="row_item_name" value="'+name+'">\n\
                                 <input type="hidden" name="item_limit" id="item_limit" value="'+limit+'">\n\
                                 <input type="hidden" name="items_id[]" id="items_id" value="'+items_id+'">\n\
@@ -312,7 +316,6 @@ function direct_grn_approve(guid){
                                 <input type="hidden" name="items_cost[]" value="'+cost+'" id="items_cost"> \n\
                                 <input type="hidden" name="items_price[]" value="'+price+'" id="items_price">\n\
                                 <input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">\n\
-                                <input type="hidden" name="items_date[]" value="'+date+'" id="items_date">\n\
                                 <input type="hidden" name="items_tax[]" value="'+tax+'" id="items_tax">\n\
                                 <input type="hidden" name="items_tax_type[]" value="'+tax_type+'" id="items_tax_type">\n\
                                 <input type="hidden" name="items_tax_value[]" value="'+tax_value+'" id="items_tax_value">\n\
@@ -326,7 +329,7 @@ function direct_grn_approve(guid){
                               var theNode = $('#selected_item_table').dataTable().fnSettings().aoData[addId[0]].nTr;
                               theNode.setAttribute('id','new_item_row_id_'+items_id)
                                 }
-                                
+                                }
                              } 
                            });
                       

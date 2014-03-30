@@ -102,7 +102,7 @@ class Purchase extends CI_Model{
          $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."'",'left');
          $this->db->join('brands', 'items.brand_id=brands.guid','left');
          $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
-          $like=array('items.name'=>$search,'items.code'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
+          $like=array('items.guid'=>$search,'items.name'=>$search,'items.code'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
                 $this->db->or_like($like); 
                // $this->db->like('suppliers_x_items.supplier_id',$guid); 
          $sql=  $this->db->get();
@@ -110,13 +110,13 @@ class Purchase extends CI_Model{
      
     }
     function get_direct_grn($guid){
-         $this->db->select('items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,direct_grn.*,direct_grn_items.discount_per as dis_per ,direct_grn_items.discount_amount as item_dis_amt ,direct_grn_items.tax as dis_amt ,direct_grn_items.tax as order_tax,direct_grn_items.item ,direct_grn_items.quty ,direct_grn_items.free ,direct_grn_items.cost ,direct_grn_items.sell ,direct_grn_items.mrp,direct_grn_items.guid as o_i_guid ,direct_grn_items.amount ,direct_grn_items.date,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('direct_grn')->where('direct_grn.guid',$guid);
-         $this->db->join('direct_grn_items', 'direct_grn_items.order_id = direct_grn.guid AND direct_grn_items.delete_status=0','left');
-         $this->db->join('items', "items.guid=direct_grn_items.item AND direct_grn_items.order_id='".$guid."' AND direct_grn_items.delete_status=0",'left');
-         $this->db->join('taxes', "items.tax_id=taxes.guid AND items.guid=direct_grn_items.item  AND direct_grn_items.delete_status=0",'left');
-         $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=direct_grn_items.item  AND direct_grn_items.delete_status=0",'left');
-         $this->db->join('suppliers', "suppliers.guid=direct_grn.supplier_id AND direct_grn_items.order_id='".$guid."'  AND direct_grn_items.delete_status=0",'left');
-         $this->db->join('suppliers_x_items', "suppliers_x_items.supplier_id=direct_grn.supplier_id AND suppliers_x_items.item_id=direct_grn_items.item AND direct_grn_items.order_id='".$guid."'  AND direct_grn_items.delete_status=0",'left');
+         $this->db->select('items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,suppliers_x_items.quty as item_limit,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name,suppliers.address1 as address,direct_grn.*,direct_grn_items.discount_per as dis_per ,direct_grn_items.discount_amount as item_dis_amt ,direct_grn_items.tax as dis_amt ,direct_grn_items.tax as order_tax,direct_grn_items.item ,direct_grn_items.quty ,direct_grn_items.free ,direct_grn_items.cost ,direct_grn_items.sell ,direct_grn_items.mrp,direct_grn_items.guid as o_i_guid ,direct_grn_items.amount ,items.guid as i_guid,items.name as items_name,items.code as i_code')->from('direct_grn')->where('direct_grn.guid',$guid);
+         $this->db->join('direct_grn_items', 'direct_grn_items.order_id = direct_grn.guid ','left');
+         $this->db->join('items', "items.guid=direct_grn_items.item AND direct_grn_items.order_id='".$guid."' ",'left');
+         $this->db->join('taxes', "items.tax_id=taxes.guid AND items.guid=direct_grn_items.item  ",'left');
+         $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=direct_grn_items.item ",'left');
+         $this->db->join('suppliers', "suppliers.guid=direct_grn.supplier_id AND direct_grn_items.order_id='".$guid."' ",'left');
+         $this->db->join('suppliers_x_items', "suppliers_x_items.supplier_id=direct_grn.supplier_id AND suppliers_x_items.item_id=direct_grn_items.item AND direct_grn_items.order_id='".$guid."'  ",'left');
          $sql=  $this->db->get();
          $data=array();
          foreach($sql->result_array() as $row){
@@ -131,7 +131,7 @@ class Purchase extends CI_Model{
     }
     function delete_order_item($guid){      
           $this->db->where('guid',$guid);
-          $this->db->update('direct_grn_items',array('delete_status'=>1));
+          $this->db->delete('direct_grn_items');
     }
     function deactive_order($guid){
          $this->db->where('guid',$guid);
@@ -171,6 +171,12 @@ class Purchase extends CI_Model{
             }
         }
          
+    }
+    function add_items($item_value){
+        $this->db->insert('direct_grn_items',$item_value);
+        $id=  $this->db->insert_id();
+        $this->db->where('id',$id);
+        $this->db->update('direct_grn_items',array('guid'=>  md5('direct_grn_items'.$id)));
     }
     
 }

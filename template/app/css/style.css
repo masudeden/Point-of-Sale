@@ -991,3 +991,18 @@
                        
     display: block;
                   }
+                  .text-success{
+                      font-weight: bold !important;
+                  }
+                  .text-warning{
+                      font-weight: bold !important;
+                  }
+                  .text-danger{
+                      font-weight: bold !important;
+                  }
+                  .text-info{
+                      font-weight: bold !important;
+                  }
+                  .text-error{
+                      font-weight: bold !important;
+                  }
