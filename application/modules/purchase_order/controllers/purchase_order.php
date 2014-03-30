@@ -329,7 +329,7 @@ function purchase_order_approve(){
      if($this->session->userdata['purchase_order_per']['approve']==1){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
-            $this->purchase->deactive_order($id);
+            $this->purchase->approve_order($id);
             echo 'TRUE';
      }else{
          echo 'FALSE';
