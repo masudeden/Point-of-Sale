@@ -261,8 +261,7 @@ class Branch extends CI_Model{
         $this->db->select('branches.*');
         $this->db->from('branches');  
         $this->db->join('users_x_branches', " users_x_branches.branch_id= branches.guid ",'left');
-        $this->db->where('users_x_branches.active_status ',0);
-        $this->db->where('users_x_branches.delete_status ',0);
+        $this->db->where('users_x_branches.user_active ',1);
         $this->db->where('users_x_branches.user_id',$id);
         $query=$this->db->get();
         return $query->result();

@@ -100,7 +100,9 @@ class Pos_users_model extends CI_Model{
     }
    }
    function update_pos_users($blood,$file_name,$age,$sex,$id,$first_name,$last_name,$user_id,$address,$city,$state,$zip,$country,$email,$phone,$dob,$password){
-       $data=array(
+       
+       if($password!=""){
+           $data=array(
            'blood'=>$blood,
            'image'=>$file_name,
            'age'=>$age,
@@ -118,6 +120,27 @@ class Pos_users_model extends CI_Model{
            'dob'=>$dob,
            'password'=>$password
        );
+           
+       }else{
+              $data=array(
+           'blood'=>$blood,
+           'image'=>$file_name,
+           'age'=>$age,
+           'sex'=>$sex,
+           'username' =>$user_id,	          	
+           'first_name' =>$first_name,           
+           'last_name '	=>$last_name,
+           'address '=>$address,	
+           'city '=>$city,
+           'state'=>$state,	
+           'zip'=>$zip,	
+           'country'=>$country,	
+           'email'=>$email,	
+           'phone'=>$phone, 		
+           'dob'=>$dob,
+          
+       );
+       }
 
        $this->db->where('guid',$id);
        $this->db->update('users',$data);
@@ -207,8 +230,8 @@ class Pos_users_model extends CI_Model{
            $sql=  $this->db->get();
            return $sql->result();
        }
-       function add_user_groups_for_user($user_groups,$id){
-           $this->db->insert('users_x_user_groups',array('user_group_id'=>$user_groups,'user_id'=>$id));
+       function add_user_groups_for_user($user_groups,$branch,$id){
+           $this->db->insert('users_x_user_groups',array('branch_id'=>$branch,'user_group_id'=>$user_groups,'user_id'=>$id));
            
        }
        function add_user_branchs_for_user($user_groups,$id){

@@ -261,7 +261,6 @@ function purchase_order_approve(guid){
                                     var  price=data[i]['sell'];
                                     var  mrp=data[i]['mrp'];
                                     var  o_i_guid=data[i]['o_i_guid'];
-                                    var  date=data[i]['date'];
                                     var  items_id=data[i]['item'];
                                     if(data[i]['dis_per']!=0){
                                     var discount=(parseFloat(quty)*parseFloat(cost))*(data[i]['dis_per']/100);
@@ -270,7 +269,10 @@ function purchase_order_approve(guid){
                                     var discount=data[i]['item_dis_amt'];
                                      var num = parseFloat(discount);
                                       discount=num.toFixed(point);
-                                    var per="";
+                                    var per=0
+                                    if(discount==""){
+                                        discount=0;
+                                    }
                                   
                                     }
                                    if(data[i]['tax_Inclusive']==1){
@@ -296,7 +298,6 @@ function purchase_order_approve(guid){
                                     free,
                                     cost,
                                     price,
-                                    date,
                                     parseFloat(quty)*parseFloat(cost),
                                     tax+' : '+tax_type+'('+type+')',
                                     discount,
@@ -312,7 +313,6 @@ function purchase_order_approve(guid){
                                 <input type="hidden" name="items_cost[]" value="'+cost+'" id="items_cost"> \n\
                                 <input type="hidden" name="items_price[]" value="'+price+'" id="items_price">\n\
                                 <input type="hidden" name="items_mrp[]" value="'+mrp+'" id="items_mrp">\n\
-                                <input type="hidden" name="items_date[]" value="'+date+'" id="items_date">\n\
                                 <input type="hidden" name="items_tax[]" value="'+tax+'" id="items_tax">\n\
                                 <input type="hidden" name="items_tax_type[]" value="'+tax_type+'" id="items_tax_type">\n\
                                 <input type="hidden" name="items_tax_value[]" value="'+tax_value+'" id="items_tax_value">\n\
