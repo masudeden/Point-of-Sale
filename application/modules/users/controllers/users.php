@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Users extends CI_Controller{
+class Users extends MX_Controller{
      
     function __construct() {
        
@@ -16,6 +16,11 @@ class Users extends CI_Controller{
     function index(){
         $this->get_pos_users_details();
     } 
+    function test(){
+        $data=array('ji',45,45,45,45,45,4);
+        return $data;
+       // $this->load->model
+    }
     function photo_upload($name){
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
