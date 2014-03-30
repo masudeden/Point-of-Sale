@@ -44,28 +44,28 @@
                                  $('#add_item_form #allow_negative').val(data[1][0]['allow_negative']);
                                  $('#add_item_form #tax_Inclusive').val(data[1][0]['tax_inclusive']);
                                  var sales=data[1][0]['sales'];
-                                 if(sales==0){
+                                 if(sales==1){
                                   $('#add_item_form #sales_yes').attr('checked',true);
                                  }else{
                                       $('#add_item_form #sales_no').attr("checked", true );
                                  }
                                
                                  var salses_return=data[1][0]['salses_return'];
-                                 if(salses_return==0){
+                                 if(salses_return==1){
                                   $('#add_item_form #sales_return_yes').attr('checked',true);
                                  }else{
                                       $('#add_item_form #sales_return_no').attr("checked", true );
                                  }
                                
                                  var purchase=data[1][0]['purchase'];
-                                 if(purchase==0){
+                                 if(purchase==1){
                                   $('#add_item_form #purchase_yes').attr('checked',true);
                                  }else{
                                       $('#add_item_form #purchase_no').attr("checked", true );
                                  }
                                
                                  var purchase_return=data[1][0]['purchase_return'];
-                                 if(purchase_return==0){
+                                 if(purchase_return==1){
                                   $('#add_item_form #purchase_return_yes').attr('checked',true);
                                  }else{
                                       $('#add_item_form #purchase_return_no').attr("checked", true );
@@ -128,7 +128,7 @@
                    						"bSortable": false,
                                                                 
                    						"fnRender": function (oObj) {
-                   							if(oObj.aData[7]==0){
+                   							if(oObj.aData[7]==1){
                                                                             return '<span data-toggle="tooltip" class="text-success hint--top hint--success" ><?php echo $this->lang->line('active') ?></span>';
                                                                         }else{
                                                                             return '<span data-toggle="tooltip" class="text-danger hint--top data-hint="<?php echo $this->lang->line('active') ?>" ><?php echo $this->lang->line('deactive') ?></span>';
@@ -203,28 +203,28 @@
 
 
                                  var sales=data[1][0]['sales'];
-                                 if(sales==0){
+                                 if(sales==1){
                                          $('#edit_item_form #sales_yes').attr('checked',true);
                                  }else{
                                       $('#edit_item_form #sales_no').attr("checked", true );
                                  }
                                
                                  var salses_return=data[1][0]['salses_return'];
-                                 if(salses_return==0){
+                                 if(salses_return==1){
                                   $('#edit_item_form #sales_return_yes').attr('checked',true);
                                  }else{
                                       $('#edit_item_form #sales_return_no').attr("checked", true );
                                  }
                                
                                  var purchase=data[1][0]['purchase'];
-                                 if(purchase==0){
+                                 if(purchase==1){
                                   $('#edit_item_form #purchase_yes').attr('checked',true);
                                  }else{
                                       $('#edit_item_form #purchase_no').attr("checked", true );
                                  }
                                
                                  var purchase_return=data[1][0]['purchase_return'];
-                                 if(purchase_return==0){
+                                 if(purchase_return==1){
                                   $('#edit_item_form #purchase_return_yes').attr('checked',true);
                                  }else{
                                       $('#edit_item_form #purchase_return_no').attr("checked", true );

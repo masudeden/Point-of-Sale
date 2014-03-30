@@ -81,12 +81,18 @@ function posnic_add_new(){
              $("#add_item").trigger('reset');
               $('#add_item_form #item_name_data').val('');
                  $("#add_item_form #item_name_data").select2('data', {id:'',text:''});
+                 
                                
                                 
       $("#user_list").hide();
       $('#add_item_form').show('slow');
       $('#posnic_add_items').attr("disabled", "disabled");    
       $('#items_lists').removeAttr("disabled");
+      window.setTimeout(function ()
+        {
+
+          $("#add_item_form #item_name_data").select2('open');
+        }, 500);
       <?php }else{ ?>
                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('items_setting');?>', { type: "error" });                           
                     <?php }?>
@@ -105,8 +111,7 @@ function clear_add_items(){
       $("#posnic_user_2").trigger('reset');
 }
 function reload_update_user(){
-    var id=$('#parsley_reg #guid').val();
-    set_items_setting(id);
+    posnic_items_lists();
 }
 </script>
 <nav id="top_navigation">
@@ -329,8 +334,8 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="sale_or_non_sale" ></label>                                                                                                       
-                                                      <input type="radio" value="0" name="sales" id="sales_yes"> <label for="sales_yes" class="icheck_label"><?php echo $this->lang->line('sales') ?></label><br>
-                                                      <input type="radio" value="1" name="sales" id="sales_no" > <label for="sales_No" class="icheck_label"><?php echo $this->lang->line('non_sales') ?></label>
+                                                      <input type="radio" value="1" name="sales" id="sales_yes"> <label for="sales_yes" class="icheck_label"><?php echo $this->lang->line('sales') ?></label><br>
+                                                      <input type="radio" value="0" name="sales" id="sales_no" > <label for="sales_No" class="icheck_label"><?php echo $this->lang->line('non_sales') ?></label>
                                                     </div>
                                                </div>
                                                 <div class="col col-lg-1"></div>
@@ -340,8 +345,8 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="brand" ></label>                                                                                                       
-                                                    <input type="radio" value="0" name="sales_return" id="sales_return_yes"> <label for="sales_return_yes" class="icheck_label"><?php echo $this->lang->line('sales_return') ?></label><br>
-                                                      <input type="radio" value="1" name="sales_return" id="sales_return_no" > <label for="sales_return_No" class="icheck_label"><?php echo $this->lang->line('non_sales_return') ?></label>
+                                                    <input type="radio" value="1" name="sales_return" id="sales_return_yes"> <label for="sales_return_yes" class="icheck_label"><?php echo $this->lang->line('sales_return') ?></label><br>
+                                                      <input type="radio" value="0" name="sales_return" id="sales_return_no" > <label for="sales_return_No" class="icheck_label"><?php echo $this->lang->line('non_sales_return') ?></label>
                                                     </div>
                                                    </div>
                                                 <div class="col col-lg-1"></div>
@@ -351,8 +356,8 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="purchase" ></label>                                                                                                       
-                                                         <input type="radio" autocomplete="o" value="0" name="purchase" id="purchase_yes"> <label for="purchase_yes" class="icheck_label"><?php echo $this->lang->line('purchase') ?></label><br>
-                                                      <input type="radio" value="1" name="purchase" id="purchase_no" > <label for="purchase_No" class="icheck_label"><?php echo $this->lang->line('non_purchase') ?></label>
+                                                         <input type="radio" autocomplete="o" value="1" name="purchase" id="purchase_yes"> <label for="purchase_yes" class="icheck_label"><?php echo $this->lang->line('purchase') ?></label><br>
+                                                      <input type="radio" value="0" name="purchase" id="purchase_no" > <label for="purchase_No" class="icheck_label"><?php echo $this->lang->line('non_purchase') ?></label>
                                                     
                                                     </div>
                                                </div>
@@ -380,7 +385,7 @@ function reload_update_user(){
                         <div class="col-lg-4"></div>
                       <div class="col col-lg-4 text-center"><br><br>
                           <button id="set_new_code"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('set_or_reset') ?></button>
-                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
+                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-cancel"> </i> <?php echo $this->lang->line('cancel') ?></a>
                       </div>
                   </div>
                 </div>
@@ -564,8 +569,8 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="sale_or_non_sale" ></label>                                                                                                       
-                                                      <input type="radio" value="0" name="sales" id="sales_yes"> <label for="sales_yes" class="icheck_label"><?php echo $this->lang->line('sales') ?></label><br>
-                                                      <input type="radio" value="1" name="sales" id="sales_no" > <label for="sales_No" class="icheck_label"><?php echo $this->lang->line('non_sales') ?></label>
+                                                      <input type="radio" value="1" name="sales" id="sales_yes"> <label for="sales_yes" class="icheck_label"><?php echo $this->lang->line('sales') ?></label><br>
+                                                      <input type="radio" value="0" name="sales" id="sales_no" > <label for="sales_No" class="icheck_label"><?php echo $this->lang->line('non_sales') ?></label>
                                                     </div>
                                                </div>
                                                 <div class="col col-lg-1"></div>
@@ -575,8 +580,8 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="brand" ></label>                                                                                                       
-                                                    <input type="radio" value="0" name="sales_return" id="sales_return_yes"> <label for="sales_return_yes" class="icheck_label"><?php echo $this->lang->line('sales_return') ?></label><br>
-                                                      <input type="radio" value="1" name="sales_return" id="sales_return_no" > <label for="sales_return_No" class="icheck_label"><?php echo $this->lang->line('non_sales_return') ?></label>
+                                                    <input type="radio" value="1" name="sales_return" id="sales_return_yes"> <label for="sales_return_yes" class="icheck_label"><?php echo $this->lang->line('sales_return') ?></label><br>
+                                                      <input type="radio" value="0" name="sales_return" id="sales_return_no" > <label for="sales_return_No" class="icheck_label"><?php echo $this->lang->line('non_sales_return') ?></label>
                                                     </div>
                                                    </div>
                                                 <div class="col col-lg-1"></div>
@@ -586,8 +591,8 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="purchase" ></label>                                                                                                       
-                                                     <input type="radio" value="0" name="purchase" id="purchase_yes"> <label for="purchase_yes" class="icheck_label"><?php echo $this->lang->line('purchase') ?></label><br>
-                                                      <input type="radio" value="1" name="purchase" id="purchase_no" > <label for="purchase_No" class="icheck_label"><?php echo $this->lang->line('non_purchase') ?></label>
+                                                     <input type="radio" value="1" name="purchase" id="purchase_yes"> <label for="purchase_yes" class="icheck_label"><?php echo $this->lang->line('purchase') ?></label><br>
+                                                      <input type="radio" value="0" name="purchase" id="purchase_no" > <label for="purchase_No" class="icheck_label"><?php echo $this->lang->line('non_purchase') ?></label>
                                                     
                                                     </div>
                                                </div>
@@ -598,8 +603,8 @@ function reload_update_user(){
                                                <div class="col col-lg-10">
                                                     <div class="form_sep">
                                                          <label for="purchase_return" ></label>                                                                                                       
-                                                      <input type="radio" value="0" name="purchase_return" id="purchase_return_yes"> <label for="purchase_return_yes" class="icheck_label"><?php echo $this->lang->line('purchase_return') ?></label><br>
-                                                      <input type="radio" value="1" name="purchase_return" id="purchase_return_no" > <label for="purchase_return_No" class="icheck_label"><?php echo $this->lang->line('non_purchase_return') ?></label>
+                                                      <input type="radio" value="1" name="purchase_return" id="purchase_return_yes"> <label for="purchase_return_yes" class="icheck_label"><?php echo $this->lang->line('purchase_return') ?></label><br>
+                                                      <input type="radio" value="0" name="purchase_return" id="purchase_return_no" > <label for="purchase_return_No" class="icheck_label"><?php echo $this->lang->line('non_purchase_return') ?></label>
                                                     
                                                     </div>
                                                    </div>
@@ -615,7 +620,7 @@ function reload_update_user(){
                         <div class="col-lg-4"></div>
                       <div class="col col-lg-4 text-center"><br><br>
                           <button id="update_items"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('set_or_reset') ?></button>
-                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
+                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-cancel"> </i> <?php echo $this->lang->line('cancel') ?></a>
                       </div>
                   </div>
                 </div>
