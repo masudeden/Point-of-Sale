@@ -369,7 +369,7 @@ class Items extends CI_Controller{
     }
     function add_item_image(){
         
-         $config['upload_path'] = './uploads/items';
+        $config['upload_path'] = './uploads/items';
 		$config['allowed_types'] = 'gif|jpg|png';
 		$config['max_size']	= '202100';
 		$config['max_width']  = '11024';
@@ -387,11 +387,11 @@ class Items extends CI_Controller{
                         echo $this->upload->display_errors();
 		}
 		else
-		{       $upload_data = $this->upload->data();
-                     $file_name =$upload_data['file_name'];
+		{       	$upload_data = $this->upload->data();
+                    $file_name =$upload_data['file_name'];
                     $data=array('image'=>$file_name);
-                                $where=array('guid'=>$guid);
-                                     $this->posnic->posnic_module_update('items',$data,$where);
+                    $where=array('guid'=>$guid);
+                    $this->posnic->posnic_module_update('items',$data,$where);
 		}
     }
     
