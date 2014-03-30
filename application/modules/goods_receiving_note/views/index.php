@@ -45,7 +45,7 @@
       line-height: 1.7;
     }
     #dt_table_tools tr td + td + td + td + td + td + td + td + td {
-  width: 120px !important;
+  //width: 120px !important;
 }
 .editable-address {
     display: block;
@@ -855,7 +855,7 @@ function reload_update_user(){
                                          <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
                                           <th ><?php echo $this->lang->line('purchase_order') ?></th>
-                                          <th ><?php echo $this->lang->line('grn_number') ?></th>
+                                           <th style="width: 170px !important"><?php echo $this->lang->line('grn_number') ?></th>
                                           
                                           <th><?php echo $this->lang->line('company') ?></th>
                                            <th><?php echo $this->lang->line('name') ?></th>

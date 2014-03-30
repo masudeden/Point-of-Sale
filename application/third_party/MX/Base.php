@@ -51,7 +51,7 @@ class CI extends CI_Controller
 		/* re-assign language and config for modules */
 		if ( ! is_a($LANG, 'MX_Lang')) $LANG = new MX_Lang;
 		if ( ! is_a($CFG, 'MX_Config')) $CFG = new MX_Config;
-		
+
 		parent::__construct();
 	}
 }
