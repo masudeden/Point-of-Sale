@@ -15,34 +15,11 @@ class Purchase extends CI_Model{
                 return $query->result_array(); 
         
     }
-    function supplier_vs_items($end,$start,$like,$branch,$suplier){
-        
-                $this->db->select('suppliers_x_items.* ,items.guid as i_guid,items.name as i_name,items.code as i_code')->from('suppliers_x_items')->where('suppliers.branch_id',$branch)->where('suppliers.active_status',1)->where('suppliers.active',0)->where('suppliers.delete_status',1)->where('suppliers_x_items.active_status',1)->where('suppliers_x_items.delete_status',1);
-                $this->db->join('items', 'items.guid=suppliers_x_items.item_id','left');
-                $this->db->join('suppliers', 'suppliers.guid=suppliers_x_items.supplier_id','left');
-                $this->db->where('suppliers_x_items.supplier_id',$suplier);
-               $this->db->limit($end,$start);   
-                $this->db->like($like);     
-                $query=$this->db->get();
-                return $query->result_array(); 
-        
-    }
-    function edit_supplier($guid){
-                $this->db->select('suppliers.* ,suppliers_category.category_name as c_name,supplier_contacts.guid as c_guid,supplier_contacts.address as c_address,supplier_contacts.city as c_city,supplier_contacts.state as c_state,supplier_contacts.country as c_country,supplier_contacts.zip as c_zip ,supplier_contacts.email as c_email,supplier_contacts.phone as c_phone')->from('suppliers')->where('suppliers.guid',$guid);
-                $this->db->join('supplier_contacts', 'supplier_contacts.supplier=suppliers.guid','left');
-                $this->db->join('suppliers_category', 'suppliers.category=suppliers_category.guid','left');
-                   
-                $query=$this->db->get();
-                return $query->result(); 
-    }
+
+    
    
     function count($branch){
         $this->db->select()->from('direct_grn')->where('branch_id',$branch)->where('active_status',1)->where('delete_status',0);
-        $sql=  $this->db->get();
-        return $sql->num_rows();
-    }
-    function supplier_vs_items_count($branch,$guid){
-        $this->db->select()->from('suppliers_x_items')->where('supplier_id',$guid)->where('branch_id',$branch)->where('active_status',1)->where('delete_status',0);
         $sql=  $this->db->get();
         return $sql->num_rows();
     }
@@ -50,9 +27,10 @@ class Purchase extends CI_Model{
    
     
     function search_items($search,$bid,$guid){
-        $this->db->select('items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.guid as i_guid,items.code,items.image,items.tax_Inclusive,items.tax_id,suppliers_x_items.*')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',1)->where('items.delete_status',1);
+        $this->db->select('items_setting.purchase,items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.guid as i_guid,items.code,items.image,items.tax_Inclusive,items.tax_id,suppliers_x_items.*')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',1)->where('items.delete_status',1);
         $this->db->join('items', "items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."' ",'left');
         $this->db->join('items_category', 'items.category_id=items_category.guid','left');
+        $this->db->join('items_setting', 'items.guid=items_setting.item_id AND items_setting.purchase=1','left');
         $this->db->join('taxes', "items.tax_id=taxes.guid AND items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."'",'left');
         $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."'",'left');
         $this->db->join('brands', 'items.brand_id=brands.guid','left');
@@ -61,7 +39,15 @@ class Purchase extends CI_Model{
         $this->db->or_like($like); 
         $this->db->limit($this->session->userdata['data_limit']);
         $sql=  $this->db->get();
-        return $sql->result();
+                $data=array();
+                foreach ($sql->result() as $row){
+                    if($row->purchase==1){
+                    $data[]=$row;
+                    }
+                }
+               // $this->db->like('suppliers_x_items.supplier_id',$guid); 
+         
+         return $data;
      
     }
     function get_direct_grn($guid){

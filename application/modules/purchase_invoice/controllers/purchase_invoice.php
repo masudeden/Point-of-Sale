@@ -50,7 +50,7 @@ class Purchase_invoice extends CI_Controller{
             $this->load->model('invoice')	   ;
             $rResult1 = $this->invoice->get($end,$start,$like,$this->session->userdata['branch_id']);
             $iFilteredTotal =$this->invoice->count($this->session->userdata['branch_id']);
-            $iTotal =$this->invoice->count($this->session->userdata['branch_id']);
+            $iTotal =$iFilteredTotal;
             $output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
 			"iTotalRecords" => $iTotal,
@@ -99,7 +99,7 @@ function save(){
                 $this->load->model('invoice');
                 if(!$this->input->post('purchase_order')) {
                    $po="non";
-                   echo $grn;
+                  
                     $this->invoice->direct_grn_invoice_status($grn);
                 }else{
                     $this->invoice->grn_invoice_status($grn);

@@ -168,11 +168,10 @@
                   if (unicode!=13 && unicode!=9){
         }
        else{
-           $('#parsley_reg #r_quty_id_0').focus();
-              window.setTimeout(function ()
-    {
-         $('#parsley_reg #r_quty_id_0').focus();
-            }, 0);
+             window.setTimeout(function ()
+                    {$('#parsley_reg #note').focus();
+                    }, 0);  
+            
         }
          if (unicode!=27){
         }
@@ -238,7 +237,7 @@
                      $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order')?> '+$('#parsley_reg #demo_order_number').select2('data').text+' <?php echo $this->lang->line('all_items_was_received') ?>', { type: "success" });                         
                      $('#parsley_reg #demo_order_number').select2('open');
                      $("#parsley_reg").trigger('reset');
-                      $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('purchase_order')." ".$this->lang->line('for')." ".$this->lang->line('purchase_invoice') ?>');
+                      $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('grn')." ".$this->lang->line('for')." ".$this->lang->line('purchase_invoice') ?>');
                      $('#invoice_no').val(grn_number);
                      $('#demo_invoice_no').val(grn_number);
                     }
@@ -289,109 +288,8 @@
      $(document).ready( function () {
          
        
-          $('#parsley_reg #items').change(function() {
-              if(document.getElementById('new_item_row_id_'+$('#parsley_reg #items').select2('data').id) && $('#parsley_reg #diabled_item').val()!=$('#parsley_reg #items').select2('data').id){
-                     $.bootstrapGrowl('<?php echo $this->lang->line('this item already added');?> '+$('#parsley_reg #demo_order_number').val(), { type: "warning" });  
-                       $('#parsley_reg #items').select2('open');
-              }else{
-                   var guid = $('#parsley_reg #items').select2('data').id;
-                
-                       
-                $('#parsley_reg #item_id').val(guid);
-                $('#parsley_reg #sku').val($('#parsley_reg #items').select2('data').value);
-                $('#parsley_reg #item_name').val($('#parsley_reg #items').select2('data').text);
-                $('#parsley_reg #cost').val($('#parsley_reg #items').select2('data').cost);
-                $('#parsley_reg #price').val($('#parsley_reg #items').select2('data').price);
-                $('#parsley_reg #mrp').val($('#parsley_reg #items').select2('data').mrp);
-                $('#parsley_reg #supplier_quty').val($('#parsley_reg #items').select2('data').quty);
-                $('#parsley_reg #tax_value').val($('#parsley_reg #items').select2('data').tax_value);
-                $('#parsley_reg #tax_type').val($('#parsley_reg #items').select2('data').tax_type);
-                var tax=$('#parsley_reg #items').select2('data').tax_Inclusive;
-                $('#parsley_reg #tax_Inclusive').val(tax);
-                if(tax==1){
-                    $('#tax_label').text('Tax(Exc)');
-                }else{
-                    $('#tax_label').text('Tax(Inc)');   
-                }
-                disacount_and_amount_editable();
-                  
-                    $('#i_discount').val('0');
-                    $('#i_dis_amt').val('0');
-                      free_and_discount_input();
-                   
-               net_amount();
-                $('#parsley_reg #extra_elements').click();
-                $('#parsley_reg #quantity').focus();
-                    window.setTimeout(function ()
-                    {
-                       //$('#parsley_reg #delivery_date').focus();
-                        $('#parsley_reg #quantity').focus();
-                    }, 0);
-          }
-          });
-          function format_item(sup) {
-            if (!sup.id) return sup.text;
-    return  "<p >"+sup.text+"<img src='<?php echo base_url() ?>/uploads/items/"+sup.image+"' style='float:right;height:59px'></img></p><p style='float:left;width:130px;  margin-left: 10px'> "+sup.value+"</p><p style='float:left;width:130px;  margin-left: 10px'> "+sup.category+"</p> <p style='width:130px;  margin-left: 218px'> "+sup.brand+"</p><p style='width:120px;  margin-left: 380px;margin-top: -28px;'> "+sup.department+"</p>";
-            }
-          $('#parsley_reg #items').select2({
-             
-              dropdownCssClass : 'item_select',
-                 formatResult: format_item,
-                formatSelection: format_item,
-                
-                escapeMarkup: function(m) { return m; },
-                placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('items') ?>",
-                ajax: {
-                     url: '<?php echo base_url() ?>index.php/purchase_invoice/search_items/',
-                     data: function(term, page) {
-                            return {types: ["exercise"],
-                                limit: 2,
-                                term: term,
-                               
-                            };
-                     },
-                    type:'POST',
-                    dataType: 'json',
-                    quietMillis: 100,
-                    data: function (term) {
-                        return {
-                            term: term,
-                                     suppler:$('#parsley_reg #supplier_guid').val()
-                        };
-                    },
-                    results: function (data) {
-                      var results = [];
-                      
-                      $.each(data, function(index, item){
-                        results.push({
-                          id: item.i_guid,
-                          text: item.name,
-                          value: item.code,
-                          image: item.image,
-                          brand: item.b_name,
-                          category: item.c_name,
-                          department: item.d_name,
-                          quty: item.quty,
-                          cost: item.cost,
-                          price: item.price,
-                          mrp: item.mrp,
-                          tax_type: item.tax_type_name,
-                          tax_value: item.tax_value,
-                          tax_Inclusive : item.tax_Inclusive ,
-                        });
-                      });   if($('#supplier_guid').val()==""){
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
-     $('#parsley_reg #items').select2('close');   
-    $('#parsley_reg #demo_order_number').select2('open');
         
-                      }
-                      return {
-                       
-                          results: results
-                      };
-                    }
-                }
-            });
+        
          function format_purchase_order(sup) {
             if (!sup.id) return sup.text;
     return  "<p >"+sup.text+"    <br>"+sup.order_date+" "+sup.company+"   "+sup.supplier+"</p> ";
@@ -399,7 +297,7 @@
             
         $('#parsley_reg #demo_order_number').change(function() {
             var guid = $('#parsley_reg #demo_order_number').select2('data').id;
-            alert(guid);
+                $('#purchase_invoice_guid').val(guid);
                 if($('#parsley_reg #demo_order_number').select2('data').po){
                       $('#purchase_order').val($('#parsley_reg #demo_order_number').select2('data').po);
                       $('#goods_receiving_note_guid').val(guid);

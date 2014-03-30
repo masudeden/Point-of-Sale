@@ -286,26 +286,29 @@ function save(){
         
     }
         
-        
-
+/*
+ * get supplier details for purchase order
+ *  */       
+// functoon starts
 function search_supplier(){
-    $search= $this->input->post('term');
+    $search= $this->input->post('term');  
     $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
     $data= $this->posnic->posnic_select2('suppliers',$like)    ;
     echo json_encode($data);
-       
-        
-        
 }
+// function end
+
+/*
+Delete purchase order if the user have permission  */
+// function start
 function delete(){
-   if($this->session->userdata['brands_per']['delete']==1){
-            if($this->input->post('guid')){
+   if($this->session->userdata['brands_per']['delete']==1){ // check permission of current user for delete purchase  order
+            if($this->input->post('guid')){ 
                 $this->load->model('purchase');
                 $guid=$this->input->post('guid');
-                $status=$this->purchase->check_approve($guid);
+                $status=$this->purchase->check_approve($guid);// check if the purchase order was already apparoved or what
                     if($status!=FALSE){
-                         $this->posnic->posnic_delete($guid,'purchase_order');
-                            
+                        $this->posnic->posnic_delete($guid,'purchase_order'); // delete the purchase order
                         echo 'TRUE';
                     }else{
                         echo 'Approved';
@@ -317,6 +320,8 @@ function delete(){
         }
     
 }
+// function end
+
 function  get_purchase_order($guid){
     if($this->session->userdata['purchase_order_per']['edit']==1){
     $this->load->model('purchase');
@@ -339,12 +344,16 @@ function order_number(){
        $data[]= $this->posnic->posnic_master_max('purchase_order')    ;
        echo json_encode($data);
 }
+/*
+ * search items to purchase order with or like 
+ *  */
+
 function search_items(){
-         $search= $this->input->post('term');
-        $guid= $this->input->post('suppler');
-        $this->load->model('purchase');
-        $data= $this->purchase->search_items($search,$this->session->userdata['branch_id'],$guid,$this->session->userdata['data_limit']);      
-        echo json_encode($data);
+    $search= $this->input->post('term');
+    $guid= $this->input->post('suppler');
+    $this->load->model('purchase');
+    $data= $this->purchase->search_items($search,$this->session->userdata['branch_id'],$guid,$this->session->userdata['data_limit']);      
+    echo json_encode($data);
        
         
 }

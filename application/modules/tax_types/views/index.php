@@ -135,7 +135,7 @@ function reload_update_user(){
                                         <tr>
                                           <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
-                                          <th ><?php echo $this->lang->line('tax_type') ?></th>
+                                          <th ><?php echo $this->lang->line('taxes_type') ?></th>
                                           
                                           <th><?php echo $this->lang->line('status') ?></th>
                                           <th><?php echo $this->lang->line('action') ?></th>

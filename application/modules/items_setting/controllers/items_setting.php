@@ -97,7 +97,8 @@ class Items_setting extends CI_Controller{
                $this->form_validation->set_rules("min_qty",$this->lang->line('min_qty'),'max_length[15]|regex_match[/^[0-9]+$/]|xss_clean');                                             
                $this->form_validation->set_rules("max_qty",$this->lang->line('max_qty'),'max_length[15]|regex_match[/^[0-9]+$/]|xss_clean');                           
              if ($this->form_validation->run() !== false ) { 
-                  $this->input->post('sales');
+                 
+                 $this->input->post('sales')==0?$sales=1:$sales=0;
                  $data=array(
                     'set'=>1,
                     'sales'=>$this->input->post('sales'),

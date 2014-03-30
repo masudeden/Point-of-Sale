@@ -36,19 +36,27 @@ class Purchase extends CI_Model{
     
     
     function search_items($search,$bid,$guid,$limit){
-         $this->db->select('items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.guid as i_guid,items.code,items.image,items.tax_Inclusive,items.tax_id,suppliers_x_items.*')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',1)->where('items.delete_status',1);
-         $this->db->join('items', "items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."' ",'left');
+         $this->db->select('items_setting.purchase,items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.guid as i_guid,items.code,items.image,items.tax_Inclusive,items.tax_id,suppliers_x_items.*')->from('suppliers_x_items')->where('suppliers_x_items.delete_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.active_status',1)->where('suppliers_x_items.active',0)->where('suppliers_x_items.deactive_item',0)->where('suppliers_x_items.item_active',0)->where('items.branch_id',$bid)->where('items.active_status',1)->where('items.delete_status',1);
+         $this->db->join('items', "items.guid=suppliers_x_items.item_id  AND suppliers_x_items.supplier_id='".$guid."' ",'left');
          $this->db->join('items_category', 'items.category_id=items_category.guid','left');
+         $this->db->join('items_setting', 'items.guid=items_setting.item_id AND items_setting.purchase=1','left');
          $this->db->join('taxes', "items.tax_id=taxes.guid AND items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."'",'left');
          $this->db->join('tax_types', "taxes.type=tax_types.guid AND items.tax_id=taxes.guid AND items.guid=suppliers_x_items.item_id AND suppliers_x_items.supplier_id='".$guid."'",'left');
          $this->db->join('brands', 'items.brand_id=brands.guid','left');
          $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
-          $like=array('items.active_status'=>$search,'items.name'=>$search,'items.code'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
+         $like=array('items.active_status'=>$search,'items.name'=>$search,'items.code'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search);
                 $this->db->or_like($like);
                 $this->db->limit($limit);
+                $sql=  $this->db->get();
+                $data=array();
+                foreach ($sql->result() as $row){
+                    if($row->purchase==1){
+                    $data[]=$row;
+                    }
+                }
                // $this->db->like('suppliers_x_items.supplier_id',$guid); 
-         $sql=  $this->db->get();
-         return $sql->result();
+         
+         return $data;
      
      }
      function get_purchase_order($guid){
