@@ -1,5 +1,6 @@
 
 <script type="text/javascript" charset="utf-8">
+    var point=3;
           $(document).ready( function () {
            
                     $('#add_customer_details_form').hide();
@@ -285,15 +286,15 @@
                                
                                 
                                  $('#parsley_reg #seleted_row_id').val(data[0]['guid']);
-                                 $('#parsley_reg #item_id').val(data[1]['guid']);
+                                 $('#parsley_reg #item_id').val(data[0]['iguid']);
                                  $('#parsley_reg #quantity').val(data[0]['quty']);
                                  $('#parsley_reg #cost').val(data[0]['cost']);
                                  $('#parsley_reg #price').val(data[0]['price']);
-                                 $('#parsley_reg #sku').val(data[1]['code']);
-                                 $('#parsley_reg #diabled_item').val(data[1]['guid']);
+                                 $('#parsley_reg #sku').val(data[0]['code']);
+                                 $('#parsley_reg #diabled_item').val(data[0]['iguid']);
                                  $('#parsley_reg #mrp').val(data[0]['mrp']);
-                                   $("#parsley_reg #items").select2('data', {id:data[0]['item_id'],text: data[1]['name']});
-                                   $('#parsley_reg #diabled_item').val(data[1]['guid']);
+                                   $("#parsley_reg #items").select2('data', {id:data[0]['item_id'],text: data[0]['name']});
+                                   $('#parsley_reg #diabled_item').val(data[0]['iguid']);
                                 $('#loading').modal('hide');
                              } 
                            });

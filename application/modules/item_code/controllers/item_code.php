@@ -16,7 +16,7 @@ class Item_code extends CI_Controller{
         $this->load->view('template/app/navigation',$this->posnic->modules());
         $this->load->view('template/app/footer');
     }
-        function data_table(){
+    function data_table(){
         $aColumns = array( 'name','upc_ean_code', 'code','name','location','b_name','c_name','guid','active_status','guid' );	
 	$start = "";
 			$end="";
@@ -83,25 +83,7 @@ class Item_code extends CI_Controller{
 		
 		   echo json_encode($output1);
     }
-    function set_item($guid){
-         if($this->session->userdata['Posnic_Add']==="Add"){
-             $data['row']=$guid;
-             $this->load->view('add_code',$data);
-         }
-         else{
-             redirect('item_code');
-         }
-    }
-    function reset_item($guid){
-         if($this->session->userdata['Posnic_Edit']==="Edit"){
-             $data['guid']=$guid;
-             $data['row']=  $this->posnic->posnic_module('items');
-             $this->load->view('edit_code',$data);
-         }
-         else{
-             redirect('item_code');
-         }
-    }
+    
    
    
     function set_item_code(){
@@ -125,40 +107,13 @@ class Item_code extends CI_Controller{
     }
    
     function get_items_details(){
-        $search= $this->input->post('term');
-        if($search!=""){
-        $like=array('code'=>$search,'barcode'=>$search,'name'=>$search,'upc_ean_code'=>$search);
-       $data= $this->posnic->posnic_or_like('items',$like);
-     
-       echo json_encode($data);
-        }
+            $search= $this->input->post('term');
+            $like=array('code'=>$search,'barcode'=>$search,'name'=>$search,'upc_ean_code'=>$search);
+            $data= $this->posnic->posnic_select2('items',$like);
+            echo json_encode($data);
+        
     }
             
-    function update_code(){
-        if (!$_SERVER['HTTP_REFERER']){ redirect('home');}  else{
-            if($this->input->post('cancel')){
-                redirect('item_code');
-            }
-            if($this->input->post('save')){
-                 $this->load->library('form_validation');
-               $id=  $this->input->post('id');
-               $this->load->model('item_setting');
-               $this->form_validation->set_rules("code",$this->lang->line('code'),'required');                                             
-              if ($this->form_validation->run() !== false ) {       
-                    $code=$this->input->post('code');
-                    if($this->item_setting->check_code_for_update($code,$id,$this->session->userdata['branch_id'])){
-                        $this->item_setting->update_code_for_item($code,$id,$this->session->userdata['branch_id']);
-                        redirect('item_code');
-                    }else{
-                        echo "this code is alreay added for one item";
-                        $this->edit_item($id);
-                    }
-                    
-              }else{
-                  $this->edit_item($id);
-              }
-            }
-        }
-    }
+    
 }
 ?>

@@ -26,7 +26,8 @@ class Grn extends CI_Model{
         $this->db->from('purchase_order')->where('purchase_order.branch_id',$branch)->where('purchase_order.order_status',1)->where('purchase_order.active_status',1)->where('purchase_order.delete_status',0);
         $or_like=array('po_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
         $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id ','left');
-        $this->db->or_like($or_like);     
+        $this->db->or_like($or_like); 
+        $this->db->limit($this->session->userdata['data_limit']);
         $sql=$this->db->get();
         $data=array();
         foreach($sql->result_array() as $row){

@@ -108,7 +108,8 @@ class Items_setting extends CI_Controller{
                     'min_q'=>$this->input->post('min_quty'),
                     'max_q'=>$this->input->post('max_quty'));
                     $where=array('guid'=>$guid);
-                    $this->posnic->posnic_module_update('items_setting',$data,$where);
+                   
+                     $this->posnic->posnic_update_record($data,$where,'items_setting');
                     echo 'TRUE';
                   
             }else{  echo 'FALSE';

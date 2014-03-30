@@ -43,9 +43,10 @@ class Invoice extends CI_Model{
         $this->db->select('direct_grn.*,suppliers.guid as s_guid,suppliers.first_name as s_name,suppliers.company_name as c_name');
         $this->db->from('direct_grn')->where('direct_grn.branch_id',$branch)->where('direct_grn.invoice_status',0)->where('direct_grn.order_status',1)->where('direct_grn.active_status',1)->where('direct_grn.delete_status',0);
         $or_like=array('grn_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
-        $this->db->join('suppliers', 'suppliers.guid=direct_grn.supplier_id ','left');
+        $this->db->join('suppliers', 'suppliers.guid=direct_grn.supplier_id AND direct_grn.invoice_status=0 ','left');
 
         $this->db->or_like($or_like);     
+        $this->db->limit($this->session->userdata['data_limit']);
         $sql=$this->db->get();
         $data=array();
         foreach($sql->result_array() as $row){
@@ -60,7 +61,7 @@ class Invoice extends CI_Model{
         $this->db->select('grn.guid,grn.grn_no,grn.date as grn_date ,grn.po,purchase_order.supplier_id,suppliers.guid as s_guid');
         $this->db->from('grn')->where('grn.branch_id',$branch)->where('grn.grn_status',1)->where('grn.invoice_status',0)->where('grn.delete_status',0);
         $or_like=array('grn_no'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
-        $this->db->join('purchase_order', 'purchase_order.guid=grn.po ','left');
+        $this->db->join('purchase_order', 'purchase_order.guid=grn.po AND grn.invoice_status=0 ','left');
         $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id ','left');
         $this->db->or_like($or_like);     
         $sql=$this->db->get();

@@ -365,7 +365,7 @@ function add_new_price(e){
  if( $('#parsley_reg #item_id').val()!="" &&  $('#parsley_reg #cost').val()!="" && $('#parsley_reg #price').val()!="" && $('#parsley_reg #mrp').val()!="" && $('#parsley_reg #quantity').val()!=""){
    if($('#parsley_reg #cost').val()<$('#parsley_reg #price').val()) { 
    if(parseFloat($('#parsley_reg #mrp').val())>=parseFloat($('#parsley_reg #price').val())) {
-       console.log(document.getElementById('item_id_'+$('#parsley_reg #item_id').val()));
+     
 if(document.getElementById('item_id_'+$('#parsley_reg #item_id').val())){
 
   var  guid=$('#parsley_reg #seleted_row_id').val();
@@ -377,6 +377,16 @@ if(document.getElementById('item_id_'+$('#parsley_reg #item_id').val())){
   var  mrp=$('#parsley_reg #mrp').val();
   var  items_id=$('#parsley_reg #item_id').val();
   var  supplier=$('#parsley_reg #supplier_guid').val();
+  
+    var cost = parseFloat(cost);
+    cost=cost.toFixed(point); 
+    
+    var price = parseFloat(price);
+    price=price.toFixed(point); 
+    
+    var mrp = parseFloat(mrp);
+    mrp=mrp.toFixed(point); 
+  
   
     $.ajax ({
                             url: "<?php echo base_url('index.php/suppliers_x_items/update_items')?>",
@@ -417,7 +427,14 @@ if(document.getElementById('item_id_'+$('#parsley_reg #item_id').val())){
   var  mrp=$('#parsley_reg #mrp').val();
   var  items_id=$('#parsley_reg #item_id').val();
   var  supplier=$('#parsley_reg #supplier_guid').val();
-  
+   var cost = parseFloat(cost);
+    cost=cost.toFixed(point); 
+    
+    var price = parseFloat(price);
+    price=price.toFixed(point); 
+    
+    var mrp = parseFloat(mrp);
+    mrp=mrp.toFixed(point); 
     $.ajax ({
                             url: "<?php echo base_url('index.php/suppliers_x_items/add_items')?>",
                             data: {
