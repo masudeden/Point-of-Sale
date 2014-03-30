@@ -1,7 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Users extends MX_Controller{
-     
+class Users extends CI_Controller{
+    
+   var $user_image = '';
     function __construct() {
        
         parent::__construct();
@@ -16,11 +17,6 @@ class Users extends MX_Controller{
     function index(){
         $this->get_pos_users_details();
     } 
-    function test(){
-        $data=array('ji',45,45,45,45,45,4);
-        return $data;
-       // $this->load->model
-    }
     function photo_upload($name){
 		$config['upload_path'] = './uploads/';
 		$config['allowed_types'] = 'gif|jpg|png';
@@ -291,7 +287,8 @@ class Users extends MX_Controller{
                 $this->form_validation->set_rules('pos_users_id',$this->lang->line('user_name'),"required");
                 $this->form_validation->set_rules('country',$this->lang->line('country'),"required");
                 $this->form_validation->set_rules('user_groups[]',$this->lang->line('user_groups'),"required");
-                $this->form_validation->set_rules('user_branchs[]',$this->lang->line('user_branchs'),"required");	  
+                $this->form_validation->set_rules('user_branchs[]',$this->lang->line('user_branchs'),"required");	
+                $this->form_validation->set_rules('userfile', 'userfile', 'callback_add_user_image');
 	    if ( $this->form_validation->run() !== false ) {        
 			  $this->load->model('pos_users_model');
                           $first_name=$this->input->post('first_name');
@@ -314,7 +311,7 @@ class Users extends MX_Controller{
                           $created_by=$this->session->userdata['guid'];
                           $this->load->model('pos_users_model');
                           if($this->pos_users_model->user_checking($email,$username,$dob,$phone)==FALSE){
-                          $id= $this->pos_users_model->add_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$username,$password,$address,$city,$state,$zip,$country,$email,$phone,$username);
+                          $id= $this->pos_users_model->add_new_pos_users($blood,$dob,$created_by,$sex,$age,$first_name,$last_name,$username,$password,$address,$city,$state,$zip,$country,$email,$phone,$this->user_image);
                          
                           $user_groups=$this->input->post('user_groups');
                           $branchs=$this->input->post('user_branchs');
@@ -343,7 +340,29 @@ class Users extends MX_Controller{
            }
         }
   
-          
+  function add_user_image(){
+        
+    $config['upload_path'] = './uploads/profile_images';
+    $config['allowed_types'] = 'gif|jpg|png';
+    $config['max_size']	= '202100';
+    $config['max_width']  = '11024';
+    $config['max_height']  = '3768';
+    $randomString = md5(time());
+    $config['file_name']=$randomString;
+  //  $config['overwrite'] = TRUE;
+    $this->load->library('upload', $config);
+
+    if ( ! $this->upload->do_upload())
+    {
+            return false;
+    }
+    else
+    {       
+            $upload_data = $this->upload->data();
+            $this->user_image =$upload_data['file_name'];
+            return true; 
+    }
+ }      
     function add_pos_users_image(){
               $uploaddir = './uploads/'; 
                $file = $uploaddir . basename($_FILES['uploadfile']['name']); 

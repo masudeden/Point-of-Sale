@@ -21,7 +21,64 @@
  
 </style>	
 <script type="text/javascript">
+
      $(document).ready( function () {
+     
+    var options = { 
+    beforeSend: function() 
+    {
+    	$("#progress").show();
+    	//clear everything
+    	$("#bar").width('0%');
+    	$("#message").html("");
+		$("#percent").html("0%");
+    },
+    uploadProgress: function(event, position, total, percentComplete) 
+    {
+    	$("#bar").width(percentComplete+'%');
+    	$("#percent").html(percentComplete+'%');
+
+    
+    },
+    success: function() 
+    {
+        $("#bar").width('100%');
+    	$("#percent").html('100%');
+    },
+	complete: function(response) { 
+                  if(response['responseText']=='true'){
+                                     $.bootstrapGrowl('<?php echo $this->lang->line('user').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                    
+                                       $("#dt_table_tools").dataTable().fnDraw();
+                                       $("#parsley_reg").trigger('reset');
+                                       posnic_users_lists();
+                  }else  if(response['responseText']=='already'){
+                                           $.bootstrapGrowl($('#items_name').val()+' <?php echo $this->lang->line('users').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                  }else  if(response['responseText']=='false'){
+                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                  }else{
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('users');?>', { type: "error" });                           
+                  }
+	 
+                  
+	},
+	error: function()
+	{
+		$("#message").html("<font color='red'> ERROR: Problem in adding user. Please try again</font>");
+
+	}
+   
+}; 
+
+        <?php if($this->session->userdata['users_per']['add']==1){ ?>
+          if($('#posnic_user_2').valid()){
+            $("#posnic_user_2").ajaxForm(options);
+          }else{
+            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields')." ".$this->lang->line('users');?>', { type: "error" });         
+          }         
+       <?php }else{ ?>
+                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
+       <?php }?>
+         /*
          $('#add_new_user').click(function() { 
                 <?php if($this->session->userdata['users_per']['add']==1){ ?>
                         if($('#posnic_user_2').valid()){
@@ -50,7 +107,8 @@
                 }<?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
                     <?php }?>
-        });
+           */ 
+    
  $('#update_users').click(function() { 
         <?php if($this->session->userdata['users_per']['edit']==1){ ?>
            if($('#parsley_reg').valid()){
