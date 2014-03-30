@@ -64,29 +64,22 @@ class Supplier extends CI_Model{
                 $this->db->join('items_department', 'items.depart_id=items_department.guid','left');
                // $this->db->join('supplier', 'stock.supplier=supplier.id','left');
                 $like=array('items.guid'=>1,'items.code'=>$search,'items.barcode'=>$search,'items_category.category_name'=>$search,'brands.name'=>$search,'items_department.department_name'=>$search,'items.name'=>$search);
+                $this->db->limit($this->session->userdata['data_limit']);
                 $this->db->or_like($like);     
                 $query=$this->db->get();
                 return $query->result();
     }
     function get_suppliers_x_items($guid){
-        $this->db->select()->from('suppliers_x_items')->where('guid',$guid);
+        $this->db->select('suppliers_x_items.*,items.guid as iguid,items.name,items.code')->from('suppliers_x_items')->where('suppliers_x_items.guid',$guid);
+        $this->db->join('items', 'items.guid=suppliers_x_items.item_id','left');
         $sql=  $this->db->get();
-        $data=array();
-        $item_id;
-        foreach ($sql->result() as $row){
-            $item_id=$row->item_id;
-            $data[]=$row;
-        }
-        $this->db->select()->from('items')->where('guid',$item_id);
-        $item=  $this->db->get();
-        foreach ($item->result() as $row){
-            $data[]=$row;
-        }
-        return $data;
+       
+        return $sql->result();
     }
     function supplier_like($like,$bid){
           $this->db->select('suppliers.* ,suppliers_category.guid as c_guid,suppliers_category.category_name')->from('suppliers')->where('suppliers.branch_id',$bid)->where('suppliers.active_status',1)->where('suppliers.delete_status',1);
           $this->db->join('suppliers_category', 'suppliers_category.guid=suppliers.category','left');
+          $this->db->limit($this->session->userdata['data_limit']);
           $this->db->or_like($like);
           $sql=  $this->db->get();
           return $sql->result();

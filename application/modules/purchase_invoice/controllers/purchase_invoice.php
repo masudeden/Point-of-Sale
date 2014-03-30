@@ -98,7 +98,8 @@ function save(){
                 $po= $this->input->post('purchase_order');
                 $this->load->model('invoice');
                 if(!$this->input->post('purchase_order')) {
-                    $po="non";
+                   $po="non";
+                   echo $grn;
                     $this->invoice->direct_grn_invoice_status($grn);
                 }else{
                     $this->invoice->grn_invoice_status($grn);
@@ -171,13 +172,10 @@ function save(){
        echo json_encode($new);
     }
     function search_grn_order(){
-           $search= $this->input->post('term');
-             if($search!=""){
-                $this->load->model('invoice');
-                $data= $this->invoice->search_grn_order($search,$this->session->userdata['branch_id'])    ;
-                echo json_encode($data);
-            }
-
+            $search= $this->input->post('term');
+            $this->load->model('invoice');
+            $data= $this->invoice->search_grn_order($search,$this->session->userdata['branch_id'])    ;
+            echo json_encode($data);
     }
     function delete(){
        if($this->session->userdata['goods_receiving_note_per']['delete']==1){

@@ -180,12 +180,12 @@ function save(){
         
 
 function search_purchase_order(){
-       $search= $this->input->post('term');
-         if($search!=""){
-            $this->load->model('grn');
-            $data= $this->grn->search_purchase_order($search,$this->session->userdata['branch_id'])    ;
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $this->load->model('grn');
+        $data= $this->grn->search_purchase_order($search,$this->session->userdata['branch_id'])    ;
+        echo json_encode($data);
+         
+       
         
 }
 function delete(){

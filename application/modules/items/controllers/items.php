@@ -104,16 +104,7 @@ class Items extends CI_Controller{
                 echo 'FALSE';
               }
     }
-    function restore_items($guid){
-         if($this->session->userdata['Posnic_User']=='admin'){
-              $this->posnic->posnic_restore($guid);
-              $this->load->model('core_model');
-              $this->core_model->restore_item_setting($guid,$this->session->userdata['branch_id']);
-              redirect('items');
-          }else{
-              redirect('items');
-          }
-    }
+    
     function delete($guid){
          if($this->session->userdata['brands_per']['delete']==1){
             if($this->input->post('guid')){
@@ -320,53 +311,48 @@ class Items extends CI_Controller{
        echo json_encode($output1);
     }
     function get_department(){
-         $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('department_name'=>$search);
-            $data= $this->posnic->posnic_or_like('items_department',$like);      
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $like=array('department_name'=>$search);
+        $data= $this->posnic->posnic_select2('items_department',$like);      
+        echo json_encode($data);
+        
     }
     function get_category(){
-         $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('category_name'=>$search);
-            $data= $this->posnic->posnic_or_like('items_category',$like);      
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $like=array('category_name'=>$search);
+        $data= $this->posnic->posnic_select2('items_category',$like);      
+        echo json_encode($data);
+        
+        
     }
     function get_brand(){
-         $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('name'=>$search);
-            $data= $this->posnic->posnic_or_like('brands',$like);      
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $like=array('name'=>$search);
+        $data= $this->posnic->posnic_select2('brands',$like);      
+        echo json_encode($data);
+        
     }
     function get_supplier(){
-         $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('company_name '=>$search,'first_name '=>$search,'phone '=>$search,'email'=>$search);
-            $data= $this->posnic->posnic_or_like('suppliers',$like);      
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $like=array('company_name '=>$search,'first_name '=>$search,'phone '=>$search,'email'=>$search);
+        $data= $this->posnic->posnic_select2('suppliers',$like);      
+        echo json_encode($data);
+        
     }
     function get_taxes_area(){
-         $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('name'=>$search);
-            $data= $this->posnic->posnic_or_like('taxes_area',$like);      
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $like=array('name'=>$search);
+        $data= $this->posnic->posnic_or_like('taxes_area',$like);      
+        echo json_encode($data);
+        
     }
     function get_taxes(){
-         $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('tax_types.type'=>$search);
-            $this->load->model('core_model');
-            $data= $this->core_model->get_taxes($this->session->userdata['branch_id'],$like);      
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $like=array('tax_types.type'=>$search);
+        $this->load->model('core_model');
+        $data= $this->core_model->get_taxes($this->session->userdata['branch_id'],$like);      
+        echo json_encode($data);
+        
     }
     function add_item_image(){
         

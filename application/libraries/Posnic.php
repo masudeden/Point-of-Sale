@@ -306,6 +306,11 @@ class Posnic{
          $branch=$this->CI->session->userdata['branch_id'];
          return $CI->posnic_model->posnic_or_like($table,$like,$branch);
     }
+    function posnic_select2($table,$like){
+          $CI=  get_instance();  
+         $branch=$this->CI->session->userdata['branch_id'];
+         return $CI->posnic_model->posnic_select2($table,$like,$branch,$this->CI->session->userdata['data_limit']);
+    }
             
     function posnic_module_like($table,$where){
          $CI=  get_instance();  

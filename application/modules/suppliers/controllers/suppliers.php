@@ -222,67 +222,7 @@ class Suppliers extends CI_Controller{
 
    
    
-    function active_supplier($guid){
-       
-                 $this->posnic->posnic_active($guid);
-                 redirect('suppliers');  
-        }
-    function deactive_supplier($guid){
-       
-                 $this->posnic->posnic_deactive($guid);
-                 redirect('suppliers');  
-        }
-    function restore_supplier($guid){
-        if($this->session->userdata['Posnic_User']=='admin'){
-                 $this->posnic->posnic_restore($guid);
-        }      
-                 redirect('suppliers');  
-        }
-    function admin_delete($guid){
-       if($this->session->userdata['Posnic_Delete']==="Delete"){
-                 $this->posnic->posnic_delete($guid);
-       }
-                 redirect('suppliers');  
-        }
-    function supplier_magement(){
-        if($this->input->post('active')){
-            $data=  $this->input->post('posnic'); 
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_active($guid);
-               }
-               redirect('suppliers');
-        }
-        if($this->input->post('deactive')){
-           $data=  $this->input->post('posnic'); 
-                    foreach( $data as $key => $guid){  
-                          $this->posnic->posnic_deactive($guid);
-               }  
-               redirect('suppliers');
-        }
-        if($this->input->post('add')){
-             if($this->session->userdata['Posnic_Add']==="Add"){
-                 $this->load->view('add_supplier');
-             }else{
-                 echo "You hava no permission to add new supplier";
-                 $this->get_suppliers();
-             }
-        }
-        if($this->input->post('delete')){
-              if($this->session->userdata['Posnic_Delete']==="Delete"){
-                  $data=  $this->input->post('posnic'); 
-                    foreach( $data as $key => $guid){
-                    $this->posnic->posnic_delete($guid);
-                    }
-                    redirect('suppliers');
-             }else{
-                 echo "You hava no permission to delete supplier";
-                 $this->get_suppliers();
-             }
-        }
-        if($this->input->post('cancel')){
-            redirect('home');
-        }
-    }
+  
     function edit_suppliers($guid){
       if($this->session->userdata['suppliers_per']['edit']==1){
                   
@@ -290,13 +230,14 @@ class Suppliers extends CI_Controller{
                   $data=$this->supplier->edit_supplier($guid);
                   echo json_encode($data);
         }
-    }  function get_category(){
-          $search= $this->input->post('term');
-         if($search!=""){
-            $like=array('category_name'=>$search);
-            $data= $this->posnic->posnic_or_like('suppliers_category',$like);      
-            echo json_encode($data);
-        }
+    } 
+    function get_category(){
+        $search= $this->input->post('term');
+        $like=array('category_name'=>$search);
+        $data= $this->posnic->posnic_select2('suppliers_category',$like);      
+        echo json_encode($data);
+        
+        
     }
     
 }

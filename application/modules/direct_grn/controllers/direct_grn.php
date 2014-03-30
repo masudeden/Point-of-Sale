@@ -95,28 +95,7 @@ class Direct_grn extends CI_Controller{
     function  set_seleted_item_suppier($suid){
         $this->session->userdata['supplier_guid']=$suid;
     }
-            function get_selected_supplier()
-    {       
-       $q= addslashes($_REQUEST['term']);
-                $where=array('company_name'=>$q);
-                $name=$this->posnic->posnic_like('suppliers',$where,'company_name');
-                $dis=  $this->posnic->posnic_like('suppliers',$where,'first_name');
-                $id= $this->posnic->posnic_like('suppliers',$where,'guid');
-                $j=0;
-                $data=array();
-                 for($i=0;$i<count($name);$i++)
-                            {                                
-                                $data[$j] = array(
-                                          'label' =>$name[$i]  ,
-                                          'company' =>$dis[$i],  
-                                          'guid'=>$id[$i]
-                                          
-                                );			
-                                        $j++;                                
-                        }
-        echo json_encode($data);
     
-    }
    
    function get_item_details(){
        $q= addslashes($_REQUEST['term']);
@@ -326,11 +305,9 @@ function convert_date($date){
 }
 function search_supplier(){
     $search= $this->input->post('term');
-        if($search!=""){
-            $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
-            $data= $this->posnic->posnic_or_like('suppliers',$like)    ;
-            echo json_encode($data);
-        }
+    $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
+    $data= $this->posnic->posnic_select2('suppliers',$like)    ;
+    echo json_encode($data);
         
 }
 function delete(){
@@ -365,7 +342,7 @@ function direct_grn_approve(){
      if($this->session->userdata['direct_grn_per']['approve']==1){
             $id=  $this->input->post('guid');
             $this->load->model('purchase');
-            $this->purchase->deactive_order($id);
+            $this->purchase->approve_grn($id);
             $this->purchase->direct_grn_stock($id,$this->session->userdata['branch_id']);
             echo 'TRUE';
      }else{
@@ -377,13 +354,13 @@ function order_number(){
        echo json_encode($data);
 }
 function search_items(){
-       $search= $this->input->post('term');
-       $guid= $this->input->post('suppler');
-         if($search!=""){
-            $this->load->model('purchase');
-            $data= $this->purchase->serach_items($search,$this->session->userdata['branch_id'],$guid);      
-            echo json_encode($data);
-        }
+        $search= $this->input->post('term');
+        $guid= $this->input->post('suppler');
+        $this->load->model('purchase');
+        $data= $this->purchase->search_items($search,$this->session->userdata['branch_id'],$guid);      
+        echo json_encode($data);
+       
+       
         
 }
 }

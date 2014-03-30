@@ -15,7 +15,7 @@ class Home extends CI_Controller
             redirect('userlogin');            
         }
        $this->pos_home();   
-         
+       $this->session->set_userdata('data_limit',20);
     }
 	    
     function pos_home(){             

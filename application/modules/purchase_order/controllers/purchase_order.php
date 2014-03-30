@@ -290,11 +290,11 @@ function save(){
 
 function search_supplier(){
     $search= $this->input->post('term');
-        if($search!=""){
-            $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
-            $data= $this->posnic->posnic_or_like('suppliers',$like)    ;
-            echo json_encode($data);
-        }
+    $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
+    $data= $this->posnic->posnic_select2('suppliers',$like)    ;
+    echo json_encode($data);
+       
+        
         
 }
 function delete(){
@@ -340,13 +340,12 @@ function order_number(){
        echo json_encode($data);
 }
 function search_items(){
-       $search= $this->input->post('term');
-       $guid= $this->input->post('suppler');
-         if($search!=""){
-            $this->load->model('purchase');
-            $data= $this->purchase->serach_items($search,$this->session->userdata['branch_id'],$guid);      
-            echo json_encode($data);
-        }
+         $search= $this->input->post('term');
+        $guid= $this->input->post('suppler');
+        $this->load->model('purchase');
+        $data= $this->purchase->search_items($search,$this->session->userdata['branch_id'],$guid,$this->session->userdata['data_limit']);      
+        echo json_encode($data);
+       
         
 }
 }
