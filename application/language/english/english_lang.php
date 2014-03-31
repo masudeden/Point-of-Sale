@@ -509,6 +509,7 @@ $lang['credit_days']='Credit Days';
   //commodity_code
   $lang['commodity_code']='Commodity Code';
   $lang['commodity_part']='Part';
+  $lang['direct_invoice']='Direct Invoice';
 
 
   

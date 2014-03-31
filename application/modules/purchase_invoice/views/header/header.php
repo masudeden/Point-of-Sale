@@ -50,7 +50,7 @@
                                                                 
                    						"fnRender": function (oObj) {
                                                                 
-                                                                        return '<a href=javascript:good_receiving_note_approve("'+oObj.aData[0]+'","'+oObj.aData[10]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('print') ?>"><i class="icon-print"></i></span></a>';
+                                                                        return '<a  ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('print') ?>"><i class="icon-print"></i></span></a>';
                                                                 
                                                                 },
 								
