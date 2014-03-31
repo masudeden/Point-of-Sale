@@ -511,6 +511,9 @@ $lang['credit_days']='Credit Days';
   $lang['commodity_part']='Part';
   $lang['direct_invoice']='Direct Invoice';
 
-
+// payments
+  $lang['payments']='Payments';
+  $lang['supplier_payment']='Supplier Payment';
+  
   
 ?>﻿

@@ -1,13 +1,12 @@
 <?php
-class Invoice extends CI_Model{
+class Payment extends CI_Model{
     function __construct() {
         parent::__construct();
     }
     function get($end,$start,$like,$branch){
-                $this->db->select('purchase_invoice.*,direct_grn.grn_no,purchase_invoice.invoice,purchase_invoice.guid as invoice_guid, purchase_invoice.date as date,suppliers.first_name as s_name,suppliers.company_name as c_name');
-                $this->db->from('purchase_invoice')->where('purchase_invoice.branch_id',$branch)->where('po','non');
-                $this->db->join('direct_grn', 'direct_grn.guid=purchase_invoice.grn','left');
-                $this->db->join('suppliers', 'suppliers.guid=direct_grn.supplier_id AND direct_grn.guid=purchase_invoice.grn','left');
+                $this->db->select('payment.*,suppliers.first_name ,suppliers.company_name ');
+                $this->db->from('payment')->where('payment.branch_id',$branch)->where('payment.type','debit');
+                $this->db->join('suppliers', 'suppliers.guid=payment.supplier_id','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
                 $query=$this->db->get();
@@ -18,24 +17,6 @@ class Invoice extends CI_Model{
                     $data[]=$row;
                    
                 }
-                $this->db->select('purchase_invoice.*,grn.grn_no,purchase_invoice.invoice,purchase_invoice.guid as invoice_guid, purchase_invoice.date as date,suppliers.first_name as s_name,suppliers.company_name as c_name');
-                $this->db->from('purchase_invoice')->where('purchase_invoice.branch_id',$branch)->where('purchase_invoice.po <>','non');
-                $this->db->join('grn', 'grn.guid=purchase_invoice.grn','left');
-                $this->db->join('purchase_order', 'grn.po=purchase_order.guid','left');
-                $this->db->join('suppliers', 'suppliers.guid=purchase_order.supplier_id AND grn.guid=purchase_invoice.grn','left');
-                $this->db->limit($end,$start); 
-                $this->db->or_like($like);     
-                $query=$this->db->get();
-               
-                foreach ($query->result_array() as $row){
-                 
-                    $row['date']=date('d-m-Y',$row['date']);
-                    $data[]=$row;
-                   
-                }
-                
-                
-                
                 return $data; 
         
     }
@@ -137,94 +118,13 @@ class Invoice extends CI_Model{
         $this->db->where('guid',$grn);
         $this->db->update('grn',array('invoice_status'=>1));
     }
-    /*
-     * supplier payable amount   from Direct Grn  */
-    // function start
-    function direct_grn_payable_amount($grn,$invoice){
-        $this->db->select('total_amt,supplier_id')->from('direct_grn')->where('guid',$grn);
-        $sql=  $this->db->get();
-        $amount;
-        $supplier;
-        foreach ($sql->result() as $row){
-            $amount=$row->total_amt;
-            $supplier=$row->supplier_id;
-        }
-        $this->db->insert('supplier_payable',array('supplier_id'=>$supplier,'invoive_id'=>$invoice,'amount'=>$amount,'branch_id'=>  $this->session->userdata['branch_id']));
-    }
-    // function end
-    
-    /*
-     * supplier payable amount   from  Grn  */
-    function grn_payable_amount($grn,$invoice,$po){
-        $this->db->select('purchase_order_items.tax,items.tax_Inclusive, purchase_order_items.discount_per,purchase_order_items.discount_amount,purchase_order_items.received_quty,purchase_order_items.cost,purchase_order.*')->from('grn')->where('grn.guid',$grn);
-        $this->db->join('purchase_order',"purchase_order.guid=grn.po AND purchase_order.guid='".$po."'",'left');
-        $this->db->join('grn_x_items', 'grn_x_items.grn=grn.guid','left');
-        $this->db->join('purchase_order_items', 'purchase_order_items.order_id = purchase_order.guid AND grn_x_items.item=purchase_order_items.item ','left');
-        $this->db->join('items', "items.guid=purchase_order_items.item AND items.guid=grn_x_items.item AND purchase_order_items.order_id=purchase_order.guid ",'left');
-        
-        
-        $sql=  $this->db->get();
-        $freight;
-        $round_amt;
-        $discount;
-        $discount_amt;
-        $round_amt;
-        $supplier;
-        $amount=0;
-        foreach ($sql->result() as $row){
-            $item_amount=0;
-            $discount_per=0;
-            $discount_amount=0;
-            $discount_per=$row->discount_per;
-            $discount_amount=$row->discount_amount;
-            $item_amount=($row->cost*$row->received_quty);
+    /* get payable invoice auto suggestion
+    function start      */
+    function  serach_invoice($search){
+        $this->db->select('')->from('purchase_invoice')->where('purchase_invoice.branch_id',  $this->session->userdata['branch_id']);
            
-                if($discount_per!='' && $discount_per!=0){
-                   
-                    $current=($item_amount*$discount_per)/100;
-                   $item_amount=$item_amount-$current;
-                }else{
-                  $item_amount=$item_amount-$discount_amount;
-                }
-                
-            if($row->tax_Inclusive==1){
-             $item_amount=$item_amount+$row->tax;
-            }
-                
-           $amount=$amount+$item_amount;
-          
-           
-            $freight=$row->freight;
-            $round_amt=$row->round_amt;
-            $discount=$row->discount;
-            $discount_amt=$row->discount_amt;
-            $round_amt=$row->round_amt;
-            $supplier=$row->supplier_id;
-        }
-        
-  
-        if($discount=="" or $discount=='0'){
-        
-         $amount=$amount-$discount_amt;
-        }else{
-           $current=($amount*$discount)/100;
-            $amount=$amount-$current;
-        }
-        $amount=$freight+$round_amt+$amount;
-       $discount;
-        $this->db->insert('supplier_payable',array('supplier_id'=>$supplier,'invoive_id'=>$invoice,'amount'=>$amount,'branch_id'=>  $this->session->userdata['branch_id']));
     }
-    function check_duplicate($where){
-        $this->db->select()->from('purchase_invoice')->where($where)->where('branch_id',  $this->session->userdata['branch_id']);
-        $sql=  $this->db->get();
-        if($sql->num_rows()>0){
-            return FALSE;
-        }  else {
-            return TRUE;    
-        }
-    }
-     
-    
+    /* function end*/
     
 }
 ?>
