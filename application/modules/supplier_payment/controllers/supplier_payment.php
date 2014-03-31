@@ -1,5 +1,5 @@
 <?php
-class Purchase_invoice extends CI_Controller{
+class Supplier_payment extends CI_Controller{
    function __construct() {
                 parent::__construct();
                 $this->load->library('posnic');               
@@ -17,7 +17,7 @@ class Purchase_invoice extends CI_Controller{
     }
     // goods Receiving Note data table
     function data_table(){
-        $aColumns = array( 'guid','invoice','invoice','grn_no','c_name','s_name','date','invoice','invoice','invoice','invoice','guid' );	
+        $aColumns = array( 'guid','supplier_id','supplier_id','supplier_id','supplier_id','supplier_id','first_name','company_name','supplier_id','supplier_id','supplier_id','guid' );	
 	$start = "";
 	$end="";
         if ( $this->input->get_post('iDisplayLength') != '-1' )	{
@@ -47,9 +47,9 @@ class Purchase_invoice extends CI_Controller{
                     );
 
             }
-            $this->load->model('invoice')	   ;
-            $rResult1 = $this->invoice->get($end,$start,$like,$this->session->userdata['branch_id']);
-            $iFilteredTotal =$this->invoice->count($this->session->userdata['branch_id']);
+            $this->load->model('payment')	   ;
+            $rResult1 = $this->payment->get($end,$start,$like,$this->session->userdata['branch_id']);
+            $iFilteredTotal =$this->payment->count($this->session->userdata['branch_id']);
             $iTotal =$iFilteredTotal;
             $output1 = array(
 			"sEcho" => intval($_GET['sEcho']),
@@ -97,23 +97,19 @@ function save(){
                 $note=  $this->input->post('note');
                 $po= $this->input->post('purchase_order');
                 $this->load->model('invoice');
-                 $where=array('invoice'=>$invoice_no);
-                if($this->invoice->check_duplicate($where)){
-                $value=array('invoice'=>$invoice_no,'po'=>$po,'grn'=>$grn,'date'=>$date,'remark'=>$remark,'note'=>$note);
-               $guid= $this->posnic->posnic_add_record($value,'purchase_invoice');
-                   if(!$this->input->post('purchase_order')) {
+                if(!$this->input->post('purchase_order')) {
                    $po="non";
                   
                     $this->invoice->direct_grn_invoice_status($grn);
-                    $this->invoice->direct_grn_payable_amount($grn,$guid);
                 }else{
                     $this->invoice->grn_invoice_status($grn);
-                    $this->invoice->grn_payable_amount($grn,$guid,$po);
                 }
+                $value=array('invoice'=>$invoice_no,'po'=>$po,'grn'=>$grn,'date'=>$date,'remark'=>$remark,'note'=>$note);
+                $this->posnic->posnic_add_record($value,'purchase_invoice');
                 $this->posnic->posnic_master_increment_max('purchase_invoice')  ;
            ;
                  echo 'TRUE';
-                }
+    
                 }else{
                    echo 'FALSE';
                 }
@@ -170,17 +166,7 @@ function save(){
    }
         
         
-    function convert_date($date){
-       $new=array();
-       $new[]= date('n.j.Y', strtotime('+0 year, +0 days',$date));
-       echo json_encode($new);
-    }
-    function search_grn_order(){
-            $search= $this->input->post('term');
-            $this->load->model('invoice');
-            $data= $this->invoice->search_grn_order($search,$this->session->userdata['branch_id'])    ;
-            echo json_encode($data);
-    }
+   
     function delete(){
        if($this->session->userdata['goods_receiving_note_per']['delete']==1){
             if($this->input->post('guid')){
@@ -202,76 +188,28 @@ function save(){
         }
 
     }
-    function  get_grn($guid){
-        if($this->session->userdata['purchase_invoice_per']['add']==1){
-            $this->load->model('invoice');
-            $data=  $this->invoice->get_goods_receiving_note($guid);
-            echo json_encode($data);
-        }
-    }
-    function  get_direct_grn($guid){
-        if($this->session->userdata['purchase_invoice_per']['add']==1){
-            $this->load->model('invoice');
-            $data=  $this->invoice->get_direct_grn($guid);
-            echo json_encode($data);
-        }
-    }
-    function  get_goods_receiving_note($guid){
-        if($this->session->userdata['purchase_order_per']['edit']==1){
-        $this->load->model('invoice');
-        $data=  $this->invoice->get_goods_receiving_note($guid);
-        echo json_encode($data);
-        }
-    }
-    function good_receiving_note_approve(){
-        if($this->session->userdata['goods_receiving_note_per']['approve']==1){
-            $id=  $this->input->post('guid');
-            $po=  $this->input->post('po');
-            $report= $this->posnic->posnic_module_deactive($id,'invoice'); 
-            $this->load->model('invoice');
-            $this->invoice->add_stock($id,$po,$this->session->userdata['branch_id']);
-            if (!$report['error']) {
-                echo 'TRUE';
-            } else {
-                echo 'FALSE';
-            }
-        }else{
-            echo 'Noop';
-        }
-    }
-    function group_approve(){
-        if($this->session->userdata['goods_receiving_note_per']['approve']==1){
-            $id=  $this->input->post('guid');
-            $this->load->model('invoice');
-            $po= $this->invoice->get_order_chnage_order($guid);
-            $report= $this->posnic->posnic_module_deactive($id,'invoice'); 
-
-            $this->invoice->add_stock($id,$po,$this->session->userdata['branch_id']);
-            if (!$report['error']) {
-                echo 'TRUE';
-            } else {
-                echo 'FALSE';
-            }
-        }else{
-            echo 'Noop';
-        }
-    }
-    function order_number(){
+   
+   
+    
+    /*
+    get payment code form master data
+     * function start     */
+    function payment_code(){
            $data[]= $this->posnic->posnic_master_max('purchase_invoice')    ;
            echo json_encode($data);
     }
-    function search_items(){
-           $search= $this->input->post('term');
-           $guid= $this->input->post('suppler');
-             if($search!=""){
-                $this->load->model('purchase');
-                $data= $this->purchase->serach_items($search,$this->session->userdata['branch_id'],$guid);      
-                echo json_encode($data);
-            }
-
+    /*
+    function end     */
+    /*
+    Search purchase payable purchase invoice
+     * function start     */
+    function search_purchase_invoice(){
+        $search= $this->input->post('term'); /* get key word*/
+        $this->load->model('payement'); /* load payement model*/
+        $data= $this->purchase->serach_invoice($search);   /* get invoice list */   
+        echo json_encode($data); /* send data in json fromat*/
     }
-
-    // get grn data
+    /* function end */
    
     }
 ?>

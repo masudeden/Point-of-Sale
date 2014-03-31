@@ -384,6 +384,8 @@
                                       var num = parseFloat(total);
                                       total=num.toFixed(point);
                                   }
+                                   var discount = parseFloat(discount);
+                                      discount=discount.toFixed(point);
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
                                     name+"<input type='hidden' id='"+data[i]['o_i_guid']+"' >",
@@ -492,6 +494,8 @@
                                       var num = parseFloat(total);
                                       total=num.toFixed(point);
                                   }
+                                   var discount = parseFloat(discount);
+                                      discount=discount.toFixed(point);
                                     var addId = $('#selected_item_table').dataTable().fnAddData( [
                                     null,
                                     name+"<input type='hidden' id='"+data[i]['o_i_guid']+"' >",
