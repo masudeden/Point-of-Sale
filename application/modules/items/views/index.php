@@ -798,8 +798,8 @@ function check(){
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                  <div class="row">
-                     <div class="col-lg-1"></div>
-                     <div class="col-lg-10">
+                    
+                     <div class="col-lg-7">
                           <div class="panel panel-default">
                                <div class="panel-heading">
                                      <h4 class="panel-title"><?php echo $this->lang->line('item_details') ?></h4>  
@@ -808,12 +808,9 @@ function check(){
                               <br>
                               
                               
-                              <div class="row">
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                              <div class="row "  style="margin-left:10px;margin-right: 10px" >
+                                       <div class="col col-lg-4" >
+                                           
                                                     <div class="form_sep">
                                                          <label for="sku" class="req"><?php echo $this->lang->line('sku') ?></label>                                                                                                       
                                                            <?php $sku=array('name'=>'sku',
@@ -822,16 +819,11 @@ function check(){
                                                                                     'value'=>set_value('sku'));
                                                            echo form_input($sku)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
+                                              
                                         </div>  
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                   <div class="col col-lg-4" >
+                                           
                                                     <div class="form_sep">
                                                          <label for="barcode" class="req"><?php echo $this->lang->line('barcode') ?></label>                                                                                                       
                                                            <?php $barcode=array('name'=>'barcode',
@@ -840,16 +832,11 @@ function check(){
                                                                                     'value'=>set_value('barcode'));
                                                            echo form_input($barcode)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
+                                               
                                         </div>
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
+                                          
                                                     <div class="form_sep">
                                                          <label for="name" class="req"><?php echo $this->lang->line('name') ?></label>                                                                                                       
                                                            <?php $name=array('name'=>'name',
@@ -858,15 +845,13 @@ function check(){
                                                                                     'value'=>set_value('mrp'));
                                                            echo form_input($name)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
                                         </div>  
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                  
+                                                 
+                              </div>
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                    <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="item_department" class="req"><?php echo $this->lang->line('item_department') ?></label>                                                                                                       
                                                            <?php $item_department=array('name'=>'search_department',
@@ -876,19 +861,8 @@ function check(){
                                                            echo form_input($item_department)?> 
                                                          <input type="hidden" name="item_department" id="item_department">
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div> 
-                              </div>
-                              <div class="row">
-                                        
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                                    </div>    
+                                   <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="category" class="req"><?php echo $this->lang->line('category') ?></label>                                                                                                       
                                                            <?php $category=array('name'=>'search_category',
@@ -898,16 +872,9 @@ function check(){
                                                            echo form_input($category)?> 
                                                           <input type="hidden" name="category" id="category">
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
+                                        </div>
+                                       <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="brand" class="req"><?php echo $this->lang->line('brand') ?></label>                                                                                                       
                                                            <?php $brand=array('name'=>'search_brand',
@@ -917,15 +884,11 @@ function check(){
                                                            echo form_input($brand)?> 
                                                          <input type="hidden" name='brand' id='brand'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
                                         </div> 
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                  
+                              </div>
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                   <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="location" ><?php echo $this->lang->line('location') ?></label>                                                                                                       
                                                            <?php $location=array('name'=>'location',
@@ -934,37 +897,9 @@ function check(){
                                                                                     'value'=>set_value('location'));
                                                            echo form_input($location)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
                                         </div>
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="unit_of_meassure" class="req"><?php echo $this->lang->line('unit_of_meassure') ?></label>                                                                                                       
-                                                           <?php $unit_of_meassure=array('name'=>'unit_of_meassure',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'unit_of_meassure',
-                                                                                    'value'=>set_value('unit_of_meassure'));
-                                                           echo form_input($unit_of_meassure)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>
-                              </div>
-                              <div class="row">
-                                        
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                  <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="supplier" class="req"><?php echo $this->lang->line('supplier') ?></label>                                                                                                       
                                                            <?php $supplier=array('name'=>'search_supplier',
@@ -974,16 +909,27 @@ function check(){
                                                            echo form_input($supplier)?> 
                                                            <input type="hidden" name='supplier' id='supplier'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
+                                                   
+                              </div>
+                                  
+                                   <div class="col col-lg-4" >
+                                         
+                                                    <div class="form_sep">
+                                                         <label for="description" ><?php echo $this->lang->line('description') ?></label>                                                                                                       
+                                                           <?php $description=array('name'=>'description',
+                                                                                    'class'=>' form-control',
+                                                                                    'id'=>'description',
+                                                                                    'rows'=>2,
+                                                                                    'value'=>set_value('description'));
+                                                           echo form_textarea($description)?> 
+                                                    </div>
+                                               
+                                        </div>                             
+                              </div>
+                             
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                   <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="tax_Inclusive" class="req"><?php echo $this->lang->line('tax_Inclusive') ?></label>                                                                                                       
                                                          <select name="tax_Inclusive" id="tax_Inclusive" class="form-control">
@@ -991,15 +937,9 @@ function check(){
                                                              <option value="0"><?php echo $this->lang->line('no') ?></option>
                                                          </select>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                   
                                         </div> 
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="taxes_area" class="req"><?php echo $this->lang->line('taxes_area') ?></label>                                                                                                       
                                                            <?php $taxes_area=array('name'=>'search_taxes_area',
@@ -1009,16 +949,9 @@ function check(){
                                                            echo form_input($taxes_area)?> 
                                                          <input type="hidden" name='taxes_area' id='taxes_area'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
+                                        </div>                              
+                                       <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="taxes" class="req"><?php echo $this->lang->line('taxes') ?></label>                                                                                                       
                                                            <?php $taxes=array('name'=>'search_taxes',
@@ -1028,19 +961,14 @@ function check(){
                                                            echo form_input($taxes)?> 
                                                            <input type="hidden" name='taxes' id='taxes'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div> 
-                                                               
+                                                  
+                                        </div>
+                                       
+                                  
                               </div>
-                             
-                              <div class="row">
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                  <div class="col col-lg-4" >
+                                           
                                                     <div class="form_sep">
                                                          <label for="cost" class="req"><?php echo $this->lang->line('cost') ?></label>                                                                                                       
                                                            <?php $cost=array('name'=>'cost',
@@ -1049,16 +977,9 @@ function check(){
                                                                                     'value'=>set_value('cost'));
                                                            echo form_input($cost)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
                                         </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
+                                          
                                                     <div class="form_sep">
                                                          <label for="mrp" class="req"><?php echo $this->lang->line('mrp') ?></label>                                                                                                       
                                                            <?php $mrp=array('name'=>'mrp',
@@ -1067,16 +988,10 @@ function check(){
                                                                                     'value'=>set_value('mrp'));
                                                            echo form_input($mrp)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
                                         </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
+                                          
                                                     <div class="form_sep">
                                                          <label for="selling_price" class="req"><?php echo $this->lang->line('selling_price') ?></label>                                                                                                       
                                                            <?php $selling_price=array('name'=>'selling_price',
@@ -1085,90 +1000,12 @@ function check(){
                                                                                     'value'=>set_value('selling_price'));
                                                            echo form_input($selling_price)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                              </div>
-                              <div class="row">
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="discount_per" ><?php echo $this->lang->line('discount_per') ?></label>                                                                                                       
-                                                           <?php $discount_per=array('name'=>'discount_per',
-                                                                                    'class'=>'form-control',
-                                                                                    'id'=>'discount_per',
-                                                                                    'value'=>set_value('discount_per'));
-                                                           echo form_input($discount_per)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="starting_date" ><?php echo $this->lang->line('starting_date') ?></label>                                                                                                       
-                                                          <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                       <?php $starting_date=array('name'=>'starting_date',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'starting_date',
-                                                                                    'value'=>set_value('starting_date'));
-                                                           echo form_input($starting_date)?> 
-                                                              <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="ending_date" ><?php echo $this->lang->line('ending_date') ?></label>                                                                                                       
-                                                         <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                          <?php $ending_date=array('name'=>'ending_date',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'ending_date',
-                                                                                    'value'=>set_value('ending_date'));
-                                                           echo form_input($ending_date)?> 
-                                                         <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
                                         </div>  
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10" style="margin-top: -50px;">
-                                                    <div class="form_sep">
-                                                         <label for="description" ><?php echo $this->lang->line('description') ?></label>                                                                                                       
-                                                           <?php $description=array('name'=>'description',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'description',
-                                                                                    'rows'=>3,
-                                                                                    'value'=>set_value('description'));
-                                                           echo form_textarea($description)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div> 
+                                      
+                                  
                               </div>
+                              
                               
                               <div class="row">
                                                                     
@@ -1176,7 +1013,145 @@ function check(){
                               </div>
                               <br>
                           </div>
+                          <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"><?php echo $this->lang->line('item')." ".$this->lang->line('discount') ?></h4>  
+                                   
+                               </div>
+                              <br>
+                              
+                              
+                              <div class="row "  style="margin-left:10px;margin-right: 10px" >
+                                         <div class="col col-lg-4" >
+                                                                 <div class="form_sep">
+                                                                      <label for="discount_per" ><?php echo $this->lang->line('discount_per') ?></label>                                                                                                       
+                                                                        <?php $discount_per=array('name'=>'discount_per',
+                                                                                                 'class'=>'form-control',
+                                                                                                 'id'=>'discount_per',
+                                                                                                 'value'=>set_value('discount_per'));
+                                                                        echo form_input($discount_per)?> 
+                                                                 </div>
+
+                                                     </div>                              
+                                                    <div class="col col-lg-4" >
+
+                                                                 <div class="form_sep">
+                                                                      <label for="starting_date" ><?php echo $this->lang->line('starting_date') ?></label>                                                                                                       
+                                                                       <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                                    <?php $starting_date=array('name'=>'starting_date',
+                                                                                                 'class'=>' form-control',
+                                                                                                 'id'=>'starting_date',
+                                                                                                 'value'=>set_value('starting_date'));
+                                                                        echo form_input($starting_date)?> 
+                                                                           <span class="input-group-addon"></span>
+                                                                             </div>
+                                                                 </div>
+
+                                                     </div>                              
+                                                    <div class="col col-lg-4" >
+
+                                                                 <div class="form_sep">
+                                                                      <label for="ending_date" ><?php echo $this->lang->line('ending_date') ?></label>                                                                                                       
+                                                                      <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                       <?php $ending_date=array('name'=>'ending_date',
+                                                                                                 'class'=>' form-control',
+                                                                                                 'id'=>'ending_date',
+                                                                                                 'value'=>set_value('ending_date'));
+                                                                        echo form_input($ending_date)?> 
+                                                                      <span class="input-group-addon"></span>
+                                                                             </div>
+                                                                 </div>
+
+                                                     </div>   
+                                      
+                                  
+                              </div>
+                              
+                              
+                              
+                              <br>
+                          </div>
+                        
                      </div>
+                      <div class="col-lg-5">
+                              <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"><?php echo $this->lang->line('uom') ?></h4>  
+                                   
+                               </div>
+                              <br>
+                              
+                              
+                              <div class="row "  style="margin-left:1px;margin-right: 1px" >
+                                         <div class="col col-lg-6" >
+                                                                 <div class="form_sep">
+                                                                      <label for="purchase" ><?php echo $this->lang->line('purchase') ?></label>                                                                                                       
+                                                                      <select class="form-control">
+                                                                          <option value="1">Unit</option>
+                                                                          <option value="11">Case</option>
+                                                                      </select>
+                                                                 </div>
+
+                                                     </div>                              
+                                                    <div class="col col-lg-6" >
+
+                                                                 <div class="form_sep">
+                                                                      <label for="no_of_unit" ><?php echo $this->lang->line('no_of_unit') ?></label>                                                                                                       
+                                                                   
+                                                                                    <?php $no_of_unit=array('name'=>'no_of_unit',
+                                                                                                 'class'=>' form-control',
+                                                                                                 'id'=>'no_of_unit',
+                                                                                                 'value'=>set_value('no_of_unit'));
+                                                                        echo form_input($starting_date)?> 
+                                                                           
+                                                                 </div>
+
+                                                     </div>                              
+                                                   
+                                      
+                                  
+                              </div>
+                              <div class="row "  style="margin-left:1px;margin-right: 1px" >
+                                         <div class="col col-lg-6" >
+                                                                 <div class="form_sep">
+                                                                      <label for="purchase" ><?php echo $this->lang->line('sales') ?></label>                                                                                                       
+                                                                      <input type="checkbox" name="sales_unit" id="sales_unit"><?php  echo $this->lang->line('unit_in_sales') ?>
+                                                                 </div>
+
+                                                     </div>                              
+                                                    <div class="col col-lg-6" >
+
+                                                                 <div class="form_sep">
+                                                                      <label for="no_of_unit" ><?php echo $this->lang->line('no_of_unit') ?></label>                                                                                                       
+                                                                   
+                                                                                    <?php $no_of_unit=array('name'=>'no_of_unit',
+                                                                                                 'class'=>' form-control',
+                                                                                                 'id'=>'no_of_unit',
+                                                                                                 'value'=>set_value('no_of_unit'));
+                                                                        echo form_input($starting_date)?> 
+                                                                           
+                                                                 </div>
+
+                                                     </div>                              
+                                                   
+                                      
+                                  
+                              </div>
+                              
+                              
+                              
+                              <br>
+                          </div>  
+                          </div>
+<!--                          <div class="row">
+                                <div class="panel panel-default">
+                                     <div class="panel-heading">
+                                           <h4 class="panel-title"><?php echo $this->lang->line('item_details') ?></h4>  
+
+                                     </div>
+                                </div>
+                          </div>-->
+                      </div>
                 </div>
                     <div class="row">
                                 <div class="col-lg-4"></div>

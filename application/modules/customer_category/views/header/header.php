@@ -34,7 +34,7 @@
 								
 							},
         
-        null, 
+        null,  null, 
 
  							{	"sName": "ID",
                    						"bSearchable": false,
@@ -154,6 +154,7 @@
                                  $('#customer_category_lists').removeAttr("disabled");
                                  $('#parsley_reg #guid').val(data[0]['guid']);
                                  $('#parsley_reg #customer_category').val(data[0]['category_name']);
+                                 $('#parsley_reg #discount').val(data[0]['discount']);
                                
                              } 
                            });
