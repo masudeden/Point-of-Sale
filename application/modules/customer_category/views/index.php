@@ -136,6 +136,7 @@ function reload_update_user(){
                                           <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
                                           <th ><?php echo $this->lang->line('customer_category') ?></th>
+                                          <th ><?php echo $this->lang->line('discount') ?>%</th>
                                           
                                           <th><?php echo $this->lang->line('status') ?></th>
                                           <th><?php echo $this->lang->line('action') ?></th>
@@ -179,6 +180,22 @@ function reload_update_user(){
                                                                                     'id'=>'customer_category',
                                                                                     'value'=>set_value('customer_category'));
                                                            echo form_input($customer_category)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>                              
+                                       <div class="col col-lg-12" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="discount" ><?php echo $this->lang->line('discount') ?>%</label>                                                                                                       
+                                                           <?php $discount=array('name'=>'discount',
+                                                                                    'class'=>'form-control',
+                                                                                    'id'=>'discount',
+                                                                                    'value'=>set_value('discount'));
+                                                           echo form_input($discount)?> 
                                                     </div>
                                                    </div>
                                                <div class="col col-lg-1"></div>
@@ -231,7 +248,23 @@ function reload_update_user(){
                                                    </div>
                                                <div class="col col-lg-1"></div>
                                                </div>
-                                        </div>                              
+                                        </div> 
+                                  <div class="col col-lg-12" >
+                                           <div class="row">
+                                               <div class="col col-lg-1"></div>
+                                               <div class="col col-lg-10">
+                                                    <div class="form_sep">
+                                                         <label for="discount" ><?php echo $this->lang->line('discount') ?>%</label>                                                                                                       
+                                                           <?php $discount=array('name'=>'discount',
+                                                                                    'class'=>'form-control',
+                                                                                    'id'=>'discount',
+                                                                                    'value'=>set_value('discount'));
+                                                           echo form_input($discount)?> 
+                                                    </div>
+                                                   </div>
+                                               <div class="col col-lg-1"></div>
+                                               </div>
+                                        </div>
                               </div><br><br>
                           </div>
                      </div>

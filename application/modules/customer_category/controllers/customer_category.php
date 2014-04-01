@@ -19,7 +19,7 @@ class Customer_category extends CI_Controller
         $this->load->view('template/app/footer');
     }
     function customer_category_data_table(){
-        $aColumns = array( 'guid','category_name','category_name','category_name','category_name','active_status' );	
+        $aColumns = array( 'guid','category_name','category_name','discount','category_name','active_status' );	
 	$start = "";
 	$end="";		
         if ( $this->input->get_post('iDisplayLength') != '-1' )	{
@@ -86,9 +86,10 @@ class Customer_category extends CI_Controller
                 if ( $this->form_validation->run() !== false ) {  
                       $id=  $this->input->post('guid');
                       $name=$this->input->post('customer_category');                
+                      $discount=$this->input->post('discount');                
                       $where=array('guid !='=>$id,'category_name'=>$name);
                 if($this->posnic->check_record_unique($where,'customer_category')){
-                    $value=array('category_name'=>$name);
+                    $value=array('category_name'=>$name,'discount'=>$discount);
                     $update_where=array('guid'=>$id);
                     $this->posnic->posnic_update_record($value,$update_where,'customer_category');
                     echo 'TRUE';
@@ -154,7 +155,8 @@ class Customer_category extends CI_Controller
                       $name=$this->input->post('customer_category');                
                       $where=array('category_name'=>$name);
                 if($this->posnic->check_record_unique($where,'customer_category')){
-                    $value=array('category_name'=>$name);
+                    $discount=  $this->input->post('discount');
+                    $value=array('category_name'=>$name,'discount'=>$discount);
                     $this->posnic->posnic_add_record($value,'customer_category');
                     echo 'TRUE';
                 }else{
