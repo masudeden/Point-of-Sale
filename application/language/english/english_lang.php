@@ -515,5 +515,9 @@ $lang['credit_days']='Credit Days';
   $lang['payments']='Payments';
   $lang['supplier_payment']='Supplier Payment';
   
+  //items
+  $lang['uom']='Unit Of Measurement';
+  $lang['no_of_unit']='No Of Unit IN Case';
+  $lang['unit_in_sales']=' Unit In Sales';
   
 ?>﻿
