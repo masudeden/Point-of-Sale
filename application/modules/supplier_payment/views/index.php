@@ -42,8 +42,8 @@
         height: 24px;
       line-height: 1.7;
     }
-    #dt_table_tools tr td + td + td + td + td + td + td + td + td {
-  width: 120px !important;
+    #dt_table_tools  tr:last-child td {
+  width: 100px !important;
 }
 .editable-address {
     display: block;
@@ -90,7 +90,7 @@
           if(amount > balance){
               $('#amount').val(balance);
           }
-         
+          $('#balance').val(balance-$('#amount').val());
     }
     function change_focus(e){
          var unicode=e.charCode? e.charCode : e.keyCode
@@ -98,7 +98,7 @@
             }
             else{
                  
-                   $('#parsley_reg #save_button .btn').focus();
+                   $('#parsley_reg #memo').focus();
             }
              if (unicode!=27){
             }
@@ -143,33 +143,29 @@
          <?php if($this->session->userdata['supplier_payment_per']['edit']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
-                       if(oTable.fnGetData().length>0){
+                    
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
                             url: "<?php echo base_url('index.php/supplier_payment/update')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
-                                if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('supplier_payment').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
+                                  if(response['responseText']==1){
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('supplier_payment').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#parsley_reg").trigger('reset');
                                        posnic_supplier_payment_lists();
-                                      
-                                    }else  if(response['responseText']=='ALREADY'){
-                                           $.bootstrapGrowl($('#parsley_reg #payment_code').val()+' <?php echo $this->lang->line('supplier').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
-                                    }else  if(response['responseText']=='FALSE'){
+                                       
+                                    }else  if(response['responseText']==10){
+                                           $.bootstrapGrowl(' <?php echo $this->lang->line('invalid_payment_entry'); ?>', { type: "error" });                           
+                                    }else  if(response['responseText']==0){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
                                           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('supplier_payment');?>', { type: "error" });                           
                                     }
                        }
                 });
-                    }else{
-                  
-                   $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_An_Item');?>', { type: "warning" }); 
-                     $('#parsley_reg #items').select2('open');
-                    }
+                   
                     }else{
                    $.bootstrapGrowl('<?php echo $this->lang->line('please_enter')." ".$this->lang->line('all_require_elements');?>', { type: "error" });                        
                     }<?php }else{ ?>
@@ -184,9 +180,9 @@
             }
             $('#parsley_reg #purchase_invoice').change(function() {
            $('#company').val($('#parsley_reg #purchase_invoice').select2('data').company);
-           $('#address').val($('#parsley_reg #purchase_invoice').select2('data').address);
+           $('#supplier').val($('#parsley_reg #purchase_invoice').select2('data').name);
            $('#total').val($('#parsley_reg #purchase_invoice').select2('data').amount);
-           $('#balance').val(parseFloat($('#parsley_reg #purchase_invoice').select2('data').amount-$('#parsley_reg #purchase_invoice').select2('data').paid_amount));
+           $('#paid_amount').val(parseFloat($('#parsley_reg #purchase_invoice').select2('data').amount-$('#parsley_reg #purchase_invoice').select2('data').paid_amount));
            $('#balance_amount').val(parseFloat($('#parsley_reg #purchase_invoice').select2('data').amount-$('#parsley_reg #purchase_invoice').select2('data').paid_amount));
            
            $('#payment').val($('#parsley_reg #purchase_invoice').select2('data').payment);
@@ -239,7 +235,8 @@
      });
     
 function posnic_add_new(){
-
+$("#supplier_payment_select_2").show('slow');
+$('#supplier_payment_order').hide();
 $('#update_button').hide();
 $('#save_button').show();
 $('#update_clear').hide();
@@ -296,14 +293,14 @@ function posnic_supplier_payment_lists(){
       $('#posnic_add_supplier_payment').removeAttr("disabled");
       $('#supplier_payment_lists').attr("disabled",'disabled');
 }
-function clear_add_supplier_payment(){
+function clear_add_payment(){
       $("#parsley_reg").trigger('reset');
       
 }
-function clear_update_supplier_payment(){
+function clear_update_payment(){
       $("#parsley_reg").trigger('reset');
       
-      edit_function($('#supplier_payment_guid').val());
+      edit_function($('#payment_id').val());
 }
 
 </script>
@@ -312,8 +309,6 @@ function clear_update_supplier_payment(){
             <div class="row">
                 <div class="col col-lg-7">
                         <a href="javascript:posnic_add_new()" id="posnic_add_supplier_payment" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
-                     
-                        <a href="javascript:supplier_payment_group_approve()" class="btn btn-default" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-default" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
                         <a href="javascript:posnic_supplier_payment_lists()" class="btn btn-default" id="supplier_payment_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('supplier_payment') ?></a>
                         
@@ -339,15 +334,13 @@ function clear_update_supplier_payment(){
                                          <th>Id</th>
                                           <th ><?php echo $this->lang->line('select') ?></th>
                                           <th ><?php echo $this->lang->line('payment_code') ?></th>
+                                          <th ><?php echo $this->lang->line('invoice') ?></th>
                                           
-                                          <th><?php echo $this->lang->line('company') ?></th>
-                                           <th><?php echo $this->lang->line('name') ?></th>
+                                        
+                                           <th><?php echo $this->lang->line('supplier')." ".$this->lang->line('name') ?></th>
+                                             <th><?php echo $this->lang->line('company') ?></th>
                                           <th><?php echo $this->lang->line('order_date') ?></th>
-                                          <th><?php echo $this->lang->line('number_of_items') ?></th>
                                           <th><?php echo $this->lang->line('total_amount') ?></th>
-                                         
-                                      
-                                          <th><?php echo $this->lang->line('status') ?></th>
                                           <th style="width: 120px"><?php echo $this->lang->line('action') ?></th>
                                          </tr>
                                       </thead>
@@ -378,8 +371,8 @@ function clear_update_supplier_payment(){
                      
         <input type="hidden" name="dummy_discount" id="dummy_discount" >
         <input type="hidden" name="dummy_discount_amount" id="dummy_discount_amount" >
-        <div class="col col-sm-1"></div>
-                         <div class="row col col-sm-10">
+        <div class="col col-sm-2"></div>
+                         <div class="row col col-sm-8">
                           <div class="panel panel-default">
                               <div class="panel-heading" >
                                      <h4 class="panel-title"><?php echo $this->lang->line('supplier_payment')." ".$this->lang->line('details') ?></h4>                                                                               
@@ -388,8 +381,8 @@ function clear_update_supplier_payment(){
                                  
                                        <div id="" class="col col-sm-12" style="padding-right: 25px;padding-left: 25px">
                                            <div class="row">
-                                               <div class="col col-sm-3" >
-                                                   <div class="form_sep supplier_select_2">
+                                               <div class="col col-sm-4" >
+                                                   <div class="form_sep " id="supplier_payment_select_2">
                                                         <label for="purchase_invoice" ><?php echo $this->lang->line('purchase_invoice') ?></label>													
                                                                   <?php $first_name=array('name'=>'purchase_invoice',
                                                                                     'class'=>'required  form-control',
@@ -399,8 +392,18 @@ function clear_update_supplier_payment(){
                                                                      echo form_input($first_name)?>
                                                         <input type="hidden" id="purchase_invoice_guid" name="purchase_invoice_guid">
                                                   </div>
+                                                   <div class="form_sep " id="supplier_payment_order">
+                                                        <label for="purchase_invoice" ><?php echo $this->lang->line('purchase_invoice') ?></label>													
+                                                                  <?php $first_name=array('name'=>'invoice',
+                                                                                    'class'=>'required  form-control',
+                                                                                    'id'=>'invoice',
+                                                                                    'disabled'=>'disabled',
+                                                                                    'value'=>set_value('invoice'));
+                                                                     echo form_input($first_name)?>
+                                                        <input type="hidden" id="purchase_invoice_guid" name="purchase_invoice_guid">
+                                                  </div>
                                                </div>
-                                               <div class="col col-sm-3" >
+                                               <div class="col col-sm-4" >
                                                     <div class="form_sep">
                                                             <label for="company" ><?php echo $this->lang->line('company') ?></label>													
                                                                      <?php $last_name=array('name'=>'last_name',
@@ -412,18 +415,26 @@ function clear_update_supplier_payment(){
                                                     </div><input type="hidden" value="" name='supplier_guid' id='supplier_guid'>
                                                </div>
                                               
-                                               <div class="col col-sm-3" >
+                                               <div class="col col-sm-4" >
                                                     <div class="form_sep">
-                                                            <label for="address" ><?php echo $this->lang->line('address') ?></label>													
-                                                                     <?php $address=array('name'=>'address',
+                                                            <label for="supplier" ><?php echo $this->lang->line('supplier') ?></label>													
+                                                                     <?php $supplier=array('name'=>'supplier',
                                                                                         'class'=>'required  form-control',
-                                                                                        'id'=>'address',
+                                                                                        'id'=>'supplier',
                                                                                         'disabled'=>'disabled',
-                                                                                        'value'=>set_value('address'));
-                                                                         echo form_input($address)?>
+                                                                                        'value'=>set_value('supplier'));
+                                                                         echo form_input($supplier)?>
                                                        </div>
                                                </div>
-                                                <div class="col col-sm-3" >
+                                                
+                                               
+                                               
+                                             
+                                              
+                                              
+                                               </div>
+                                           <div class="row">
+                                               <div class="col col-sm-4" >
                                                    <div class="form_sep">
                                                             <label for="payment_code" ><?php echo $this->lang->line('payment_code') ?></label>													
                                                                      <?php $payment_code=array('name'=>'demo_payment_code',
@@ -435,14 +446,7 @@ function clear_update_supplier_payment(){
                                                             <input type="hidden" name="payment_code" id="payment_code">
                                                        </div>
                                                     </div>
-                                               
-                                               
-                                             
-                                              
-                                              
-                                               </div>
-                                           <div class="row">
-                                               <div class="col col-sm-3" >
+                                               <div class="col col-sm-4" >
                                                    <div class="form_sep">
                                                             <label for="total" ><?php echo $this->lang->line('total')." ".$this->lang->line('payment') ?></label>													
                                                                      <?php $total=array('name'=>'total',
@@ -453,26 +457,31 @@ function clear_update_supplier_payment(){
                                                                          echo form_input($total)?>
                                                        </div>
                                                     </div>
-                                               <div class="col col-sm-3" >
+                                               <div class="col col-sm-4" >
                                                    <div class="form_sep">
-                                                            <label for="balance" ><?php echo $this->lang->line('balance') ?></label>													
-                                                                     <?php $balance=array('name'=>'balance',
+                                                            <label for="paid_amount" ><?php echo $this->lang->line('paid_amount') ?></label>													
+                                                                     <?php $paid_amount=array('name'=>'paid_amount',
                                                                                         'class'=>'  form-control',
-                                                                                        'id'=>'balance',                                                                                    
+                                                                                        'id'=>'paid_amount',                                                                                    
                                                                                         'disabled'=>'disabled',
-                                                                                        'value'=>set_value('balance'));
-                                                                         echo form_input($balance)?>
+                                                                                        'value'=>set_value('paid_amount'));
+                                                                         echo form_input($paid_amount)?>
                                                        </div>
                                                     </div>
                                                
-                                            <div class="col col-sm-3" >
+                                            
+                                               
+                                                
+                                           </div>
+                                           <div class="row">
+                                               <div class="col col-sm-4" >
                                                      <div class="form_sep">
                                                             <label for="payment_date" ><?php echo $this->lang->line('payment_date') ?></label>													
                                                                      <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
                                                                            <?php $payment_date=array('name'=>'payment_date',
                                                                                             'class'=>'required form-control',
                                                                                             'id'=>'payment_date',
-                                                                                            'onKeyPress'=>"new_payment_date(event)", 
+                                                                                         //   'onKeyPress'=>"new_payment_date(event)", 
                                                                                             'value'=>set_value('payment_date'));
                                                                              echo form_input($payment_date)?>
                                                                 <span class="input-group-addon"><i class="icon-calendar"></i></span>
@@ -480,7 +489,7 @@ function clear_update_supplier_payment(){
                                                        </div>
                                                    </div>
                                                 
-                                                <div class="col col-sm-3" >
+                                                <div class="col col-sm-4" >
                                                    <div class="form_sep">
                                                             <label for="amount" ><?php echo $this->lang->line('amount') ?></label>													
                                                                      <?php $amount=array('name'=>'amount',
@@ -492,14 +501,23 @@ function clear_update_supplier_payment(){
                                                                          echo form_input($amount)?>
                                                        </div>
                                                     </div>
+                                                <div class="col col-sm-4" >
+                                                   <div class="form_sep">
+                                                            <label for="balance" ><?php echo $this->lang->line('balance') ?></label>													
+                                                                     <?php $balance=array('name'=>'balance',
+                                                                                        'class'=>'  form-control',
+                                                                                        'id'=>'balance',
+                                                                                        'value'=>set_value('amount'));
+                                                                         echo form_input($balance)?>
+                                                       </div>
+                                                    </div>
                                                
-                                                
                                            </div>
                                            <div class="row">
-                                               <div class="col col-lg-4">
+                                               <div class="col col-lg-8">
                                                     <div class="form_sep ">
                                                         <label for="memo" ><?php echo $this->lang->line('memo') ?></label>													
-                                                                  <?php $memo=array('name'=>'meno',
+                                                                  <?php $memo=array('name'=>'memo',
                                                                                     'class'=>' form-control',
                                                                                     'id'=>'memo',
                                                                                    'rows'=>3,
@@ -509,25 +527,26 @@ function clear_update_supplier_payment(){
                                                   </div>
                                                </div>
                                                <div class="col col-lg-4">
+                                                  
                                                    <div class="col col-sm-6"  >
                                                        
                                               <div class="form_sep " id="save_button" >
                                                        <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:save_new_payment()" class="btn btn-default"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
+                                                       <a href="javascript:save_new_payment()" class="btn btn-default  pull-right"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_button" >
                                                        <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:update_order()" class="btn btn-default"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
+                                                       <a href="javascript:update_order()" class="btn btn-default" style="margin-top:-12px"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
                                                   </div>
                                                </div>
                                           <div class="col col-sm-6"  >
                                                    <div class="form_sep " id="save_clear">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_add_purchase_order()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_add_payment()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_clear" style="margin-top:0 !important">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_update_purchase_order()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_update_payment()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                                </div>
                                                </div>
@@ -543,6 +562,7 @@ function clear_update_supplier_payment(){
                      </div>
     <input type="hidden" id="balance_amount" name="balance_amount">
     <input type="hidden" id="payment" name="payment">
+    <input type="hidden" id="payment_id" name="payment_id">
     <?php echo form_close();?>
 
 </section>    
@@ -585,13 +605,11 @@ function clear_update_supplier_payment(){
 
                                 },
                                   complete: function(response) {
-                                    if(response['responseText']=='TRUE'){
-                                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('goods_receiving_note') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                                    if(response['responseText']==1){
+                                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('supplier_payment') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                                         $("#dt_table_tools").dataTable().fnDraw();
-                                    }else if(response['responseText']=='Approved'){
-                                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>  <?php echo $this->lang->line('is');?> <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
                                     }else{
-                                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('goods_receiving_note');?>', { type: "error" });                       
+                                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('delete')." ".$this->lang->line('supplier_payment');?>', { type: "error" });                       
                                     }
                                     }
                             });

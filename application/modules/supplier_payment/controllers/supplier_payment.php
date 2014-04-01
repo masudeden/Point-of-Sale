@@ -17,7 +17,7 @@ class Supplier_payment extends CI_Controller{
     }
     // goods Receiving Note data table
     function data_table(){
-        $aColumns = array( 'guid','supplier_id','supplier_id','supplier_id','supplier_id','supplier_id','first_name','company_name','supplier_id','supplier_id','supplier_id','guid' );	
+        $aColumns = array( 'guid','code','code','p_invoice','first_name','company_name','payment_date','amount','guid' );	
 	$start = "";
 	$end="";
         if ( $this->input->get_post('iDisplayLength') != '-1' )	{
@@ -85,7 +85,7 @@ class Supplier_payment extends CI_Controller{
     }
  
 function save(){      
-     if($this->session->userdata['purchase_invoice_per']['add']==1){
+     if($this->session->userdata['supplier_payment_per']['add']==1){
         $this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'), 'required');
         $this->form_validation->set_rules('balance_amount',$this->lang->line('balance_amount'), 'required|numeric');
         $this->form_validation->set_rules('payment_code', $this->lang->line('payment_code'), 'required');
@@ -104,7 +104,8 @@ function save(){
                     echo 10;
                 }else{
                     
-                   if($this->payment->save_payment($payment,$amount,$date,$memo,$code)){
+                        if($this->payment->save_payment($payment,$amount,$date,$memo,$code)){
+                        $this->posnic->posnic_master_increment_max('supplier_payment')  ;
                        echo 1;
                    }else{
                        echo 10;
@@ -118,69 +119,49 @@ function save(){
                 }
 }
     function update(){
-            
-      if($this->session->userdata['purchase_order_per']['edit']==1){
-        $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
-        $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
-        //$this->form_validation->set_rules('grn_no', $this->lang->line('grn_no'), 'required');                         
-        $this->form_validation->set_rules('receive_quty[]', 'receive_quty', 'regex_match[/^[0-9]+$/]|xss_clean');
-        $this->form_validation->set_rules('receive_free[]', 'receive_free', 'regex_match[/^[0-9]+$/]|xss_clean');
-            if ( $this->form_validation->run() !== false ) {    
-                $po=  $this->input->post('goods_receiving_note_guid');
-                $grn_date=strtotime($this->input->post('grn_date'));
-               // $grn_no= $this->input->post('grn_no');
-                $remark=  $this->input->post('remark');
-                $note=  $this->input->post('note');
-                
-  
-     
-                $value=array('date'=>$grn_date,'remark'=>$remark,'note'=>$note);
-                $guid=  $this->input->post('grn_guid');
-                $update_where=array('guid'=>$guid);
-                $this->posnic->posnic_update_record($value,$update_where,'invoice');          
-                $quty=  $this->input->post('receive_quty');
-                $grn_item_guid=  $this->input->post('grn_items_guid');
-                $free=  $this->input->post('receive_free');
-                $items=  $this->input->post('items');
-                $po_item=  $this->input->post('order_items');
-           
-                for($i=0;$i<count($items);$i++){
-          
-                        $this->load->model('invoice');
-                        $this->invoice->update_grn_items_quty($grn_item_guid[$i],$quty[$i],$free[$i],$items[$i],$po_item[$i]);
-                      
+        If($this->session->userdata['supplier_payment_per']['add']==1){
+            $this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'), 'required');
+            $this->form_validation->set_rules('payment_id',$this->lang->line('payment_id'), 'required');
+            $this->form_validation->set_rules('balance_amount',$this->lang->line('balance_amount'), 'required|numeric');
+            $this->form_validation->set_rules('payment_code', $this->lang->line('payment_code'), 'required');
+            $this->form_validation->set_rules('payment', $this->lang->line('payment'), 'required');
+            $this->form_validation->set_rules('amount', $this->lang->line('amount'), 'required|numeric');
+                if ( $this->form_validation->run() !== false ) {    
+
+                    $date=strtotime($this->input->post('payment_date'));
+                    $code= $this->input->post('payment_code');
+                    $amount=  $this->input->post('amount');
+                    $balance_amount=  $this->input->post('balance_amount');
+                    $memo=  $this->input->post('memo');
+                    $payment=  $this->input->post('payment');
+                    $this->load->model('payment');
+                    $guid=  $this->input->post('payment_id');
+                    if($amount>$balance_amount){
+                        echo 10;
+                    }else{
+                            if($this->payment->update_payment($guid,$payment,$amount,$date,$memo,$code)){
+                        
+                       echo 1;
+                    }else{
+                        echo 10;
+                    }
                 }
-                    
-                    
-                    
-                 echo 'TRUE';
-    
-                }else{
-                   echo 'FALSE';
-                }
+            }else{
+                 echo 0;
+            }
         }else{
-                   echo 'Noop';
-                }
+            echo 'Noop';
+        }
           
    }
-        
-        
-   
     function delete(){
        if($this->session->userdata['goods_receiving_note_per']['delete']==1){
             if($this->input->post('guid')){
                 $guid=  $this->input->post('guid');
-                $this->load->model('invoice');
-                $status=$this->invoice->check_approve($guid);
-               if($status!=FALSE){
-                $this->posnic->posnic_delete($guid,'invoice');
-
-                $this->invoice->delete_grn_items($guid);            
-                    echo 'TRUE';
-                }else{
-                    echo 'Approved';
-                }
-
+                
+                $this->load->model('payment');
+                $this->payment->delete_payment($guid);
+                echo 1;
             }
         }else{
              echo 'FALSE';
@@ -194,7 +175,7 @@ function save(){
     get payment code form master data
      * function start     */
     function payment_code(){
-           $data[]= $this->posnic->posnic_master_max('purchase_invoice')    ;
+           $data[]= $this->posnic->posnic_master_max('supplier_payment')    ;
            echo json_encode($data);
     }
     /*
@@ -210,5 +191,15 @@ function save(){
     }
     /* function end */
    
+    /*
+     *  get payment details for edit     
+     * function start */
+    function get_supplier_payment($guid){
+        $this->load->model('payment');
+        $data=  $this->payment->get_payment_details($guid);
+        echo json_encode($data); // encode data array to json
+    }
+    /* function end*/
+    
     }
 ?>
