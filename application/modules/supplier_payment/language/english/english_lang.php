@@ -6,6 +6,7 @@ $lang['payment_date']='Payment Date';
 $lang['balance']='Balance';
 $lang['memo']='Memo';
 $lang['invalid_payment_entry']='Invalid Payment Entry';
+$lang['paid_amount']='Paid Amount';
 
 
 
