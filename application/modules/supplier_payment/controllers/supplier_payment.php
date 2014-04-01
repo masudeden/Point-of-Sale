@@ -86,38 +86,37 @@ class Supplier_payment extends CI_Controller{
  
 function save(){      
      if($this->session->userdata['purchase_invoice_per']['add']==1){
-        $this->form_validation->set_rules('goods_receiving_note_guid',$this->lang->line('goods_receiving_note_guid'), 'required');
-        $this->form_validation->set_rules('grn_date',$this->lang->line('grn_date'), 'required');
-        $this->form_validation->set_rules('invoice_no', $this->lang->line('invoice_no'), 'required');
+        $this->form_validation->set_rules('payment_date',$this->lang->line('payment_date'), 'required');
+        $this->form_validation->set_rules('balance_amount',$this->lang->line('balance_amount'), 'required|numeric');
+        $this->form_validation->set_rules('payment_code', $this->lang->line('payment_code'), 'required');
+        $this->form_validation->set_rules('payment', $this->lang->line('payment'), 'required');
+        $this->form_validation->set_rules('amount', $this->lang->line('amount'), 'required|numeric');
             if ( $this->form_validation->run() !== false ) {    
-                $grn=  $this->input->post('goods_receiving_note_guid');
-                $date=strtotime($this->input->post('grn_date'));
-                $invoice_no= $this->input->post('invoice_no');
-                $remark=  $this->input->post('remark');
-                $note=  $this->input->post('note');
-                $po= $this->input->post('purchase_order');
-                $this->load->model('invoice');
-                if(!$this->input->post('purchase_order')) {
-                   $po="non";
-                  
-                    $this->invoice->direct_grn_invoice_status($grn);
+             
+                $date=strtotime($this->input->post('payment_date'));
+                $code= $this->input->post('payment_code');
+                $amount=  $this->input->post('amount');
+                $balance_amount=  $this->input->post('balance_amount');
+                $memo=  $this->input->post('memo');
+                $payment=  $this->input->post('payment');
+                $this->load->model('payment');
+                if($amount>$balance_amount){
+                    echo 10;
                 }else{
-                    $this->invoice->grn_invoice_status($grn);
+                    
+                   if($this->payment->save_payment($payment,$amount,$date,$memo,$code)){
+                       echo 1;
+                   }else{
+                       echo 10;
+                   }
                 }
-                $value=array('invoice'=>$invoice_no,'po'=>$po,'grn'=>$grn,'date'=>$date,'remark'=>$remark,'note'=>$note);
-                $this->posnic->posnic_add_record($value,'purchase_invoice');
-                $this->posnic->posnic_master_increment_max('purchase_invoice')  ;
-           ;
-                 echo 'TRUE';
-    
-                }else{
-                   echo 'FALSE';
-                }
-        }else{
+             }else{
+                  echo 0;
+             }
+    }else{
                    echo 'Noop';
                 }
-           
-    }
+}
     function update(){
             
       if($this->session->userdata['purchase_order_per']['edit']==1){
@@ -205,8 +204,8 @@ function save(){
      * function start     */
     function search_purchase_invoice(){
         $search= $this->input->post('term'); /* get key word*/
-        $this->load->model('payement'); /* load payement model*/
-        $data= $this->purchase->serach_invoice($search);   /* get invoice list */   
+        $this->load->model('payment'); /* load payement model*/
+        $data= $this->payment->serach_invoice($search);   /* get invoice list */   
         echo json_encode($data); /* send data in json fromat*/
     }
     /* function end */
