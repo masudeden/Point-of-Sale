@@ -13,7 +13,7 @@ class Payment extends CI_Model{
                 $data=array();
                 foreach ($query->result_array() as $row){
                  
-                    $row['date']=date('d-m-Y',$row['date']);
+                    $row['date']=date('d-m-Y',$row['payment_date']);
                     $data[]=$row;
                    
                 }
@@ -120,11 +120,51 @@ class Payment extends CI_Model{
     }
     /* get payable invoice auto suggestion
     function start      */
-    function  serach_invoice($search){
-        $this->db->select('')->from('purchase_invoice')->where('purchase_invoice.branch_id',  $this->session->userdata['branch_id']);
-           
+    function  serach_invoice($like){
+        $this->db->select('supplier_payable.guid as p_guid,supplier_payable.invoice_id,supplier_payable.amount, supplier_payable.paid_amount, purchase_invoice.*, suppliers.first_name as name,suppliers.company_name as company,suppliers.address1 as address')->from('purchase_invoice')->where('purchase_invoice.branch_id',  $this->session->userdata['branch_id']);
+        $this->db->join('suppliers', 'suppliers.guid=purchase_invoice.supplier_id ','left');  
+        $this->db->join('supplier_payable', 'suppliers.guid=purchase_invoice.supplier_id AND supplier_payable.invoice_id=purchase_invoice.guid','left');  
+        $or_like=array('invoice'=>$like,'suppliers.company_name'=>$like,'suppliers.first_name'=>$like);
+        $this->db->or_like($or_like);     
+        $this->db->limit($this->session->userdata['data_limit']);
+        $sql=$this->db->get();
+        return $sql->result();
     }
     /* function end*/
-    
+    /*
+     * add new supplier payment
+     * function start     */
+    function save_payment($payment,$amount,$date,$memo,$code){
+        $this->db->select()->from('supplier_payable')->where('guid',$payment);
+        $sql=  $this->db->get();
+        $total;
+        $paid;
+        $supplier;
+        foreach ($sql->result() as $row){
+            $total=$row->amount; // get total amount
+            $paid=$row->paid_amount; // get paid amount
+           $supplier=$row->supplier_id; // get paid amount
+        }
+        $balance=$total-$paid;
+       
+        if($amount > $balance){ // check wheather payment amount is valid or not, if it is invalid return false
+           return FALSE; 
+        } 
+        $payment_status=0;
+        if($total==($amount+$paid)){
+            $payment_status=1;
+        }
+        $this->db->where('guid',$payment);
+        $this->db->update('supplier_payable',array('payment_status'=>$payment_status,'paid_amount'=>$amount+$paid)); // update paid amount to supplier payable
+        
+        $data=array('type'=>'debit','invoice_id'=>$payment,'supplier_id'=>$supplier,'memo'=>$memo,'amount'=>$amount,'payment_date'=>$date,'added_date'=>strtotime(date("Y/m/d")),'branch_id'=>  $this->session->userdata['branch_id'],'added_by'=>  $this->session->userdata['guid']);
+        $this->db->insert('payment',$data);
+        $id=  $this->db->insert_id();
+        $this->db->where('id',$id);
+        $this->db->update('payment',array('guid'=>md5($id.$supplier.$payment)));
+         return TRUE; 
+    }
+    /*
+     *  fucntion end */ 
 }
 ?>

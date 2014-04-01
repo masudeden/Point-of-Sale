@@ -7,7 +7,7 @@ class Invoice extends CI_Model{
                 $this->db->select('purchase_invoice.*,direct_grn.grn_no,purchase_invoice.invoice,purchase_invoice.guid as invoice_guid, purchase_invoice.date as date,suppliers.first_name as s_name,suppliers.company_name as c_name');
                 $this->db->from('purchase_invoice')->where('purchase_invoice.branch_id',$branch)->where('po','non');
                 $this->db->join('direct_grn', 'direct_grn.guid=purchase_invoice.grn','left');
-                $this->db->join('suppliers', 'suppliers.guid=direct_grn.supplier_id AND direct_grn.guid=purchase_invoice.grn','left');
+                $this->db->join('suppliers', 'suppliers.guid=purchase_invoice.supplier_id AND direct_grn.guid=purchase_invoice.grn','left');
                 $this->db->limit($end,$start); 
                 $this->db->or_like($like);     
                 $query=$this->db->get();
@@ -30,7 +30,7 @@ class Invoice extends CI_Model{
                 foreach ($query->result_array() as $row){
                  
                     $row['date']=date('d-m-Y',$row['date']);
-                    $data[]=$row;
+                   $data[]=$row;
                    
                 }
                 
@@ -149,7 +149,10 @@ class Invoice extends CI_Model{
             $amount=$row->total_amt;
             $supplier=$row->supplier_id;
         }
-        $this->db->insert('supplier_payable',array('supplier_id'=>$supplier,'invoive_id'=>$invoice,'amount'=>$amount,'branch_id'=>  $this->session->userdata['branch_id']));
+        $this->db->insert('supplier_payable',array('supplier_id'=>$supplier,'invoice_id'=>$invoice,'amount'=>$amount,'branch_id'=>  $this->session->userdata['branch_id']));
+        $id=  $this->db->insert_id();
+        $this->db->where('id',$id);
+        $this->db->update('supplier_payable',array('guid'=>  md5($supplier.$invoice.$id)));
     }
     // function end
     
@@ -212,7 +215,10 @@ class Invoice extends CI_Model{
         }
         $amount=$freight+$round_amt+$amount;
        $discount;
-        $this->db->insert('supplier_payable',array('supplier_id'=>$supplier,'invoive_id'=>$invoice,'amount'=>$amount,'branch_id'=>  $this->session->userdata['branch_id']));
+        $this->db->insert('supplier_payable',array('supplier_id'=>$supplier,'invoice_id'=>$invoice,'amount'=>$amount,'branch_id'=>  $this->session->userdata['branch_id']));
+        $id=  $this->db->insert_id();
+        $this->db->where('id',$id);
+        $this->db->update('supplier_payable',array('guid'=>  md5($supplier.$invoice.$id)));
     }
     function check_duplicate($where){
         $this->db->select()->from('purchase_invoice')->where($where)->where('branch_id',  $this->session->userdata['branch_id']);
@@ -223,8 +229,7 @@ class Invoice extends CI_Model{
             return TRUE;    
         }
     }
-     
-    
     
 }
+   
 ?>

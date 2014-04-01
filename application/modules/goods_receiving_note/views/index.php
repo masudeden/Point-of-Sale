@@ -996,8 +996,6 @@ function reload_update_user(){
                                                                                         'id'=>'id_discount',
                                                                                         'maxlength'=>2,
                                                                                         'disabled'=>'disabled',
-                                                                                      
-                                                                                        'onKeyPress'=>"new_discount(event);return numbersonly(event)",
                                                                                         'value'=>set_value('discount'));
                                                                          echo form_input($discount)?>
                                                        </div>

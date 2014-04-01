@@ -315,7 +315,7 @@
                                 $("#parsley_reg #address").val(data[0]['address']);
                                 $("#parsley_reg #order_date").val(data[0]['po_date']);
                                 $("#parsley_reg #received_date").val(data[0]['grn_date']);
-                        
+                                $("#parsley_reg #supplier_id").val(data[0]['s_guid']);
                                 
                                 $("#parsley_reg #id_discount").val(data[0]['discount']);
                                 $("#parsley_reg #discount_amount").val(data[0]['discount_amt']);
@@ -422,6 +422,7 @@
                            
                                 $("#parsley_reg #first_name").val(data[0]['s_name']);
                                 $("#parsley_reg #company").val(data[0]['c_name']);
+                                $("#parsley_reg #supplier_id").val(data[0]['s_guid']);
                                 $("#parsley_reg #address").val(data[0]['address']);
                                 $("#parsley_reg #order_date").val(data[0]['grn_date']);
                                 $("#parsley_reg #received_date").val(data[0]['grn_date']);
@@ -905,6 +906,7 @@ function reload_update_user(){
                   <div class="row small_inputs" >
                     <div class="col col-lg-12">
                       <div class="row" >
+                          <input type="hidden" value="" id='supplier_id' name="supplier_id">
                           <input type="hidden" value="0" id='sl_number'>
                           <input type="hidden" name="purchase_order" id='purchase_order'>
                           <input type="hidden" name="goods_receiving_note_guid" id='goods_receiving_note_guid'>

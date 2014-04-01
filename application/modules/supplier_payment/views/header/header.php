@@ -3,12 +3,13 @@
     var point=3;
       $(document).ready( function () {
        $('#add_new_order').hide();
+       
    });
            function posnic_table(){
            $('#dt_table_tools').dataTable({
                                       "bProcessing": true,
 				      "bServerSide": true,
-                                      "sAjaxSource": "<?php echo base_url() ?>index.php/Supplier_payment/data_table",
+                                      "sAjaxSource": "<?php echo base_url() ?>index.php/supplier_payment/data_table",
                                        aoColumns: [   
                                     
          { "bVisible": false} , {	"sName": "ID",
