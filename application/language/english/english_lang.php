@@ -463,6 +463,13 @@ $lang['credit_days']='Credit Days';
   $lang['sub_total']='Sub Total';
   $lang['more']='More';
   $lang['dis']='Dis';
+  $lang['sales_quotation']='Sales Quotation';
+  $lang['sales_order']='Sales Order';
+  $lang['sales_bill']='Sales Bill';
+  $lang['sales_direct']='Direct Sales';
+  $lang['direct_delivery']='Direct Delivery';
+  $lang['sales_return']='Sales Return';
+  $lang['sales_order_cancel']='S O Cancel';
   
   
   // purchase order approval
@@ -519,5 +526,12 @@ $lang['credit_days']='Credit Days';
   $lang['uom']='Unit Of Measurement';
   $lang['no_of_unit']='No Of Unit IN Case';
   $lang['unit_in_sales']=' Unit In Sales';
+  
+  // purchase_order_cancel
+  $lang['purchase_order_cancel']='PO Cancel';
+  $lang['stock']='Stock';
+  $lang['stock_transfer']='Stock Transfer';
+  $lang['opening_stock']='Opening Stock';
+  $lang['damage_stock']='Damage Stock';
   
 ?>﻿
