@@ -265,16 +265,28 @@
             });
          function format_supplier(sup) {
             if (!sup.id) return sup.text;
-    return  "<p >"+sup.text+"    <br>"+sup.company+"   "+sup.address1+"</p> ";
+    return  "<p >"+sup.text+"    <br>"+sup.name+"   "+sup.company+"</p> ";
             }
-        $('#parsley_reg #first_name').change(function() {
+        $('#parsley_reg #purchase_order_number').change(function() {
             refresh_items_table();
            
-                   var guid = $('#parsley_reg #first_name').select2('data').id;
+                   var guid = $('#parsley_reg #purchase_order_number').select2('data').id;
 
-                 $('#parsley_reg #first_name').val($('#parsley_reg #first_name').select2('data').text);
-                 $('#parsley_reg #company').val($('#parsley_reg #first_name').select2('data').company);
-                 $('#parsley_reg #address').val($('#parsley_reg #first_name').select2('data').address1);
+                 $('#parsley_reg #first_name').val($('#parsley_reg #purchase_order_number').select2('data').name);
+                 $('#parsley_reg #company').val($('#parsley_reg #purchase_order_number').select2('data').company);
+                 $('#parsley_reg #address').val($('#parsley_reg #purchase_order_number').select2('data').address);
+                 $('#parsley_reg #order_date').val($('#parsley_reg #purchase_order_number').select2('data').order_date);
+                 $('#parsley_reg #expiry_date').val($('#parsley_reg #purchase_order_number').select2('data').exp_date);
+                 $('#parsley_reg #id_discount').val($('#parsley_reg #purchase_order_number').select2('data').discount);
+                 $('#parsley_reg #discount_amount').val($('#parsley_reg #purchase_order_number').select2('data').discount_amount);
+                 $('#parsley_reg #freight').val($('#parsley_reg #purchase_order_number').select2('data').freight);
+                 $('#parsley_reg #round_off_amount').val($('#parsley_reg #purchase_order_number').select2('data').round);
+                 $('#parsley_reg #note').val($('#parsley_reg #purchase_order_number').select2('data').note);
+                 $('#parsley_reg #remark').val($('#parsley_reg #purchase_order_number').select2('data').remark);
+                 $('#parsley_reg #demo_total_amount').val($('#parsley_reg #purchase_order_number').select2('data').total_item_amt);
+                 $('#parsley_reg #total_amount').val($('#parsley_reg #purchase_order_number').select2('data').total_item_amt);
+                 $('#parsley_reg #grand_total').val($('#parsley_reg #purchase_order_number').select2('data').total_amt);
+                 $('#parsley_reg #demo_grand_total').val($('#parsley_reg #purchase_order_number').select2('data').total_amt);
                  $('#parsley_reg #supplier_guid').val(guid);
                       window.setTimeout(function ()
                     {
@@ -283,15 +295,15 @@
                     }, 0);  
              
           });
-          $('#parsley_reg #first_name').select2({
+          $('#parsley_reg #purchase_order_number').select2({
               dropdownCssClass : 'supplier_select',
                formatResult: format_supplier,
                 formatSelection: format_supplier,
                 
                 escapeMarkup: function(m) { return m; },
-                placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
+                placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('purchase_order') ?>",
                 ajax: {
-                     url: '<?php echo base_url() ?>index.php/purchase_order/search_supplier',
+                     url: '<?php echo base_url() ?>index.php/purchase_order_cancel/purchase_order_number',
                      data: function(term, page) {
                             return {types: ["exercise"],
                                 limit: -1,
@@ -311,9 +323,20 @@
                       $.each(data, function(index, item){
                         results.push({
                           id: item.guid,
-                          text: item.first_name,
-                          company: item.company_name,
-                          address1: item.address1,
+                          text: item.po_no,
+                          name: item.s_name,
+                          company: item.c_name,
+                          address: item.address1,
+                          order_date: item.po_date,
+                          exp_date: item.exp_date,
+                          discount: item.discount,
+                          discount_amount: item.discount_amt,
+                          freight: item.freight,
+                          round: item.round_amt,
+                          remark: item.remark,
+                          note: item.note,
+                          total_item_amt: item.total_item_amt,
+                          total_amt: item.total_amt,
                         });
                       });
                       return {
@@ -330,64 +353,8 @@
         
      });
     
-function posnic_add_new(){
-refresh_items_table();
-$('#update_button').hide();
-$('#save_button').show();
-$('#update_clear').hide();
-$('#save_clear').show();
-$('#total_amount').val('');
-$('#items_id').val('');
-$('#supplier_guid').val('');
-$("#parsley_reg").trigger('reset');
-$('#deleted').remove();
-$('#parent_items').append('<div id="deleted"></div>');
-$('#newly_added').remove();
-$('#parent_items').append('<div id="newly_added"></div>');
-$("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
-    <?php if($this->session->userdata['purchase_order_per']['add']==1){ ?>
-             $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/purchase_order/order_number/",                      
-                             data: "", 
-                             dataType: 'json',               
-                             success: function(data)        
-                             {    
-                                 
-                                
-                                 $('#parsley_reg #order_number').val(data[0][0]['prefix']+data[0][0]['max']);
-                                 $('#parsley_reg #demo_order_number').val(data[0][0]['prefix']+data[0][0]['max']);
-                             }
-                             });
-            
-            
-            
-      $("#user_list").hide();
-    $('#add_new_order').show('slow');
-      $('#delete').attr("disabled", "disabled");
-      $('#posnic_add_purchase_order').attr("disabled", "disabled");
-      $('#active').attr("disabled", "disabled");
-      $('#deactive').attr("disabled", "disabled");
-      $('#purchase_order_lists').removeAttr("disabled");
-     
-         window.setTimeout(function ()
-    {
-       
-        $('#parsley_reg #first_name').select2('open');
-    }, 500);
-      <?php }else{ ?>
-                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                         
-                    <?php }?>
-}
-function posnic_purchase_order_lists(){
-      $('#edit_brand_form').hide('hide');
-      $('#add_new_order').hide('hide');      
-      $("#user_list").show('slow');
-      $('#delete').removeAttr("disabled");
-      $('#active').removeAttr("disabled");
-      $('#deactive').removeAttr("disabled");
-      $('#posnic_add_purchase_order').removeAttr("disabled");
-      $('#purchase_order_lists').attr("disabled",'disabled');
-}
+
+
 function clear_add_purchase_order(){
       $("#parsley_reg").trigger('reset');
       refresh_items_table();
@@ -404,57 +371,12 @@ function reload_update_user(){
 </script>
 <nav id="top_navigation">
     <div class="container">
-            <div class="row">
-                <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_purchase_order" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
-                     
-                        <a href="javascript:purchase_order_group_approve()" class="btn btn-default" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
-                        <a href="javascript:posnic_delete()" class="btn btn-default" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
-                        <a href="javascript:posnic_purchase_order_lists()" class="btn btn-default" id="purchase_order_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('purchase_order') ?></a>
-                        
-                </div>
-            </div>
+            
     </div>
 </nav>
 <nav id="mobile_navigation"></nav>
               
-<section class="container clearfix main_section">
-        <div id="main_content_outer" class="clearfix">
-            <div id="main_content">
-                        <?php $form =array('name'=>'posnic'); 
-                    echo form_open('purchase_order/purchase_order_manage',$form) ?>
-                        <div class="row">
-                            <div class="col-sm-12" id="user_list"><br>
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                            <h4 class="panel-title"><?php echo $this->lang->line('purchase_order') ?></h4>                                                                               
-                                    </div>
-                                    <table id="dt_table_tools" class="table-striped table-condensed" style="width: 100%"><thead>
-                                        <tr>
-                                         <th>Id</th>
-                                          <th ><?php echo $this->lang->line('select') ?></th>
-                                          <th ><?php echo $this->lang->line('order_number') ?></th>
-                                          
-                                          <th><?php echo $this->lang->line('company') ?></th>
-                                           <th><?php echo $this->lang->line('name') ?></th>
-                                          <th><?php echo $this->lang->line('order_date') ?></th>
-                                          <th><?php echo $this->lang->line('number_of_items') ?></th>
-                                          <th><?php echo $this->lang->line('total_amount') ?></th>
-                                         
-                                      
-                                          <th><?php echo $this->lang->line('status') ?></th>
-                                          <th style="width: 120px"><?php echo $this->lang->line('action') ?></th>
-                                         </tr>
-                                      </thead>
-                                      <tbody></tbody>
-                                      </table>
-                                  </div>
-                             </div>
-                          </div>
-                <?php echo form_close(); ?>
-             </div>
-        </div>
-</section>    
+   
 
                
                 
@@ -1393,7 +1315,7 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(9)').html(((parseFloat(quty)*parseFloat(cost))*tax_value/100) +''+' : '+tax_type+'('+type+')');
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(10)').html(discount);
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' td:nth-child(11)').html(total);
-
+ console.log();
   $('#newly_added #new_item_id_'+items_id).val(items_id);
   $('#newly_added #new_item_quty_'+items_id).val(quty);
   $('#newly_added #new_item_free_'+items_id).val(free);
@@ -1726,10 +1648,6 @@ var round_amt=parseFloat($("#parsley_reg #round_off_amount").val());
     
     var num = parseFloat($('#grand_total').val());
     $('#grand_total').val(num.toFixed(point));
-    var num = parseFloat($('#demo_total_amount').val());
-    $('#demo_total_amount').val(num.toFixed(point));
-    var num = parseFloat($('#total_amount').val());
-    $('#total_amount').val(num.toFixed(point));
         }
    if (isNaN($("#parsley_reg #total_amount").val())) 
     $("#parsley_reg #total_amount").val(0)    
@@ -1807,17 +1725,31 @@ function new_discount_amount(){
                                        <div id="" class="col col-sm-12" style="padding-right: 25px;padding-left: 25px">
                                            <div class="row">
                                                <div class="col col-sm-2" >
+                                                   <div class="form_sep">
+                                                            <label for="order_number" ><?php echo $this->lang->line('order_number') ?></label>													
+                                                                     <?php $order_number=array('name'=>'demo_order_number',
+                                                                                        'class'=>'required  form-control',
+                                                                                        'id'=>'purchase_order_number',
+                                                                                    
+                                                                                        'value'=>set_value('order_number'));
+                                                                         echo form_input($order_number)?>
+                                                            <input type="hidden" name="order_number" id="order_number">
+                                                       </div>
+                                                    </div>
+                                               <div class="col col-sm-2" >
                                                    <div class="form_sep supplier_select_2">
                                                         <label for="first_name" ><?php echo $this->lang->line('name') ?></label>													
                                                                   <?php $first_name=array('name'=>'first_name',
                                                                                     'class'=>'required  form-control',
                                                                                     'id'=>'first_name',
+                                                                                     'disabled'=>'disabled',
                                                                                    
                                                                                     'value'=>set_value('first_name'));
                                                                      echo form_input($first_name)?>
                                                         <input type="hidden" id="purchase_order_guid" name="purchase_order_guid">
                                                   </div>
                                                </div>
+                                               
                                                <div class="col col-sm-2" >
                                                     <div class="form_sep">
                                                             <label for="company" ><?php echo $this->lang->line('company') ?></label>													
@@ -1841,18 +1773,7 @@ function new_discount_amount(){
                                                                          echo form_input($address)?>
                                                        </div>
                                                </div>
-                                               <div class="col col-sm-2" >
-                                                   <div class="form_sep">
-                                                            <label for="order_number" ><?php echo $this->lang->line('order_number') ?></label>													
-                                                                     <?php $order_number=array('name'=>'demo_order_number',
-                                                                                        'class'=>'required  form-control',
-                                                                                        'id'=>'demo_order_number',
-                                                                                        'disabled'=>'disabled',
-                                                                                        'value'=>set_value('order_number'));
-                                                                         echo form_input($order_number)?>
-                                                            <input type="hidden" name="order_number" id="order_number">
-                                                       </div>
-                                                    </div>
+                                               
                                                <div class="col col-sm-2" >
                                                    <div class="form_sep">
                                                             <label for="order_date" ><?php echo $this->lang->line('order_date') ?></label>													
@@ -1984,6 +1905,21 @@ function new_discount_amount(){
 
                                                                  <?php $quantity=array('name'=>'quantity',
                                                                                             'class'=>' form-control text-center',
+                                                                                            'id'=>'order_quantity',
+                                                                                             'disabled'=>'disabled',
+                                                                  
+                                                                                            'value'=>set_value('quantity'));
+                                                                             echo form_input($quantity)?>
+                                                               
+                                                        </div>
+                                                        </div>
+                                                 <div class="col col-lg-1" style="padding:1px;width: 120px;">
+                                                   <div class="form_sep">
+                                                            
+                                                                <label for="quantity" class="text-center" ><?php echo $this->lang->line('quantity') ?></label>
+
+                                                                 <?php $quantity=array('name'=>'quantity',
+                                                                                            'class'=>' form-control text-center',
                                                                                             'id'=>'quantity',
                                                                                             'onkeyup'=>"net_amount()", 
                                                                      'onKeyPress'=>"add_new_quty(event); return numbersonly(event)",
@@ -1993,6 +1929,22 @@ function new_discount_amount(){
                                                         </div>
                                                         </div>
                                                 
+                                                  <div class="col col-lg-1" style="padding:1px; width: 80px;">
+                                                   <div class="form_sep">
+                                                            
+                                                                <label for="free" class="text-center" ><?php echo $this->lang->line('free'); ?></label>
+
+                                                                 <?php $free=array('name'=>'free',
+                                                                                            'class'=>' form-control text-center',
+                                                                                            'id'=>'order_free',
+                                                                                             'disabled'=>'disabled',
+                                                                  
+                                                                                            'value'=>set_value('free'));
+                                                                              echo form_input($free)?>
+                                                              
+                                                               
+                                                        </div>
+                                                        </div>
                                                   <div class="col col-lg-1" style="padding:1px; width: 80px;">
                                                    <div class="form_sep">
                                                             
@@ -2018,8 +1970,9 @@ function new_discount_amount(){
                                                                  <?php $cost=array('name'=>'cost',
                                                                                             'class'=>' form-control small_length text-right',
                                                                                             'id'=>'cost',
-                                                                       'onkeyup'=>"net_amount()",
-                                                                     'onKeyPress'=>"add_new_cost(event); return numbersonly(event)",
+                                                                                            'onkeyup'=>"net_amount()",
+                                                                                            'disabled'=>'disabled',
+                                                                                            'onKeyPress'=>"add_new_cost(event); return numbersonly(event)",
                                                                                             'value'=>set_value('cost'));
                                                                              echo form_input($cost)?>
                                                         </div>
@@ -2033,39 +1986,16 @@ function new_discount_amount(){
                                                                  <?php $price=array('name'=>'price',
                                                                                             'class'=>' form-control small_length text-right',
                                                                                             'id'=>'price',
-                                                                   'onKeyPress'=>"add_new_price(event); return numbersonly(event)",
+                                                                                            'disabled'=>'disabled',
+                                                                                            'onKeyPress'=>"add_new_price(event); return numbersonly(event)",
                                                                                             'value'=>set_value('price'));
                                                                              echo form_input($price)?>
                                                         </div>
                                                         </div>
                                           
-                                                <div class="col col-lg-1" style="padding:1px">
-                                                   <div class="form_sep">
-                                                            
-                                                                <label for="mrp" class="text-center"  ><?php echo $this->lang->line('mrp') ?></label>
-
-                                                                 <?php $mrp=array('name'=>'mrp',
-                                                                                            'class'=>' form-control text-right',
-                                                                                            'id'=>'mrp',
-                                                                     'onKeyPress'=>"add_new_mrp(event); return numbersonly(event)",
-                                                                                            'value'=>set_value('mrp'));
-                                                                             echo form_input($mrp)?>
-                                                        </div>
-                                                    </div>
+                                                
                                   
-                                                <div class="col col-lg-1" style="padding:1px;width: 125px;">
-                                                   <div class="form_sep">
-                                                            
-                                                                <label for="sub_total" class="text-center"  ><?php echo $this->lang->line('sub_total') ?></label>
-
-                                                                 <?php $sub_total=array('name'=>'sub_total',
-                                                                                            'class'=>' form-control text-right',
-                                                                                            'id'=>'sub_total',
-                                                                                            'disabled'=>'disabled',
-                                                                                            'value'=>set_value('sub_total'));
-                                                                             echo form_input($sub_total)?>
-                                                        </div>
-                                                    </div>
+                                                
                                   
                                                
                                              
@@ -2088,7 +2018,12 @@ function new_discount_amount(){
                                                             
                                                                 <label for="total" class="text-center"  ><?php echo $this->lang->line('discount') ?></label>
 
-                                                                 <a href="#" id="item_free_and_discount" data-type="address" data-pk="1" data-title="<?php  echo $this->lang->line('please_enter')." ".$this->lang->line('item')." ".$this->lang->line('discount') ?>"><input type="text" class="form-control text-center"  value="0"></a>
+                                                                <?php $item_discount=array('name'=>'item_discount',
+                                                                                            'class'=>' form-control text-right',
+                                                                                            'id'=>'item_discount',
+                                                                                            'disabled'=>'disabled',
+                                                                                            'value'=>set_value('item_discount'));
+                                                                             echo form_input($item_discount)?>
                                                                 
                                                         </div>
                                                     </div>
@@ -2205,20 +2140,14 @@ function new_discount_amount(){
                                                        <label for="" >&nbsp;</label>	
                                                        <a href="javascript:save_new_order()" class="btn btn-default"  ><i class="icon icon-save"></i> <?php echo " ".$this->lang->line('save') ?></a>
                                                   </div>
-                                              <div class="form_sep " id="update_button" style=" margin-top: 0 !important;padding-left: 50px">
-                                                       <label for="" >&nbsp;</label>	
-                                                       <a href="javascript:update_order()" class="btn btn-default"  ><i class="icon icon-edit"></i> <?php echo " ".$this->lang->line('update') ?></a>
-                                                  </div>
+                                             
                                                </div>
                                           <div class="col col-sm-3" style="padding-top: 50px"  >
                                                    <div class="form_sep " id="save_clear">
                                                        <label for="remark" >&nbsp;</label>	
                                                         <a href="javascript:clear_add_purchase_order()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
-                                              <div class="form_sep " id="update_clear" style="margin-top:0 !important">
-                                                       <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_update_purchase_order()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
-                                                  </div>
+                                           
                                                </div>
                                          
                                                
