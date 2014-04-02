@@ -47,7 +47,13 @@ class Items extends CI_Controller{
 		
 			if ( $_GET['sSearch'] != "" )
 		{
-		$like =array('name'=>  $this->input->get_post('sSearch'));
+		$like =array('items.name'=>  $this->input->get_post('sSearch'),
+                    'brands.name'=>  $this->input->get_post('sSearch'),
+                    'items.code'=>  $this->input->get_post('sSearch'),
+                    'items.barcode'=>  $this->input->get_post('sSearch'),
+                    'items_category.category_name'=>  $this->input->get_post('sSearch'),
+                    'items_department.department_name'=>  $this->input->get_post('sSearch'),
+                        );
 				
 			}
 			$this->load->model('core_model')		   ;
