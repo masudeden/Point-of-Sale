@@ -110,7 +110,13 @@ class Core_model extends CI_Model{
                 $this->db->join('tax_types', 'taxes.type=tax_types.guid','left');
                 
                 $query=$this->db->get();
-                return $query->result_array();  
+                $data=array();
+                foreach ($query->result_array() as $row){
+                    $row['start_date']=date('d-m-Y',$row['start_date']);
+                    $row['end_date']=date('d-m-Y',$row['end_date']);
+                    $data[]=$row;
+                } 
+                return $data;
     }
     function get_items_setting_details($branch,$guid){
                 $this->db->select()->from('items_setting')->where('branch_id',$branch)->where('item_id',$guid);               
