@@ -153,20 +153,8 @@ function purchase_order_approve(guid){
                                 $("#parsley_reg #demo_grand_total").val(data[0]['total_amt']);
                                 $("#parsley_reg #grand_total").val(data[0]['total_amt']);
                                 
-                                $("#parsley_reg #demo_total_amount").val(data[0]['total_item_amt']);
-                                $("#parsley_reg #total_amount").val(data[0]['total_item_amt']);
-                                
-                                  var num = parseFloat($('#demo_total_amount').val());
-                                  $('#demo_total_amount').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#total_amount').val());
-                                  $('#total_amount').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#grand_total').val());
-                                  $('#grand_total').val(num.toFixed(point));
-                                  
-                                  var num = parseFloat($('#demo_grand_total').val());
-                                  $('#demo_grand_total').val(num.toFixed(point));
+                              
+                                 
                                   
                                 $("#parsley_reg #supplier_guid").val(data[0]['s_guid']);
                                 var tax;

@@ -213,7 +213,7 @@
                 escapeMarkup: function(m) { return m; },
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('items') ?>",
                 ajax: {
-                     url: '<?php echo base_url() ?>index.php/purchase_order/search_items/',
+                     url: '<?php echo base_url() ?>index.php/purchase_order_cancel/search_items/',
                      data: function(term, page) {
                             return {types: ["exercise"],
                                 limit: 2,
@@ -227,7 +227,7 @@
                     data: function (term) {
                         return {
                             term: term,
-                                     suppler:$('#parsley_reg #supplier_guid').val()
+                                     purchase_order_guid:$('#parsley_reg #purchase_order_guid').val()
                         };
                     },
                     results: function (data) {
@@ -251,7 +251,7 @@
                           tax_Inclusive : item.tax_Inclusive ,
                         });
                       });   if($('#supplier_guid').val()==""){
-                          $.bootstrapGrowl('<?php echo $this->lang->line('Please_Select_A_Supplier');?>', { type: "warning" }); 
+                          $.bootstrapGrowl('<?php echo $this->lang->line('please_select')." ".$this->lang->line('purchase_order');?>', { type: "warning" }); 
      $('#parsley_reg #items').select2('close');   
     $('#parsley_reg #first_name').select2('open');
         
@@ -272,6 +272,7 @@
            
                    var guid = $('#parsley_reg #purchase_order_number').select2('data').id;
 
+                 $('#parsley_reg #purchase_order_guid').val(guid);
                  $('#parsley_reg #first_name').val($('#parsley_reg #purchase_order_number').select2('data').name);
                  $('#parsley_reg #company').val($('#parsley_reg #purchase_order_number').select2('data').company);
                  $('#parsley_reg #address').val($('#parsley_reg #purchase_order_number').select2('data').address);
@@ -1746,7 +1747,7 @@ function new_discount_amount(){
                                                                                    
                                                                                     'value'=>set_value('first_name'));
                                                                      echo form_input($first_name)?>
-                                                        <input type="hidden" id="purchase_order_guid" name="purchase_order_guid">
+                                                        <input type="text" id="purchase_order_guid" name="purchase_order_guid">
                                                   </div>
                                                </div>
                                                
@@ -1759,7 +1760,7 @@ function new_discount_amount(){
                                                                                         'disabled'=>'disabled',
                                                                                         'value'=>set_value('company'));
                                                                          echo form_input($last_name)?>
-                                                    </div><input type="hidden" value="" name='supplier_guid' id='supplier_guid'>
+                                                    </div><input type="text" value="" name='supplier_guid' id='supplier_guid'>
                                                </div>
                                               
                                                <div class="col col-sm-2" >
@@ -1781,6 +1782,7 @@ function new_discount_amount(){
                                                                            <?php $order_date=array('name'=>'order_date',
                                                                                             'class'=>'required form-control',
                                                                                             'id'=>'order_date',
+                                                                                'disabled'=>'disabled',
                                                                                           'onKeyPress'=>"new_order_date(event)", 
                                                                                             'value'=>set_value('order_date'));
                                                                              echo form_input($order_date)?>
@@ -1795,6 +1797,7 @@ function new_discount_amount(){
                                                                            <?php $expiry_date=array('name'=>'expiry_date',
                                                                                             'class'=>'required form-control',
                                                                                             'id'=>'expiry_date',
+                                                                                            'disabled'=>'disabled',
                                                                                             'onKeyPress'=>"new_expiry_date(event)", 
                                                                                             'value'=>set_value('expiry_date'));
                                                                              echo form_input($expiry_date)?>
@@ -1813,8 +1816,7 @@ function new_discount_amount(){
                                                                                         'class'=>'  form-control',
                                                                                         'id'=>'id_discount',
                                                                                          'maxlength'=>3,
-                                                                                         'onkeyup'=>'new_discount_amount()',
-                                                                                        'onKeyPress'=>"new_discount(event);return numbersonly(event)",
+                                                                                         'disabled'=>'disabled',
                                                                                         'value'=>set_value('discount'));
                                                                          echo form_input($discount)?>
                                                        </div>
@@ -1827,8 +1829,7 @@ function new_discount_amount(){
                                                                      <?php $discount_amount=array('name'=>'discount_amount',
                                                                                         'class'=>'  form-control',
                                                                                         'id'=>'discount_amount',
-                                                                                       'onkeyup'=>"new_grand_total()",
-                                                                                        'onKeyPress'=>"new_discount_amount_press(event);return numbersonly(event)", 
+                                                                                        'disabled'=>'disabled',
                                                                                         'value'=>set_value('discount_amount'));
                                                                          echo form_input($discount_amount)?>
                                                        </div>
@@ -1839,8 +1840,7 @@ function new_discount_amount(){
                                                                      <?php $freight=array('name'=>'freight',
                                                                                         'class'=>'  form-control',
                                                                                         'id'=>'freight',
-                                                                                        'onkeyup'=>"new_grand_total()",
-                                                                                       'onKeyPress'=>"new_freight(event);return numbersonly(event)",
+                                                                                        'disabled'=>'disabled',
                                                                                         'value'=>set_value('freight'));
                                                                          echo form_input($freight)?>
                                                        </div>
@@ -1851,8 +1851,7 @@ function new_discount_amount(){
                                                                      <?php $round_off_amount=array('name'=>'round_off_amount',
                                                                                         'class'=>'  form-control',
                                                                                         'id'=>'round_off_amount',
-                                                                                        'onkeyup'=>"new_grand_total()",    
-                                                                                        'onKeyPress'=>"new_round_off_amount(event);return numbersonly(event)",
+                                                                                        'disabled'=>'disabled',
                                                                                         'value'=>set_value('round_off_amount'));
                                                                          echo form_input($round_off_amount)?>
                                                        </div>

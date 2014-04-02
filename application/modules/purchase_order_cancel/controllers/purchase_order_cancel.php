@@ -246,13 +246,13 @@ function order_number(){
        echo json_encode($data);
 }
 function search_items(){
-       $search= $this->input->post('term');
-       $guid= $this->input->post('suppler');
-         if($search!=""){
-            $this->load->model('purchase');
-            $data= $this->purchase->serach_items($search,$this->session->userdata['branch_id'],$guid);      
-            echo json_encode($data);
-        }
+    $search= $this->input->post('term');
+    $guid= $this->input->post('purchase_order_guid');
+    $this->load->model('purchase');
+    $data= $this->purchase->search_items($search,$this->session->userdata['branch_id'],$guid,$this->session->userdata['data_limit']);      
+    echo json_encode($data);
+       
+        
         
 }
 }
