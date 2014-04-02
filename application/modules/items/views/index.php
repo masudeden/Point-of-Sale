@@ -19,11 +19,18 @@
     padding:1px 1px 1px 3px;
     transition: none 0s ease 0s;
     }
- table td + td + td + td + td + td + td + td + td {
- width: 150px !important;
+   #dt_table_tools  tr:last-child td {
+  width: 100px !important;
 }
 </style>	
 <script type="text/javascript">
+    function numbersonly(e){
+        var unicode=e.charCode? e.charCode : e.keyCode
+        if (unicode!=8 && unicode!=46 && unicode!=37 && unicode!=38 && unicode!=39 && unicode!=40){ //if the key isn't the backspace key (which we should allow)
+        if (unicode<48||unicode>57)
+        return false
+          }
+    }
      $(document).ready( function () {
         
          $('#parsley_reg #search_department').change(function() {
@@ -594,6 +601,7 @@ function posnic_add_new(){
       $('#active').attr("disabled", "disabled");
       $('#deactive').attr("disabled", "disabled");
       $('#items_lists').removeAttr("disabled");
+      change_orm_to_unit();
       <?php }else{ ?>
                   bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add User')?>");  
                     <?php }?>
@@ -616,6 +624,18 @@ function reload_update_user(){
     var id=$('#guid').val();
     edit_function(id);
 }
+function change_orm_to_unit(){
+    $('#add_item_form #hidden_no_unit').hide();
+    }
+function change_orm_to_case(){
+    $('#add_item_form #hidden_no_unit').show();
+    }
+function change_orm_to_unit_update(){
+    $('#parsley_reg #hidden_no_unit').hide();
+    }
+function change_orm_to_case_update(){
+    $('#parsley_reg #hidden_no_unit').show();
+    }
 </script>
 <nav id="top_navigation">
     <div class="container">
@@ -747,30 +767,43 @@ $(document).ready(function()
 {
 
 	var options = { 
-    beforeSend: function() 
-    {
-    	$("#progress").show();
-    	//clear everything
-    	$("#bar").width('0%');
-    	$("#message").html("");
-		$("#percent").html("0%");
-    },
-    uploadProgress: function(event, position, total, percentComplete) 
-    {
-    	$("#bar").width(percentComplete+'%');
-    	$("#percent").html(percentComplete+'%');
-
-    
-    },
-    success: function() 
-    {
-        $("#bar").width('100%');
-    	$("#percent").html('100%');
-         posnic_items_lists();
-
-    },
 	complete: function(response) { 
+                  if(response['responseText']=='TRUE'){
+                                     $.bootstrapGrowl('<?php echo $this->lang->line('items').' '.$this->lang->line('added');?>', { type: "success" });                                                                                    
+                                       $("#dt_table_tools").dataTable().fnDraw();
+                                       $("#add_item").trigger('reset');
+                                       posnic_items_lists();
+                  }else  if(response['responseText']=='ALREADY'){
+                                           $.bootstrapGrowl($('#add_item #name').val()+' <?php echo $this->lang->line('items').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                  }else  if(response['responseText']=='FALSE'){
+                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                  }else{
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('items');?>', { type: "error" });                           
+                  }
+	 
+                  
+	},
+	error: function()
+	{
+		$("#message").html("<font color='red'> ERROR: unable to upload files</font>");
 
+	}
+   
+}; 
+	var update = { 
+	complete: function(response) { 
+                  if(response['responseText']=='TRUE'){
+                                     $.bootstrapGrowl('<?php echo $this->lang->line('items').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                    
+                                       $("#dt_table_tools").dataTable().fnDraw();
+                                       $("#parsley_reg").trigger('reset');
+                                       posnic_items_lists();
+                  }else  if(response['responseText']=='ALREADY'){
+                                           $.bootstrapGrowl($('#add_item #name').val()+' <?php echo $this->lang->line('items').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
+                  }else  if(response['responseText']=='FALSE'){
+                                           $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
+                  }else{
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('items');?>', { type: "error" });                           
+                  }
 	 
                   
 	},
@@ -783,18 +816,290 @@ $(document).ready(function()
 }; 
 
     
-     $("#add_image_form").ajaxForm(options);
+     $("#add_item").ajaxForm(options);
+     $("#parsley_reg").ajaxForm(update);
+     
+     <?php if($this->session->userdata['items_per']['add']==1){ ?>
+          if($('#add_item').valid()){
+            $("#add_item").ajaxForm(options);
+          }else{
+              
+            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields')." ".$this->lang->line('add_item');?>', { type: "error" });         
+          }         
+       <?php }else{ ?>
+                  bootbox.alert("<?php echo $this->lang->line('You Have NO Permission To Add Record')?>");  
+       <?php }?>
 
 });
-function check(){
-       alert('jib')  ;
-     }
+function new_no_of_unit(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#add_item .fileupload .fileupload-new ').focus();
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+               
+            $('#add_item #unit_of_mes').focus();
+        }
+            
+    }
+function new_sku(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#add_item #barcode').focus();
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+               
+            
+        }
+            
+    }
+function new_barcode(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+           $('#add_item #name').focus();
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+                $('#add_item #sku').focus();
+            
+        }   
+    }
+function new_name(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         //  $('#add_item #search_department').focus();
+           $('#add_item #search_department').select2('open');
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+                 $('#add_item #barcode').focus();
+            
+        }   
+    }
+function new_department(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         
+            $('#add_item #search_category').focus();
+           $('#add_item #search_category').select2('open');
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+               $('#add_item #name').focus();
+            
+        }   
+    }
+function new_category(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         
+            $('#add_item #search_brand').focus();
+           $('#add_item #search_brand').select2('open');
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+               $('#add_item #search_department').focus();
+           $('#add_item #search_department').select2('open');
+            
+        }   
+    }
+function new_brand(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         
+            $('#add_item #location').focus();
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            $('#add_item #search_category').focus();
+            $('#add_item #search_category').select2('open');
+            
+        }   
+    }
+function new_location(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         $('#add_item #search_supplier').focus();
+            $('#add_item #search_supplier').select2('open');
+          
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            
+            $('#add_item #search_brand').focus();
+           $('#add_item #search_brand').select2('open');
+        }   
+    }
+function new_supplier(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         $('#add_item #description').focus();
+          
+          
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            
+            $('#add_item #location').focus();
+        }   
+    }
+function new_tax_area(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         $('#add_item #search_taxes').focus();
+         $('#add_item #search_taxes').select2('open');
+          
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            
+            $('#add_item #tax_Inclusive').focus();
+        }   
+    }
+function new_tax(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         $('#add_item #cost').focus();
+          
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            $('#add_item #search_taxes_area').focus();
+            $('#add_item #search_taxes_area').select2('open');
+        }   
+    }
+function new_cost(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         $('#add_item #mrp').focus();
+          
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            $('#add_item #search_taxes').focus();
+            $('#add_item #search_taxes').select2('open');
+        }   
+    }
+function new_mrp(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         $('#add_item #selling_price').focus();
+          
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            $('#add_item #cost').focus();
+        }   
+    }
+function new_price(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+         $('#add_item #discount_per').focus();
+          
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            $('#add_item #mrp').focus();
+        }   
+    }
+function new_discount(e){    
+     var unicode=e.charCode? e.charCode : e.keyCode
+   
+                  if (unicode!=13 && unicode!=9){
+        }
+       else{
+        
+          window.setTimeout(function ()
+                    {
+                     
+                       document.getElementById('starting_date').focus();
+                    }, 10);
+           
+        }
+         if (unicode!=27){
+        }
+       else{
+            $('#add_item #selling_price').focus();
+        }   
+    }
 </script>
 <section id="add_item_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'add_item',
                           'runat'=>'server',
                           'class'=>'form-horizontal');
-       echo form_open_multipart('items/add_pos_items_details/',$form);?>
+       echo form_open_multipart('items/add_new_item/',$form);?>
         <div id="main_content_outer" class="clearfix">
            <div id="main_content">
                  <div class="row">
@@ -974,6 +1279,7 @@ function check(){
                                                            <?php $cost=array('name'=>'cost',
                                                                                     'class'=>'required form-control number',
                                                                                     'id'=>'cost',
+                                                                                    'onKeyPress'=>"new_cost(event);return numbersonly(event)",
                                                                                     'value'=>set_value('cost'));
                                                            echo form_input($cost)?> 
                                                     </div>
@@ -985,6 +1291,7 @@ function check(){
                                                            <?php $mrp=array('name'=>'mrp',
                                                                                     'class'=>'required form-control number',
                                                                                     'id'=>'mrp',
+                                                                                    'onKeyPress'=>"new_mrp(event);return numbersonly(event)",
                                                                                     'value'=>set_value('mrp'));
                                                            echo form_input($mrp)?> 
                                                     </div>
@@ -997,6 +1304,7 @@ function check(){
                                                            <?php $selling_price=array('name'=>'selling_price',
                                                                                     'class'=>'required form-control number',
                                                                                     'id'=>'selling_price',
+                                                                                    'onKeyPress'=>"new_price(event);return numbersonly(event)",
                                                                                     'value'=>set_value('selling_price'));
                                                            echo form_input($selling_price)?> 
                                                     </div>
@@ -1011,15 +1319,12 @@ function check(){
                                                                     
                                                                 
                               </div>
-                              <br>
                           </div>
-                          <div class="panel panel-default">
+                         <div class="panel panel-default" style="margin-top: 6px">
                                <div class="panel-heading">
                                      <h4 class="panel-title"><?php echo $this->lang->line('item')." ".$this->lang->line('discount') ?></h4>  
                                    
                                </div>
-                              <br>
-                              
                               
                               <div class="row "  style="margin-left:10px;margin-right: 10px" >
                                          <div class="col col-lg-4" >
@@ -1027,6 +1332,7 @@ function check(){
                                                                       <label for="discount_per" ><?php echo $this->lang->line('discount_per') ?></label>                                                                                                       
                                                                         <?php $discount_per=array('name'=>'discount_per',
                                                                                                  'class'=>'form-control',
+                                                                                                 'onKeyPress'=>"new_discount(event);return numbersonly(event)",
                                                                                                  'id'=>'discount_per',
                                                                                                  'value'=>set_value('discount_per'));
                                                                         echo form_input($discount_per)?> 
@@ -1086,23 +1392,24 @@ function check(){
                                          <div class="col col-lg-6" >
                                                                  <div class="form_sep">
                                                                       <label for="purchase" ><?php echo $this->lang->line('purchase') ?></label>                                                                                                       
-                                                                      <select class="form-control">
-                                                                          <option value="1">Unit</option>
-                                                                          <option value="11">Case</option>
+                                                                      <select class="form-control" name="unit_of_mes" id="unit_of_mes">
+                                                                          <option value="0" onclick="change_orm_to_unit()"><?php echo $this->lang->line('unit_or_pics') ?></option>
+                                                                          <option value="1" onclick="change_orm_to_case()"><?php echo $this->lang->line('case_or_box') ?></option>
                                                                       </select>
                                                                  </div>
 
                                                      </div>                              
-                                                    <div class="col col-lg-6" >
+                                                    <div class="col col-lg-6" id="hidden_no_unit">
 
                                                                  <div class="form_sep">
                                                                       <label for="no_of_unit" ><?php echo $this->lang->line('no_of_unit') ?></label>                                                                                                       
                                                                    
                                                                                     <?php $no_of_unit=array('name'=>'no_of_unit',
-                                                                                                 'class'=>' form-control',
+                                                                                                 'class'=>'required form-control',
                                                                                                  'id'=>'no_of_unit',
+                                                                                                 'onKeyPress'=>"new_no_of_unit(event);return numbersonly(event)",
                                                                                                  'value'=>set_value('no_of_unit'));
-                                                                        echo form_input($starting_date)?> 
+                                                                        echo form_input($no_of_unit)?> 
                                                                            
                                                                  </div>
 
@@ -1111,37 +1418,53 @@ function check(){
                                       
                                   
                               </div>
-                              <div class="row "  style="margin-left:1px;margin-right: 1px" >
-                                         <div class="col col-lg-6" >
-                                                                 <div class="form_sep">
-                                                                      <label for="purchase" ><?php echo $this->lang->line('sales') ?></label>                                                                                                       
-                                                                      <input type="checkbox" name="sales_unit" id="sales_unit"><?php  echo $this->lang->line('unit_in_sales') ?>
-                                                                 </div>
-
-                                                     </div>                              
-                                                    <div class="col col-lg-6" >
-
-                                                                 <div class="form_sep">
-                                                                      <label for="no_of_unit" ><?php echo $this->lang->line('no_of_unit') ?></label>                                                                                                       
-                                                                   
-                                                                                    <?php $no_of_unit=array('name'=>'no_of_unit',
-                                                                                                 'class'=>' form-control',
-                                                                                                 'id'=>'no_of_unit',
-                                                                                                 'value'=>set_value('no_of_unit'));
-                                                                        echo form_input($starting_date)?> 
-                                                                           
-                                                                 </div>
-
-                                                     </div>                              
-                                                   
-                                      
-                                  
-                              </div>
+                              
                               
                               
                               
                               <br>
-                          </div>  
+                          </div>
+                              <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"><?php echo $this->lang->line('item')." ".$this->lang->line('image') ?></h4>  
+                                   
+                               </div>
+                              <br>
+                              
+                              
+                              <div class="row "  style="margin-left:1px;margin-right: 1px" >
+                                         <div class="col col-lg-6" >
+                                                            <div class="step_info" style="margin: auto">
+                                                <label for="firstname" ><?php echo $this->lang->line('image') ?></label>                     
+                                                <div class="fileupload fileupload-new " data-provides="fileupload">
+                                                     <div class="fileupload-new img-thumbnail" style="width: 178px; height: 120px;"><img src="img/no_img_180.png" alt=""></div>
+                                                       <div  class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
+                                                       <div>
+                                                            <span class="btn btn-default btn-file"><span class="fileupload-new"><?php echo $this->lang->line('select_image') ?></span><span class="fileupload-exists"><?php echo $this->lang->line('change') ?></span>
+                                                            <input type="file" name="userfile" /></span>
+                                                            <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload"><?php echo $this->lang->line('remove') ?></a>
+                                                       </div>
+                                                 </div>
+                                            </div>
+
+                                                     </div>                              
+                                                   
+                                      
+                                  
+                              </div>
+                              
+                              
+                              
+                              
+                              <br>
+                          </div>
+                          <div class="row">
+                                <div class="col-lg-1"></div>
+                                  <div class="col col-lg-10 text-center"><br><br>
+                                      <button id=""  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_items()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
+                                  </div>
+                              </div>
                           </div>
 <!--                          <div class="row">
                                 <div class="panel panel-default">
@@ -1153,41 +1476,30 @@ function check(){
                           </div>-->
                       </div>
                 </div>
-                    <div class="row">
-                                <div class="col-lg-4"></div>
-                                  <div class="col col-lg-4 text-center"><br><br>
-                                      <button id="add_new_item"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
-                                      <a href="javascript:clear_add_items()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
-                                  </div>
-                              </div>
+                    
                 </div>
-          </div>
     <?php echo form_close();?>
 </section>    
 <section id="edit_item_form" class="container clearfix main_section">
      <?php   $form =array('id'=>'parsley_reg',
                           'runat'=>'server',
                           'class'=>'form-horizontal');
-       echo form_open_multipart('items/upadate_pos_items_details/',$form);?>
-        <div id="main_content_outer" class="clearfix">
-           <div id="main_content">
-               <div class="row">
-                     <div class="col-lg-1"></div>
-                     <div class="col-lg-10">
+       echo form_open_multipart('items/update_items/',$form);?>
+    <div id="main_content">
+                 <div class="row">
+                    
+                     <div class="col-lg-7">
                           <div class="panel panel-default">
                                <div class="panel-heading">
                                      <h4 class="panel-title"><?php echo $this->lang->line('item_details') ?></h4>  
-                                     <input type="hidden" name='guid' id='guid'>
+                                     <input type="hidden" name="guid" id="guid">
                                </div>
                               <br>
                               
                               
-                              <div class="row">
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                              <div class="row "  style="margin-left:10px;margin-right: 10px" >
+                                       <div class="col col-lg-4" >
+                                           
                                                     <div class="form_sep">
                                                          <label for="sku" class="req"><?php echo $this->lang->line('sku') ?></label>                                                                                                       
                                                            <?php $sku=array('name'=>'sku',
@@ -1196,16 +1508,11 @@ function check(){
                                                                                     'value'=>set_value('sku'));
                                                            echo form_input($sku)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
+                                              
                                         </div>  
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                   <div class="col col-lg-4" >
+                                           
                                                     <div class="form_sep">
                                                          <label for="barcode" class="req"><?php echo $this->lang->line('barcode') ?></label>                                                                                                       
                                                            <?php $barcode=array('name'=>'barcode',
@@ -1214,16 +1521,11 @@ function check(){
                                                                                     'value'=>set_value('barcode'));
                                                            echo form_input($barcode)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
+                                               
                                         </div>
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
+                                          
                                                     <div class="form_sep">
                                                          <label for="name" class="req"><?php echo $this->lang->line('name') ?></label>                                                                                                       
                                                            <?php $name=array('name'=>'name',
@@ -1232,15 +1534,13 @@ function check(){
                                                                                     'value'=>set_value('mrp'));
                                                            echo form_input($name)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
                                         </div>  
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                  
+                                                 
+                              </div>
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                    <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="item_department" class="req"><?php echo $this->lang->line('item_department') ?></label>                                                                                                       
                                                            <?php $item_department=array('name'=>'search_department',
@@ -1250,19 +1550,8 @@ function check(){
                                                            echo form_input($item_department)?> 
                                                          <input type="hidden" name="item_department" id="item_department">
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div> 
-                              </div>
-                              <div class="row">
-                                        
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                                    </div>    
+                                   <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="category" class="req"><?php echo $this->lang->line('category') ?></label>                                                                                                       
                                                            <?php $category=array('name'=>'search_category',
@@ -1272,16 +1561,9 @@ function check(){
                                                            echo form_input($category)?> 
                                                           <input type="hidden" name="category" id="category">
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
+                                        </div>
+                                       <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="brand" class="req"><?php echo $this->lang->line('brand') ?></label>                                                                                                       
                                                            <?php $brand=array('name'=>'search_brand',
@@ -1291,15 +1573,11 @@ function check(){
                                                            echo form_input($brand)?> 
                                                          <input type="hidden" name='brand' id='brand'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
                                         </div> 
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                  
+                              </div>
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                   <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="location" ><?php echo $this->lang->line('location') ?></label>                                                                                                       
                                                            <?php $location=array('name'=>'location',
@@ -1308,37 +1586,9 @@ function check(){
                                                                                     'value'=>set_value('location'));
                                                            echo form_input($location)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
                                         </div>
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="unit_of_meassure" class="req"><?php echo $this->lang->line('unit_of_meassure') ?></label>                                                                                                       
-                                                           <?php $unit_of_meassure=array('name'=>'unit_of_meassure',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'unit_of_meassure',
-                                                                                    'value'=>set_value('unit_of_meassure'));
-                                                           echo form_input($unit_of_meassure)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>
-                              </div>
-                              <div class="row">
-                                        
-                                   <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                  <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="supplier" class="req"><?php echo $this->lang->line('supplier') ?></label>                                                                                                       
                                                            <?php $supplier=array('name'=>'search_supplier',
@@ -1348,16 +1598,27 @@ function check(){
                                                            echo form_input($supplier)?> 
                                                            <input type="hidden" name='supplier' id='supplier'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
+                                                   
+                              </div>
+                                  
+                                   <div class="col col-lg-4" >
+                                         
+                                                    <div class="form_sep">
+                                                         <label for="description" ><?php echo $this->lang->line('description') ?></label>                                                                                                       
+                                                           <?php $description=array('name'=>'description',
+                                                                                    'class'=>' form-control',
+                                                                                    'id'=>'description',
+                                                                                    'rows'=>2,
+                                                                                    'value'=>set_value('description'));
+                                                           echo form_textarea($description)?> 
+                                                    </div>
+                                               
+                                        </div>                             
+                              </div>
+                             
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                   <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="tax_Inclusive" class="req"><?php echo $this->lang->line('tax_Inclusive') ?></label>                                                                                                       
                                                          <select name="tax_Inclusive" id="tax_Inclusive" class="form-control">
@@ -1365,15 +1626,9 @@ function check(){
                                                              <option value="0"><?php echo $this->lang->line('no') ?></option>
                                                          </select>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                   
                                         </div> 
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="taxes_area" class="req"><?php echo $this->lang->line('taxes_area') ?></label>                                                                                                       
                                                            <?php $taxes_area=array('name'=>'search_taxes_area',
@@ -1383,16 +1638,9 @@ function check(){
                                                            echo form_input($taxes_area)?> 
                                                          <input type="hidden" name='taxes_area' id='taxes_area'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
+                                        </div>                              
+                                       <div class="col col-lg-4" >
                                                     <div class="form_sep">
                                                          <label for="taxes" class="req"><?php echo $this->lang->line('taxes') ?></label>                                                                                                       
                                                            <?php $taxes=array('name'=>'search_taxes',
@@ -1402,165 +1650,219 @@ function check(){
                                                            echo form_input($taxes)?> 
                                                            <input type="hidden" name='taxes' id='taxes'>
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div> 
-                                                               
+                                                  
+                                        </div>
+                                       
+                                  
                               </div>
-                             
-                              <div class="row">
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                              <div class="row" style="margin-left:10px;margin-right: 10px">
+                                  <div class="col col-lg-4" >
+                                           
                                                     <div class="form_sep">
                                                          <label for="cost" class="req"><?php echo $this->lang->line('cost') ?></label>                                                                                                       
                                                            <?php $cost=array('name'=>'cost',
                                                                                     'class'=>'required form-control number',
                                                                                     'id'=>'cost',
+                                                                                    'onKeyPress'=>"new_cost(event);return numbersonly(event)",
                                                                                     'value'=>set_value('cost'));
                                                            echo form_input($cost)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
                                         </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
+                                          
                                                     <div class="form_sep">
                                                          <label for="mrp" class="req"><?php echo $this->lang->line('mrp') ?></label>                                                                                                       
                                                            <?php $mrp=array('name'=>'mrp',
                                                                                     'class'=>'required form-control number',
                                                                                     'id'=>'mrp',
+                                                                                    'onKeyPress'=>"new_mrp(event);return numbersonly(event)",
                                                                                     'value'=>set_value('mrp'));
                                                            echo form_input($mrp)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
+                                                  
                                         </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
+                                       <div class="col col-lg-4" >
+                                          
                                                     <div class="form_sep">
                                                          <label for="selling_price" class="req"><?php echo $this->lang->line('selling_price') ?></label>                                                                                                       
                                                            <?php $selling_price=array('name'=>'selling_price',
                                                                                     'class'=>'required form-control number',
                                                                                     'id'=>'selling_price',
+                                                                                    'onKeyPress'=>"new_price(event);return numbersonly(event)",
                                                                                     'value'=>set_value('selling_price'));
                                                            echo form_input($selling_price)?> 
                                                     </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                              </div>
-                              <div class="row">
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="discount_per" ><?php echo $this->lang->line('discount_per') ?></label>                                                                                                       
-                                                           <?php $discount_per=array('name'=>'discount_per',
-                                                                                    'class'=>'form-control',
-                                                                                    'id'=>'discount_per',
-                                                                                    'value'=>set_value('discount_per'));
-                                                           echo form_input($discount_per)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
                                                    
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="starting_date" ><?php echo $this->lang->line('starting_date') ?></label>                                                                                                       
-                                                          <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                                       <?php $starting_date=array('name'=>'starting_date',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'starting_date',
-                                                                                    'value'=>set_value('starting_date'));
-                                                           echo form_input($starting_date)?> 
-                                                              <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div>                              
-                                       <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">
-                                                   
-                                               </div>
-                                               <div class="col col-lg-10">
-                                                    <div class="form_sep">
-                                                         <label for="ending_date" ><?php echo $this->lang->line('ending_date') ?></label>                                                                                                       
-                                                         <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
-                                                          <?php $ending_date=array('name'=>'ending_date',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'ending_date',
-                                                                                    'value'=>set_value('ending_date'));
-                                                           echo form_input($ending_date)?> 
-                                                         <span class="input-group-addon"><i class="icon-calendar"></i></span>
-                                                                </div>
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
                                         </div>  
-                                  <div class="col col-lg-3" >
-                                           <div class="row">
-                                               <div class="col col-lg-1">                                                   
-                                               </div>
-                                               <div class="col col-lg-10" style="margin-top: -50px;">
-                                                    <div class="form_sep">
-                                                         <label for="description" ><?php echo $this->lang->line('description') ?></label>                                                                                                       
-                                                           <?php $description=array('name'=>'description',
-                                                                                    'class'=>' form-control',
-                                                                                    'id'=>'description',
-                                                                                    'rows'=>3,
-                                                                                    'value'=>set_value('description'));
-                                                           echo form_textarea($description)?> 
-                                                    </div>
-                                                   </div>
-                                               <div class="col col-lg-1"></div>
-                                               </div>
-                                        </div> 
+                                      
+                                  
                               </div>
+                              
                               
                               <div class="row">
                                                                     
                                                                 
                               </div>
+                          </div>
+                         <div class="panel panel-default" style="margin-top: 6px">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"><?php echo $this->lang->line('item')." ".$this->lang->line('discount') ?></h4>  
+                                   
+                               </div>
+                              
+                              <div class="row "  style="margin-left:10px;margin-right: 10px" >
+                                         <div class="col col-lg-4" >
+                                                                 <div class="form_sep">
+                                                                      <label for="discount_per" ><?php echo $this->lang->line('discount_per') ?></label>                                                                                                       
+                                                                        <?php $discount_per=array('name'=>'discount_per',
+                                                                                                 'class'=>'form-control',
+                                                                                                 'onKeyPress'=>"new_discount(event);return numbersonly(event)",
+                                                                                                 'id'=>'discount_per',
+                                                                                                 'value'=>set_value('discount_per'));
+                                                                        echo form_input($discount_per)?> 
+                                                                 </div>
+
+                                                     </div>                              
+                                                    <div class="col col-lg-4" >
+
+                                                                 <div class="form_sep">
+                                                                      <label for="starting_date" ><?php echo $this->lang->line('starting_date') ?></label>                                                                                                       
+                                                                       <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                                    <?php $starting_date=array('name'=>'starting_date',
+                                                                                                 'class'=>' form-control',
+                                                                                                 'id'=>'starting_date',
+                                                                                                 'value'=>set_value('starting_date'));
+                                                                        echo form_input($starting_date)?> 
+                                                                           <span class="input-group-addon"></span>
+                                                                             </div>
+                                                                 </div>
+
+                                                     </div>                              
+                                                    <div class="col col-lg-4" >
+
+                                                                 <div class="form_sep">
+                                                                      <label for="ending_date" ><?php echo $this->lang->line('ending_date') ?></label>                                                                                                       
+                                                                      <div class="input-group date ebro_datepicker" data-date-format="dd.mm.yyyy" data-date-autoclose="true" data-date-start-view="2">
+                                                                       <?php $ending_date=array('name'=>'ending_date',
+                                                                                                 'class'=>' form-control',
+                                                                                                 'id'=>'ending_date',
+                                                                                                 'value'=>set_value('ending_date'));
+                                                                        echo form_input($ending_date)?> 
+                                                                      <span class="input-group-addon"></span>
+                                                                             </div>
+                                                                 </div>
+
+                                                     </div>   
+                                      
+                                  
+                              </div>
+                              
+                              
+                              
                               <br>
                           </div>
+                        
                      </div>
-                </div>
-                   <div class="row">
-                        <div class="col-lg-4"></div>
-                      <div class="col col-lg-4 text-center"><br><br>
-                          <button id="update_items"  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('update') ?></button>
-                          <a href="javascript:reload_update_user()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('reload') ?></a>
+                      <div class="col-lg-5">
+                              <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"><?php echo $this->lang->line('uom') ?></h4>  
+                                   
+                               </div>
+                              <br>
+                              
+                              
+                              <div class="row "  style="margin-left:1px;margin-right: 1px" >
+                                         <div class="col col-lg-6" >
+                                                                 <div class="form_sep">
+                                                                      <label for="purchase" ><?php echo $this->lang->line('purchase') ?></label>                                                                                                       
+                                                                      <select class="form-control" name="unit_of_mes" id="unit_of_mes">
+                                                                          <option value="0" onclick="change_orm_to_unit_update()"><?php echo $this->lang->line('unit_or_pics') ?></option>
+                                                                          <option value="1" onclick="change_orm_to_case_update()"><?php echo $this->lang->line('case_or_box') ?></option>
+                                                                      </select>
+                                                                      
+                                                                        
+                                                                 </div>
+
+                                                     </div>                              
+                                                    <div class="col col-lg-6" id="hidden_no_unit">
+
+                                                                 <div class="form_sep">
+                                                                      <label for="no_of_unit" ><?php echo $this->lang->line('no_of_unit') ?></label>                                                                                                       
+                                                                   
+                                                                                    <?php $no_of_unit=array('name'=>'no_of_unit',
+                                                                                                 'class'=>'required form-control',
+                                                                                                 'id'=>'no_of_unit',
+                                                                                                 'onKeyPress'=>"new_no_of_unit(event);return numbersonly(event)",
+                                                                                                 'value'=>set_value('no_of_unit'));
+                                                                        echo form_input($no_of_unit)?> 
+                                                                           
+                                                                 </div>
+
+                                                     </div>                              
+                                                   
+                                      
+                                  
+                              </div>
+                              
+                              
+                              
+                              
+                              <br>
+                          </div>
+                              <div class="panel panel-default">
+                               <div class="panel-heading">
+                                     <h4 class="panel-title"><?php echo $this->lang->line('item')." ".$this->lang->line('image') ?></h4>  
+                                   
+                               </div>
+                              <br>
+                              
+                              
+                              <div class="row "  style="margin-left:1px;margin-right: 1px" >
+                                         <div class="col col-lg-6" >
+                                                            <div class="step_info" style="margin: auto">
+                                                <label for="firstname" ><?php echo $this->lang->line('image') ?></label>                     
+                                                <div class="fileupload fileupload-new " data-provides="fileupload">
+                                                     <div class="fileupload-new img-thumbnail" style="width: 178px; height: 120px;"><img src="img/no_img_180.png" alt=""></div>
+                                                       <div  class="fileupload-preview fileupload-exists img-thumbnail" style="width: 178px; height: 120px"></div>
+                                                       <div>
+                                                            <span class="btn btn-default btn-file"><span class="fileupload-new"><?php echo $this->lang->line('select_image') ?></span><span class="fileupload-exists"><?php echo $this->lang->line('change') ?></span>
+                                                            <input type="file" name="userfile" /></span>
+                                                            <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload"><?php echo $this->lang->line('remove') ?></a>
+                                                       </div>
+                                                 </div>
+                                            </div>
+
+                                                     </div>                              
+                                                   
+                                      
+                                  
+                              </div>
+                              
+                              
+                              
+                              
+                              <br>
+                          </div>
+                          <div class="row">
+                                <div class="col-lg-1"></div>
+                                  <div class="col col-lg-10 text-center"><br><br>
+                                      <button id=""  type="submit" name="save" class="btn btn-default"><i class="icon icon-save"> </i> <?php echo $this->lang->line('save') ?></button>
+                                      <a href="javascript:clear_add_items()" name="clear" id="clear_user" class="btn btn-default"><i class="icon icon-list"> </i> <?php echo $this->lang->line('clear') ?></a>
+                                  </div>
+                              </div>
+                          </div>
+<!--                          <div class="row">
+                                <div class="panel panel-default">
+                                     <div class="panel-heading">
+                                           <h4 class="panel-title"><?php echo $this->lang->line('item_details') ?></h4>  
+
+                                     </div>
+                                </div>
+                          </div>-->
                       </div>
-                  </div>
                 </div>
-          </div>
+         
     <?php echo form_close();?>
 </section>    
            <div id="footer_space">

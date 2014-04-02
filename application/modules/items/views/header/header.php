@@ -6,14 +6,8 @@
                     $('#edit_item_form').hide();
                     $('#add_items_image').hide();
                               posnic_table();
-                                add_item.onsubmit=function()
-                                { 
-                                  return false;
-                                } 
-                                parsley_reg.onsubmit=function()
-                                { 
-                                  return false;
-                                } 
+                             
+                             
                          
                         } );
                         
@@ -57,9 +51,9 @@
                                                                 
                    						"fnRender": function (oObj) {
                                                                 if(oObj.aData[9]==1){
-                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-success hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>&nbsp<a href=javascript:add_image_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('add_image')?>"><i class="icon-upload"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>";
+                   							return '<a href=javascript:posnic_deactive("'+oObj.aData[0]+'")><span data-toggle="tooltip" class="label label-warning hint--top hint--warning" data-hint="<?php echo $this->lang->line('deactive') ?>"><i class="icon-pause"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'")  ><span data-toggle="tooltip" class="label label-success hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>&nbsp'+"<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>";
 								}else{
-                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>&nbsp<a href=javascript:add_image_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('add_image')?>"><i class="icon-upload"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:posnic_active("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('active') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--info" data-hint="<?php echo $this->lang->line('edit')?>"><i class="icon-edit"></i></span></a>&nbsp'+"<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete')?>'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -141,6 +135,8 @@
             }
            function edit_function(guid){
                        $("#parsley_reg").trigger('reset');
+                         $('#add_item_form').hide('hide');      
+                          $('#edit_item_form').show('slow');
                         <?php if($this->session->userdata['items_per']['edit']==1){ ?>
                             $.ajax({                                      
                              url: "<?php echo base_url() ?>index.php/items/edit_items/"+guid,                      
@@ -169,6 +165,15 @@
                                  $('#parsley_reg #tax_Inclusive').val(data[0]['tax_Inclusive']);
                                  $('#parsley_reg #location').val(data[0]['location']);
                                  $('#parsley_reg #category').val(data[0]['category_id']);
+                                 $('#parsley_reg #unit_of_mes').val(data[0]['uom']);
+                                 $('#parsley_reg #no_of_unit').val(data[0]['no_of_unit']);
+                                 $('#parsley_reg .fileupload-preview').empty();
+                               $('#parsley_reg .fileupload-preview').append('<img src="<?php echo base_url('uploads/items') ?>/'+data[0]['image']+'">');
+    $("#parsley_reg .fileupload-preview").css('display' ,'block')  ;                       
+    $("#parsley_reg .fileupload-new").css('display' ,'inline')                         ;
+    if(data[0]['uom']==0){
+                                     change_orm_to_unit_update();
+                                 }
                                  //$('#parsley_reg #search_category').val(data[0]['c_guid']);
                                 
                                 $("#parsley_reg #search_category").select2('data', {id:data[0]['c_guid'],text: data[0]['c_name']});

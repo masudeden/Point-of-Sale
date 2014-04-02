@@ -1,5 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
 class Items extends CI_Controller{
+      var $user_image = '';
     function __construct() {
                 parent::__construct();
                 $this->load->library('posnic');    
@@ -124,16 +125,18 @@ class Items extends CI_Controller{
                   
                             $this->form_validation->set_rules("name",$this->lang->line('name'),"required");
                             $this->form_validation->set_rules("sku",$this->lang->line('sku'),'required');                           
-                            $this->form_validation->set_rules('cost', $this->lang->line('cost'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
-                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
-                            $this->form_validation->set_rules('mrp', $this->lang->line('mrp'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                            $this->form_validation->set_rules('cost', $this->lang->line('cost'),'required|numeric|xss_clean'); 
+                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|numeric|xss_clean'); 
+                            $this->form_validation->set_rules('mrp', $this->lang->line('mrp'),'required|numeric|xss_clean'); 
+                            $this->form_validation->set_rules('no_of_unit', $this->lang->line('no_of_unit'),'required|numeric|xss_clean'); 
                           
                             $this->form_validation->set_rules('taxes', $this->lang->line('taxes'),'required');
                             $this->form_validation->set_rules('taxes_area', $this->lang->line('taxes_area'),'required');
                             $this->form_validation->set_rules('supplier', $this->lang->line('supplier'),'required');
                             $this->form_validation->set_rules('brand', $this->lang->line('brand'),'required');
                             $this->form_validation->set_rules('category', $this->lang->line('category'),'required');
-                            $this->form_validation->set_rules('item_department', $this->lang->line('item_department'),'required');                            
+                            $this->form_validation->set_rules('item_department', $this->lang->line('item_department'),'required'); 
+                               $this->form_validation->set_rules('userfile', 'userfile', 'callback_add_items_image');
                           if ( $this->form_validation->run() !== false ) {
                                    $data=array('code'=>$this->input->post('sku'),
                                     'barcode'=>$this->input->post('barcode'),
@@ -143,13 +146,16 @@ class Items extends CI_Controller{
                                     'selling_price'=>$this->input->post('selling_price'),                                   
                                     'mrp'=>$this->input->post('mrp'),
                                     'discount_amount'=>$this->input->post('discount_per'),
-                                    'start_date'=>$this->input->post('starting_date'),
-                                    'end_date'=>$this->input->post('ending_date'),
+                                    'start_date'=>  strtotime($this->input->post('starting_date')),
+                                    'end_date'=>strtotime($this->input->post('ending_date')),
                                     'tax_Inclusive'=>$this->input->post('tax_Inclusive'),
                                     'location'=>$this->input->post('location'),
                                     'category_id'=>$this->input->post('category'),
                                     'supplier_id'=>$this->input->post('supplier'),
                                     'tax_id'=>$this->input->post('taxes'),
+                                    'image'=>$this->user_image,
+                                    'no_of_unit'=>$this->input->post('no_of_unit'),
+                                    'uom'=>$this->input->post('unit_of_mes'),
                                     'tax_area_id'=>$this->input->post('taxes_area'),
                                     'depart_id'=>$this->input->post('item_department'),
                                     'brand_id'=>$this->input->post('brand'));
@@ -159,6 +165,7 @@ class Items extends CI_Controller{
                                          );
                                  if($this->posnic->check_unique($value,'items')){ 
                                      echo 'TRUE';
+                                     $this->user_image="";
                                      $id=$this->posnic->posnic_add_record($data,'items');
                                      $this->load->model('core_model');
                                      $this->core_model->item_setting($id,$this->session->userdata['branch_id']);
@@ -193,17 +200,19 @@ class Items extends CI_Controller{
              $guid=$this->input->post('guid');
                           $this->form_validation->set_rules("name",$this->lang->line('name'),"required");
                             $this->form_validation->set_rules("sku",$this->lang->line('sku'),'required');                           
-                            $this->form_validation->set_rules('cost', $this->lang->line('cost'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
-                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
-                            $this->form_validation->set_rules('mrp', $this->lang->line('mrp'),'required|max_length[15]|regex_match[/^[0-9 .]+$/]|xss_clean'); 
+                            $this->form_validation->set_rules('cost', $this->lang->line('cost'),'required|numeric|xss_clean'); 
+                            $this->form_validation->set_rules('selling_price', $this->lang->line('selling_price'),'required|numeric|xss_clean'); 
+                            $this->form_validation->set_rules('mrp', $this->lang->line('mrp'),'required|numeric|xss_clean'); 
                           
                             $this->form_validation->set_rules('taxes', $this->lang->line('taxes'),'required');
                             $this->form_validation->set_rules('taxes_area', $this->lang->line('taxes_area'),'required');
                             $this->form_validation->set_rules('supplier', $this->lang->line('supplier'),'required');
                             $this->form_validation->set_rules('brand', $this->lang->line('brand'),'required');
                             $this->form_validation->set_rules('category', $this->lang->line('category'),'required');
-                            $this->form_validation->set_rules('item_department', $this->lang->line('item_department'),'required');                            
+                            $this->form_validation->set_rules('item_department', $this->lang->line('item_department'),'required');  
+                               $this->form_validation->set_rules('userfile', 'userfile', 'callback_add_items_image');
                           if ( $this->form_validation->run() !== false ) {
+                               if($this->user_image==""){
                                     $data=array('code'=>$this->input->post('sku'),
                                     'barcode'=>$this->input->post('barcode'),
                                     'name'=>$this->input->post('name'),
@@ -219,18 +228,44 @@ class Items extends CI_Controller{
                                     'category_id'=>$this->input->post('category'),
                                     'supplier_id'=>$this->input->post('supplier'),
                                     'tax_id'=>$this->input->post('taxes'),
+                                         'no_of_unit'=>$this->input->post('no_of_unit'),
+                                    'uom'=>$this->input->post('unit_of_mes'),
                                     'tax_area_id'=>$this->input->post('taxes_area'),
                                     'depart_id'=>$this->input->post('item_department'),
                                     'brand_id'=>$this->input->post('brand'));
-                                    
+                               }else{
+                                    $data=array('code'=>$this->input->post('sku'),
+                                    'barcode'=>$this->input->post('barcode'),
+                                    'name'=>$this->input->post('name'),
+                                    'description'=>$this->input->post('description'),
+                                    'cost_price'=>$this->input->post('cost'),
+                                    'selling_price'=>$this->input->post('selling_price'),                                   
+                                    'mrp'=>$this->input->post('mrp'),
+                                    'discount_amount'=>$this->input->post('discount_per'),
+                                    'start_date'=>$this->input->post('starting_date'),
+                                    'end_date'=>$this->input->post('ending_date'),
+                                    'tax_Inclusive'=>$this->input->post('tax_Inclusive'),
+                                    'location'=>$this->input->post('location'),
+                                        'image'=>$this->user_image,
+                                         'no_of_unit'=>$this->input->post('no_of_unit'),
+                                    'uom'=>$this->input->post('unit_of_mes'),
+                                    'category_id'=>$this->input->post('category'),
+                                    'supplier_id'=>$this->input->post('supplier'),
+                                    'tax_id'=>$this->input->post('taxes'),
+                                    'tax_area_id'=>$this->input->post('taxes_area'),
+                                    'depart_id'=>$this->input->post('item_department'),
+                                    'brand_id'=>$this->input->post('brand'));}
+
                                     $value=array('guid !='=>$this->input->post('guid'),'code'=>$this->input->post('sku'),
                                          'barcode'=>$this->input->post('barcode'),
                                           'name'=>$this->input->post('name'),
                                          );
                                  if($this->posnic->check_unique($value,'items')){ 
                                      echo 'TRUE';
+                                     $this->user_image="";
                                      $where=array('guid'=>$guid);
-                                     $this->posnic->posnic_module_update('items',$data,$where);
+                                    
+                                        $this->posnic->posnic_update_record($data,$where,'items');
                                     
                                  }else{
                                      
@@ -354,33 +389,29 @@ class Items extends CI_Controller{
         echo json_encode($data);
         
     }
-    function add_item_image(){
+      function add_items_image(){
         
-         $config['upload_path'] = './uploads/items';
-		$config['allowed_types'] = 'gif|jpg|png';
-		$config['max_size']	= '202100';
-		$config['max_width']  = '11024';
-		$config['max_height']  = '3768';
-//            	$this->load->model('products_details');	
-              $guid=  $this->input->post('guid');
-//		$max=$this->products_details->max_id($guid);
-//               
-              $config['file_name']=$guid;
-              //  $config['overwrite'] = TRUE;
-		$this->load->library('upload', $config);
+    $config['upload_path'] = './uploads/items';
+    $config['allowed_types'] = 'gif|jpg|png';
+    $config['max_size']	= '202100';
+    $config['max_width']  = '11024';
+    $config['max_height']  = '3768';
+    $randomString = md5(time().date("Y/m/d"));
+    $config['file_name']=$randomString;
+  //  $config['overwrite'] = TRUE;
+    $this->load->library('upload', $config);
 
-		if ( ! $this->upload->do_upload())
-		{
-                        echo $this->upload->display_errors();
-		}
-		else
-		{       $upload_data = $this->upload->data();
-                     $file_name =$upload_data['file_name'];
-                    $data=array('image'=>$file_name);
-                                $where=array('guid'=>$guid);
-                                     $this->posnic->posnic_module_update('items',$data,$where);
-		}
+    if ( ! $this->upload->do_upload())
+    {
+           
     }
+    else
+    {       
+            $upload_data = $this->upload->data();
+            $this->user_image =$upload_data['file_name'];
+            return true; 
+    }
+ }
     
 }
 ?>

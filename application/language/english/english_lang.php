@@ -524,8 +524,10 @@ $lang['credit_days']='Credit Days';
   
   //items
   $lang['uom']='Unit Of Measurement';
-  $lang['no_of_unit']='No Of Unit IN Case';
+  $lang['no_of_unit']='No Of Unit/Pics IN Case/Box';
   $lang['unit_in_sales']=' Unit In Sales';
+  $lang['unit_or_pics']=' Unit / Pics';
+  $lang['case_or_box']=' Case / Box';
   
   // purchase_order_cancel
   $lang['purchase_order_cancel']='PO Cancel';
