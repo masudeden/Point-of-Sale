@@ -535,5 +535,9 @@ $lang['credit_days']='Credit Days';
   $lang['stock_transfer']='Stock Transfer';
   $lang['opening_stock']='Opening Stock';
   $lang['damage_stock']='Damage Stock';
+  $lang['po_quantity']='PO Quantity';
+  $lang['po_free']='PO Free';
+  $lang['cancel_quty']='Cancled Qty';
+  $lang['cancel_free']='Cancled Free';
   
 ?>﻿
