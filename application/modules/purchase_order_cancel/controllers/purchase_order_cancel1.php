@@ -1,3 +1,4 @@
+
 <?php
 class Purchase_order_cancel extends CI_Controller{
    function __construct() {
@@ -110,14 +111,17 @@ function save(){
                 $items_old_free=  $this->input->post('items_old_free');
                 $items_quty=  $this->input->post('items_quty');
                 $items_free=  $this->input->post('items_free');
-            
+                $po_item=  $this->input->post('order_items');
            
-                for($i=0;$i<count($items_order_guid);$i++){
+                for($i=0;$i<count($items);$i++){
           
-                    $this->load->model('purchase');
-                    $this->purchase->purchase_order_cancel($po,$items_order_guid[$i],$items_old_quty[$i],$items_old_free[$i],$items_free[$i],$items_quty[$i]);
+                        $item_value=array('purchase'=>$guid,'item'=>$items[$i],'quty'=>$quty[$i],'free'=>$free[$i]);
+                        $this->posnic->posnic_add_record($item_value,'grn_x_items');
+                        $this->load->model('purchase');
+                        $this->purchase->update_item_receving($po_item[$i],$quty[$i],$free[$i]);
+                        //$this->purchase->add_stock($items[$i],$quty[$i]+$free[$i],$po_item[$i],$this->session->userdata['branch_id']);
                 }
-                //$this->posnic->posnic_master_increment_max('purchase_order')  ;
+                $this->posnic->posnic_master_increment_max('purchase')  ;
                  echo 'TRUE';
     
                 }else{
@@ -128,6 +132,9 @@ function save(){
                 }
            
     }
+   
+        
+
 function purchase_order_number(){
         $search= $this->input->post('term');
         $this->load->model('purchase');
@@ -136,6 +143,63 @@ function purchase_order_number(){
          
        
         
+}
+function delete(){
+   if($this->session->userdata['goods_receiving_note_per']['delete']==1){
+        if($this->input->post('guid')){
+            $guid=  $this->input->post('guid');
+            $this->load->model('purchase');
+            $status=$this->purchase->check_approve($guid);
+           if($status!=FALSE){
+            $this->posnic->posnic_delete($guid,'purchase');
+            
+            $this->purchase->delete_grn_items($guid);            
+                echo 'TRUE';
+            }else{
+                echo 'Approved';
+            }
+        
+        }
+    }else{
+         echo 'FALSE';
+    }
+    
+}
+function  get_purchase_order($guid){
+    if($this->session->userdata['purchase_order_per']['edit']==1){
+    $this->load->model('purchase');
+    $data=  $this->purchase->get_purchase_order($guid);
+    echo json_encode($data);
+    }
+}
+function  get_goods_receiving_note($guid){
+    if($this->session->userdata['purchase_order_per']['edit']==1){
+    $this->load->model('purchase');
+    $data=  $this->purchase->get_goods_receiving_note($guid);
+    echo json_encode($data);
+    }
+}
+function good_receiving_note_approve(){
+    if($this->session->userdata['goods_receiving_note_per']['approve']==1){
+        $id=  $this->input->post('guid');
+        $po=  $this->input->post('po');
+        $this->load->model('purchase');
+        $report=$this->purchase->change_grn_status($id);
+     
+        $this->purchase->add_stock($id,$po,$this->session->userdata['branch_id']);
+        if (!$report['error']) {
+            echo 'TRUE';
+        } else {
+            echo 'FALSE';
+        }
+    }else{
+        echo 'Noop';
+    }
+}
+
+function order_number(){
+       $data[]= $this->posnic->posnic_master_max('purchase')    ;
+       echo json_encode($data);
 }
 function search_items(){
     $search= $this->input->post('term');
