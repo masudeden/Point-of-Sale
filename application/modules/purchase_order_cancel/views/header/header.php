@@ -47,62 +47,11 @@
             }	
                                    
 			}
- function user_function(guid){
-    <?php if($this->session->userdata['purchase_order_per']['delete']==1){ ?>
-             bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
-             if(result){
-            $.ajax({
-                url: '<?php echo base_url() ?>/index.php/purchase_order/delete',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                 complete: function(response) {
-                    if(response['responseText']=='TRUE'){
-                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
-                        $("#dt_table_tools").dataTable().fnDraw();
-                    }else{
-                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
-                    }
-                    }
-            });
-        
 
-                        }
-    }); <?php }else{?>
-           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
-   <?php }
-?>
-                        }
            
           
         
-function purchase_order_approve(guid){
-        <?php if($this->session->userdata['purchase_order_per']['approve']==1){ ?>
-            $.ajax({
-                url: '<?php echo base_url() ?>index.php/purchase_order/purchase_order_approve',
-                type: "POST",
-                data: {
-                    guid: guid
-                    
-                },
-                complete: function(response) {
-                    if(response['responseText']=='TRUE'){
-                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
-                        $("#dt_table_tools").dataTable().fnDraw();
-                    }else if(response['responseText']=='Approved'){
-                         $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>   <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
-                    }else{
-                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                              
-                    }
-                    }
-            });
-            <?php }else{?>
-                        $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
-                <?php }
-             ?>
-}
+
           
            function edit_function(guid){
            
