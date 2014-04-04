@@ -4,7 +4,7 @@
           $(document).ready( function () {
               
         	 refresh_items_table();
-                 $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('sales_quotation') ?>');
+                 $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('purchase_order') ?>');
                      $('#add_new_order').hide();
                               posnic_table();
                                 
@@ -30,13 +30,13 @@
             },
                 });
             }
-              $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('sales_quotation') ?>');
+              $('#selected_item_table .dataTables_empty').html('<?php echo $this->lang->line('please_select').' '.$this->lang->line('items')." ".$this->lang->line('for')." ".$this->lang->line('purchase_order') ?>');
                 }        
            function posnic_table(){
            $('#dt_table_tools').dataTable({
                                       "bProcessing": true,
 				      "bServerSide": true,
-                                      "sAjaxSource": "<?php echo base_url() ?>index.php/sales_quotation/data_table",
+                                      "sAjaxSource": "<?php echo base_url() ?>index.php/purchase_order/data_table",
                                        aoColumns: [  
                                     
          { "bVisible": false} , {	"sName": "ID",
@@ -90,7 +90,7 @@
                                                                 if(oObj.aData[9]==1){
                                                                          	 return '<a  ><span data-toggle="tooltip" class="label label-success hint--top hint--success"  ><i class="icon-play"></i></span></a>&nbsp<a  ><span data-toggle="tooltip" class="label label-info hint--top hint--info" ><i class="icon-edit"></i></span></a>'+"&nbsp;<a><span data-toggle='tooltip' class='label label-danger hint--top hint--error' ><i class='icon-trash'></i></span> </a>"
 								}else{
-                                                                        return '<a href=javascript:sales_quotation_approve("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('approve') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit') ?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete') ?>'><i class='icon-trash'></i></span> </a>";
+                                                                        return '<a href=javascript:purchase_order_approve("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-success hint--top hint--success" data-hint="<?php echo $this->lang->line('approve') ?>"><i class="icon-play"></i></span></a>&nbsp<a href=javascript:edit_function("'+oObj.aData[0]+'") ><span data-toggle="tooltip" class="label label-info hint--top hint--info" data-hint="<?php echo $this->lang->line('edit') ?>"><i class="icon-edit"></i></span></a>'+"&nbsp;<a href=javascript:user_function('"+oObj.aData[0]+"'); ><span data-toggle='tooltip' class='label label-danger hint--top hint--error' data-hint='<?php echo $this->lang->line('delete') ?>'><i class='icon-trash'></i></span> </a>";
                                                                 }
                                                                 },
 								
@@ -122,11 +122,11 @@
                                    
 			}
  function user_function(guid){
-    <?php if($this->session->userdata['sales_quotation_per']['delete']==1){ ?>
+    <?php if($this->session->userdata['purchase_order_per']['delete']==1){ ?>
              bootbox.confirm("<?php echo $this->lang->line('Are you Sure To Delete')." ".$this->lang->line('items') ?> "+$('#order__number_'+guid).val(), function(result) {
              if(result){
             $.ajax({
-                url: '<?php echo base_url() ?>/index.php/sales_quotation/delete',
+                url: '<?php echo base_url() ?>/index.php/purchase_order/delete',
                 type: "POST",
                 data: {
                     guid: guid
@@ -134,10 +134,10 @@
                 },
                  complete: function(response) {
                     if(response['responseText']=='TRUE'){
-                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('sales_quotation') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
+                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('deleted');?>', { type: "error" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }else{
-                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                       
+                         $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
                     }
                     }
             });
@@ -145,17 +145,17 @@
 
                         }
     }); <?php }else{?>
-           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                       
+           $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
    <?php }
 ?>
                         }
            
           
         
-function sales_quotation_approve(guid){
-        <?php if($this->session->userdata['sales_quotation_per']['approve']==1){ ?>
+function purchase_order_approve(guid){
+        <?php if($this->session->userdata['purchase_order_per']['approve']==1){ ?>
             $.ajax({
-                url: '<?php echo base_url() ?>index.php/sales_quotation/sales_quotation_approve',
+                url: '<?php echo base_url() ?>index.php/purchase_order/purchase_order_approve',
                 type: "POST",
                 data: {
                     guid: guid
@@ -163,17 +163,17 @@ function sales_quotation_approve(guid){
                 },
                 complete: function(response) {
                     if(response['responseText']=='TRUE'){
-                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('sales_quotation') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
+                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
                         $("#dt_table_tools").dataTable().fnDraw();
                     }else if(response['responseText']=='Approved'){
                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>   <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
                     }else{
-                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                              
+                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                              
                     }
                     }
             });
             <?php }else{?>
-                        $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                       
+                        $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
                 <?php }
              ?>
 }
@@ -181,7 +181,7 @@ function sales_quotation_approve(guid){
            function edit_function(guid){
            
         
-                        <?php if($this->session->userdata['sales_quotation_per']['edit']==1){ ?>
+                        <?php if($this->session->userdata['purchase_order_per']['edit']==1){ ?>
                                 
                             $('#deleted').remove();
                             $('#parent_items').append('<div id="deleted"></div>');
@@ -194,7 +194,7 @@ function sales_quotation_approve(guid){
                             $('#save_clear').hide();
                             $('#loading').modal('show');
                             $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/sales_quotation/get_sales_quotation/"+guid,                      
+                             url: "<?php echo base_url() ?>index.php/purchase_order/get_purchase_order/"+guid,                      
                              data: "", 
                              dataType: 'json',               
                              success: function(data)        
@@ -202,17 +202,17 @@ function sales_quotation_approve(guid){
                                 $("#user_list").hide();
                                 $('#add_new_order').show('slow');
                                 $('#delete').attr("disabled", "disabled");
-                                $('#posnic_add_sales_quotation').attr("disabled", "disabled");
+                                $('#posnic_add_purchase_order').attr("disabled", "disabled");
                                 $('#active').attr("disabled", "disabled");
                                 $('#deactive').attr("disabled", "disabled");
-                                $('#sales_quotation_lists').removeAttr("disabled");
+                                $('#purchase_order_lists').removeAttr("disabled");
                                 $('#loading').modal('hide');
                                 $("#parsley_reg").trigger('reset');
                            
                                 $("#parsley_reg #first_name").select2('data', {id:'1',text: data[0]['s_name']});
                                 $("#parsley_reg #company").val(data[0]['c_name']);
                                 $("#parsley_reg #address").val(data[0]['address']);
-                                $("#parsley_reg #sales_quotation_guid").val(guid);
+                                $("#parsley_reg #purchase_order_guid").val(guid);
                                 $("#parsley_reg #demo_order_number").val(data[0]['po_no']);
                                 $("#parsley_reg #order_number").val(data[0]['po_no']);
                                 $("#parsley_reg #order_date").val(data[0]['po_date']);
@@ -333,7 +333,7 @@ function sales_quotation_approve(guid){
                         
                          
                         <?php }else{?>
-                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                       
+                                 $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Edit')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
                         <?php }?>
                        }
 		</script>

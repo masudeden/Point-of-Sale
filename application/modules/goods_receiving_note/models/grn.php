@@ -242,10 +242,18 @@ class Grn extends CI_Model{
             $stock_quty;
             foreach ($sql_order->result() as $stock){
                 $stock_quty=  $stock->quty;
+                $selling=$stock->price;
             }
+            if($selling==$price){
             $this->db->where('branch_id',$Bid)->where('item',$grn_row->item);
             $this->db->update('stock',array('quty'=>$grn_row->quty+$stock_quty,'price'=>$price));
-           
+            }else{
+             $this->db->insert('stock',array('item'=>$grn_row->item,'quty'=>$grn_row->quty,'price'=>$price,'branch_id'=>$Bid));
+            $id=  $this->db->insert_id();
+            $this->db->where('id',$id);
+             
+            $this->db->update('stock',array('guid'=>  md5('stock'.$grn_row->item.$id)));
+            }
         }else{
             $this->db->insert('stock',array('item'=>$grn_row->item,'quty'=>$grn_row->quty,'price'=>$price,'branch_id'=>$Bid));
             $id=  $this->db->insert_id();
