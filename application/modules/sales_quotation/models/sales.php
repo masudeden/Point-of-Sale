@@ -36,7 +36,7 @@ class Sales extends CI_Model{
     
     
     function search_items($search){
-         $this->db->select('items_setting.purchase,items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.guid as i_guid,items.code,items.image,items.tax_Inclusive,items.tax_id,stock.*')->from('stock')->where('stock.branch_id',  $this->session->userdata['branch_id'])->where('items.branch_id',$this->session->userdata['branch_id'])->where('items.active_status',1)->where('items.delete_status',1);
+         $this->db->select('items.start_date,items.end_date,items.discount,items_setting.sales,items.tax_Inclusive ,tax_types.type as tax_type_name,taxes.value as tax_value,taxes.type as tax_type,brands.name as b_name,items_department.department_name as d_name,items_category.category_name as c_name,items.name,items.guid as i_guid,items.code,items.image,items.tax_Inclusive,items.tax_id,stock.*')->from('stock')->where('stock.branch_id',  $this->session->userdata['branch_id'])->where('items.branch_id',$this->session->userdata['branch_id'])->where('items.active_status',1)->where('items.delete_status',1);
          $this->db->join('items', "items.guid=stock.item ",'left');
          $this->db->join('items_category', 'items.category_id=items_category.guid','left');
          $this->db->join('items_setting', 'items.guid=items_setting.item_id AND items_setting.purchase=1','left');
@@ -49,9 +49,17 @@ class Sales extends CI_Model{
                 $this->db->limit($this->session->userdata['data_limit']);
                 $sql=  $this->db->get();
                 $data=array();
-                foreach ($sql->result() as $row){
-                    if($row->purchase==1){
-                    $data[]=$row;
+                foreach ($sql->result_array() as $row){
+                    if($row['sales']==1){
+                  if($row['end_date'] <  strtotime(date("Y/m/d"))){
+                              $row['start_date']=0;
+                               $row['end_date']=0;
+                             
+                    }else{
+                            $row['start_date']=date('d-m-Y',$row['start_date']);
+                            $row['end_date']=date('d-m-Y',$row['end_date']);
+                    }
+                       $data[]=$row;
                     }
                 }
               

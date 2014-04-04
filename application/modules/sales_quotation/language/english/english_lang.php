@@ -1,7 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-$lang['kunnaa']='USER ID';;
-$lang['password123']='PASSWORD';
-$lang['login']='LOGIN';
+$lang['quotation_date']='Quotation Date';
+$lang['total_item_discount_amount']='Item Disc Amount';
+$lang['total_tax']='Total Tax';
+$lang['tax_type']='Tax Type';
 
 
 
