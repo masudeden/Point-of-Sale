@@ -79,28 +79,28 @@
           }
     }
     function save_new_order(){
-         <?php if($this->session->userdata['sales_quotation_per']['add']==1){ ?>
+         <?php if($this->session->userdata['purchase_order_per']['add']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
-                            url: "<?php echo base_url('index.php/sales_quotation/save')?>",
+                            url: "<?php echo base_url('index.php/purchase_order/save')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                 if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('sales_quotation').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order').' '.$this->lang->line('added');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#parsley_reg").trigger('reset');
-                                       posnic_sales_quotation_lists();
+                                       posnic_purchase_order_lists();
                                        refresh_items_table();
                                     }else  if(response['responseText']=='ALREADY'){
                                            $.bootstrapGrowl($('#parsley_reg #order_number').val()+' <?php echo $this->lang->line('supplier').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('purchase_order');?>', { type: "error" });                           
                                     }
                        }
                 });
@@ -116,28 +116,28 @@
                     <?php }?>
     }
     function update_order(){
-         <?php if($this->session->userdata['sales_quotation_per']['edit']==1){ ?>
+         <?php if($this->session->userdata['purchase_order_per']['edit']==1){ ?>
                    if($('#parsley_reg').valid()){
                        var oTable = $('#selected_item_table').dataTable();
                        if(oTable.fnGetData().length>0){
                 var inputs = $('#parsley_reg').serialize();
                       $.ajax ({
-                            url: "<?php echo base_url('index.php/sales_quotation/update')?>",
+                            url: "<?php echo base_url('index.php/purchase_order/update')?>",
                             data: inputs,
                             type:'POST',
                             complete: function(response) {
                                 if(response['responseText']=='TRUE'){
-                                      $.bootstrapGrowl('<?php echo $this->lang->line('sales_quotation').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
+                                      $.bootstrapGrowl('<?php echo $this->lang->line('purchase_order').' '.$this->lang->line('updated');?>', { type: "success" });                                                                                  
                                        $("#dt_table_tools").dataTable().fnDraw();
                                        $("#parsley_reg").trigger('reset');
-                                       posnic_sales_quotation_lists();
+                                       posnic_purchase_order_lists();
                                        refresh_items_table();
                                     }else  if(response['responseText']=='ALREADY'){
                                            $.bootstrapGrowl($('#parsley_reg #order_number').val()+' <?php echo $this->lang->line('supplier').' '.$this->lang->line('is_already_added');?>', { type: "warning" });                           
                                     }else  if(response['responseText']=='FALSE'){
                                            $.bootstrapGrowl('<?php echo $this->lang->line('Please Enter All Required Fields');?>', { type: "warning" });                           
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                           
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('purchase_order');?>', { type: "error" });                           
                                     }
                        }
                 });
@@ -213,7 +213,7 @@
                 escapeMarkup: function(m) { return m; },
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('items') ?>",
                 ajax: {
-                     url: '<?php echo base_url() ?>index.php/sales_quotation/search_items/',
+                     url: '<?php echo base_url() ?>index.php/purchase_order/search_items/',
                      data: function(term, page) {
                             return {types: ["exercise"],
                                 limit: 2,
@@ -291,7 +291,7 @@
                 escapeMarkup: function(m) { return m; },
                 placeholder: "<?php echo $this->lang->line('search').' '.$this->lang->line('category') ?>",
                 ajax: {
-                     url: '<?php echo base_url() ?>index.php/sales_quotation/search_customer',
+                     url: '<?php echo base_url() ?>index.php/purchase_order/search_supplier',
                      data: function(term, page) {
                             return {types: ["exercise"],
                                 limit: -1,
@@ -313,7 +313,7 @@
                           id: item.guid,
                           text: item.first_name,
                           company: item.company_name,
-                          address1: item.address,
+                          address1: item.address1,
                         });
                       });
                       return {
@@ -345,9 +345,9 @@ $('#parent_items').append('<div id="deleted"></div>');
 $('#newly_added').remove();
 $('#parent_items').append('<div id="newly_added"></div>');
 $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
-    <?php if($this->session->userdata['sales_quotation_per']['add']==1){ ?>
+    <?php if($this->session->userdata['purchase_order_per']['add']==1){ ?>
              $.ajax({                                      
-                             url: "<?php echo base_url() ?>index.php/sales_quotation/order_number/",                      
+                             url: "<?php echo base_url() ?>index.php/purchase_order/order_number/",                      
                              data: "", 
                              dataType: 'json',               
                              success: function(data)        
@@ -364,10 +364,10 @@ $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
       $("#user_list").hide();
     $('#add_new_order').show('slow');
       $('#delete').attr("disabled", "disabled");
-      $('#posnic_add_sales_quotation').attr("disabled", "disabled");
+      $('#posnic_add_purchase_order').attr("disabled", "disabled");
       $('#active').attr("disabled", "disabled");
       $('#deactive').attr("disabled", "disabled");
-      $('#sales_quotation_lists').removeAttr("disabled");
+      $('#purchase_order_lists').removeAttr("disabled");
      
          window.setTimeout(function ()
     {
@@ -378,24 +378,24 @@ $("#parsley_reg #first_name").select2('data', {id:'',text: 'Search Supplier'});
                     $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Add')." ".$this->lang->line('brand');?>', { type: "error" });                         
                     <?php }?>
 }
-function posnic_sales_quotation_lists(){
+function posnic_purchase_order_lists(){
       $('#edit_brand_form').hide('hide');
       $('#add_new_order').hide('hide');      
       $("#user_list").show('slow');
       $('#delete').removeAttr("disabled");
       $('#active').removeAttr("disabled");
       $('#deactive').removeAttr("disabled");
-      $('#posnic_add_sales_quotation').removeAttr("disabled");
-      $('#sales_quotation_lists').attr("disabled",'disabled');
+      $('#posnic_add_purchase_order').removeAttr("disabled");
+      $('#purchase_order_lists').attr("disabled",'disabled');
 }
-function clear_add_sales_quotation(){
+function clear_add_purchase_order(){
       $("#parsley_reg").trigger('reset');
       refresh_items_table();
 }
-function clear_update_sales_quotation(){
+function clear_update_purchase_order(){
       $("#parsley_reg").trigger('reset');
       refresh_items_table();
-      edit_function($('#sales_quotation_guid').val());
+      edit_function($('#purchase_order_guid').val());
 }
 function reload_update_user(){
     var id=$('#guid').val();
@@ -406,11 +406,11 @@ function reload_update_user(){
     <div class="container">
             <div class="row">
                 <div class="col col-lg-7">
-                        <a href="javascript:posnic_add_new()" id="posnic_add_sales_quotation" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
+                        <a href="javascript:posnic_add_new()" id="posnic_add_purchase_order" class="btn btn-default" ><i class="icon icon-user"></i> <?php echo $this->lang->line('addnew') ?></a>  
                      
-                        <a href="javascript:sales_quotation_group_approve()" class="btn btn-default" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
+                        <a href="javascript:purchase_order_group_approve()" class="btn btn-default" id="deactive"  ><i class="icon icon-play"></i> <?php echo $this->lang->line('approve') ?></a>
                         <a href="javascript:posnic_delete()" class="btn btn-default" id="delete"><i class="icon icon-trash"></i> <?php echo $this->lang->line('delete') ?></a>
-                        <a href="javascript:posnic_sales_quotation_lists()" class="btn btn-default" id="sales_quotation_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('sales_quotation') ?></a>
+                        <a href="javascript:posnic_purchase_order_lists()" class="btn btn-default" id="purchase_order_lists"><i class="icon icon-list"></i> <?php echo $this->lang->line('purchase_order') ?></a>
                         
                 </div>
             </div>
@@ -422,12 +422,12 @@ function reload_update_user(){
         <div id="main_content_outer" class="clearfix">
             <div id="main_content">
                         <?php $form =array('name'=>'posnic'); 
-                    echo form_open('sales_quotation/sales_quotation_manage',$form) ?>
+                    echo form_open('purchase_order/purchase_order_manage',$form) ?>
                         <div class="row">
                             <div class="col-sm-12" id="user_list"><br>
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                            <h4 class="panel-title"><?php echo $this->lang->line('sales_quotation') ?></h4>                                                                               
+                                            <h4 class="panel-title"><?php echo $this->lang->line('purchase_order') ?></h4>                                                                               
                                     </div>
                                     <table id="dt_table_tools" class="table-striped table-condensed" style="width: 100%"><thead>
                                         <tr>
@@ -1791,7 +1791,7 @@ function new_discount_amount(){
                           'runat'=>'server',
                           'name'=>'items_form',
                           'class'=>'form-horizontal');
-       echo form_open_multipart('sales_quotation/upadate_pos_sales_quotation_details/',$form);?>
+       echo form_open_multipart('purchase_order/upadate_pos_purchase_order_details/',$form);?>
         
     <div id="main_content" style="padding: 0 14px !important;">
                      
@@ -1800,7 +1800,7 @@ function new_discount_amount(){
                          <div class="row">
                           <div class="panel panel-default">
                               <div class="panel-heading" >
-                                     <h4 class="panel-title"><?php echo $this->lang->line('sales_quotation')." ".$this->lang->line('details') ?></h4>                                                                               
+                                     <h4 class="panel-title"><?php echo $this->lang->line('purchase_order')." ".$this->lang->line('details') ?></h4>                                                                               
                                </div>
                             
                                  
@@ -1815,7 +1815,7 @@ function new_discount_amount(){
                                                                                    
                                                                                     'value'=>set_value('first_name'));
                                                                      echo form_input($first_name)?>
-                                                        <input type="hidden" id="sales_quotation_guid" name="sales_quotation_guid">
+                                                        <input type="hidden" id="purchase_order_guid" name="purchase_order_guid">
                                                   </div>
                                                </div>
                                                <div class="col col-sm-2" >
@@ -2213,11 +2213,11 @@ function new_discount_amount(){
                                           <div class="col col-sm-3" style="padding-top: 50px"  >
                                                    <div class="form_sep " id="save_clear">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_add_sales_quotation()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_add_purchase_order()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                               <div class="form_sep " id="update_clear" style="margin-top:0 !important">
                                                        <label for="remark" >&nbsp;</label>	
-                                                        <a href="javascript:clear_update_sales_quotation()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
+                                                        <a href="javascript:clear_update_purchase_order()" class="btn btn-default"  ><i class="icon icon-refresh"></i> <?php echo " ".$this->lang->line('clear') ?></a>
                                                   </div>
                                                </div>
                                          
@@ -2274,8 +2274,8 @@ function new_discount_amount(){
 		</div>
 	
                 <script type="text/javascript">
-                    function sales_quotation_group_approve(){
-              <?php if($this->session->userdata['sales_quotation_per']['approve']==1){ ?>
+                    function purchase_order_group_approve(){
+              <?php if($this->session->userdata['purchase_order_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2286,14 +2286,14 @@ function new_discount_amount(){
 
                       }
                       if (flag<1) {
-                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('sales_quotation');?>', { type: "warning" });
+                              $.bootstrapGrowl('<?php echo $this->lang->line('Select Atleast One')."".$this->lang->line('purchase_order');?>', { type: "warning" });
                       
                       }else{
                             var posnic=document.forms.posnic;
                       for (i = 0; i < posnic.length-1; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/sales_quotation/sales_quotation_approve',
+                                url: '<?php echo base_url() ?>/index.php/purchase_order/purchase_order_approve',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -2301,12 +2301,12 @@ function new_discount_amount(){
                                 },
                                 complete: function(response) {
                                     if(response['responseText']=='TRUE'){
-                                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('sales_quotation') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
+                                           $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
                                         $("#dt_table_tools").dataTable().fnDraw();
                                     }else if(response['responseText']=='Approved'){
                                          $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>   <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
                                     }else{
-                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                              
+                                          $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                              
                                     }
                                     }
                             });
@@ -2318,7 +2318,7 @@ function new_discount_amount(){
 
                       }   
                        <?php }else{?>
-                                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                       
+                                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
                             <?php }
                          ?>
                       }
@@ -2340,7 +2340,7 @@ function new_discount_amount(){
                       for (i = 0; i < posnic.length-1; i++){
                           if(posnic[i].checked==true){                             
                               $.ajax({
-                                url: '<?php echo base_url() ?>index.php/sales_quotation/item_active',
+                                url: '<?php echo base_url() ?>index.php/purchase_order/item_active',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -2363,7 +2363,7 @@ function new_discount_amount(){
                       }    
                       }
      function posnic_delete(){
-            <?php if($this->session->userdata['sales_quotation_per']['delete']==1){ ?>
+            <?php if($this->session->userdata['purchase_order_per']['delete']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2387,7 +2387,7 @@ function new_discount_amount(){
                           if(posnic[i].checked==true){ 
                               var guid=posnic[i].value;
                               $.ajax({
-                                url: '<?php echo base_url() ?>/index.php/sales_quotation/delete',
+                                url: '<?php echo base_url() ?>/index.php/purchase_order/delete',
                                 type: "POST",
                                 data: {
                                     guid:posnic[i].value
@@ -2412,15 +2412,15 @@ function new_discount_amount(){
                       });
                       }    
                       <?php }else{?>
-                                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                       
+                                   $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
                            <?php }
                         ?>
                       }
                     
                     
                     
-    function sales_quotation_group_approve(){
-         <?php if($this->session->userdata['sales_quotation_per']['approve']==1){ ?>
+    function purchase_order_group_approve(){
+         <?php if($this->session->userdata['purchase_order_per']['approve']==1){ ?>
                      var flag=0;
                      var field=document.forms.posnic;
                       for (i = 0; i < field.length; i++){
@@ -2439,7 +2439,7 @@ function new_discount_amount(){
                            var guid=posnic[i].value;
                           if(posnic[i].checked==true){                             
                                  $.ajax({
-                                    url: '<?php echo base_url() ?>/index.php/sales_quotation/sales_quotation_approve',
+                                    url: '<?php echo base_url() ?>/index.php/purchase_order/purchase_order_approve',
                                     type: "POST",
                                     data: {
                                         guid: posnic[i].value
@@ -2447,12 +2447,12 @@ function new_discount_amount(){
                                     },
                                      complete: function(response) {
                                         if(response['responseText']=='TRUE'){
-                                               $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('sales_quotation') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
+                                               $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('purchase_order') ?>  <?php echo $this->lang->line('approved');?>', { type: "success" });
                                             $("#dt_table_tools").dataTable().fnDraw();
                                         }else if(response['responseText']=='Approved'){
                                              $.bootstrapGrowl($('#order__number_'+guid).val()+ ' <?php echo $this->lang->line('is') ?>   <?php echo $this->lang->line('already');?> <?php echo $this->lang->line('approved');?>', { type: "warning" });
                                         }else{
-                                              $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                        
+                                              $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission To Delete')." ".$this->lang->line('purchase_order');?>', { type: "error" });                        
                                         }
                                         }
                                 });
@@ -2464,7 +2464,7 @@ function new_discount_amount(){
 
                       }   
                         <?php }else{?>
-                                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('sales_quotation');?>', { type: "error" });                       
+                                    $.bootstrapGrowl('<?php echo $this->lang->line('You Have NO Permission')." ".$this->lang->line('to')." ".$this->lang->line('approve')." ".$this->lang->line('purchase_order');?>', { type: "error" });                       
                             <?php }
                          ?>
                       }
@@ -2486,7 +2486,7 @@ function new_discount_amount(){
                       for (i = 0; i < posnic.length-1; i++){
                           if(posnic[i].checked==true){                             
                                  $.ajax({
-                                    url: '<?php echo base_url() ?>index.php/sales_quotation/item_deactive',
+                                    url: '<?php echo base_url() ?>index.php/purchase_order/item_deactive',
                                     type: "POST",
                                     data: {
                                         guid: posnic[i].value

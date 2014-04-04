@@ -48,11 +48,11 @@ class Sales_quotation extends CI_Controller{
 				
 			}
 					   
-			$this->load->model('sales')	   ;
+			$this->load->model('purchase')	   ;
                         
-			 $rResult1 = $this->sales->get($end,$start,$like,$this->session->userdata['branch_id']);
+			 $rResult1 = $this->purchase->get($end,$start,$like,$this->session->userdata['branch_id']);
 		   
-		$iFilteredTotal =$this->sales->count($this->session->userdata['branch_id']);
+		$iFilteredTotal =$this->purchase->count($this->session->userdata['branch_id']);
 		
 		$iTotal =$iFilteredTotal;
 		
@@ -247,9 +247,9 @@ function save(){
                 }
                 $delete=  $this->input->post('r_items');
                     for($j=0;$j<count($delete);$j++){
-                        $this->load->model('sales');
+                        $this->load->model('purchase');
                         
-                         $this->sales->delete_order_item($delete[$j]);
+                         $this->purchase->delete_order_item($delete[$j]);
                     }
                     
                 $new_item=  $this->input->post('new_item_id');
@@ -290,10 +290,10 @@ function save(){
  * get supplier details for purchase order
  *  */       
 // functoon starts
-function search_customer(){
+function search_supplier(){
     $search= $this->input->post('term');  
-    $like=array('first_name'=>$search,'email'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
-    $data= $this->posnic->posnic_select2('customers',$like)    ;
+    $like=array('first_name'=>$search,'last_name'=>$search,'company_name'=>$search,'phone'=>$search,'email'=>$search);       
+    $data= $this->posnic->posnic_select2('suppliers',$like)    ;
     echo json_encode($data);
 }
 // function end
@@ -304,9 +304,9 @@ Delete purchase order if the user have permission  */
 function delete(){
    if($this->session->userdata['brands_per']['delete']==1){ // check permission of current user for delete purchase  order
             if($this->input->post('guid')){ 
-                $this->load->model('sales');
+                $this->load->model('purchase');
                 $guid=$this->input->post('guid');
-                $status=$this->sales->check_approve($guid);// check if the purchase order was already apparoved or what
+                $status=$this->purchase->check_approve($guid);// check if the purchase order was already apparoved or what
                     if($status!=FALSE){
                         $this->posnic->posnic_delete($guid,'purchase_order'); // delete the purchase order
                         echo 'TRUE';
@@ -324,8 +324,8 @@ function delete(){
 
 function  get_purchase_order($guid){
     if($this->session->userdata['purchase_order_per']['edit']==1){
-    $this->load->model('sales');
-    $data=  $this->sales->get_purchase_order($guid);
+    $this->load->model('purchase');
+    $data=  $this->purchase->get_purchase_order($guid);
     echo json_encode($data);
     }
 }
@@ -333,15 +333,15 @@ function  get_purchase_order($guid){
 function purchase_order_approve(){
      if($this->session->userdata['purchase_order_per']['approve']==1){
             $id=  $this->input->post('guid');
-            $this->load->model('sales');
-            $this->sales->approve_order($id);
+            $this->load->model('purchase');
+            $this->purchase->approve_order($id);
             echo 'TRUE';
      }else{
          echo 'FALSE';
      }
     }
 function order_number(){
-       $data[]= $this->posnic->posnic_master_max('sales')    ;
+       $data[]= $this->posnic->posnic_master_max('purchase_order')    ;
        echo json_encode($data);
 }
 /*
@@ -351,8 +351,8 @@ function order_number(){
 function search_items(){
     $search= $this->input->post('term');
     $guid= $this->input->post('suppler');
-    $this->load->model('sales');
-    $data= $this->sales->search_items($search);      
+    $this->load->model('purchase');
+    $data= $this->purchase->search_items($search,$this->session->userdata['branch_id'],$guid,$this->session->userdata['data_limit']);      
     echo json_encode($data);
        
         
