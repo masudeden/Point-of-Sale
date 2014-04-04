@@ -12,6 +12,8 @@ class Sales_quotation extends CI_Controller{
         $this->load->view('index',$data);
         $this->load->view('template/app/navigation',$this->posnic->modules());
         $this->load->view('template/app/footer');
+        
+        /// echo strtotime(date("Y/m/d"));
     }
     // purchase order data table
     function data_table(){
