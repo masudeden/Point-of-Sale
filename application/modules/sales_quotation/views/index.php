@@ -796,6 +796,7 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
   if(per==""){
     per=0;
     }
+  
     var tax=((parseFloat(quty)*parseFloat(price))*tax_value/100);
     tax=tax.toFixed(point);
     total=total.toFixed(point);
@@ -840,8 +841,11 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
   
   $('#selected_item_table #new_item_row_id_'+$('#parsley_reg #item_id').val()+' #items_total').val(total);
     $.bootstrapGrowl('<?php echo $this->lang->line('item') ?> '+name+' <?php echo $this->lang->line('updated');?> ', { type: "success" });  
-      if (isNaN($("#parsley_reg #total_amount").val())) 
+    
+    if (isNaN($("#parsley_reg #total_amount").val())) {
     $("#parsley_reg #total_amount").val(0)    
+    }
+   
         if (isNaN($("#parsley_reg #discount_amount").val())) 
     $("#parsley_reg #discount_amount").val(0);
         if (isNaN($("#parsley_reg #round_off_amount").val())) 
@@ -856,13 +860,37 @@ if(document.getElementById('new_item_row_id_'+$('#parsley_reg #item_id').val()))
     
         if (isNaN($("#parsley_reg #demo_grand_total").val())) 
     $("#parsley_reg #grand_total").val(0)
+
+
+console.log($('#parsley_reg #total_amount').val());
 if($('#parsley_reg #total_amount').val()==0){
       $('#parsley_reg #total_amount').val(total-parseFloat(old_total));
 }else{
-    $('#parsley_reg #total_amount').val(parseFloat($('#parsley_reg #total_amount').val())+(total)-parseFloat(old_total));
+     console.log($('#parsley_reg #total_amount').val());
+     if(total==old_total){
+         $('#parsley_reg #total_amount').val(parseFloat($('#parsley_reg #total_amount').val()));
+     }else{
+    $('#parsley_reg #total_amount').val(parseFloat($('#parsley_reg #total_amount').val())+total-old_total);
+    console.log($('#parsley_reg #total_amount').val()+total-old_total);
+     }
+}
+
+if(tax_Inclusive==1){
+if($('#parsley_reg #total_tax').val()==0){
+      $('#parsley_reg #total_tax').val(tax);
+     
+}else{
+    $('#parsley_reg #total_tax').val(parseFloat($('#parsley_reg #total_tax').val())-$('#parsley_reg #old_tax').val()+parseFloat(tax));
+}
+}
+if($('#parsley_reg #total_item_discount_amount').val()==0){
+      $('#parsley_reg #total_item_discount_amount').val(discount);
+     
+}else{
+    $('#parsley_reg #total_item_discount_amount').val(parseFloat($('#parsley_reg #total_item_discount_amount').val())-$('#parsley_reg #old_discount').val()+parseFloat(discount));
 }
 $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
-   new_discount_amount();
+   //new_discount_amount();
     
     
     
@@ -974,6 +1002,20 @@ if($('#parsley_reg #total_amount').val()==0){
 }else{
     $('#parsley_reg #total_amount').val(parseFloat($('#parsley_reg #total_amount').val())+parseFloat(total));
 }
+if(tax_Inclusive==1){
+if($('#parsley_reg #total_tax').val()==0){
+      $('#parsley_reg #total_tax').val(tax);
+     
+}else{
+    $('#parsley_reg #total_tax').val(parseFloat($('#parsley_reg #total_tax').val())+parseFloat(tax));
+}
+}
+if($('#parsley_reg #total_item_discount_amount').val()==0){
+      $('#parsley_reg #total_item_discount_amount').val(discount);
+     
+}else{
+    $('#parsley_reg #total_item_discount_amount').val(parseFloat($('#parsley_reg #total_item_discount_amount').val())+parseFloat(discount));
+}
 $('#parsley_reg #demo_total_amount').val($('#parsley_reg #total_amount').val());
    new_discount_amount();
     
@@ -1004,16 +1046,16 @@ function edit_order_item(guid){
     $('#parsley_reg #sku').val($('#selected_item_table #new_item_row_id_'+guid+' #items_sku').val());
     $('#parsley_reg #customers_quty').val($('#selected_item_table #new_item_row_id_'+guid+' #item_limit').val());
     $('#parsley_reg #quantity').val($('#selected_item_table #new_item_row_id_'+guid+' #items_quty').val());
-    $('#parsley_reg #free').val($('#selected_item_table #new_item_row_id_'+guid+' #items_free').val());
-    $('#parsley_reg #cost').val($('#selected_item_table #new_item_row_id_'+guid+' #items_cost').val());
     $('#parsley_reg #price').val($('#selected_item_table #new_item_row_id_'+guid+' #items_price').val());
-    $('#parsley_reg #mrp').val($('#selected_item_table #new_item_row_id_'+guid+' #items_mrp').val());
-    $('#parsley_reg #sub_total').val($('#selected_item_table #new_item_row_id_'+guid+' #items_sub_total').val());
     $('#parsley_reg #discount').val($('#selected_item_table #new_item_row_id_'+guid+' #items_discount_per').val());
     $('#parsley_reg #tax').val($('#selected_item_table #new_item_row_id_'+guid+' #items_tax').val());
     $('#parsley_reg #tax_type').val($('#selected_item_table #new_item_row_id_'+guid+' #items_tax_type').val());
     $('#parsley_reg #tax_value').val($('#selected_item_table #new_item_row_id_'+guid+' #items_tax_value').val());
     $('#parsley_reg #tax_Inclusive').val($('#selected_item_table #new_item_row_id_'+guid+' #items_tax_inclusive').val());
+    
+    //old 
+     $('#parsley_reg #old_tax').val($('#selected_item_table #new_item_row_id_'+guid+' #items_quty').val()*$('#selected_item_table #new_item_row_id_'+guid+' #items_price').val()*$('#selected_item_table #new_item_row_id_'+guid+' #items_tax_value').val()/100);
+      $('#parsley_reg #old_discount').val($('#selected_item_table #new_item_row_id_'+guid+' #items_quty').val()*$('#selected_item_table #new_item_row_id_'+guid+' #items_price').val()*$('#selected_item_table #new_item_row_id_'+guid+' #items_discount_per').val()/100);
    
     $('#parsley_reg #item_id').val(guid);
     $('#parsley_reg #total').val($('#selected_item_table #new_item_row_id_'+guid+' #items_total').val());
@@ -1148,7 +1190,7 @@ function new_discount_amount(){
         $("#parsley_reg #round_off_amount").val(0);
     if (isNaN($("#parsley_reg #freight").val())) 
         $("#parsley_reg #freight").val()
-    console.log('jibi');
+    
     }
     
     new_grand_total();
@@ -1347,6 +1389,8 @@ function new_discount_amount(){
                                                     <input type="hidden" name="seleted_row_id" id="seleted_row_id">
                                                     <input type="hidden" name="stock_quty" id="stock_quty">
                                                     <input type="hidden" name="discount" id="discount">
+                                                    <input type="text" name="old_discount" id="old_discount">
+                                                    <input type="text" name="old_tax" id="old_tax">
                                                         </div>
                                                 
                                                  <div class="col col-lg-1" style="padding:1px;width: 160px;">
